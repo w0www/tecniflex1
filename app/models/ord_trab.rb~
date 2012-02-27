@@ -1,0 +1,471 @@
+class OrdTrab < ActiveRecord::Base
+
+  hobo_model # Don't put anything above this
+
+  fields do
+    numOT         :integer, :name => :true
+    numFact       :integer
+    numGuia       :integer
+    fecha         :date
+    clase         :integer
+    fechaEntrega  :date
+    observaciones :text
+    cfinal        :string
+    visto         :boolean
+    mtz           :boolean
+    mtje          :boolean
+    ptr           :boolean
+    mpFTP         :boolean
+    mpFTPq        :integer
+    mpFTPdev      :boolean
+    mpPel         :boolean
+    mpPelq        :integer
+    mpPeldev      :boolean
+    mpImp         :boolean
+    mpImpq        :integer
+    mpImpdev      :boolean
+    mpMgr         :boolean
+    mpMgrq        :integer
+    mpMgrdev      :boolean
+    mpOpt         :boolean
+    mpOptq        :integer
+    mpOptdev      :boolean
+    mpPtr         :boolean
+    mpPtrq        :integer
+    mpPtrdev      :boolean
+    mcGuia        :boolean
+    mcGuiacol     :string
+    mcGuiaapy     :string
+    mcMPunto      :boolean
+    mcMPuntocol   :string
+    mcMPuntoapy   :string
+    mcCruces      :boolean
+    mcCrucescol   :string
+    mcCrucesapy   :string
+    mcTacas       :boolean
+    mcTacasH      :integer
+    mcTacasV      :integer
+    mcTacascol    :string
+    mcTacasapy    :string
+    mcTiras       :boolean
+    mcTirascol    :string
+    mcTirasapy    :string
+    mcExceso      :boolean
+    mcExcesoq     :integer
+    mcExcesocol   :string
+    mcExcesoapy   :string
+    mcMarcas      :boolean
+    mcMarcascol   :string
+    mcMarcasapy   :string
+    mcPimp        :boolean
+    mcPimpcol     :string
+    mcPimpapy     :string
+    nomprod        :string
+    codTflex       :string
+    codCliente     :string
+    mdi_desarrollo :decimal
+    mdi_ancho      :decimal
+    barcode        :string
+    colorBarcode   :string
+    dispBandas     :integer
+    distTotalPerim :decimal
+    distorAncho    :decimal
+    nPasos         :decimal
+    nBandas        :decimal
+    nCopias        :integer
+    colorUnion     :integer
+    supRev enum_string(:'Superficie', :'Reverso')
+    tipofotop enum_string(:'Convencional', :'Digital')
+    trapping       :decimal
+    prioridad enum_string(:'Normal', :'Repeticion', :'Urgencia')
+    pctdistor      :decimal
+    timestamps
+  end
+
+  has_many :pruebas
+  has_many :tipopruebas, :through => :pruebas, :accessible => true
+  has_many :separacions, :dependent => :destroy, :accessible => true, :order => :position
+  has_many :procesos, :through => :tareas, :accessible => true
+  has_many :tareas, :accessible => true, :dependent => :destroy
+  belongs_to :encargado, :class_name => "User", :scope => {:rol_is => 'Supervisor' || 'Gerente'}
+  belongs_to :curva                             
+
+  belongs_to :cliente
+  belongs_to :impresora
+  belongs_to :cilindro
+  belongs_to :tipomat
+  belongs_to :espesor
+  belongs_to  :sustrato
+
+
+  lifecycle do
+
+		state :creada, :default => true
+
+		state :habilitada, :iniciada, :detenida, :terminada
+
+		create :crear, :become => :creada, :available_to => :all
+
+		transition :habilitar, { :creada => :habilitada }, :available_to => :all do
+		  esta = self
+		  self.tareas.each do |latask|
+		    if latask.proceso.grupoproc.asignar && (latask.asignado == nil)
+		        errors.add(:latask, " no tiene un operador asignado" )
+		    end
+        if latask.state == "creada" && esta.valid?
+          latask.lifecycle.habilitar!(acting_user)
+        end
+      end
+    end
+
+    transition :eliminar, { :habilitada => :destroy }, :available_to => :all
+
+		transition :iniciar, { :habilitada => :iniciada }
+
+		transition :detener, { :iniciada => :detenida }
+
+    transition :eliminar, { :iniciada => :destroy }, :available_to => :all
+
+		transition :terminar, { :iniciada => :terminada }, :available_to => :all do
+      self.tareas.each do |task|
+          task.state = "terminada"
+          task.save
+      end
+    end
+
+    transition :reactivar, {:terminada => :habilitada}, :available_to => :all
+
+	end
+	
+  validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.visto || self.ptr", :on => :habilitar
+  validates_presence_of :trapping, :curva, :impresora, :cilindro, :nBandas, :nPasos, :nCopias, :sustrato, :fechaEntrega, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
+  validates_associated :separacions, :if => "(self.mtje || self.mtz) && self.activa? ", :on => :update
+  
+  def before_create
+    self.numOT = OrdTrab.all.last.id.to_i + 60001
+    if OrdTrab.cliente_is(self.cliente) != []
+      self.codCliente = (OrdTrab.cliente_is(self.cliente).last.codCliente.to_i || 1) + 1
+    else
+      self.codCliente = 1
+    end
+  end
+  
+  def activa?
+    ['habilitada','iniciada','detenida'].include?(self.state)
+  end
+  
+  
+  
+  def after_update    
+    @gptar = Hash.new
+    self.tareas.asignada_a_is_not('nil').each do |tare|
+      @gptar[tare.proceso.grupoproc.id.to_s] = tare.asignada_a.to_s
+    end
+    if @gptar != {}
+     (self.tareas.all - self.tareas.asignada_a_is_not('nil')).each do |tare|
+        tark = tare
+        if tark.proceso.grupoproc.id == 9
+          tark.asignada_a = @gptar['1']
+        else
+        tark.asignada_a = @gptar[tark.proceso.grupoproc.id]
+        end
+        tark.save
+      end
+    end
+   end
+	     
+  def before_save
+    unless self.nBandas?
+      self.nBandas = 1
+    end
+    unless self.nPasos?
+      self.nPasos = 1
+    end
+           
+    if self.visto
+      unless self.procesos.*.grupoproc.*.abreviacion.include?('visto')
+        Proceso.find_all_by_grupoproc_id("Visto Bueno").each do |provisto|
+          self.procesos << provisto
+        end 
+        Proceso.find_all_by_nombre("Prep" ).each do |proprep|
+          self.procesos << proprep
+        end      
+      end
+    end
+    if self.mtz
+      unless self.procesos.*.grupoproc.*.abreviacion.include?('mtz')
+        Proceso.find_all_by_nombre("Matriceria").each do |promtz|
+          self.procesos << promtz
+        end
+         Proceso.find_all_by_nombre("Revision").each do |prorev|
+          self.procesos << prorev
+        end
+      end
+    end
+    if self.ptr
+      unless self.procesos.*.grupoproc.*.abreviacion.include?('ptr')
+       Proceso.find_all_by_nombre("Printer").each do |proptr|
+          self.procesos << proptr
+        end
+      end
+    end
+    if self.mtje
+      unless self.procesos.*.grupoproc.*.abreviacion.include?('pol')
+        Proceso.find_all_by_nombre("Montaje").each do |promtje|
+          self.procesos << promtje
+        end
+        Proceso.find_all_by_nombre("Polimero").each do |propol|
+          self.procesos << propol
+        end
+        Proceso.find_all_by_nombre("Despacho").each do |prodes|
+          self.procesos << prodes
+        end
+      end
+    end
+
+  end
+
+  def after_save
+    separacions.each {|sepa| sepa.areasep}
+   # tareas.each do |tare| 
+   #   if tare.asignada_a
+
+  end
+
+  def validate
+#    if (mdi_desarrollo*nPasos) > cilindro.desarr
+#      errors.add(:mdi_desarrollo, "es insuficiente para el montaje" )
+#    end
+    unless valcol(self.mcGuiacol) == 0
+        errors.add(:mcGuiacol, "se refiere a un color inexistente")
+    end
+    unless valcol(self.mcTacascol) == 0
+        errors.add(:mcTacascol, "se refiere a un color inexistente")
+    end
+    unless valcol(self.mcPimpcol) == 0
+        errors.add(:mcPimpcol, "se refiere a un color inexistente")
+    end
+#    @marcs = ["Guia","MPunto","Cruces","Tacas","Tiras","Exceso","Marcas","Pimp" ]
+#    @marcs.each do |lamarc|
+#      @mudcol = "valcol(self.mc#{lamarc}col)"
+#      @mudapy = "valcol(self.mc#{lamarc}apy)"
+#      unless self.send(@mudcol) == 0
+#        errors.add(:mcGuiacol, "se refiere a un color inexistente")
+#      end
+#      unless self.send(@mudapy) == 0
+#        errors.add(:mcGuiacol, "se refiere a un color inexistente")
+#      end
+#    end
+  end
+
+  def claset
+    @valorc = "shower"
+		if self.prioridad == "Urgencia"
+			@valorc = "showerhi"
+		elsif self.prioridad == "Sin_cobro"
+			@valorc = "showerin"
+    end
+		@valorc
+	end
+	
+	def usersgp(grupro)
+	  @gproc = Grupoproc.find_by_abreviacion(grupro)
+	  @usrs = []
+    unless self.tareas == []
+      self.tareas.each do |tare|
+	      if tare.proceso.grupoproc.abreviacion.to_s == @gproc.abreviacion.to_s
+	        if tare.intervencions
+	         tare.intervencions.each do |inter|
+	          @usrs << inter.user.iniciales
+	         end
+	        end
+	      end
+	    end
+	  end
+	  @usrs.uniq.join("-")
+	end
+	
+	def estgrupro(grupro)
+	  @gproc = Grupoproc.find_by_abreviacion(grupro)
+	  @estag = ""
+    @contcrea = 0
+    @conthab = 0
+    @contini = 0
+    @contdet = 0
+    @contdet = 0
+    @contter = 0
+    @cont = 0
+    unless self.tareas == []
+    self.tareas.each do |tare|
+	    if tare.proceso.grupoproc.abreviacion.to_s == @gproc.abreviacion.to_s
+        case tare.state
+          when "creada"
+            @contcrea += 1
+          when "habilitada"
+            @conthab += 1
+          when "iniciada"
+            @contini += 1
+          when "detenida"
+            @contdet += 1
+          when "terminada"
+            @contter += 1
+          else
+            "desconocido"
+         end
+         @cont += 1
+       end
+       
+     end
+     unless @cont == 0
+       case @cont
+          when @contcrea
+            if (@gproc.abreviacion.to_s == "visto") || (@gproc.abreviacion.to_s == "ptr")
+              @estag = "creado"
+            else 	
+              @estag = "creada"
+            end
+          when @conthab
+            if (@gproc.abreviacion.to_s == "visto") || (@gproc.abreviacion.to_s == "ptr")
+              @estag = "habilitado"
+            else
+              @estag = "habilitada"
+            end
+          when @contini
+            if (@gproc.abreviacion.to_s == "visto") || (@gproc.abreviacion.to_s == "ptr")
+              @estag = "enviado"
+            else
+              @estag = "iniciada"
+            end
+          when @contdet
+            if (@gproc.abreviacion.to_s == "visto") || (@gproc.abreviacion.to_s == "ptr")
+              @estag = "observaciones"
+            else
+              @estag = "detenida"
+            end
+          when @contter
+            if (@gproc.abreviacion.to_s == "visto") || (@gproc.abreviacion.to_s == "ptr")
+                @estag = "aprobado"
+            else
+                @estag = "terminada"
+            end
+          else
+            if @contdet > 0
+               if (@gproc.abreviacion.to_s == "visto") || (@gproc.abreviacion.to_s == "ptr")
+                @estag = "observaciones"
+              else
+                @estag = "detenida"
+              end
+            elsif @contini > 0
+               if (@gproc.abreviacion.to_s == "visto") || (@gproc.abreviacion.to_s == "ptr")
+                @estag = "enviado"
+              else
+                @estag = "iniciada"
+              end
+            elsif (@conthab > 0) && (@contdet == 0) && (@contini == 0)
+              @estag = "habilitada"
+               
+            end
+        end
+      else
+        @estag = ""
+      end
+     end
+     @estag
+   end
+        	    
+	  
+#	  <% @todas.each do |tod| %>
+#            <!-- <repeat with="&@todas"> -->
+#              <% @tod = tod %>  
+#              <tr>
+#                  <th style="width:70px;" class="#{@tod.state}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a></th><th rowspan="2" style="width: 12em;" class="#{@tod.state}"><%=  tod.nomprod -%></th>
+#                  <%@ctr = 0%>
+ #                 <% @grupro.each do |proce|%>
+#                    <% unless @ctr == 1 %>
+#                      <% tod.tareas.each do |tare| %>
+#                            <% if tare.proceso.grupoproc.abreviacion.to_s == proce.abreviacion.to_s %>
+#                              <td class="#{tare.state}" rowspan="2">
+#                              <%= tare.stvisto -%><br/><%= tare.users.last -%>
+#                              </td>
+#                              <% @ctr += 1 %>
+#                              <%next%>
+#                            <%end%>
+#                      <%end%>
+#                      <% if @ctr == 0 %>
+#                        <td rowspan="2"/>
+#                      <% end %>
+#                    <%end%>
+#                    <% @ctr = 0 %>
+#                  <% end %>
+	  
+	  
+	  
+	def valcol(listacol)
+    @valor = 0
+    @colarr = listacol.split(',')
+    unless @colarr.blank?
+      @colarr.each do |col|
+        unless col.to_i <= self.separacions.count
+          @valor += 1
+        end
+      end
+    end
+    @valor
+  end
+
+
+  def areamat(sep)
+    @areamat = (sep.alto*sep.ancho)
+  end
+
+  def tipos
+    @sepas = []
+    @mats = []
+    if self.separacions != []
+      @sepas = self.separacions
+      if @sepas.first.tipomat != nil
+        @mats << @sepas.first.tipomat
+        @sepas.each do |sepa|
+          unless @mats.include?(sepa.tipomat)
+            @mats << sepa.tipomat
+          end
+        end
+      end
+    end
+    @mats
+  end
+
+  def consumo(mat)
+    unless self.separacions == nil
+      @sepas = self.separacions
+      @cons = 0
+      @sepas.each do |sepa|
+        if sepa.tipomat == mat
+          @cons += sepa.area
+        end
+      end
+      @cons
+    else
+      @cons = 0
+    end
+  end
+  # --- Permissions --- #
+
+  def create_permitted?
+    acting_user.administrator?
+  end
+
+  def update_permitted?
+    acting_user.administrator?  || acting_user.superv?
+  end
+
+  def destroy_permitted?
+    acting_user.administrator?
+  end
+
+  def view_permitted?(field)
+    true
+  end
+
+end
+

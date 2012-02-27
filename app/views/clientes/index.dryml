@@ -1,0 +1,8 @@
+<index-page>
+	<collection: replace>
+		<div>
+			<table-plus fields="this, contactos.count, impresoras"/>
+		</div>
+	</collection:>
+</index-page>
+

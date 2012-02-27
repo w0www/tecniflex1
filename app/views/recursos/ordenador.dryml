@@ -1,0 +1,19 @@
+<page title="Administracion de tiempo">
+  <parent-link:><a href="#{base_url}/ord_trabs">Atras</a></parent-link:>
+  <content:>
+    <header class="content-header">
+      <h2>
+        Tareas para <view:nombre/>
+      </h2>
+      <br/>
+      <br/>
+    </header>
+    <section class="content-body">
+      <field-list fields="tareas">
+        <empty-message:>No hay tareas definidas para este recurso</empty-message:>
+        <tareas-heading:></tareas-heading:>
+        <tareas-view:><sortable-collection/></tareas-view:>
+    </field-list>
+    </section>
+  </content:>
+</page>

@@ -1,0 +1,8 @@
+<show-page>
+  <parent-link:><a href="#{base_url}/ord_trabs">Atras</a></parent-link:>
+  <content-body:>
+    <field-list fields="descripcion, velocidad,unidad1, unidad2, tiempo, indicador, proceso, tareas">
+      <tareas-view:><sortable-collection/></tareas-view:>
+    </field-list>
+  </content-body:>
+</show-page>

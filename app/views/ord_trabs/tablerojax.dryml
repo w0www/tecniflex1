@@ -1,0 +1,44 @@
+        <table class="tablero" part="dashboard">
+          <thead>
+            <tr>
+              <th>OT</th>
+              <th>Nombre</th>
+              <repeat with="&@proces">
+                <th><view:nombre/> </th>
+              </repeat>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @todas.each do |tod| %>
+            <!-- <repeat with="&@todas"> -->
+              <% @tod = tod %>  
+              <tr>
+                  <th style="width:6em;" class="#{@tod.state}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a></th><th rowspan="2" style="width: 12em;" class="#{@tod.state}"><%=  tod.nomprod -%></th>
+                  <%@ctr = 0%>
+                  <% @proces.each do |proce|%>
+                    <% unless @ctr == 1 %>
+                      <% tod.tareas.each do |tare| %>
+                            <% if tare.proceso.nombre.to_s == proce.nombre.to_s %>
+                              <td class="#{tare.state}" rowspan="2">
+                              <%= tare.stvisto -%><br/><%= tare.users.last -%>
+                              </td>
+                              <% @ctr += 1 %>
+                              <%next%>
+                            <%end%>
+                      <%end%>
+                      <% if @ctr == 0 %>
+                        <td rowspan="2"/>
+                      <% end %>
+                    <%end%>
+                    <% @ctr = 0 %>
+                  <% end %>
+                   <td rowspan="2"><do with="&@tod"><transition-buttons/></do></td>
+                  </tr>
+                  <tr/>
+                  <%end%>
+            <!-- </repeat> -->  
+                </tbody>
+                 </table>
+        
+   

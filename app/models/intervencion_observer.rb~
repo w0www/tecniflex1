@@ -1,0 +1,5 @@
+class IntervencionObserver < ActiveRecord::Observer
+  def after_update(interv)
+  
+  end  
+end

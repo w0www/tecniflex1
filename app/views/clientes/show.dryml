@@ -1,0 +1,9 @@
+<show-page>
+  <heading:>
+    Cliente: <name/><span style="float:right"> <%= link_to "Atras", :controller => "ord_trabs", :action => "index"%></span>
+  </heading:>
+
+
+
+</show-page>
+

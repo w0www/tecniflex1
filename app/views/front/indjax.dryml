@@ -1,0 +1,7 @@
+
+      <section with="&@asignacions" part="fronte">
+        <if test="&@asignacions"><h2>Ordenes de Trabajo Activas</h2>
+               <collection/>
+        </if>
+      </section>
+

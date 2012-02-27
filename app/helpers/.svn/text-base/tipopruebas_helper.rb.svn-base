@@ -1,0 +1,2 @@
+module TipopruebasHelper
+end

@@ -1,0 +1,136 @@
+class OrdTrab < ActiveRecord::Base
+
+  hobo_model # Don't put anything above this
+
+  fields do
+    numOT         :integer, :name => :true
+    numFact       :integer
+    numGuia				:integer
+    fecha         :date
+    clase         :integer
+    fechaEntrega  :date
+    observaciones :text
+    visto					:boolean
+    mtz						:boolean
+    mtje					:boolean
+    film					:boolean
+    mpFTP         :boolean
+    mpFTPq        :integer
+    mpFTPdev      :boolean
+    mpPel         :boolean
+    mpPelq        :integer
+    mpPeldev      :boolean
+    mpImp         :boolean
+    mpImpq        :integer
+    mpImpdev      :boolean
+    mpMgr         :boolean
+    mpMgrq        :integer
+    mpMgrdev      :boolean
+    mpOpt         :boolean
+    mpOptq        :integer
+    mpOptdev      :boolean
+    mpPtr         :boolean
+    mpPtrq        :integer
+    mpPtrdev      :boolean
+    mcGuia        :boolean
+    mcGuiacol     :string
+    mcMPunto      :boolean
+    mcMPuntocol   :string
+    mcCruces      :boolean
+    mcCrucescol   :string
+    mcTacas       :boolean
+    mcTacasH      :integer
+    mcTacasV      :integer
+    mcTacascol    :string
+    mcTiras       :boolean
+    mcTirascol    :string
+    mcExceso      :boolean
+    mcExcesoq     :integer
+    mcExcesocol   :string
+    mcMarcas      :boolean
+    mcMarcascol   :string
+    mcPimp        :boolean
+    mcPimpcol     :string
+    timestamps
+
+  end
+
+	belongs_to :producto
+	has_many :pruebas
+	has_many :tipopruebas, :through => :pruebas, :accessible => true
+	
+	lifecycle do
+	
+		state :definida, :default => true
+		
+		state :encurso, :detenida_prep, :enVB, :enpausa, :detenida, :printer, :enmatriceria, :detenida_mtz, :enmontaje, :plotter, :filmada, :expuesta, :lavada, :seca, :terminada, :facturada, :despachada
+		
+		create :definir, :become => :definida, :available_to => :all
+		
+		transition :activar, { :definida => :encurso }, :available_to => :all
+		
+		transition :detener, { :encurso => :detenida_prep }, :available_to => :all
+		
+		transition :terminar, { :encurso => :terminada }, :available_to => :all
+		
+		transition :reactivar, { :detenida_prep => :encurso }, :available_to => :all
+    
+    transition :enviar, { :encurso => :enVB }, :available_to => :all
+    
+    transition :observar, { :enVB => :encurso}, :available_to => :all
+    
+    transition :aprobar, { :enVB => :printer}, :available_to => :all
+    
+    transition :a_matriceria, { :printer => :enmatriceria}, :available_to => :all
+    
+    transition :pausar, { :printer => :detenida_mtz}, :available_to => :all
+    
+    transition :revivir, { :enpausa => :encurso}, :available_to => :all
+    
+    transition :revivir, { :detenida => :enmatriceria}, :available_to => :all
+    
+    transition :reactivar, { :detenida_mtz => :enmatriceria}, :available_to => :all
+    
+    transition :a_montaje, { :enmatriceria => :enmontaje}, :available_to => :all
+    
+    transition :plotter, { :enmontaje => :plotter}, :available_to => :all
+    
+    transition :terminar, { :plotter => :terminada}, :available_to => :all
+    
+    transition :filmar, { :plotter => :filmada}, :available_to => :all
+    
+    transition :exponer, { :filmada => :expuesta}, :available_to => :all
+    
+    transition :lavar, { :expuesta => :lavada}, :available_to => :all
+
+    transition :secar, { :lavada => :seca}, :available_to => :all
+
+    transition :terminar, { :seca => :terminada}, :available_to => :all
+
+    transition :facturar, { :terminada => :facturada}, :available_to => :all
+
+    transition :despachar, { :facturada => :despachada}, :available_to => :all
+
+
+		
+		end
+
+  # --- Permissions --- #
+
+  def create_permitted?
+    acting_user.administrator?
+  end
+
+  def update_permitted?
+    acting_user.administrator?
+  end
+
+  def destroy_permitted?
+    acting_user.administrator?
+  end
+
+  def view_permitted?(field)
+    true
+  end
+
+end

@@ -1,0 +1,2 @@
+module BodegasHelper
+end

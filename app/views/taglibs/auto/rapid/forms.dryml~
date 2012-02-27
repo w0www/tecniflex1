@@ -1,0 +1,407 @@
+<!-- AUTOMATICALLY GENERATED FILE - DO NOT EDIT -->
+
+<def tag="form" for="Anilox">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="lineatura, bcm, marca, impresora" param/>
+    <div param="actions">
+      <submit label="#{ht 'aniloxes.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Bodega">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="nombre, descripcion, existencias" param/>
+    <div param="actions">
+      <submit label="#{ht 'bodegas.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Cilindro">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, distorsion, duplo, espesor, impresora" param/>
+    <div param="actions">
+      <submit label="#{ht 'cilindros.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Cliente">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, razsocial, sigla, rut, correo, direccion, telefono, fpago, tarifa, plazopago, descuento, contactos" param/>
+    <div param="actions">
+      <submit label="#{ht 'clientes.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Contacto">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, cargo, telefono, email, cliente" param/>
+    <div param="actions">
+      <submit label="#{ht 'contactos.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Curva">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="nombre, descripcion, impresion, sustrato, espesor, polimero" param/>
+    <div param="actions">
+      <submit label="#{ht 'curvas.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Existencia">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="cantidad, numfact, lote, serie, existalto, existancho, codigo, bodega, polimero, unidad" param/>
+    <div param="actions">
+      <submit label="#{ht 'existencias.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Grupoproc">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="position, nombre, abreviacion, tablero, asignar, descripcion" param/>
+    <div param="actions">
+      <submit label="#{ht 'grupoprocs.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Impresora">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, trapdefault, bumpcurve, curva, aniloxes, cilindros, cliente, curva" param/>
+    <div param="actions">
+      <submit label="#{ht 'impresoras.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Intervencion">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="inicio, termino, observaciones, tarea, user" param/>
+    <div param="actions">
+      <submit label="#{ht 'intervencions.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="MovHeader">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="factura, fecha, proveedor, observaciones" param/>
+    <div param="actions">
+      <submit label="#{ht 'mov_headers.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Movimiento">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="cantidad, tipo, lote, serie, bodega, mov_header, ord_trab, polimero, user" param/>
+    <div param="actions">
+      <submit label="#{ht 'movimientos.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="OrdTrab">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="numOT, numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, visto, mtz, mtje, ptr, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, codCliente, mdi_desarrollo, mdi_ancho, barcode, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, sustrato, fotopol, tipofotop, trapping, prioridad, pctdistor, state, cilindro, cliente, curva, encargado, impresora, procesos, separacions, tareas, tipopruebas" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="crear-form" polymorphic/>
+<def tag="crear-form" for="OrdTrab">
+  <form lifecycle="crear" merge param="default">
+    <error-messages param/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.crear', :default=>['Crear']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="habilitar-form" polymorphic/>
+<def tag="habilitar-form" for="OrdTrab">
+  <form lifecycle="habilitar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.habilitar', :default=>['Habilitar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="eliminar-form" polymorphic/>
+<def tag="eliminar-form" for="OrdTrab">
+  <form lifecycle="eliminar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.eliminar', :default=>['Eliminar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="eliminar-form" polymorphic/>
+<def tag="eliminar-form" for="OrdTrab">
+  <form lifecycle="eliminar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.eliminar', :default=>['Eliminar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="terminar-form" polymorphic/>
+<def tag="terminar-form" for="OrdTrab">
+  <form lifecycle="terminar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.terminar', :default=>['Terminar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="reactivar-form" polymorphic/>
+<def tag="reactivar-form" for="OrdTrab">
+  <form lifecycle="reactivar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.reactivar', :default=>['Reactivar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="form" for="Polimero">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="tipomat, tipo, espesor, nombre, alto, ancho, cantcaja" param/>
+    <div param="actions">
+      <submit label="#{ht 'polimeros.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Proceso">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="position, nombre, descripcion, grupoproc, sucesor" param/>
+    <div param="actions">
+      <submit label="#{ht 'procesos.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Prueba">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="aprob_int, aprob_cliente, descripcion, ord_trab, tipoprueba" param/>
+    <div param="actions">
+      <submit label="#{ht 'pruebas.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Recurso">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="nombre, descripcion, velocidad, unidad1, unidad2, tiempo, indicador, proceso" param/>
+    <div param="actions">
+      <submit label="#{ht 'recursos.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Separacion">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="color, position, anilox, lpi, area, alto, ancho, tipomat, grosor, ord_trab" param/>
+    <div param="actions">
+      <submit label="#{ht 'separacions.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Tarea">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="position, instrucciones, fechatope, asignada_a, state, asignado, intervencions, ord_trab, proceso, recurso" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="crear-form" polymorphic/>
+<def tag="crear-form" for="Tarea">
+  <form lifecycle="crear" merge param="default">
+    <error-messages param/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.crear', :default=>['Crear']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="habilitar-form" polymorphic/>
+<def tag="habilitar-form" for="Tarea">
+  <form lifecycle="habilitar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.habilitar', :default=>['Habilitar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="iniciar-form" polymorphic/>
+<def tag="iniciar-form" for="Tarea">
+  <form lifecycle="iniciar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.iniciar', :default=>['Iniciar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="terminar-form" polymorphic/>
+<def tag="terminar-form" for="Tarea">
+  <form lifecycle="terminar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.terminar', :default=>['Terminar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="form" for="Tinta">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="posicion, anilox, lpi, ord_trab" param/>
+    <div param="actions">
+      <submit label="#{ht 'tintas.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Tipoprueba">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="nombre, descripcion" param/>
+    <div param="actions">
+      <submit label="#{ht 'tipopruebas.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Unidad">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="nombre, descripcion" param/>
+    <div param="actions">
+      <submit label="#{ht 'unidads.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="User">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name, rol, email_address, administrator, iniciales, state, procesos" param/>
+    <div param="actions">
+      <submit label="#{ht 'users.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="signup-form" polymorphic/>
+<def tag="signup-form" for="User">
+  <form lifecycle="signup" merge param="default">
+    <error-messages param/>
+    <field-list fields="name, email_address, password, password_confirmation" param/>
+    <div param="actions">
+      <submit label="#{ht 'users.actions.signup', :default=>['Signup']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+<def tag="reset-password-form" polymorphic/>
+<def tag="reset-password-form" for="User">
+  <form lifecycle="reset_password" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="password, password_confirmation" param/>
+    <div param="actions">
+      <submit label="#{ht 'users.actions.reset_password', :default=>['Reset Password']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+

@@ -1,0 +1,6 @@
+<show-page>
+  <parent-link:><a href="#{base_url}/ord_trabs">Atras</a></parent-link:>
+  <content-body:>
+    <field-list fields="rol, email_address, administrator, procesos, state"/>
+  </content-body:>
+</show-page>

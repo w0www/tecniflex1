@@ -1,0 +1,98 @@
+<show-page for="Tarea">
+
+    <heading:>
+      <view:ord_trab/>&nbsp;>&nbsp;<view:ord_trab.nomprod/>&nbsp;>&nbsp;<view:proceso/>
+    </heading:>
+
+    <edit-link: >
+      Editar Tarea
+    </edit-link:>
+
+  <content-body: >
+    <div part="campos">      
+      <table class="shower">
+        <tr><th>Cliente</th><td colspan="2"><view:ord_trab.cliente/></td><th>Fecha tope:</th><td colspan="2"><view:ord_trab.fechaEntrega/></td></tr>
+        <tr><th>C&oacute;digo Cliente:</th><td colspan="2"><view:ord_trab.codCliente/></td><th>C&oacute;digo Tecniflex:</th><td colspan="2"><view:ord_trab.codTflex/></td></tr>
+        <tr rowspan="2"><th>Instrucciones</th><td colspan="2"><view:ord_trab.observaciones/></td></tr>
+        <tr><th>Estado:</th><td colspan="2"><view:state/></td></tr>
+        <tr></tr>
+        <tr/>
+      </table>
+      <% if current_user.hace?("Grabado") %>
+        
+        <table class="shower">
+        
+        <tr><th>Color</th><th>Anilox</th><th>Lineatura</th><th>Material</th><th style="width:50px">Alto</th><th style="width:50px">Ancho</th><th>Area</th><th>Stock</th></tr>
+ <!--       </table>
+        <table class="shower">-->
+        <repeat with="&@sepas" part="sepas">  
+         
+   <!--       <form with="&sepa" update="resumen">   -->
+            <% @polis = [this.tipomat,this.ancho,this.alto,this.grosor] %>
+            <% @aptos = Existencia.findex(@polis) %>
+            <% @primo = @aptos.first %>
+            <tr><td><view:color/></td><td><view:anilox/></td><td><view:lpi/></td><td><view:tipomat/></td><td><editor:ancho update="sepas" />&nbsp;cm.</td><td><editor:alto update="sepas" />&nbsp;cm.</td><td><%= this.areasep -%>&nbsp;cm<sup>2</sup></td><td class="#{if @primo then 'verde' else '' end}"></td></tr>
+   <!--         </form>  -->
+         </repeat>
+        
+          </table>
+        <%end%>
+        
+ <% @intervs = this.intervencions.find(:all, :joins => :user, :conditions => ["name = ?", current_user.name]) %>     
+ <%if this.state != "terminada"%>
+  
+    <%if @intervs != []%>
+ 
+        <% if @intervs.last.termino == nil%>
+            <% @termin = 0 %>
+                <h2>No terminada</h2>
+                 <form with="&@intervs.last" update="campos" id="interform">
+                      <after-submit stay-here/>
+                      <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
+                      <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{this.tarea.id}"/>
+                      <input class="hidden" type="text" name="intervencion[termino]" value="#{Time.now}"/>
+                      Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
+                     <%= hidden_field_tag 'envio'%>
+                      <%= submit_tag "detener", :onClick => "$('envio').value='detener'", :id => "detener" %>
+                      <%= submit_tag "terminar", :onClick => "$('envio').value='terminar'", :id => "terminar" %>
+
+                </form>
+         <% else %>
+              <% @estatarea = this.id %>
+               <form with="&Intervencion.new" update="campos">
+                    <after-submit stay-here/>
+                    <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
+                    <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{@estatarea}"/>
+                    <input class="hidden" type="text" name="intervencion[inicio]" value="#{Time.now}"/>
+                    Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
+                    <submit label="Iniciar" id="iniciar"/>
+              </form>
+         <%  end %>
+
+   <% else %>
+          <br/>
+          <form with="&Intervencion.new" update="campos">
+                <after-submit stay-here/>
+                <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
+                <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{params[:id]}"/>
+                <input class="hidden" type="text" name="intervencion[inicio]" value="#{Time.now}"/>
+                Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
+                <submit label="Iniciar" id="iniciar"/>
+          </form>
+   <% end %>
+
+  <%end%>
+  </div>
+ <!--  <form with="&Intervencion.new" update="campos">
+      <input class="hidden" type="text" name="intervencion[fhinicio]" value="#{Time.now}"/>
+      <input type="text" name="intervencion[user]" value="#{current_user}"/>
+      <input type="text" name="intervencion[tarea]" value="#{params['id']}"/>
+      <input:observaciones/><br/>
+      <submit label="Iniciar"/>
+    </form>
+      -->
+  </content-body:>
+
+
+</show-page>
+

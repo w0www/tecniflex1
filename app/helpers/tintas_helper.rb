@@ -1,0 +1,2 @@
+module TintasHelper
+end

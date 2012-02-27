@@ -1,0 +1,31 @@
+<page title="Tablero de Control">
+  <body: class="definir"/>
+  <content:>
+    <header class="content-header">
+      <h2>
+        Tablero de control
+      </h2>
+      <br/>
+      <br/>
+    </header>
+    <section class="content-body">
+        <table class="tablero">
+          <thead>
+            <tr>
+              <th>OT</th>
+              <th>Nombre</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <repeat with="&@todas">
+              <tr>
+                <th style="width:9em;"><view:numOT/></th><td style="width: 18em;"><view:producto.name/></td><td class="<%=  this.state %>"><view:state/></td>
+              </tr>
+            </repeat>  
+          </tbody>
+        </table>
+        
+    </section>
+  </content:>
+</page>

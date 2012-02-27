@@ -1,0 +1,24 @@
+class FrontController < ApplicationController
+
+  hobo_controller
+
+  def index
+    unless current_user.guest?
+      @ordenes = OrdTrab.find :all
+      @asignacions = current_user.asignacions.habilitada
+    end    
+  end
+  
+  def summary
+    if !current_user.administrator?
+      redirect_to user_login_path
+    end
+  end
+
+  def search
+    if params[:query]
+      site_search(params[:query])
+    end
+  end
+
+end

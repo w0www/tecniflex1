@@ -1,0 +1,226 @@
+# This file is auto-generated from the current state of the database. Instead of editing this file, 
+# please use the migrations feature of Active Record to incrementally modify your database, and
+# then regenerate this schema definition.
+#
+# Note that this schema.rb definition is the authoritative source for your database schema. If you need
+# to create the application database on another system, you should be using db:schema:load, not running
+# all the migrations from scratch. The latter is a flawed and unsustainable approach (the more migrations
+# you'll amass, the slower it'll run and the greater likelihood for issues).
+#
+# It's strongly recommended to check this file into your version control system.
+
+ActiveRecord::Schema.define(:version => 20110318200117) do
+
+  create_table "cilindros", :force => true do |t|
+    t.string   "name"
+    t.decimal  "distorsion"
+    t.decimal  "pctDistor"
+    t.string   "anilox"
+    t.string   "lineatura"
+    t.string   "duplo"
+    t.decimal  "espesor"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "impresora_id"
+  end
+
+  add_index "cilindros", ["impresora_id"], :name => "index_cilindros_on_impresora_id"
+
+  create_table "clientes", :force => true do |t|
+    t.string   "name"
+    t.string   "razsocial"
+    t.string   "rut"
+    t.string   "direccion"
+    t.string   "telefono"
+    t.string   "fpago"
+    t.string   "plazopago"
+    t.string   "descuento"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.decimal  "tarifa"
+  end
+
+  create_table "color_assignments", :force => true do |t|
+    t.integer  "posicion"
+    t.string   "anilox"
+    t.string   "lpi"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "color_id"
+    t.integer  "producto_id"
+  end
+
+  add_index "color_assignments", ["color_id"], :name => "index_color_assignments_on_color_id"
+  add_index "color_assignments", ["producto_id"], :name => "index_color_assignments_on_producto_id"
+
+  create_table "colors", :force => true do |t|
+    t.string   "name"
+    t.text     "descripcion"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "contactos", :force => true do |t|
+    t.string   "name"
+    t.string   "cargo"
+    t.string   "telefono"
+    t.string   "email"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "cliente_id"
+  end
+
+  add_index "contactos", ["cliente_id"], :name => "index_contactos_on_cliente_id"
+
+  create_table "impresoras", :force => true do |t|
+    t.string   "name"
+    t.decimal  "trapdefault"
+    t.string   "bumpcurve"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "cliente_id"
+    t.string   "curva"
+  end
+
+  add_index "impresoras", ["cliente_id"], :name => "index_impresoras_on_cliente_id"
+
+  create_table "ord_trabs", :force => true do |t|
+    t.integer  "numOT"
+    t.integer  "numFact"
+    t.date     "fecha"
+    t.integer  "clase"
+    t.date     "fechaEntrega"
+    t.text     "observaciones"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "producto_id"
+    t.integer  "numGuia"
+    t.boolean  "mtz"
+    t.boolean  "mtje"
+    t.boolean  "film"
+    t.string   "state",         :default => "definida"
+    t.datetime "key_timestamp"
+    t.boolean  "visto"
+    t.boolean  "mpFTP"
+    t.integer  "mpFTPq"
+    t.boolean  "mpFTPdev"
+    t.boolean  "mpPel"
+    t.integer  "mpPelq"
+    t.boolean  "mpPeldev"
+    t.boolean  "mpImp"
+    t.integer  "mpImpq"
+    t.boolean  "mpImpdev"
+    t.boolean  "mpMgr"
+    t.integer  "mpMgrq"
+    t.boolean  "mpMgrdev"
+    t.boolean  "mpOpt"
+    t.integer  "mpOptq"
+    t.boolean  "mpOptdev"
+    t.boolean  "mpPtr"
+    t.integer  "mpPtrq"
+    t.boolean  "mpPtrdev"
+    t.boolean  "mcGuia"
+    t.string   "mcGuiacol"
+    t.boolean  "mcMPunto"
+    t.string   "mcMPuntocol"
+    t.boolean  "mcCruces"
+    t.string   "mcCrucescol"
+    t.boolean  "mcTacas"
+    t.integer  "mcTacasH"
+    t.integer  "mcTacasV"
+    t.string   "mcTacascol"
+    t.boolean  "mcTiras"
+    t.string   "mcTirascol"
+    t.boolean  "mcExceso"
+    t.integer  "mcExcesoq"
+    t.string   "mcExcesocol"
+    t.boolean  "mcMarcas"
+    t.string   "mcMarcascol"
+    t.boolean  "mcPimp"
+    t.string   "mcPimpcol"
+  end
+
+  add_index "ord_trabs", ["producto_id"], :name => "index_ord_trabs_on_producto_id"
+  add_index "ord_trabs", ["state"], :name => "index_ord_trabs_on_state"
+
+  create_table "productos", :force => true do |t|
+    t.string   "name"
+    t.string   "codTflex"
+    t.string   "codCliente"
+    t.decimal  "mdi_desarrollo"
+    t.decimal  "mdi_ancho"
+    t.string   "barcode"
+    t.string   "colorBarcode"
+    t.integer  "dispBandas"
+    t.decimal  "distTotalPerim"
+    t.decimal  "distorAncho"
+    t.decimal  "nPasos"
+    t.decimal  "nBandas"
+    t.integer  "colorUnion"
+    t.integer  "supRev"
+    t.text     "caractImp"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "cliente_id"
+    t.integer  "cilindro_id"
+    t.integer  "impresora_id"
+  end
+
+  add_index "productos", ["cilindro_id"], :name => "index_productos_on_cilindro_id"
+  add_index "productos", ["cliente_id"], :name => "index_productos_on_cliente_id"
+  add_index "productos", ["impresora_id"], :name => "index_productos_on_impresora_id"
+
+  create_table "pruebas", :force => true do |t|
+    t.boolean  "aprob_int"
+    t.boolean  "aprob_cliente"
+    t.text     "descripcion"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "tipoprueba_id"
+    t.integer  "ord_trab_id"
+  end
+
+  add_index "pruebas", ["ord_trab_id"], :name => "index_pruebas_on_ord_trab_id"
+  add_index "pruebas", ["tipoprueba_id"], :name => "index_pruebas_on_tipoprueba_id"
+
+  create_table "tintas", :force => true do |t|
+    t.integer  "posicion"
+    t.string   "anilox"
+    t.string   "lpi"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "color_id"
+    t.integer  "producto_id"
+  end
+
+  add_index "tintas", ["color_id"], :name => "index_tintas_on_color_id"
+  add_index "tintas", ["producto_id"], :name => "index_tintas_on_producto_id"
+
+  create_table "tipopruebas", :force => true do |t|
+    t.string   "nombre"
+    t.text     "descripcion"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", :force => true do |t|
+    t.string   "crypted_password",          :limit => 40
+    t.string   "salt",                      :limit => 40
+    t.string   "remember_token"
+    t.datetime "remember_token_expires_at"
+    t.string   "name"
+    t.string   "email_address"
+    t.boolean  "administrator",                           :default => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "state",                                   :default => "active"
+    t.datetime "key_timestamp"
+    t.string   "rol"
+    t.boolean  "area_mtz",                                :default => false
+    t.boolean  "area_mtje",                               :default => false
+    t.boolean  "area_film",                               :default => false
+  end
+
+  add_index "users", ["state"], :name => "index_users_on_state"
+
+end

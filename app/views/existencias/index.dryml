@@ -1,0 +1,12 @@
+<index-page>
+	<collection: replace>
+		<div>
+			<table-plus fields="polimero.tipomat, polimero.espesor, cantidad, existalto, existancho, codigo">
+				<existancho-heading:>Ancho</existancho-heading:>
+				<existalto-heading:>Alto</existalto-heading:>
+				<controls:/>
+			</table-plus>
+		</div>
+	</collection:>
+</index-page>
+

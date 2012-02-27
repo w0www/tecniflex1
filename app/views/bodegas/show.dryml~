@@ -1,0 +1,24 @@
+<show-page>
+  <heading:>
+    Bodega: <name/>
+  </heading:>
+
+  <collection: replace>
+     <table id="stock">
+      <thead>
+        <tr><th>Tipo</th><th>Cantidad</th><th>Espesor</th><th>Tipo</th></tr>
+      </thead>
+      <% Polimero.all.each do |pol| %>
+        <tr><th><%= pol.tipomat %></th><td><%= pol.exisbod(@bodega.id) -%></td><td><%= pol.espesor -%></td><td><%= pol.tipo -%></td></tr>
+      <% end %>
+    </table>
+  
+     <!--<table-plus with="&@polilist" fields="tipomat, espesor, tipo, this.exisbod(@bodega.id)">
+    codigo,cantidad,polimero.tipomat,polimero.espesor,polimero.tipo,tipo,unidades,existalto,existancho"> 
+			<controls:/>
+      <empty-message:>No hay items en esta bodega</empty-message:>
+    </table-plus> -->
+  </collection:>
+
+</show-page>
+

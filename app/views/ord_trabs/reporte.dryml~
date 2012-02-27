@@ -1,0 +1,23 @@
+<page title="Informes">
+
+  <body: class="front-page"/>
+
+  <content:>
+    <header class="content-header">
+      <h1>Informes de Sistema</h1>
+      <section class="welcome-message">
+          <br/>
+          <h3>Informes de producción</h3>
+      </section>
+    </header>
+     <% if !current_user.guest? -%>
+    <section class="content-body">
+
+        <a href="#{base_url}/users/trabajos">Trabajos por usuario</a><br/>
+        <a href="#{base_url}/clientes/trabajos">Trabajos por cliente</a><br/>
+        <a href="#{base_url}/recursos/trabajos">Utilizacion de recursos</a><br/>
+    </section>
+    <% end -%>
+  </content:>
+  
+</page>

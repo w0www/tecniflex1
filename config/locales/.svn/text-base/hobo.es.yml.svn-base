@@ -1,0 +1,164 @@
+# Spanish translations for Rails
+# by Francisco Fernando García Nieto (ffgarcianieto@gmail.com)
+# contributors:
+#  - Tsutomu Kuroda - http://github.com/kuroda (t-kuroda@oiax.jp)
+
+es:
+        
+    hobo:
+        # hobos default pages translations
+        page:
+          index:
+            title: "%{model} Índice"
+            heading: "%{model} Índice"
+
+          new:
+            title: "Nuevo %{model}"
+            heading: "Nuevo %{model}"
+
+          show:
+            title: "%{model}"
+            heading: "%{model}"
+            back_link: "Volver"
+            edit_link: "Editar %{model}"
+            new_link: "Nuevo %{model}"
+            add_form_heading: "Agregar %{model}"
+
+          edit:
+            title: "Editar %{model}"
+            heading: "Editar %{model}"
+
+          index_for_owner:
+            title: "%{model}s para"
+            heading:
+              your: "Sus %{model}s"
+              other: "%{model}s"
+            subheading: "Para:"
+
+          new_for_owner:
+            title: "Nuevo %{model} para"
+            heading: "Nuevo %{model}"
+            subheading: "Para:"
+
+          login:
+            title: "Login"
+            heading: "Login"
+            email: "E-mail"
+            password: "Contraseña"
+            remember_me: "Recuérdame"
+            login: "Login"
+            signup: "Inscribirse"
+            forgot_password: "¿Olvidó su Contraseña?"
+
+          signup:
+            title: "Inscribirse"
+            heading: "Inscribirse como nuevo usuario"
+
+          forgot_password:
+            title: "¿Olvidó su contraseña?"
+            heading: "¿Olvidó su contraseña?"
+            text: "Ingrese su dirección de correo, la misma que usó para inscribirse. Le enviaremos un enlace para generar una nueva clave."
+            email: "E-mail"
+            send: "Enviar"
+
+          forgot_password_sent:
+            title: "Recuperación de contraseña - email enviado"
+            heading: "Recuperación de contraseña - email enviado"
+            text: "Un mensaje con instrucciones para generar una nueva contraseña fue enviado a {{email}}. Si no es recibido, verifique su filtro de spam."
+
+          account_disabled:
+            title: "Cuenta no encontrada"
+            heading: "Cuenta no encontrada"
+            text: "No podemos encontrar una cuenta que coincida con la dirección de e-mail entregada. Por favor chequee que la dirección es correcta."
+
+        # hobos default action translation
+        actions:
+          new: "Nuevo"
+          create: "Crear"
+          previous: "Anterior"
+          next: "Próximo"
+          add: "Agregar"
+          more: "Mas"
+          delete: "Eliminar %{model}"
+          save: "Guardar"
+          cancel: "Cancelar"
+          edit: "Editar %{model}"
+          back: "Volver"
+          send: "Enviar"
+          remove: "Remover"
+          signup: "Inscribirse"
+          login: "Ingresar"
+          logout: "Cerrar Sesión"
+          logged_in_as: "Ingresado como %{name}"
+          account: "Cuenta"
+
+        # hobos default message translation  
+        messages:
+          create:
+            success: "El %{model} fue creado exitosamente"
+            error: "No fue posible crear el %{model}.\n%{errors}"
+          creator:
+            error: "No fue posible la creación de %{name}.\n%{errors}"
+          transition:
+            error: "No fue posible efectuar la transición %{name}.\n%{errors}"
+          update:
+            no_attribute_error: "Sin modificación de parámetros"
+            success: "Cambios en %{model} fueron guardados"
+            error: "Ocurrió un problema con la modificación.\n%{errors}"
+          destroy:
+            success: "%{model} fue eliminado"
+          signup: 
+            success: "¡Gracias por inscribirse!"
+            must_activate: "Usted debe activar su registro antes de ingresar. Por favor, verifique su email."
+          login: 
+            success: "Usted ha ingresado."
+            error: "¡No especificó un usuario válido (%{login}) o contraseña!"
+          logout: "Se ha desconectado"
+          reset_password: "Su contraseña fue reiniciada."
+          permission_denied: "¡Permiso negado!"
+          not_found: "La página solicitada no puede ser encontrada"
+          unauthenticated: "No fue posible su ingreso."
+          current_password_is_not_correct: "no es correcta."
+          you_are_site_admin: "Ahora usted es el administrador de este sitio"
+          you_signed_up: "Usted se ha registrado"
+          no: "Ningún %{model} disponible."
+          confirm: "¿Está seguro?"
+
+        # hobos default collection translation
+        collection:
+          count:
+            zero: "Sin %{model}"
+            one: "Un(a) %{model} por el momento"
+            other: " %{count} %{model}"
+          heading:
+            your: "Sus %{model}"
+            other: "%{model}"
+          add_form_heading: "Agregar un %{model}"
+          empty_message: "Sin relaciones registradas"
+
+        # hobos form translation
+        form:
+          new:
+            heading: "Nuevo %{model}"
+          error:
+            heading: "Se ha encontrado el siguiente error:"
+
+        # hobo support
+        support:
+          or: "o"
+          a: "Un"
+          an: "Un"
+
+        table_plus:
+          search: "Buscar"
+          empty: "Ningún %{model} para mostrar"
+
+        live_search:
+          label: "Buscar" 
+          results_label: "Resultado de búsqueda"
+          close_button: "cerrar"
+          more: "Más"
+          no_results: "Su búsqueda no devolvió resultados."
+
+        dev_user_changer:
+          guest: "Invitado"

@@ -1,0 +1,89 @@
+.vista {
+    background: #ccc;
+    margin-right: 30px;
+}
+
+.vista a {
+    background: #ccc;
+    margin-right: 30px;
+}
+
+h2 {
+    margin: 7px 0px 7px;
+}
+
+.edit-page .content-header .delete-button {
+    margin-top: 0px;
+}
+
+.content-body {
+    padding: 7px 0px;
+}
+
+.cuadro {
+    float:right;
+    margin-top: 2.5em;
+    background: #0b0;
+    width: 350px;
+}
+
+td {
+   
+    border-collapse:collapse;
+}
+
+table,td {
+    font-size: 90%;
+    border-collapse:collapse;
+}
+
+table.shower {
+    width: 100%;
+}
+
+table.shower td{
+    border: solid;
+    padding: 2px;
+}
+
+.centrada {
+    text-align: center;
+}
+
+.shower textarea{
+    height: 3em;
+    width: 90%;
+}
+
+table.tablero {
+    border: none;
+}
+
+table.tablero th{
+    background-color: #ccc;
+    padding: 3px;
+    font-weight: bold;
+    font-size: 110%;
+}
+
+table.tablero td{
+    text-size: 100%;
+    padding: 3px;
+}
+
+.creada {
+    background-color: #00f;
+    color: #fff;
+}
+.enmatriceria, .encurso, .enVB, .printer, .enmontaje, .plotter, .filmada, .expuesta, .lavada, .seca, .facturada, .despachada {
+    background-color: #f90;
+}
+
+.terminada{
+    background-color: #0f0;
+}
+ 
+.enpausa, .detenida {
+    background-color: #f00;
+    color: #fff;
+}

@@ -1,0 +1,38 @@
+Administración (Creación, edición, listado y borrado) de:
+  Usuarios
+    Rol (Supervisor, Operador, Administrador)
+    Procesos habilitados (matricería, grabado, etc.)
+  Clientes
+    Impresoras  
+      Cilindros
+      Aniloxes
+    Contactos
+  Bodegas
+  Tipos de polimero
+  Stocks de polimeros
+  Ordenes de Trabajo
+    Creación de OTs a partir de OTs anteriores
+    Marcas
+    Colores
+    Asignación de usuarios a tareas
+    Asignación de responsable por OT
+    Validaciones
+      Nro. de OT unico
+      Altura de montaje (alto de módulo x n. de pasos) debe ser menor a desarrollo del cilindro
+  Procesos
+  Recursos (maquinas)
+  
+Registro de operaciones
+  Registra Operador, hora de inicio y hora de término de cada intervención
+  Permite hacer observaciones
+  En algunos casos permite operaciones adicionales:
+    Grabador: El sistema muestra los polímeros aptos en bodega, y el operador selecciona los que va a utilizar.
+  
+Tablero de control:
+  Indica estado de cada OT
+  Indica estado de cada proceso dentro de la OT
+  Permite habilitar, detener o eliminar una OT  
+  
+Pantalla inicial:
+  Muestra tareas asignadas al operador ingresado
+  Permite seleccionar las tareas para registrar intervenciones.

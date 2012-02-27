@@ -1,0 +1,23 @@
+
+es:
+    Archivos:
+      actions:
+          new: "Nuevo"
+          create: "Crear"
+          previous: "Anterior"
+          next: "Proximo"
+          add: "Agregar"
+          more: "Mas"
+          delete: "Eliminar {{model}}"
+          save: "Guardar"
+          cancel: "Cancelar"
+          edit: "Editar {{model}}"
+          back: "Volver a"
+          send: "Enviar"
+          remove: "Remover"
+          
+    bodegas:
+      collection:
+        heading:
+          other: "Stock"
+

@@ -1,0 +1,284 @@
+<!-- AUTOMATICALLY GENERATED FILE - DO NOT EDIT -->
+
+<def tag="card" for="Anilox">
+  <card class="anilox" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Bodega">
+  <card class="bodega" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+    <body: param>
+      <ht key="existencias.collection.count" count="&this.existencias.size">
+         <count:existencias param/>
+      </ht>
+    </body:>
+  </card>
+</def>
+
+<def tag="card" for="Cilindro">
+  <card class="cilindro" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Cliente">
+  <card class="cliente" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+    <body: param>
+      <ht key="contactos.collection.count" count="&this.contactos.size">
+         <count:contactos param/>
+      </ht>
+    </body:>
+  </card>
+</def>
+
+<def tag="card" for="Contacto">
+  <card class="contacto" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Curva">
+  <card class="curva" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="CurvaCliente">
+  <card class="curva-cliente" param="default" merge>
+    <header: param>
+      <h4 param="heading"><name/></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Espesor">
+  <card class="espesor" param="default" merge>
+    <header: param>
+      <h4 param="heading"><name/></h4>
+      <div param="actions">
+        <a action="edit" if="&can_edit?" param="edit-link">
+          <ht key="espesors.actions.edit">Edit</ht>
+        </a>
+      </div>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Existencia">
+  <card class="existencia" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Grupoproc">
+  <card class="grupoproc" param="default" merge>
+    <header: param>
+      <h4 param="heading"><name/></h4>
+      <div param="actions">
+        <a action="edit" if="&can_edit?" param="edit-link">
+          <ht key="grupoprocs.actions.edit">Edit</ht>
+        </a>
+      </div>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Impresora">
+  <card class="impresora" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+    <body: param>
+      <ht key="cilindros.collection.count" count="&this.cilindros.size">
+         <count:cilindros param/>
+      </ht>
+    </body:>
+  </card>
+</def>
+
+<def tag="card" for="Intervencion">
+  <card class="intervencion" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="MovHeader">
+  <card class="mov-header" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+    <body: param>
+      <ht key="movimientos.collection.count" count="&this.movimientos.size">
+         <count:movimientos param/>
+      </ht>
+    </body:>
+  </card>
+</def>
+
+<def tag="card" for="Movimiento">
+  <card class="movimiento" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="OrdTrab">
+  <card class="ord-trab" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Polimero">
+  <card class="polimero" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Proceso">
+  <card class="proceso" param="default" merge>
+    <header: param>
+      <h4 param="heading"><name/></h4>
+      <div param="actions">
+        <a action="edit" if="&can_edit?" param="edit-link">
+          <ht key="procesos.actions.edit">Edit</ht>
+        </a>
+      </div>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Prueba">
+  <card class="prueba" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Recipe">
+  <card class="recipe" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Recurso">
+  <card class="recurso" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Separacion">
+  <card class="separacion" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Sustrato">
+  <card class="sustrato" param="default" merge>
+    <header: param>
+      <h4 param="heading"><name/></h4>
+      <div param="actions">
+        <a action="edit" if="&can_edit?" param="edit-link">
+          <ht key="sustratos.actions.edit">Edit</ht>
+        </a>
+      </div>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Tarea">
+  <card class="tarea" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Tinta">
+  <card class="tinta" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Tipomat">
+  <card class="tipomat" param="default" merge>
+    <header: param>
+      <h4 param="heading"><name/></h4>
+      <div param="actions">
+        <a action="edit" if="&can_edit?" param="edit-link">
+          <ht key="tipomats.actions.edit">Edit</ht>
+        </a>
+      </div>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Tipoprueba">
+  <card class="tipoprueba" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="Unidad">
+  <card class="unidad" param="default" merge>
+    <header: param>
+      <h4 param="heading"><name/></h4>
+      <div param="actions">
+        <a action="edit" if="&can_edit?" param="edit-link">
+          <ht key="unidads.actions.edit">Edit</ht>
+        </a>
+      </div>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="User">
+  <card class="user" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
+<def tag="card" for="UserLabor">
+  <card class="user-labor" param="default" merge>
+    <header: param>
+      <h4 param="heading"><name/></h4>
+    </header:>
+  </card>
+</def>
+
