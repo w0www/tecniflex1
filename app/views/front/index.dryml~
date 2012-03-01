@@ -31,14 +31,16 @@
                </repeat>
         </if>
       </section>
+	<if test="current_user.procesos">
       <section with="&Tarea.find_utiles(current_user)">
           <if test="&Tarea.find_utiles(current_user)"><h2>Ordenes de Trabajo Disponibles </h2>
-              <repeat with="&@Tarea.find_utiles(current_user).group_by(&:ord_trab)">
+              <repeat with="&this.group_by(&:ord_trab)">
                 <h4>Orden: <a with="&this_key"/></h4>
                 <collection/>
               </repeat>
           </if>
       </section>
+</if>
     </section>
     <% end -%>
   </content:>

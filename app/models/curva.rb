@@ -3,7 +3,7 @@ class Curva < ActiveRecord::Base
   hobo_model # Don't put anything above this
 
   fields do
-    nombre      :string
+    nombre      :string, :name => true
     descripcion :text
     impresion enum_string(:'Superficie', :'Reverso')
     lineatura :string
@@ -19,11 +19,7 @@ class Curva < ActiveRecord::Base
   has_many :clientes, :through => :curva_clientes, :accessible => true
   has_many :impresoras
 
-  def name
-    if self.espesor 
-      self.tipomat.to_s + '_' + self.espesor.calibre.to_s + '_' + self.impresion.to_s + '_' + self.sustrato.to_s + '_' + self.lineatura.to_s
-    end
-  end
+
   
   def before_save
     self.nombre = name
