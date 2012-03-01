@@ -106,17 +106,18 @@ class OrdTrab < ActiveRecord::Base
 
 		create :crear, :become => :creada, :available_to => :all
 
-		transition :habilitar, { :creada => :habilitada }, :available_to => :all do
-		  esta = self
-		  self.tareas.each do |latask|
-		    if latask.proceso.grupoproc.asignar && (latask.asignado == nil)
-		        errors.add(:latask, " no tiene un operador asignado" )
-		    end
-        if latask.state == "creada" && esta.valid?
-          latask.lifecycle.habilitar!(acting_user)
-        end
-      end
-    end
+		transition :habilitar, { :creada => :habilitada }, :available_to => :all 
+		#do
+		#  esta = self
+		#  self.tareas.each do |latask|
+		#    if latask.proceso.grupoproc.asignar && (latask.asignado == nil)
+		#        errors.add(:latask, " no tiene un operador asignado" )
+		#    end
+    #    if latask.state == "creada" && esta.valid?
+    #      latask.lifecycle.habilitar!(acting_user)
+    #    end
+    #  end
+    #end
 
     transition :eliminar, { :habilitada => :destroy }, :available_to => :all
 
@@ -184,7 +185,7 @@ class OrdTrab < ActiveRecord::Base
            
     if self.visto
       unless self.procesos.*.grupoproc.*.abreviacion.include?('visto')
-        Proceso.find_all_by_grupoproc_id("Visto Bueno").each do |provisto|
+        Proceso.find_all_by_nombre("Visto Bueno").each do |provisto|
           self.procesos << provisto
         end 
         Proceso.find_all_by_nombre("Prep" ).each do |proprep|

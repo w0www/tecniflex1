@@ -185,7 +185,7 @@ class OrdTrab < ActiveRecord::Base
            
     if self.visto
       unless self.procesos.*.grupoproc.*.abreviacion.include?('visto')
-        Proceso.find_all_by_grupoproc_id("Visto Bueno").each do |provisto|
+        Proceso.find_all_by_nombre("VistoBueno").each do |provisto|
           self.procesos << provisto
         end 
         Proceso.find_all_by_nombre("Prep" ).each do |proprep|
