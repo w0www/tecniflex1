@@ -179,14 +179,6 @@
   </card>
 </def>
 
-<def tag="card" for="Recipe">
-  <card class="recipe" param="default" merge>
-    <header: param>
-      <h4 param="heading"><a><name/></a></h4>
-    </header:>
-  </card>
-</def>
-
 <def tag="card" for="Recurso">
   <card class="recurso" param="default" merge>
     <header: param>

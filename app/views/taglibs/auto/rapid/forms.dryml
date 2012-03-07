@@ -63,7 +63,7 @@
 <def tag="form" for="Curva">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="nombre, descripcion, impresion, lineatura, clientes, espesor, impresora, sustrato, tipomat" param/>
+    <field-list fields="nombre, descripcion, impresion, clientes, espesor, impresora, sustrato, tipomat" param/>
     <div param="actions">
       <submit label="#{ht 'curvas.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -263,18 +263,6 @@
     <field-list fields="aprob_int, aprob_cliente, descripcion, ord_trab, tipoprueba" param/>
     <div param="actions">
       <submit label="#{ht 'pruebas.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
-    </div>
-  </form>
-</def>
-
-
-
-<def tag="form" for="Recipe">
-  <form merge param="default">
-    <error-messages param/>
-    <field-list fields="title" param/>
-    <div param="actions">
-      <submit label="#{ht 'recipes.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
   </form>
 </def>

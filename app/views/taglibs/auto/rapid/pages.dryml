@@ -542,7 +542,7 @@
             </a>
           </header>
 
-          <section param="content-body">
+          <section param="content-body" with-flash-messages>
             <field-list fields="razsocial, sigla, rut, correo, direccion, telefono, fpago, tarifa, plazopago, descuento" param/>
             <section param="collection-section">
               <h3 param="collection-heading">
@@ -883,7 +883,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="nombre, descripcion, impresion, lineatura, espesor, impresora, sustrato, tipomat" param/>
+            <field-list fields="nombre, descripcion, impresion, espesor, impresora, sustrato, tipomat" param/>
           </section>
     </content:>
 
@@ -1401,7 +1401,7 @@
             </a>
           </header>
 
-          <section param="content-body">
+          <section param="content-body" with-flash-messages>
             <field-list fields="trapdefault, bumpcurve, curva, cliente, curva" param/>
             <section param="collection-section">
               <h3 param="collection-heading">
@@ -2537,125 +2537,6 @@
           </ht>
         </h2>
         <delete-button label="#{ht 'pruebas.actions.delete', :default=>['Remove This Prueba']}" param/>
-      </section>
-
-      <section param="content-body">
-        <form param/>
-      </section>
-    </content:>
-
-  </page>
-</def>
-
-
-
-
-
-<!-- ====== Recipe Pages ====== -->
-
-<def tag="index-page" for="Recipe">
-  <page merge title="#{ht 'recipes.index.title', :default=>['Recipes'] }">
-    <body: class="index-page recipe" param/>
-
-    <content: param>
-      <header param="content-header">
-        <h2 param="heading">
-          <ht key="recipes.index.heading">
-            Recipes
-          </ht>
-        </h2>
-
-        <p param="count" if>
-          <ht key="recipes.collection.count" count="&this.size">
-            There <count prefix="are"/>
-          </ht>
-        </p>
-      </header>
-
-      <section param="content-body">
-        <a action="new" to="&model" param="new-link">
-          <ht key="recipes.actions.new">New Recipe</ht>
-        </a>
-
-        <page-nav param="top-page-nav"/>
-
-        <collection param/>
-
-        <page-nav param="bottom-page-nav"/>
-
-
-      </section>
-    </content:>
-  </page>
-</def>
-
-
-<def tag="new-page" for="Recipe">
-  <page merge title="#{ht 'recipes.new.title', :default=>[' New Recipe'] }">
-    <body: class="new-page recipe" param/>
-
-    <content: param>
-      <section param="content-header">
-        <h2 param="heading">
-          <ht key="recipes.new.heading">
-            New Recipe
-          </ht>
-        </h2>
-      </section>
-
-      <section param="content-body">
-        <form param>
-          <submit: label="#{ht 'recipes.actions.create', :default=>['Create Recipe']}"/>
-        </form>
-      </section>
-    </content:>
-  </page>
-</def>
-
-
-<def tag="show-page" for="Recipe">
-  <page merge title="#{ht 'recipes.show.title', :default=>['Recipe'] }">
-
-    <body: class="show-page recipe" param/>
-
-    <content: param>
-          <header param="content-header">
-            <h2 param="heading">
-              <ht key="recipes.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
-                <name/>
-              </ht>
-            </h2>
-
-            <record-flags fields="" param/>
-
-            <a action="edit" if="&can_edit?" param="edit-link">
-              <ht key="recipes.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
-                Edit Recipe
-              </ht>
-            </a>
-          </header>
-
-          <section param="content-body">
-          </section>
-    </content:>
-
-  </page>
-</def>
-
-
-<def tag="edit-page" for="Recipe">
-  <page merge title="#{ht 'recipes.edit.title', :default=>['Edit Recipe'] }">
-
-    <body: class="edit-page recipe" param/>
-
-    <content:>
-      <section param="content-header">
-        <h2 param="heading">
-          <ht key="recipes.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
-            Edit <type-name/>
-          </ht>
-        </h2>
-        <delete-button label="#{ht 'recipes.actions.delete', :default=>['Remove This Recipe']}" param/>
       </section>
 
       <section param="content-body">
