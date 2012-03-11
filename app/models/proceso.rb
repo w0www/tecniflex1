@@ -19,6 +19,11 @@ class Proceso < ActiveRecord::Base
   belongs_to :grupoproc
 
 
+	def self.asignables
+		@gasig = Grupoproc.asignar
+		Proceso.find(:all, :conditions => ["grupoproc_id IN (?)", @gasig])
+	end
+	
   # --- Permissions --- #
 
   def create_permitted?

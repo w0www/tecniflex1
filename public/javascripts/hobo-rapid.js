@@ -408,8 +408,8 @@ var Hobo = {
 
 
     updateElement: function(id, content) {
-        // TODO: Do we need this method?
         Element.update(id, content)
+        Element.fire($(id), "rapid:partupdated")
     },
 
     getStyle: function(el, styleProp) {
@@ -560,7 +560,7 @@ HoboBehavior = Class.create({
 })
 
 
-new HoboBehavior("ul.input-many", {
+HoboInputMany = {
   
   events: {
       "> li > div.buttons": {
@@ -569,9 +569,9 @@ new HoboBehavior("ul.input-many", {
       }
   },
 
-  initialize: function(ul) {
+  initialize: function(ev) {
       /* the second clause should be sufficient, but it isn't in IE7.  See bug 603  */
-      $$(".input-many-template input:hidden, .input-many-template select:hidden, .input-many-template textarea:hidden, .input-many-template button:hidden").each(function(input) {
+      Element.select(ev.target, ".input-many-template input:hidden, .input-many-template select:hidden, .input-many-template textarea:hidden, .input-many-template button:hidden").each(function(input) {
           if(!input.disabled) {
               input.disabled = true;
               input.addClassName("input_many_template_input");
@@ -579,9 +579,32 @@ new HoboBehavior("ul.input-many", {
       });
 
       // disable all elements inside our template, and mark them so we can find them later.
-      $$(".input-many-template input:enabled, .input-many-template select:enabled, .input-many-template textarea:enabled, .input-many-template button:enabled").each(function(input) {
+      Element.select(ev.target, ".input-many-template input:enabled, .input-many-template select:enabled, .input-many-template textarea:enabled, .input-many-template button:enabled").each(function(input) {
           input.disabled = true;
           input.addClassName("input_many_template_input");
+      });
+
+      Element.select(ev.target, ".sortable-input-many").each(function(el) {
+          HoboInputMany.createSortable.call(el);
+      });
+
+      /* need to reinitialize after every change */
+      Event.addBehavior({".sortable-input-many:rapid:change": function(ev) {
+          HoboInputMany.createSortable.call(this);
+      }});
+
+      document.observe("rapid:partupdated", HoboInputMany.initialize);
+  },
+
+  createSortable: function() {
+      Sortable.create(this.id, {
+          constraint: 'vertical', 
+          handle: 'ordering-handle', 
+          overlap: 'vertical', 
+          scroll: 'window',
+          onUpdate: function(list) {
+              HoboInputMany.fixIndices.call(list);                
+          }
       });
   },
 
@@ -619,23 +642,56 @@ new HoboBehavior("ul.input-many", {
 
   // given this==an input-many item, get the submit index
   getIndex: function() {
-      return Number(this.id.match(/\[([-0-9]+)\]$/)[1]);
+      return Number(this.id.match(/_([-0-9]+)$/)[1]);
   },
 
-  /* For some reason, select() and down() and all those useful functions aren't working for us.  Roll our own replacement. */
-  recurse_elements_with_class: function(el, klass, f) {
-      var that=this;
-      if(klass==null || el.hasClassName(klass)) {
-          f(el);
+    /* For some reason, select() and down() and all those useful functions aren't working for us.  Roll our own replacement.   
+
+      this: element to recurse on.   
+      klass: class to filter on
+      f: function to invoke
+    */
+  recurse_elements_with_class: function(klass,f ) {
+      if(klass==null || this.hasClassName(klass)) {
+          f(this);
       }
-      el.childElements().each(function(el2) {that.recurse_elements_with_class.call(that, el2, klass, f);});
+      this.childElements().each(function(el2) {HoboInputMany.recurse_elements_with_class.call(el2, klass, f);});
   },
+
+/* fixes the indices on an input-many so they're in order. */
+  fixIndices: function() {
+    var lis = this.immediateDescendants();
+    var minimum = parseInt(Hobo.getClassData(this, 'minimum'));
+    /* first two lis are hidden/disabled on an input-many */
+    for(var i=0; i<lis.length-2; i++) {
+        var il=i+2;
+        if(i!=HoboInputMany.getIndex.call(lis[il])) {
+            var updater = HoboInputMany.getNameUpdater.call(this, i);
+            HoboInputMany.recurse_elements_with_class.call(lis[il], null, function(el) {
+                updater.call(el);
+            });
+            var position=lis[il].childWithClass("sortable-position");
+            if(position) position.value=i+1;
+            if(i==minimum-1 && il==lis.length-1) {
+                lis[il].childWithClass("buttons").childWithClass("remove-item").addClassName("hidden");
+            } else {
+                lis[il].childWithClass("buttons").childWithClass("remove-item").removeClassName("hidden");
+            }
+            if(il==lis.length-1) {
+                lis[il].childWithClass("buttons").childWithClass("add-item").removeClassName("hidden");
+            } else {
+                lis[il].childWithClass("buttons").childWithClass("add-item").addClassName("hidden");
+            }
+        }
+    }
+  },
+
 
   addOne: function(ev, el) {
       Event.stop(ev);
       var ul = el.up('ul.input-many'), li = el.up('li.input-many-li');
 
-      if(li.id.search(/\[-1\]/ && ul.immediateDescendants().length>2)>=0) {
+      if(li.id.search(/_-1$/)>=0 && ul.immediateDescendants().length>2) {
           /* if(console) console.log("IE7 messed up again (bug 605)"); */
           return;
       }
@@ -658,7 +714,7 @@ new HoboBehavior("ul.input-many", {
       reenable_inputs(clone);
 
       // update id & name
-      this.recurse_elements_with_class.call(this, clone, null, function(el) {
+      HoboInputMany.recurse_elements_with_class.call(clone, null, function(el) {
           name_updater.call(el);
       });
 
@@ -691,7 +747,7 @@ new HoboBehavior("ul.input-many", {
       var ul = el.up('ul.input-many'), li = el.up('li.input-many-li')
       var minimum = parseInt(Hobo.getClassData(ul, 'minimum'));
 
-      if(li.id.search(/\[-1\]/)>=0) {
+      if(li.id.search(/_-1$/)>=0) {
           /* if(console) console.log("IE7 messed up again (bug 605)"); */
           return;
       }
@@ -703,7 +759,7 @@ new HoboBehavior("ul.input-many", {
       var n=li.next();
       for(; n; i+=1, n=n.next()) {          
           var name_updater = this.getNameUpdater.call(ul, i);
-          this.recurse_elements_with_class.call(this, n, null, function(el) {name_updater.call(el);});
+          HoboInputMany.recurse_elements_with_class.call(n, null, function(el) {name_updater.call(el);});
       } 
 
       // adjust +/- buttons on the button element as appropriate
@@ -714,7 +770,7 @@ new HoboBehavior("ul.input-many", {
 
       if(last.hasClassName("empty")) {
           last.removeClassName("hidden");
-          this.recurse_elements_with_class.call(this, last, "empty-input", function(el) {el.disabled=false;});
+          HoboInputMany.recurse_elements_with_class.call(last, "empty-input", function(el) {el.disabled=false;});
       } else {
           // if we've reached the minimum, we don't want to add the '-' button
           if(ul.childElements().length-3 <= minimum||0) {
@@ -734,7 +790,9 @@ new HoboBehavior("ul.input-many", {
 
 
 
-})
+}
+  
+new HoboBehavior("ul.input-many", HoboInputMany);
 
 
 SelectManyInput = Behavior.create({
@@ -811,9 +869,10 @@ NameManyInput = Object.extend(SelectManyInput, {
     }
 })
 
-                              
+             
 AutocompleteBehavior = Behavior.create({
     initialize : function() {
+        this.minChars  = parseInt(Hobo.getClassData(this.element, "min-chars")); 
         var match     = this.element.className.match(/complete-on::([\S]+)/)
         var target    = match[1].split('::')
         var typedId   = target[0]
@@ -822,11 +881,27 @@ AutocompleteBehavior = Behavior.create({
         var spec = Hobo.parseModelSpec(typedId)
         var url = urlBase + "/" + Hobo.pluralise(spec.name) +  "/complete_" + completer
         var parameters = spec.id ? "id=" + spec.id : ""
-        new Ajax.Autocompleter(this.element, 
-                               this.element.next('.completions-popup'), 
-                               url, 
-                               {paramName:'query', method:'get', parameters: parameters});
+        this.autocompleter = new Ajax.Autocompleter(this.element, 
+            this.element.next('.completions-popup'), 
+            url, 
+            {paramName:'query', method:'get', parameters: parameters, minChars: this.minChars,
+            afterUpdateElement: this.afterUpdateElement});
+    },
+
+    onfocus: function() {
+        if(this.element.hasClassName("nil-value")) {
+            this.element.value = '';
+            this.element.removeClassName("nil-value");
+        }
+        if(this.minChars==0) { 
+            this.autocompleter.activate();
+        }
+    },
+
+    afterUpdateElement: function(input, li) {
+        input.fire("rapid:autocomplete-assigned");
     }
+        
 })
 
 

@@ -55,8 +55,8 @@ class OrdTrabsController < ApplicationController
   
   def show
     hobo_show do
-      nopol = Grupoproc.find(:all, :conditions => ["nombre != (?) AND nombre != (?)", "Polimero", "Prep"]).*.nombre
-      @otars = this.tareas.*.proceso.*.grupoproc.*.nombre & nopol
+#nopol = Grupoproc.find(:all, :conditions => ["nombre != (?) AND nombre != (?)", "Polimero", "Prep"]).*.nombre
+   @taras = this.tareas.find(:all, :conditions => ["proceso_id IN (?)", Proceso.asignables])
     end
   end
   

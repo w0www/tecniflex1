@@ -33,19 +33,14 @@
         </repeat>
         <tr/>
           <tr><th>Tarea</th><th colspan="3">Operador</th></tr>
-          <% @tot = this.tareas %>
-          <repeat with="&@otars.uniq" part="tares">
-            <% @otar = this %>
-            <% coin = 0 %>
-            <repeat with="&@tot">
-            <% if coin == 0 %>
-              <% if this.proceso.grupoproc.nombre == @otar %>
-                <tr><td><if test="&this.proceso"><%= @otar -%></if></td><td colspan="3"><span with="&this.proceso"><editor:asignado options="&this.aptos"/></span></td>	</tr>
-                <% coin += 1 %> 
-              <%end %>
-            <%end %>
+          
+          
+            <repeat with="&@taras">
+            <% @tara = this %>
+                <tr><td><if test="&this.proceso"><%= this.proceso -%></if></td><td colspan="3"><editor:asignado options="&@tara.opciones" include-none blank-message="Sin asignar"/></td>	</tr>
+                
             </repeat>
-          </repeat>     
+          
         </table>
   </content-body:>
 </show-page>

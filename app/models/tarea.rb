@@ -12,7 +12,7 @@ class Tarea < ActiveRecord::Base
   belongs_to :ord_trab
   belongs_to :proceso
   belongs_to :recurso
-  belongs_to :asignado, :class_name => "User", :foreign_key => :asignada_a, :scope => :aptos
+  belongs_to :asignado, :class_name => "User", :foreign_key => :asignada_a
   has_many :intervencions, :accessible => true, :dependent => :destroy
   has_many :users, :through => :intervencions
 
@@ -24,6 +24,11 @@ class Tarea < ActiveRecord::Base
     User.with_procesos(self.proceso)
   end
   
+  def opciones
+  	@opciones ||= self.aptos.map {|uapto| [uapto.name, uapto.id]}
+	end
+  
+	
   def self.find_utiles(usuario)
     @cuser = usuario
     @uprocid = @cuser.procesos.*.id

@@ -86,7 +86,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="aniloxes.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="aniloxes.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -238,7 +238,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="bodegas.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="bodegas.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -256,7 +256,7 @@
             <field-list fields="descripcion" param/>
             <section param="collection-section">
               <h3 param="collection-heading">
-                <ht key="bodegas.collection.heading.other" >
+                <ht key="existencias.collection.heading.other" >
                   Existencias
                 </ht>
               </h3>
@@ -374,7 +374,7 @@
           <header param="content-header">
             <a:impresora param="parent-link">&laquo; <ht key="cilindros.actions.back" to="impresora"><name/></ht></a:impresora>
             <h2 param="heading">
-              <ht key="cilindros.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="cilindros.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -528,7 +528,7 @@
         <section param="main-content">
           <header param="content-header">
             <h2 param="heading">
-              <ht key="clientes.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="clientes.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -546,7 +546,7 @@
             <field-list fields="razsocial, sigla, rut, correo, direccion, telefono, fpago, tarifa, plazopago, descuento" param/>
             <section param="collection-section">
               <h3 param="collection-heading">
-                <ht key="clientes.collection.heading.other" >
+                <ht key="contactos.collection.heading.other" >
                   Contactos
                 </ht>
               </h3>
@@ -674,7 +674,7 @@
           <header param="content-header">
             <a:cliente param="parent-link">&laquo; <ht key="contactos.actions.back" to="cliente"><name/></ht></a:cliente>
             <h2 param="heading">
-              <ht key="contactos.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="contactos.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -868,7 +868,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="curvas.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="curvas.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -883,7 +883,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="nombre, descripcion, impresion, espesor, impresora, sustrato, tipomat" param/>
+            <field-list fields="descripcion, impresion, lineatura, espesor, impresora, sustrato, tipomat" param/>
           </section>
     </content:>
 
@@ -992,7 +992,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="espesors.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="espesors.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -1113,7 +1113,7 @@
           <header param="content-header">
             <a:bodega param="parent-link">&laquo; <ht key="existencias.actions.back" to="bodega"><name/></ht></a:bodega>
             <h2 param="heading">
-              <ht key="existencias.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="existencias.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -1265,7 +1265,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="grupoprocs.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="grupoprocs.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -1387,7 +1387,7 @@
         <section param="main-content">
           <header param="content-header">
             <h2 param="heading">
-              <ht key="impresoras.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="impresoras.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -1405,7 +1405,7 @@
             <field-list fields="trapdefault, bumpcurve, curva, cliente, curva" param/>
             <section param="collection-section">
               <h3 param="collection-heading">
-                <ht key="impresoras.collection.heading.other" >
+                <ht key="cilindros.collection.heading.other" >
                   Cilindros
                 </ht>
               </h3>
@@ -1609,7 +1609,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="intervencions.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="intervencions.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -1761,7 +1761,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="mov_headers.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="mov_headers.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -1779,7 +1779,7 @@
             <field-list fields="factura, fecha, proveedor, observaciones" param/>
             <section param="collection-section">
               <h3 param="collection-heading">
-                <ht key="mov_headers.collection.heading.other" >
+                <ht key="movimientos.collection.heading.other" >
                   Movimientos
                 </ht>
               </h3>
@@ -1903,7 +1903,7 @@
           <header param="content-header">
             <a:mov_header param="parent-link">&laquo; <ht key="movimientos.actions.back" to="mov_header"><name/></ht></a:mov_header>
             <h2 param="heading">
-              <ht key="movimientos.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="movimientos.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -2026,7 +2026,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="ord_trabs.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="ord_trabs.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -2261,7 +2261,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="polimeros.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="polimeros.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -2381,7 +2381,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="procesos.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="procesos.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -2501,7 +2501,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="pruebas.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="pruebas.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -2621,7 +2621,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="recursos.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="recursos.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -2741,7 +2741,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="separacions.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="separacions.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -2939,7 +2939,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="sustratos.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="sustratos.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -3059,7 +3059,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="tareas.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="tareas.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -3104,6 +3104,47 @@
 
   </page>
 </def>
+
+<def tag="index-for-ord-trab-page" polymorphic/>
+<def tag="index-for-ord-trab-page" for="Tarea">
+  <page merge title="#{ht 'tareas.index_for_owner.title', :default=>['Tareas for']} #{name :with => @ord_trab, :no_wrapper => true}">    
+    <body: class="index-for-owner-page ord-trab tarea" param/>
+    <content: param>
+      <header param="content-header">
+        <div param="back-to">
+          <ht key="hobo.actions.back">Back to</ht> <a with="&@ord_trab"/>
+        </div>
+        <h2 param="heading">
+          <ht key="tareas.index_for_owner.heading.other">
+            Tareas
+          </ht>
+        </h2>
+        <h3 param="subheading">
+          <ht key="tareas.index_for_owner.subheading">
+            For:
+          </ht>
+          <a with="&@ord_trab"/>
+        </h3>
+        <p param="count" if>
+          <ht key="tareas.collection.count" count="&this.size">
+            There <count prefix="are"/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
 
 
 <def tag="crear-page" polymorphic/>
@@ -3271,7 +3312,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="tintas.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="tintas.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -3395,7 +3436,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="tipomats.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="tipomats.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -3515,7 +3556,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="tipopruebas.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="tipopruebas.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -3639,7 +3680,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="unidads.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="unidads.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>
@@ -3759,7 +3800,7 @@
     <content: param>
           <header param="content-header">
             <h2 param="heading">
-              <ht key="users.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+              <ht key="users.show.heading" name="&this.respond_to?(:to_s) ? this.to_s : ''">
                 <name/>
               </ht>
             </h2>

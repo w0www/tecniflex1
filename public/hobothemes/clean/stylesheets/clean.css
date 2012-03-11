@@ -1,4 +1,4 @@
-html, body {background-color: #000; }
+html, body {color: #193440; background: url(../images/300-ACD3E6-fff.png) repeat-x #fff; }
 .page-header {color: white; background: url(../images/101-3B5F87-ACD3E6.png) repeat-x #3F606E;}
 .page-header .navigation.main-nav a {
   background: url(../images/30-3E547A-242E42.png) repeat-x #242E42;
@@ -11,7 +11,7 @@ html, body {background-color: #000; }
   border-right: 1px solid white;
 }
 .page-header .navigation.main-nav a:hover {background: #193440;}
-.section.content {background: gainsboro;}
+.section.content {background: #FCFFF5;}
 .button {color: white; background: #5B8BA0;}
 .button:hover {background-color: #193440;}
 .add-to-collection {background: #E6E7DE;}
@@ -57,7 +57,7 @@ pre, code {
     font-family:  "Courier New", Courier, monospace;
 }
 
-input.text, input.string, input.email-address, input.password, input.search, input.integer, input.float, textarea {
+input.text, input.string, input.email-address, input.password, input.search, input.integer, input.float, input.autocompleter, input.decimal, textarea {
 	border-top:1px solid #7c7c7c;
 	border-left:1px solid #c3c3c3;
 	border-right:1px solid #c3c3c3;
