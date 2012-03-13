@@ -128,7 +128,6 @@
 
 <def tag="form" for="OrdTrab">
   <form merge param="default">
-      <error-messages param/>
     <after-submit go-back/>
       <error-messages param/>
         <table class="shower">
@@ -217,14 +216,10 @@
 </def>
 
 <def tag="habilitar-form" for="OrdTrab">
-  <form lifecycle="habilitar" merge param="default">
-    <after-submit uri="/ord_trabs/tablero"/>
-    <error-messages param/>
-    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
-    <field-list fields="numOT, fecha, nomprod, mdi_desarrollo, mdi_ancho, barcode" param/>
-    <div param="actions">
+  <form for-type="OrdTrab" merge>
+    <actions:>
       <submit label="#{ht 'ord_trabs.actions.habilitar', :default=>['Habilitar']}" param/><or-cancel param="cancel"/>
-    </div>
+    </actions:>
   </form>
 </def>
 
@@ -482,4 +477,14 @@
     </li>
   </ul>
 </def>
+
+<extend tag="form" for="User">
+	<old-form merge>
+    <field-list: fields="name, rol, email_address, administrator, iniciales, state, procesos">
+    	<procesos-view:>
+    		<check-many/>
+    	</procesos-view:>
+    </field-list:>
+	</old-form>
+</extend>
 

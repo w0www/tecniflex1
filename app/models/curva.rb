@@ -21,9 +21,7 @@ class Curva < ActiveRecord::Base
 
 
   
-  def before_save
-    self.nombre = name
-  end
+
    
   # --- Permissions --- #
 
