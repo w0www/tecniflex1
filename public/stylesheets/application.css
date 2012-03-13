@@ -102,6 +102,7 @@ table.shower th, table.showerin th, table.showerhi th {
 table.tablero {
     border-style: solid;
     border-width: 2px;
+    font-family:Helvetica,Arial,sans-serif;
 }
 
 table.tablero th{
@@ -111,6 +112,7 @@ table.tablero th{
     font-size: 110%;
     border-style: solid dotted;
     border-width: 1px;
+    min-width: 75px;
 }
 
 table.tablero td{
@@ -118,6 +120,7 @@ table.tablero td{
     padding: 3px;
     border-style: solid dotted;
     border-width: 1px;
+    
 }
 
 .tablero .hr1 {
@@ -128,7 +131,9 @@ table.tablero td{
     width: 90px;
 }
 
-
+.iniciales {
+	font-size: 80%;
+}
 /*.creada {*/
 /*    background-color: #00f;
     color: #fff;

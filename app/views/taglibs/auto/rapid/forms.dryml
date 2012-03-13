@@ -99,7 +99,7 @@
 <def tag="form" for="Grupoproc">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="position, nombre, abreviacion, tablero, asignar, descripcion" param/>
+    <field-list fields="position, nombre, abreviacion, tablero, asignar, saevb, saemtz, saemtje, saeptr, descripcion" param/>
     <div param="actions">
       <submit label="#{ht 'grupoprocs.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

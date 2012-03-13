@@ -24,6 +24,10 @@ class Proceso < ActiveRecord::Base
 		Proceso.find(:all, :conditions => ["grupoproc_id IN (?)", @gasig])
 	end
 	
+	def self.checkproc(ticket)
+  	gpro = Proceso.all(:joins => [:grupoproc], :conditions => {"grupoprocs.#{ticket}" => true})
+	end
+	
   # --- Permissions --- #
 
   def create_permitted?

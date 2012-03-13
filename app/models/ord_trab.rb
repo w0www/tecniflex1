@@ -96,6 +96,16 @@ class OrdTrab < ActiveRecord::Base
   belongs_to :tipomat
   belongs_to :espesor
   belongs_to  :sustrato
+  
+  def tarasigs
+  @tarasi = true
+  	self.tareas.each do |latask|
+		    if latask.proceso.grupoproc.asignar && (latask.asignado == nil)
+		        @tarasi = (@tarasi && false)
+        end
+    end
+  @tarasi
+	end
 
 
   lifecycle do
@@ -106,18 +116,9 @@ class OrdTrab < ActiveRecord::Base
 
 		create :crear, :become => :creada, :available_to => :all
 
-		transition :habilitar, { :creada => :habilitada }, :available_to => :all 
-		#do
-		#  esta = self
-		#  self.tareas.each do |latask|
-		#    if latask.proceso.grupoproc.asignar && (latask.asignado == nil)
-		#        errors.add(:latask, " no tiene un operador asignado" )
-		#    end
-    #    if latask.state == "creada" && esta.valid?
-    #      latask.lifecycle.habilitar!(acting_user)
-    #    end
-    #  end
-    #end
+		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :if => "self.tarasigs", do
+          latask.lifecycle.habilitar!(acting_user)
+    end
 
     transition :eliminar, { :habilitada => :destroy }, :available_to => :all
 
@@ -155,9 +156,9 @@ class OrdTrab < ActiveRecord::Base
     ['habilitada','iniciada','detenida'].include?(self.state)
   end
   
-  
-  
-  def after_update    
+  def after_update
+
+  	# Hash para asignar usuarios a tareas segun su grupo de procesos
     @gptar = Hash.new
     self.tareas.asignada_a_is_not('nil').each do |tare|
       @gptar[tare.proceso.grupoproc.id.to_s] = tare.asignada_a.to_s
@@ -184,43 +185,31 @@ class OrdTrab < ActiveRecord::Base
     end
            
     if self.visto
-      unless self.procesos.*.grupoproc.*.abreviacion.include?('visto')
-        Proceso.find_all_by_nombre("VistoBueno").each do |provisto|
+      unless self.procesos.*.grupoproc.*.saevb.include?(true)
+      	Proceso.checkproc('saevb').each do |provisto|
           self.procesos << provisto
         end 
-        Proceso.find_all_by_nombre("Prep" ).each do |proprep|
-          self.procesos << proprep
-        end      
       end
     end
     if self.mtz
-      unless self.procesos.*.grupoproc.*.abreviacion.include?('mtz')
-        Proceso.find_all_by_nombre("Matriceria").each do |promtz|
+      unless self.procesos.*.grupoproc.*.saemtz.include?(true)
+        Proceso.checkproc('saemtz').each do |promtz|
           self.procesos << promtz
-        end
-         Proceso.find_all_by_nombre("Revision").each do |prorev|
-          self.procesos << prorev
         end
       end
     end
     if self.ptr
-      unless self.procesos.*.grupoproc.*.abreviacion.include?('ptr')
-       Proceso.find_all_by_nombre("Printer").each do |proptr|
+      unless self.procesos.*.grupoproc.*.saeptr.include?(true)
+       Proceso.checkproc('saeptr').each do |proptr|
           self.procesos << proptr
         end
       end
     end
     if self.mtje
-      unless self.procesos.*.grupoproc.*.abreviacion.include?('pol')
-        Proceso.find_all_by_nombre("Montaje").each do |promtje|
+      unless self.procesos.*.grupoproc.*.saemtje.include?(true)
+        Proceso.checkproc('saemtje').each do |promtje|
           self.procesos << promtje
-        end
-        Proceso.find_all_by_nombre("Polimero").each do |propol|
-          self.procesos << propol
-        end
-        Proceso.find_all_by_nombre("Despacho").each do |prodes|
-          self.procesos << prodes
-        end
+       	end
       end
     end
 
@@ -258,6 +247,7 @@ class OrdTrab < ActiveRecord::Base
 #      end
 #    end
   end
+  
 
   def claset
     @valorc = "shower"
@@ -275,10 +265,13 @@ class OrdTrab < ActiveRecord::Base
     unless self.tareas == []
       self.tareas.each do |tare|
 	      if tare.proceso.grupoproc.abreviacion.to_s == @gproc.abreviacion.to_s
+	      	if tare.asignado
+	      		@usrs << ('*' + tare.asignado.iniciales.to_s)
+	        end
 	        if tare.intervencions
-	         tare.intervencions.each do |inter|
-	          @usrs << inter.user.iniciales
-	         end
+	        	tare.intervencions.each do |inter|
+	          	@usrs << inter.user.iniciales
+	         	end
 	        end
 	      end
 	    end

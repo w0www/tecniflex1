@@ -52,7 +52,7 @@
                     <% @grupro.each do |proce|%>
                         <td class="#{tod.estgrupro(proce.abreviacion)}" rowspan="2">
                         <%= @tod.estgrupro(proce.abreviacion) -%><br/>
-                        <p><%= @tod.usersgp(proce.abreviacion) -%></p>
+                        <p class="iniciales"><%= @tod.usersgp(proce.abreviacion) -%></p>
                         </td>
 
                     <% end %>

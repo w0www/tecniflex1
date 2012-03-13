@@ -8,6 +8,10 @@
     abreviacion :string
     tablero     :boolean
     asignar     :boolean
+    saevb				:boolean
+    saemtz			:boolean
+    saemtje			:boolean
+    saeptr			:boolean
     descripcion :text
     timestamps
   end
