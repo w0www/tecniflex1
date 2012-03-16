@@ -144,7 +144,11 @@ class OrdTrab < ActiveRecord::Base
   validates_associated :separacions, :if => "(self.mtje || self.mtz) && self.activa? ", :on => :update
   
   def before_create
-    self.numOT = OrdTrab.all.last.id.to_i + 60001
+	if OrdTrab.all == []
+		self.numOT = 60000
+	else
+		self.numOT = (OrdTrab.all.last.id.to_i || 0) + 60001
+	end
     if OrdTrab.cliente_is(self.cliente) != []
       self.codCliente = (OrdTrab.cliente_is(self.cliente).last.codCliente.to_i || 1) + 1
     else
