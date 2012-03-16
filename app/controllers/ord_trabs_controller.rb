@@ -110,21 +110,21 @@ class OrdTrabsController < ApplicationController
     transition_page_action :habilitar
   end
   
-  def do_habilitar
+ # def do_habilitar
    
-     @esta = OrdTrab.find (params[:id])
-            if (@esta.visto == true) || (@esta.ptr == true)
-              if @esta.mdi_desarrollo && @esta.mdi_ancho
-                do_transition_action :habilitar
-              else
-                flash[:error] = 'Falta el desarrollo y el ancho'
-                render 'mipag'
-              end
-           else
-              do_transition_action :habilitar
-           end
+  #   @esta = OrdTrab.find (params[:id])
+  #          if (@esta.visto == true) || (@esta.ptr == true)
+   #           if @esta.mdi_desarrollo && @esta.mdi_ancho
+  #              do_transition_action :habilitar
+  #            else
+  #              flash[:error] = 'Falta el desarrollo y el ancho'
+  #              render 'mipag'
+  #            end
+  #         else
+  #            do_transition_action :habilitar
+ #          end
  
- end
+ #end
 
 end
 
