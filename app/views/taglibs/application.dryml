@@ -193,7 +193,7 @@
         <tr><th colspan="2">Encargado:</th></tr>
         <tr><td colspan="2"><input:encargado/></td></tr>
       </table>
-      <hjq-input-many:separacions>
+      <hjq-input-many:separacions template="&Separacion.new(:lpi => this.separacions.last.lpi || 100)">
         <empty-message:>No hay colores definidos</empty-message:>
         <item:>
         <div><%= if this.position then this.position else "-" end%>&nbsp;Color:<input:color style="width:13%"/> Anilox:<input:anilox style="width:5%"/> Lineatura:<input:lpi style="width:5%"/> Material:<input:tipomat/> Espesor:<input:espesor/>&nbsp;&nbsp; Alto:<input:alto style="width:5%"/> x Ancho:<input:ancho  style="width:5%"/><hidden-id-field/></div>

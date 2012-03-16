@@ -29,9 +29,8 @@
          
    <!--       <form with="&sepa" update="resumen">   -->
             <% @polis = [this.tipomat,this.ancho,this.alto,this.espesor] %>
-            <% @aptos = Existencia.findex(@polis) %>
-            <% @primo = @aptos.first %>
-            <tr><td><view:color/></td><td><view:anilox/></td><td><view:lpi/></td><td><view:tipomat/></td><td><editor:ancho update="sepas" />&nbsp;cm.</td><td><editor:alto update="sepas" />&nbsp;cm.</td><td><%= this.areasep -%>&nbsp;cm<sup>2</sup></td><td class="#{if @primo then 'verde' else '' end}"></td></tr>
+         
+            <tr><td><view:color/></td><td><view:anilox/></td><td><view:lpi/></td><td><view:tipomat/></td><td><editor:ancho update="sepas" />&nbsp;cm.</td><td><editor:alto update="sepas" />&nbsp;cm.</td><td><%= this.areasep -%>&nbsp;cm<sup>2</sup></td><td></td></tr>
    <!--         </form>  -->
          </repeat>
         
@@ -46,8 +45,9 @@
         <% if @intervs.last.termino == nil%>
             <% @termin = 0 %>
                 <h2>No terminada</h2>
-                 <form with="&@intervs.last" update="campos" id="interform">
-                      <after-submit stay-here/>
+                 <form with="&@intervs.last">
+                 			
+                      <after-submit uri="/front/index"	/>
                       <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
                       <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{this.tarea.id}"/>
                       <input class="hidden" type="text" name="intervencion[termino]" value="#{Time.now}"/>

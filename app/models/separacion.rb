@@ -26,7 +26,16 @@ class Separacion < ActiveRecord::Base
   def activa?
     self.ord_trab.activa?
   end 
-  
+  def before_create
+  	orden = self.ord_trab
+  	unless orden.separacions.count <= 1
+  		anterior = orden.separacions.last
+  		self.lpi = anterior.lineatura
+  		self.tipomat = anterior.tipomat
+  		self.espesor = anterior.espesor
+  	end
+	end
+	#Para crear un nuevo item en input-many : <input-many template="&Locmathist.new(:field_tech => @current_user, :project => @current_project)">
   def areasep
     unless (alto == nil && ancho == nil)
       @areasep=(alto*ancho)

@@ -15,6 +15,7 @@ class IntervencionsController < ApplicationController
           this.tarea.state = "terminada"
           this.final = true
           this.tarea.save
+          redirect_to '/front/index'
        elsif params[:envio] == "detener"
           @variabb = "deteniendo" 
           this.tarea.state = "detenida"
