@@ -117,7 +117,9 @@ class OrdTrab < ActiveRecord::Base
 		create :crear, :become => :creada, :available_to => :all
 
 		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :if => "self.tarasigs", do
+		self.tareas.each do |latask|
           latask.lifecycle.habilitar!(acting_user)
+        end
     end
 
     transition :eliminar, { :habilitada => :destroy }, :available_to => :all

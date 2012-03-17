@@ -217,6 +217,8 @@
 
 <def tag="habilitar-form" for="OrdTrab">
   <form for-type="OrdTrab" merge>
+		<prepend-form:><input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/></prepend-form:>
+	  
     <actions:>
       <submit label="#{ht 'ord_trabs.actions.habilitar', :default=>['Habilitar']}" param/><or-cancel param="cancel"/>
     </actions:>
