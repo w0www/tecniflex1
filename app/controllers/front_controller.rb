@@ -5,7 +5,7 @@ class FrontController < ApplicationController
   def index
     unless current_user.guest?
       @ordenes = OrdTrab.find :all
-      @asignacions = current_user.asignacions.habilitada
+      @asignacions = current_user.asignacions.activa
     end    
   end
   

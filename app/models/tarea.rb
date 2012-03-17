@@ -20,6 +20,12 @@ class Tarea < ActiveRecord::Base
     self.ord_trab.numOT.to_s + '_' + self.proceso.nombre.to_s
   end
   
+  def before_create
+	if self.ord_trab.state == "habilitada"
+		self.state = "habilitada"
+	end
+  end
+	
   def aptos
     User.with_procesos(self.proceso)
   end
