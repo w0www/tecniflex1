@@ -38,7 +38,7 @@ class Tarea < ActiveRecord::Base
   def self.find_utiles(usuario)
     @cuser = usuario
     @uprocid = @cuser.procesos.*.id
-    Tarea.activa.find(:all, :conditions => ["proceso_id IN (?) AND asignada_a IS (?)", @uprocid, nil])
+    Tarea.activa.find(:all, :conditions => {:proceso_id => @uprocid, :asignada_a => nil})
   end
   
   def stvisto
