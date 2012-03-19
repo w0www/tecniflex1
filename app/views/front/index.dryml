@@ -33,6 +33,8 @@
       </section>
 <!--	<unless test="current_user.procesos.blank?"> -->
       <section with="&Tarea.find_utiles(current_user)">
+		<br/>
+		<br/>
 		<h2>Ordenes de Trabajo Disponibles </h2>
               <repeat with="&this.group_by(&:ord_trab)">
                 <h4>Orden: <a with="&this_key"/></h4>

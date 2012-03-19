@@ -426,9 +426,9 @@
 </def>
 
 <def tag="card" for="Tarea">
-  <card class="tarea" param="default" merge>
-    <header: param>
-      <h4 param="heading"><a><name/></a>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: normal;font-size: 90%"><%= this.ord_trab.nomprod%></span>&nbsp;&nbsp;</h4>
+  <card class="tarea #{this.state}" param="default" merge>
+    <header: param >
+      <h4 param="heading" ><a><name/></a>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: normal;font-size: 90%;"><%= this.ord_trab.nomprod%></span>&nbsp;&nbsp;</h4>
     </header:>
   </card>
 </def>

@@ -20,6 +20,7 @@ class IntervencionsController < ApplicationController
           @variabb = "deteniendo" 
           this.tarea.state = "detenida"
           this.tarea.save
+          redirect_to '/front/index'
         end
       hobo_ajax_response if request.xhr? 
     end

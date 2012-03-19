@@ -5,7 +5,7 @@ class FrontController < ApplicationController
   def index
     unless current_user.guest?
       @ordenes = OrdTrab.find :all
-      @asignacions = current_user.asignacions.activa
+      @asignacions = current_user.asignacions.activa(:all, :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
     end    
   end
   

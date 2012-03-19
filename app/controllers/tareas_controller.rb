@@ -21,7 +21,6 @@ class TareasController < ApplicationController
         @variabb = "terminando"
         this.state = "terminada"
         this.save
-        redirect_to '/front/index'
       else
         if params[:envio] == "detener"
         @variabb = "deteniendo" 
