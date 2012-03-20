@@ -8,6 +8,14 @@
             },
             jQuery.datepicker.regional['es']
           );
+          jQuery('button[id^="ord_trab_separacions_"]').click(function() {
+          	jQuery("#ord_trab_separacions^ ~ li").ready(function() {
+          		jQuery('.separacion-lpi:last').val(jQuery("#ord_trab_separacions_0_lpi").val());
+          		jQuery('.separacion-anilox:last').val(jQuery("#ord_trab_separacions_0_anilox").val());
+          		jQuery('.separacion-espesor:last').val(jQuery("[name='ord_trab[separacions][0][espesor_id]'] option:selected").val());
+          		jQuery('.separacion-tipomat:last').val(jQuery("[name='ord_trab[separacions][0][tipomat_id]'] option:selected").val());
+           		});
+          	});
         });
    //     new Ajax.PeriodicalUpdater('dashboard', '/ord_trabs/tablerojax',
    //
