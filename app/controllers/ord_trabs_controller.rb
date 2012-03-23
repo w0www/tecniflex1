@@ -110,7 +110,6 @@ class OrdTrabsController < ApplicationController
     transition_page_action :habilitar
   end
   
- # def do_habilitar
    
   #   @esta = OrdTrab.find (params[:id])
   #          if (@esta.visto == true) || (@esta.ptr == true)

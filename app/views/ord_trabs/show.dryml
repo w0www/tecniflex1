@@ -3,7 +3,7 @@
     <name/> <span style="float:right"> <%= link_to "Atras", :controller => "ord_trabs", :action => "index"%></span><br/>
   </heading:>
   <content-body:>
-
+			<transition-buttons class="centrada"/>
       <table class="#{ @this.claset}">
         <tr><th colspan="2">Cliente</th><td colspan="7"><view:cliente/></td><th>Fecha:&nbsp;<view:fecha format="%d-%m-%y"/></th><th>O.T.</th><th><view:numOT/></th></tr>
         <tr><th colspan="2">Producto</th><td colspan="7"><view:nomprod/></td><th class="centrada" colspan="2">Numero de Factura</th><td><if test="&this.numFact"><view:numFact/></if></td></tr>
@@ -42,6 +42,7 @@
             </repeat>
           
         </table>
+        <transition-buttons class="centrada"/>
   </content-body:>
 </show-page>
 

@@ -215,15 +215,15 @@
   <td style="width:80px" />
 </def>
 
-<def tag="habilitar-form" for="OrdTrab">
+<extend tag="habilitar-form" for="OrdTrab">
   <form for-type="OrdTrab" merge>
-		<prepend-form:><input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/></prepend-form:>
+		<before-actions:><input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/></before-actions:>
 	  
     <actions:>
       <submit label="#{ht 'ord_trabs.actions.habilitar', :default=>['Habilitar']}" param/><or-cancel param="cancel"/>
     </actions:>
   </form>
-</def>
+</extend>
 
 <!--<extend tag="form" for="Producto">
   <old-form merge>
