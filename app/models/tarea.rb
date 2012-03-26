@@ -21,9 +21,13 @@ class Tarea < ActiveRecord::Base
   end
   
   def before_create
-	if self.ord_trab.state == "habilitada"
-		self.state = "habilitada"
-	end
+  # Usar index, maps y sort_by para encontrar la tarea siguiente de la OT, segun posicion (y habilitarla o no)
+		estot = self.ord_trab
+		if self == self.ord_trab.sortars.first
+			if estot.state == "habilitada"
+				self.state = "habilitada"
+			end
+		end
   end
 	
   def aptos
@@ -80,9 +84,10 @@ class Tarea < ActiveRecord::Base
 
 		transition :detener, { :iniciada => :detenida }
 
-		transition :terminar, { :iniciada => :terminada }, :available_to => :all
-
+		transition :terminar, { :iniciada => :terminada }, :available_to => :all do
+				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(acting_user) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
 		end
+	end
 
   # --- Permissions --- #
 

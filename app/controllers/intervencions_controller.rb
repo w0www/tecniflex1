@@ -12,14 +12,11 @@ class IntervencionsController < ApplicationController
         @variabb = "Funciona"
         if params[:envio] == "terminar"
           @variabb = "terminando"
-          this.tarea.state = "terminada"
-          this.final = true
-          this.tarea.save
+          this.tarea.lifecycle.terminar!(current_user)
           redirect_to '/front/index'
        elsif params[:envio] == "detener"
           @variabb = "deteniendo" 
-          this.tarea.state = "detenida"
-          this.tarea.save
+          this.tarea.lifecycle.detener!(current_user)
           redirect_to '/front/index'
         end
       hobo_ajax_response if request.xhr? 

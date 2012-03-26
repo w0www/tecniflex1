@@ -188,7 +188,6 @@
     </div>
   </form>
 </def>
-
 <def tag="eliminar-form" polymorphic/>
 <def tag="eliminar-form" for="OrdTrab">
   <form lifecycle="eliminar" merge param="default">

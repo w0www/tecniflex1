@@ -22,6 +22,12 @@
     </header>
      <% if !current_user.guest? -%>
     <section class="content-body">
+			<section with="&current_user.sinfin" if="&current_user.sinfin">
+				<h2>Tareas en Curso</h2>
+				<br/>
+				<collection/>
+				<br/>
+			</section>
 
       <section with="&@asignacions">
         <if test="&@asignacions"><h2>Ordenes de Trabajo Asignadas</h2>

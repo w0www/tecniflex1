@@ -116,10 +116,8 @@ class OrdTrab < ActiveRecord::Base
 
 		create :crear, :become => :creada, :available_to => :all
 
-		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :if => "self.tarasigs", do
-		self.tareas.each do |latask|
-          latask.lifecycle.habilitar!(acting_user)
-        end
+		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :if => "self.tarasigs" do
+			self.sortars.first.lifecycle.habilitar!(acting_user) if self.sortars.first
     end
 
     transition :eliminar, { :habilitada => :destroy }, :available_to => :all
@@ -181,6 +179,18 @@ class OrdTrab < ActiveRecord::Base
       end
     end
    end
+   
+  # Ordena las tareas de una OT segun la posicion de sus procesos. Permite habilitar las tareas en orden.
+  def sortars
+	estatars = self.tareas.map {|tar| [tar.id, tar.proceso.position]}
+	estatarsort = estatars.sort_by{|item| item[1]}
+	sortares = []
+	estatarsort.each do |estata|
+		sortares << Tarea.find(estata[0])
+	end
+	sortares
+  end
+	
 	     
   def before_save
     unless self.nBandas?
@@ -254,7 +264,7 @@ class OrdTrab < ActiveRecord::Base
 #    end
   end
   
-
+# Usado para asignar clases de acuerdo a la prioridad de la OT.
   def claset
     @valorc = "shower"
 		if self.prioridad == "Urgencia"

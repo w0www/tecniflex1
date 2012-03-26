@@ -69,8 +69,7 @@ class Intervencion < ActiveRecord::Base
         end
       end
       if self.tarea.intervencions.count.to_i == @ter
-        self.tarea.state = "detenida"
-        self.tarea.save
+        self.tarea.lifecycle.terminar!(acting_user)
       end
     end
 end

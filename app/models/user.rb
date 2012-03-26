@@ -51,6 +51,10 @@
     self.procesos.*.nombre.include?(proce)
   end
   
+  def sinfin
+		self.intervencions.all(:conditions => {:termino => nil})
+	end
+  
  
   
 

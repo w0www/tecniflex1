@@ -225,15 +225,11 @@
   </form>
 </extend>
 
-<!--<extend tag="form" for="Producto">
-  <old-form merge>
-    <error-messages param/>
-    <b>Cliente</b><input:cliente/>&nbsp;&nbsp;<b>Producto</b><name/>&nbsp;&nbsp;<b>C&oacute;digo de Cliente</b><view:codCliente/><br />
-    <div param="actions">
-      <submit label="#{ht 'ord_trabs.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
-    </div>
-  </old-form>
-</extend>-->
+<extend tag="card" for="Intervencion">
+  <header:>
+		<h4><view with="&this.tarea.ord_trab.nomprod"></view> :<a><view with="&this.tarea"/></a></h4>
+	</header:>
+</extend>
 
 <def tag="ver" param>
   <view: class="vista" />
