@@ -45,6 +45,15 @@ table,td {
     border-collapse:collapse;
 }
 
+table.tarea {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 2px;
+    margin-top: 5px;
+    padding: 5px;
+		background-color: darkgray;
+}
+
 table.shower {
     width: 100%;
     border-collapse: separate;
@@ -72,19 +81,19 @@ table.showerin {
 		background-color: green;
 }
 
-table.shower td, table.showerin td, table.showerhi td{
+table.shower td, table.showerin td, table.showerhi td, table.tarea{
     padding: 3px;
     background-color: antiquewhite !important;
 }
 
-table.shower th, table.showerin th, table.showerhi th {
+table.shower th, table.showerin th, table.showerhi th, table.tarea th {
     font-weight: bold;
     padding: 3px;
     font-size: 110%;
     background-color: wheat !important;
 }
 
-.shower .editor {
+.shower .editor, .tarea .editor {
     background-color: lightgreen;
     padding: 3px;
 }
@@ -158,55 +167,55 @@ ul.hjq-input-many div.buttons {
 #iniciar {
         margin-left: 30%;
 	display: block;
-	width: 257px; height: 257px;
+	width: 144px; height: 144px;
 	background-image: url(images/BotonesTX.png);
-	background-position: top left;
+	background-position: -2px -2px;
 	text-indent: -9999px;
         background-color: gainsboro;
 }
 
 #iniciar:hover {
-    background-position: left center;
+    background-position: -2px -146px;
 }
 
 #iniciar:active {
-    background-position: left bottom;
+    background-position: -2px -290px;
 }
 
 #detener {
-	margin-left: 20%;
+	margin-left: 35%;
   display: inline;
-	width: 257px; height: 257px;
+	width: 144px; height: 144px;
 	background-image: url(images/BotonesTX.png);
-	background-position: top center;
+	background-position: -146px -2px;
 	text-indent: -9999px;
         background-color: gainsboro;
 }
 
 #detener:hover {
-    background-position: center center;
+    background-position: -146px -146px;
 }
 
 #detener:active {
-    background-position: center bottom;
+    background-position: -146px -290px;
 }
 
 #terminar {
-	margin-left: 5%;
+	margin-left: 7%;
   display: inline;
-	width: 257px; height: 257px;
+	width: 144px; height: 144px;
 	background-image: url(images/BotonesTX.png);
-	background-position: top right;
+	background-position: -290px -2px;
 	text-indent: -9999px;
         background-color: gainsboro;
 }
 
 #terminar:hover {
-    background-position: right center;
+    background-position: -290px -146px;
 }
 
 #terminar:active {
-    background-position: right bottom;
+    background-position: -290px -290px;
 }
 
 .debug_dump {

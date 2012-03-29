@@ -2386,7 +2386,7 @@
               </ht>
             </h2>
 
-            <record-flags fields="" param/>
+            <record-flags fields="cambiar, rehacer" param/>
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="procesos.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">

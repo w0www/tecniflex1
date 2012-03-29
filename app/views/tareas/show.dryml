@@ -10,7 +10,7 @@
 
   <content-body: >
     <div part="campos">      
-      <table class="shower">
+      <table class="tarea">
         <tr><th>Cliente</th><td colspan="2"><view:ord_trab.cliente/></td><th>Fecha tope:</th><td colspan="2"><view:ord_trab.fechaEntrega/></td></tr>
         <tr><th>C&oacute;digo Cliente:</th><td colspan="2"><view:ord_trab.codCliente/></td><th>C&oacute;digo Tecniflex:</th><td colspan="2"><view:ord_trab.codTflex/></td></tr>
         <tr rowspan="2"><th>Instrucciones</th><td colspan="2"><view:ord_trab.observaciones/></td></tr>
@@ -20,9 +20,9 @@
       </table>
       <% if current_user.hace?("Grabado") %>
         
-        <table class="shower">
+        <table class="tarea">
         
-        <tr><th>Color</th><th>Anilox</th><th>Lineatura</th><th>Material</th><th style="width:50px">Alto</th><th style="width:50px">Ancho</th><th>Area</th><th>Stock</th></tr>
+        <tr><th>Color</th><th>Anilox</th><th>Lineatura</th><th>Material</th><th style="width:100px">Alto</th><th style="width:100px">Ancho</th><th>Area</th><th>Stock</th></tr>
  <!--       </table>
         <table class="shower">-->
         <repeat with="&@sepas" part="sepas">  
@@ -53,8 +53,8 @@
                       <input class="hidden" type="text" name="intervencion[termino]" value="#{Time.now}"/>
                       Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
                      <%= hidden_field_tag 'envio'%>
-                      <%= submit_tag "detener", :onClick => "$('envio').value='detener'", :id => "detener" %>
-                      <%= submit_tag "terminar", :onClick => "$('envio').value='terminar'", :id => "terminar" %>
+                      <%= submit_tag "detener", :onClick => "$('envio').value='detener'", :id => "detener", :class => "button submit-button" %>
+                      <%= submit_tag "terminar", :onClick => "$('envio').value='terminar'", :id => "terminar", :class => "button submit-button" %>
 
                 </form>
          <% else %>
