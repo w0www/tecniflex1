@@ -60,8 +60,9 @@ class OrdTrab < ActiveRecord::Base
     mcPimp        :boolean
     mcPimpcol     :string
     mcPimpapy     :string
-    nomprod        :string
-    codTflex       :string
+    nomprod       :string
+    codTflex      :string
+    version				:integer
     codCliente     :string
     mdi_desarrollo :decimal
     mdi_ancho      :decimal
@@ -150,9 +151,9 @@ class OrdTrab < ActiveRecord::Base
 		self.numOT = (OrdTrab.all.last.id.to_i || 0) + 60001
 	end
     if OrdTrab.cliente_is(self.cliente) != []
-      self.codCliente = (OrdTrab.cliente_is(self.cliente).last.codCliente.to_i || 1) + 1
+      self.codTflex = (OrdTrab.cliente_is(self.cliente).last.codTflex.to_i || 1) + 1
     else
-      self.codCliente = 1
+      self.codTflex = 1
     end
   end
   

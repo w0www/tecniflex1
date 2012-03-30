@@ -34,7 +34,7 @@
           <table class="tablero" part="dashboard">
             <thead>
               <tr>
-                <th class="hr1">OT</th>
+                <th class="hr1">OT<br/><span style="color:#555;">Cod. Prod.</span></th>
                 <th class="hr2">Nombre</th>
                 <repeat with="&@grupro">
                   <th style="width:#{@ancol}"><view:nombre/> </th>
@@ -47,7 +47,7 @@
               <!-- <repeat with="&@todas"> -->
                 <% @tod = tod %>  
                 <tr>
-                    <th style="width:70px;" class="#{@tod.prioridad}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a></th><th rowspan="2" style="width: 12em;" class="#{@tod.state}"><%=  tod.nomprod -%></th>
+                    <th style="width:70px;" class="#{@tod.prioridad}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a><br/><%= tod.codTflex %></th><th rowspan="2" style="width: 12em;" class="#{@tod.state}"><%=  tod.nomprod -%></th>
                     
                     <% @grupro.each do |proce|%>
                         <td class="#{tod.estgrupro(proce.abreviacion)}" rowspan="2">
