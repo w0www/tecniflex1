@@ -9,16 +9,17 @@ class IntervencionsController < ApplicationController
   
   def update
     hobo_update do
-        @variabb = "Funciona"
-        if params[:envio] == "terminar"
-          @variabb = "terminando"
+				if params[:envio] == "terminar"
           this.tarea.lifecycle.terminar!(current_user)
-          redirect_to '/front/index'
-       elsif params[:envio] == "detener"
-          @variabb = "deteniendo" 
+				elsif params[:envio] == "detener"
           this.tarea.lifecycle.detener!(current_user)
-          redirect_to '/front/index'
+				elsif params[:envio] == "enviar"
+					this.tarea.lifecycle.enviar!(current_user)
+				elsif params[:envio] == "recibir"
+	##			&& (params[:vuelta] == "inicio"))
+					this.tarea.lifecycle.recibir!(current_user)					
         end
+      redirect_to '/front/index'
       hobo_ajax_response if request.xhr? 
     end
   end

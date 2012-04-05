@@ -2386,7 +2386,7 @@
               </ht>
             </h2>
 
-            <record-flags fields="cambiar, rehacer" param/>
+            <record-flags fields="prueba" param/>
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="procesos.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
@@ -3211,6 +3211,52 @@
 
       <section param="content-body">
         <iniciar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="enviar-page" polymorphic/>
+<def tag="enviar-page" for="Tarea">
+  <page title="#{ht 'tareas.enviar.title', :default=>['Enviar']}" merge>
+
+    <body: class="lifecycle-transition-page enviar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.enviar.heading">
+            Enviar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <enviar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="recibir-page" polymorphic/>
+<def tag="recibir-page" for="Tarea">
+  <page title="#{ht 'tareas.recibir.title', :default=>['Recibir']}" merge>
+
+    <body: class="lifecycle-transition-page recibir-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.recibir.heading">
+            Recibir
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <recibir-form param="form"/>
       </section>
     </content:>
 

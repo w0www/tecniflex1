@@ -248,7 +248,7 @@
 <def tag="form" for="Proceso">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="position, nombre, descripcion, cambiar, rehacer, grupoproc, sucesor" param/>
+    <field-list fields="position, nombre, descripcion, prueba, grupoproc, sucesor" param/>
     <div param="actions">
       <submit label="#{ht 'procesos.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -345,6 +345,28 @@
     <field-list fields="" param/>
     <div param="actions">
       <submit label="#{ht 'tareas.actions.iniciar', :default=>['Iniciar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="enviar-form" polymorphic/>
+<def tag="enviar-form" for="Tarea">
+  <form lifecycle="enviar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.enviar', :default=>['Enviar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="recibir-form" polymorphic/>
+<def tag="recibir-form" for="Tarea">
+  <form lifecycle="recibir" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.recibir', :default=>['Recibir']}" param/><or-cancel param="cancel"/>
     </div>
   </form>
 </def>

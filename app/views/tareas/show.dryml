@@ -44,7 +44,6 @@
  
         <% if @intervs.last.termino == nil%>
             <% @termin = 0 %>
-                <h2>No terminada</h2>
                  <form with="&@intervs.last">
                  			
                       <after-submit uri="/front/index"	/>
@@ -53,9 +52,14 @@
                       <input class="hidden" type="text" name="intervencion[termino]" value="#{Time.now}"/>
                       Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
                      <%= hidden_field_tag 'envio'%>
-                      <%= submit_tag "detener", :onClick => "$('envio').value='detener'", :id => "detener", :class => "button submit-button" %>
-                      <%= submit_tag "terminar", :onClick => "$('envio').value='terminar'", :id => "terminar", :class => "button submit-button" %>
-
+                      <% unless this.tarea.proceso.prueba %>
+												<%= submit_tag "detener", :onClick => "$('envio').value='detener'", :id => "detener", :class => "button submit-button" %>
+												<%= submit_tag "terminar", :onClick => "$('envio').value='terminar'", :id => "terminar", :class => "button submit-button" %>
+											<% else %>
+													<%= submit_tag "detener", :onClick => "$('envio').value='detener'", :id => "detener", :class => "button submit-button" %>
+													<%= submit_tag "enviar", :onClick => "$('envio').value='enviar'", :id => "enviar", :class => "button submit-button" %>											
+											<% end %>
+												
                 </form>
          <% else %>
               <% @estatarea = this.id %>
@@ -65,7 +69,14 @@
                     <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{@estatarea}"/>
                     <input class="hidden" type="text" name="intervencion[inicio]" value="#{Time.now}"/>
                     Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
-                    <submit label="Iniciar" id="iniciar"/>
+                    <% if Tarea.find(@estatarea).state == "enviada" %>
+                      <input class="hidden" type="text" name="intervencion[termino]" value="#{Time.now}"/>
+                      <%= check_box(:vuelta, :label => 'Nuevo V.B.') %>
+											<%= submit_tag "recibir", :onClick => "$('envio').value='recibir'", :id => "recibir", :class => "button submit-button" %>
+											<%= submit_tag "terminar", :onClick => "$('envio').value='terminar'", :id => "terminar", :class => "button submit-button" %>
+                    <% else %>
+											<submit label="Iniciar" id="iniciar"/>
+										<% end %>
               </form>
          <%  end %>
 

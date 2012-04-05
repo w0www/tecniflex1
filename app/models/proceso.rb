@@ -7,8 +7,7 @@ class Proceso < ActiveRecord::Base
   fields do
     nombre      :string, :name => :true
     descripcion :text
-    cambiar			:boolean
-    rehacer			:boolean
+    prueba			:boolean
     timestamps
   end
 

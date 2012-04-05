@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120330225056) do
+ActiveRecord::Schema.define(:version => 20120402011121) do
 
   create_table "aniloxes", :force => true do |t|
     t.integer  "lineatura"
@@ -321,8 +321,7 @@ ActiveRecord::Schema.define(:version => 20120330225056) do
     t.integer  "sucesor_id"
     t.integer  "position"
     t.integer  "grupoproc_id"
-    t.boolean  "cambiar"
-    t.boolean  "rehacer"
+    t.boolean  "prueba"
   end
 
   add_index "procesos", ["grupoproc_id"], :name => "index_procesos_on_grupoproc_id"

@@ -6,6 +6,7 @@ class Tarea < ActiveRecord::Base
   fields do
     instrucciones :text
     fechatope     :date
+    ciclo					:integer
     timestamps
   end
 
@@ -67,14 +68,14 @@ class Tarea < ActiveRecord::Base
   end
 
 
-  named_scope :activa, :conditions => ["state IN (?)", ["habilitada","detenida"]] # se elimina "iniciada" para evitar 2 operadores trabajando en la misma tarea.
+  named_scope :activa, :conditions => ["state IN (?)", ["habilitada","detenida","enviada"]] # se elimina "iniciada" para evitar 2 operadores trabajando en la misma tarea.
 
 
   lifecycle do
 
 		state :creada, :default => true
 
-		state :habilitada, :iniciada, :detenida, :terminada
+		state :habilitada, :iniciada, :detenida, :enviada, :recibida, :terminada
 
 		create :crear, :become => :creada, :available_to => :all
 
@@ -82,6 +83,10 @@ class Tarea < ActiveRecord::Base
 
 		transition :iniciar, { :habilitada => :iniciada }, :available_to => :all 
 
+		transition :enviar, { :iniciada => :enviada }, :available_to => :all, :if => "self.proceso.prueba"
+		
+		transition :recibir, { :enviada => :recibida }, :available_to => :all, :if => "self.proceso.prueba"
+	
 		transition :detener, { :iniciada => :detenida }
 
 		transition :terminar, { :iniciada => :terminada }, :available_to => :all do

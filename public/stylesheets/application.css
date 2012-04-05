@@ -218,6 +218,42 @@ ul.hjq-input-many div.buttons {
     background-position: -290px -290px;
 }
 
+#enviar {
+	margin-left: 35%;
+  display: inline;
+	width: 144px; height: 144px;
+	background-image: url(images/BotonesTX.png);
+	background-position: -578px -2px;
+	text-indent: -9999px;
+        background-color: gainsboro;
+}
+
+#enviar:hover {
+    background-position: -578px -146px;
+}
+
+#enviar:active {
+    background-position: -578px -290px;
+}
+
+#recibir {
+	margin-left: 35%;
+  display: inline;
+	width: 144px; height: 144px;
+	background-image: url(images/BotonesTX.png);
+	background-position: -722px -2px;
+	text-indent: -9999px;
+        background-color: gainsboro;
+}
+
+#recibir:hover {
+    background-position: -722px -146px;
+}
+
+#recibir:active {
+    background-position: -722px -290px;
+}
+
 .debug_dump {
     color: #999999;
 }
