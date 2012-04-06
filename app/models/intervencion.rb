@@ -49,14 +49,12 @@ class Intervencion < ActiveRecord::Base
     end
     
     def actitar
-      if self.tarea.state = "habilitada"
-        self.tarea.state = "iniciada"
-        self.tarea.save
-        if self.tarea.ord_trab.state = "habilitada"
-          self.tarea.ord_trab.state = "iniciada"
-          self.tarea.ord_trab.save
-        end
-      end
+				if self.tarea.state = "habilitada"
+					self.tarea.lifecycle.iniciar!(acting_user)
+					if self.tarea.ord_trab.state = "habilitada"
+						self.tarea.ord_trab.lifecycle.iniciar!(acting_user)
+					end
+				end
     end
     
     def checktar

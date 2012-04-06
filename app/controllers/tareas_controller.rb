@@ -19,13 +19,11 @@ class TareasController < ApplicationController
       hobo_ajax_response if request.xhr? do
       if params[:envio] == "terminar"
         @variabb = "terminando"
-        this.state = "terminada"
-        this.save
+        this.lifecycle.terminar!(current_user)
       else
         if params[:envio] == "detener"
         @variabb = "deteniendo" 
-        this.state = "detenida"
-        this.save
+        this.lifecycle.detener!(current_user)
         end
       end
     end

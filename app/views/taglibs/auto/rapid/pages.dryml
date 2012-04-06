@@ -3074,7 +3074,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="position, instrucciones, fechatope, asignada_a, state, asignado, ord_trab, proceso, recurso" param/>
+            <field-list fields="position, instrucciones, fechatope, ciclo, asignada_a, state, asignado, ord_trab, proceso, recurso" param/>
           </section>
     </content:>
 

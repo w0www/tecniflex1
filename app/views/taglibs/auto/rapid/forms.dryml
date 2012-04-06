@@ -308,7 +308,7 @@
 <def tag="form" for="Tarea">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="position, instrucciones, fechatope, asignada_a, state, asignado, intervencions, ord_trab, proceso, recurso" param/>
+    <field-list fields="position, instrucciones, fechatope, ciclo, asignada_a, state, asignado, intervencions, ord_trab, proceso, recurso" param/>
     <div param="actions">
       <submit label="#{ht 'tareas.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

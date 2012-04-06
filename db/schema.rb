@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120402011121) do
+ActiveRecord::Schema.define(:version => 20120406021413) do
 
   create_table "aniloxes", :force => true do |t|
     t.integer  "lineatura"
@@ -393,6 +393,7 @@ ActiveRecord::Schema.define(:version => 20120402011121) do
     t.string   "state",         :default => "creada"
     t.datetime "key_timestamp"
     t.integer  "asignada_a"
+    t.integer  "ciclo"
   end
 
   add_index "tareas", ["asignada_a"], :name => "index_tareas_on_asignada_a"
