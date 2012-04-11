@@ -16,17 +16,8 @@ class TareasController < ApplicationController
     hobo_show do
       @sepas = this.ord_trab.separacions
       @variabb = "Funciona"
-      hobo_ajax_response if request.xhr? do
-      if params[:envio] == "terminar"
-        @variabb = "terminando"
-        this.lifecycle.terminar!(current_user)
-      else
-        if params[:envio] == "detener"
-        @variabb = "deteniendo" 
-        this.lifecycle.detener!(current_user)
-        end
-      end
-    end
+      hobo_ajax_response if request.xhr? 
+    
     end
   end
 

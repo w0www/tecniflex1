@@ -6,7 +6,8 @@ class Tarea < ActiveRecord::Base
   fields do
     instrucciones :text
     fechatope     :date
-    ciclo					:integer
+    ciclovb					:integer
+    cicloptr				:integer
     timestamps
   end
 
@@ -17,12 +18,20 @@ class Tarea < ActiveRecord::Base
   has_many :intervencions, :accessible => true, :dependent => :destroy
   has_many :users, :through => :intervencions
 
+  
   def name
     self.ord_trab.numOT.to_s + '_' + self.proceso.nombre.to_s
   end
   
+  after_initialize :init
+  
+  def init
+		self.ciclovb ||= 1
+		self.cicloptr ||= 1
+	end
+	
   def before_create
-  # Usar index, maps y sort_by para encontrar la tarea siguiente de la OT, segun posicion (y habilitarla o no)
+ #  Usar index, maps y sort_by para encontrar la tarea siguiente de la OT, segun posicion (y habilitarla o no)
 		estot = self.ord_trab
 		if self == self.ord_trab.sortars.first
 			if estot.state == "habilitada"
@@ -75,7 +84,7 @@ class Tarea < ActiveRecord::Base
 
 		state :creada, :default => true
 
-		state :habilitada, :iniciada, :detenida, :enviada, :recibida, :terminada
+		state :habilitada, :iniciada, :detenida, :enviada, :recibida, :terminada, :reiniciada
 
 		create :crear, :become => :creada, :available_to => :all
 
@@ -86,8 +95,27 @@ class Tarea < ActiveRecord::Base
 		transition :enviar, { :iniciada => :enviada }, :available_to => :all, :if => "self.proceso.prueba"
 		
 		transition :recibir, { :enviada => :recibida }, :available_to => :all, :if => "self.proceso.prueba"
+		
+		transition :reiniciar, { :recibida => :iniciada }, :available_to => :all, :if => "self.proceso.prueba" do
+			self.cicloptr ||= 1
+			self.ciclovb ||= 1
+			self.save
+			if self.proceso.prueba 
+				if self.proceso.reinit
+					self.cicloptr += 1
+				else
+					self.ciclovb += 1
+				end
+			end
+		end
+		
+		transition :reiniciar, { :detenida => :iniciada }, :available_to => :all
 	
-		transition :detener, { :iniciada => :detenida }
+		transition :detener, { :iniciada => :detenida }, :available_to => :all
+		
+		transition :terminar, { :enviada => :terminada }, :available_to => :all do
+				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(acting_user) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+		end
 
 		transition :terminar, { :iniciada => :terminada }, :available_to => :all do
 				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(acting_user) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]

@@ -9,10 +9,12 @@ class IntervencionsController < ApplicationController
   
   def create
     hobo_create do
-				if params[:commit] == "terminar"
+				if params[:envio] == "terminar"
           this.tarea.lifecycle.terminar!(current_user)
-				elsif params[:commit] == "recibir"
-					this.tarea.lifecycle.recibir!(current_user)					
+				elsif params[:envio] == "recibir"
+					this.tarea.lifecycle.recibir!(current_user)		
+			  elsif params[:envio] == "iniciar"
+					this.tarea.lifecycle.reiniciar!(current_user)
         end
       hobo_ajax_response if request.xhr? 
     end
@@ -20,13 +22,13 @@ class IntervencionsController < ApplicationController
   
   def update
     hobo_update do
-				if params[:commit] == "terminar"
+				if params[:envio] == "terminar"
           this.tarea.lifecycle.terminar!(current_user)
-				elsif params[:commit] == "detener"
+				elsif params[:envio] == "detener"
           this.tarea.lifecycle.detener!(current_user)
-				elsif params[:commit] == "enviar"
+				elsif params[:envio] == "enviar"
 					this.tarea.lifecycle.enviar!(current_user)
-				elsif params[:commit] == "recibir"
+				elsif params[:envio] == "recibir"
 	##			&& (params[:vuelta] == "inicio"))
 					this.tarea.lifecycle.recibir!(current_user)					
         end

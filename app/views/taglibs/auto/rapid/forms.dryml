@@ -248,7 +248,7 @@
 <def tag="form" for="Proceso">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="position, nombre, descripcion, prueba, grupoproc, sucesor" param/>
+    <field-list fields="position, nombre, descripcion, prueba, reinit, grupoproc, sucesor" param/>
     <div param="actions">
       <submit label="#{ht 'procesos.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -308,7 +308,7 @@
 <def tag="form" for="Tarea">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="position, instrucciones, fechatope, ciclo, asignada_a, state, asignado, intervencions, ord_trab, proceso, recurso" param/>
+    <field-list fields="position, instrucciones, fechatope, ciclovb, cicloptr, asignada_a, state, asignado, intervencions, ord_trab, proceso, recurso" param/>
     <div param="actions">
       <submit label="#{ht 'tareas.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -367,6 +367,50 @@
     <field-list fields="" param/>
     <div param="actions">
       <submit label="#{ht 'tareas.actions.recibir', :default=>['Recibir']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="reiniciar-form" polymorphic/>
+<def tag="reiniciar-form" for="Tarea">
+  <form lifecycle="reiniciar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.reiniciar', :default=>['Reiniciar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="reiniciar-form" polymorphic/>
+<def tag="reiniciar-form" for="Tarea">
+  <form lifecycle="reiniciar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.reiniciar', :default=>['Reiniciar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="detener-form" polymorphic/>
+<def tag="detener-form" for="Tarea">
+  <form lifecycle="detener" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.detener', :default=>['Detener']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="terminar-form" polymorphic/>
+<def tag="terminar-form" for="Tarea">
+  <form lifecycle="terminar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.terminar', :default=>['Terminar']}" param/><or-cancel param="cancel"/>
     </div>
   </form>
 </def>

@@ -8,6 +8,7 @@ class Proceso < ActiveRecord::Base
     nombre      :string, :name => :true
     descripcion :text
     prueba			:boolean
+    reinit			:boolean
     timestamps
   end
 

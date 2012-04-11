@@ -49,9 +49,9 @@ class Intervencion < ActiveRecord::Base
     end
     
     def actitar
-				if self.tarea.state = "habilitada"
+				if self.tarea.state == "habilitada"
 					self.tarea.lifecycle.iniciar!(acting_user)
-					if self.tarea.ord_trab.state = "habilitada"
+					if self.tarea.ord_trab.state ==	"habilitada"
 						self.tarea.ord_trab.lifecycle.iniciar!(acting_user)
 					end
 				end

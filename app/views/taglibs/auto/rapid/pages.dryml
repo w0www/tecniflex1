@@ -2386,7 +2386,7 @@
               </ht>
             </h2>
 
-            <record-flags fields="prueba" param/>
+            <record-flags fields="prueba, reinit" param/>
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="procesos.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
@@ -3074,7 +3074,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="position, instrucciones, fechatope, ciclo, asignada_a, state, asignado, ord_trab, proceso, recurso" param/>
+            <field-list fields="position, instrucciones, fechatope, ciclovb, cicloptr, asignada_a, state, asignado, ord_trab, proceso, recurso" param/>
           </section>
     </content:>
 
@@ -3257,6 +3257,52 @@
 
       <section param="content-body">
         <recibir-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="reiniciar-page" polymorphic/>
+<def tag="reiniciar-page" for="Tarea">
+  <page title="#{ht 'tareas.reiniciar.title', :default=>['Reiniciar']}" merge>
+
+    <body: class="lifecycle-transition-page reiniciar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.reiniciar.heading">
+            Reiniciar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <reiniciar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="detener-page" polymorphic/>
+<def tag="detener-page" for="Tarea">
+  <page title="#{ht 'tareas.detener.title', :default=>['Detener']}" merge>
+
+    <body: class="lifecycle-transition-page detener-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.detener.heading">
+            Detener
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <detener-form param="form"/>
       </section>
     </content:>
 
