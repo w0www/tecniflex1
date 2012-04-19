@@ -54,27 +54,6 @@ class Tarea < ActiveRecord::Base
     @uprocid = @cuser.procesos.*.id
     Tarea.activa.find(:all, :conditions => {:proceso_id => @uprocid, :asignada_a => nil})
   end
-  
-  def stvisto
-    if (self.proceso.nombre.to_s == "Visto Bueno") || (self.proceso.nombre.to_s == "Printer")
-      case self.state
-        when "creada"
-          "creado"
-        when "habilitada"
-          "habilitado"
-        when "iniciada"
-          "enviado"
-        when "detenida"
-          "observaciones"
-        when "terminada"
-          "aprobado"
-        else
-          "desconocido"
-      end
-    else
-      self.state
-    end
-  end
 
 
   named_scope :activa, :conditions => ["state IN (?)", ["habilitada","detenida","enviada"]] # se elimina "iniciada" para evitar 2 operadores trabajando en la misma tarea.
@@ -90,22 +69,37 @@ class Tarea < ActiveRecord::Base
 
 		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :unless => "(self.asignada_a == nil) && (self.proceso.grupoproc.asignar == true)"
 
+		transition :cambiar, { :enviada => :reiniciada }, :available_to => :all, :if => "self.proceso.reinit" do
+			self.ciclovb ||= 1
+			self.cicloptr ||= 1
+			self.save
+			self.ciclovb += 1
+			self.cicloptr += 1
+			self.save
+			self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.reiniciar!(acting_user) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1]
+		end
+		
+		transition :habilitar, { :reiniciada => :habilitada }, :available_to => :all, :if => "self.proceso.reinit"
+		
 		transition :iniciar, { :habilitada => :iniciada }, :available_to => :all 
 
 		transition :enviar, { :iniciada => :enviada }, :available_to => :all, :if => "self.proceso.prueba"
 		
 		transition :recibir, { :enviada => :recibida }, :available_to => :all, :if => "self.proceso.prueba"
 		
-		transition :reiniciar, { :recibida => :iniciada }, :available_to => :all, :if => "self.proceso.prueba" do
-			self.cicloptr ||= 1
+		transition :reiniciar, { :recibida => :iniciada }, :available_to => :all, :if => "self.proceso.prueba" do		
 			self.ciclovb ||= 1
+			self.cicloptr ||= 1
 			self.save
 			if self.proceso.prueba 
 				if self.proceso.reinit
 					self.cicloptr += 1
+					self.save
 				else
 					self.ciclovb += 1
+					self.save
 				end
+					self.save
 			end
 		end
 		

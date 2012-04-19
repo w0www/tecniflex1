@@ -2,9 +2,9 @@
   hobo_model # Don't put anything above this
 
   fields do
-    name      :string
+    name      :string, :required 
     razsocial :string
-    sigla     :string
+    sigla     :string, :required 
     rut       :string
     correo    :email_address
     direccion :string

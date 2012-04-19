@@ -28,7 +28,6 @@ class OrdTrabsController < ApplicationController
       end
     else
       hobo_new do
-
         this.attributes = params[:ord_trab] || {}
         hobo_ajax_response if request.xhr?
       end
@@ -51,6 +50,11 @@ class OrdTrabsController < ApplicationController
   end
   
  
+	def index
+		hobo_index do
+		  @ord_trabs = OrdTrab.all.reverse
+		end
+	end
   
   
   def show

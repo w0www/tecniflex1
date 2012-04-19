@@ -15,14 +15,16 @@
       </ul>
       <div id="tabs-1">
           <div class='header' >       
-            <form  method='get' action=''>            
+            <div style="float:right;">
+							<form  method='get' action=''>            
               <hidden-fields for-query-string skip='page, search'/>
-              <span>Filtrar por fecha</span>
-              <input type='text' style='width:90px' id='datepicker' name='startdate' value="#{params[:startdate] || 'Fecha Inicial'}"/>
-              <input type='text' style='width:90px' id='datepicker2' name='enddate' value="#{params[:enddate] || 'Fecha Final'}"/>
-              <submit class='search-button'  label='Ir'/>
-            </form>
-            <span style="margin-left:30%">
+								<span>Filtrar por fecha</span>
+								<input type='text' style='width:90px' id='datepicker' name='startdate' value="#{params[:startdate] || 'Fecha Inicial'}"/>
+								<input type='text' style='width:90px' id='datepicker2' name='enddate' value="#{params[:enddate] || 'Fecha Final'}"/>
+								<submit class='search-button'  label='Ir'/>
+							</form>
+						</div>
+            <span style="margin-left:10%;">
               <form method='get' action=''>          
                 <hidden-fields for-query-string skip='page, search'/>
                 <span>Buscar O.T.</span>
@@ -48,10 +50,10 @@
                 <% @tod = tod %>  
                 <tr>
                     <th style="width:70px;" class="#{@tod.prioridad}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a><br/><%= tod.codTflex %></th><th rowspan="2" style="width: 12em;" class="#{@tod.state}"><%=  tod.nomprod -%></th>
-                    
                     <% @grupro.each do |proce|%>
-                        <td class="#{tod.estgrupro(proce.abreviacion)}" rowspan="2">
-                        <%= @tod.estgrupro(proce.abreviacion) -%><br/>
+                      <td class="#{tod.estgrupro(proce.abreviacion)}" rowspan="2"> 
+                       <%= @tod.estgrupro(proce.abreviacion) -%> <br/> 
+											
                         <p class="iniciales"><%= @tod.usersgp(proce.abreviacion) -%></p>
                         </td>
 

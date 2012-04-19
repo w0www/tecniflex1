@@ -115,28 +115,28 @@ class OrdTrab < ActiveRecord::Base
 
 		state :habilitada, :iniciada, :detenida, :terminada
 
-		create :crear, :become => :creada, :available_to => :all
+		create :crear, :become => :creada, :available_to => "User.supervisores"
 
-		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :if => "self.tarasigs" do
+		transition :habilitar, { :creada => :habilitada }, :available_to => "User.supervisores", :if => "self.tarasigs" do
 			self.sortars.first.lifecycle.habilitar!(acting_user) if self.sortars.first
     end
 
-    transition :eliminar, { :habilitada => :destroy }, :available_to => :all
+    transition :eliminar, { :habilitada => :destroy }, :available_to => "User.supervisores"
 
-		transition :iniciar, { :habilitada => :iniciada }
+		transition :iniciar, { :habilitada => :iniciada }, :available_to => "User.supervisores"
 
-		transition :detener, { :iniciada => :detenida }
+		transition :detener, { :iniciada => :detenida }, :available_to => "User.supervisores"
 
-    transition :eliminar, { :iniciada => :destroy }, :available_to => :all
+    transition :eliminar, { :iniciada => :destroy }, :available_to => "User.supervisores"
 
-		transition :terminar, { :iniciada => :terminada }, :available_to => :all do
+		transition :terminar, { :iniciada => :terminada }, :available_to => "User.supervisores" do
       self.tareas.each do |task|
           task.state = "terminada"
           task.save
       end
     end
 
-    transition :reactivar, {:terminada => :habilitada}, :available_to => :all
+    transition :reactivar, {:terminada => :habilitada}, :available_to => "User.supervisores"
 
 	end
 	
@@ -151,9 +151,9 @@ class OrdTrab < ActiveRecord::Base
 		self.numOT = (OrdTrab.all.last.id.to_i || 0) + 60001
 	end
     if OrdTrab.cliente_is(self.cliente) != []
-      self.codTflex = (OrdTrab.cliente_is(self.cliente).last.codTflex.to_i || 1) + 1
+      self.codCliente = (OrdTrab.cliente_is(self.cliente).last.codTflex.to_i || 1) + 1
     else
-      self.codTflex = 1
+      self.codCliente = 1
     end
   end
   
@@ -302,87 +302,63 @@ class OrdTrab < ActiveRecord::Base
     @contcrea = 0
     @conthab = 0
     @contini = 0
-    @contdet = 0
+    @contrei = 0
+    @contenv = 0
     @contdet = 0
     @contter = 0
+    @contrec = 0
     @cont = 0
     unless self.tareas == []
-    self.tareas.each do |tare|
-	    if tare.proceso.grupoproc.abreviacion.to_s == @gproc.abreviacion.to_s
-        case tare.state
-          when "creada"
-            @contcrea += 1
-          when "habilitada"
-            @conthab += 1
-          when "iniciada"
-            @contini += 1
-          when "detenida"
-            @contdet += 1
-          when "terminada"
-            @contter += 1
-          else
-            "desconocido"
-         end
-         @cont += 1
-       end
-       
-     end
-     unless @cont == 0
-       case @cont
-          when @contcrea
-            if (@gproc.abreviacion.to_s == "visto") || (@gproc.abreviacion.to_s == "ptr")
-              @estag = "creado"
-            else 	
-              @estag = "creada"
-            end
-          when @conthab
-            if (@gproc.abreviacion.to_s == "visto") || (@gproc.abreviacion.to_s == "ptr")
-              @estag = "habilitado"
-            else
-              @estag = "habilitada"
-            end
-          when @contini
-            if (@gproc.abreviacion.to_s == "visto") || (@gproc.abreviacion.to_s == "ptr")
-              @estag = "enviado"
-            else
-              @estag = "iniciada"
-            end
-          when @contdet
-            if (@gproc.abreviacion.to_s == "visto") || (@gproc.abreviacion.to_s == "ptr")
-              @estag = "observaciones"
-            else
-              @estag = "detenida"
-            end
-          when @contter
-            if (@gproc.abreviacion.to_s == "visto") || (@gproc.abreviacion.to_s == "ptr")
-                @estag = "aprobado"
-            else
-                @estag = "terminada"
-            end
-          else
-            if @contdet > 0
-               if (@gproc.abreviacion.to_s == "visto") || (@gproc.abreviacion.to_s == "ptr")
-                @estag = "observaciones"
-              else
-                @estag = "detenida"
-              end
-            elsif @contini > 0
-               if (@gproc.abreviacion.to_s == "visto") || (@gproc.abreviacion.to_s == "ptr")
-                @estag = "enviado"
-              else
-                @estag = "iniciada"
-              end
-            elsif (@conthab > 0) && (@contdet == 0) && (@contini == 0)
-              @estag = "habilitada"
-               
-            end
-        end
-      else
-        @estag = ""
-      end
-     end
+			self.tareas.each do |tare|
+				if tare.proceso.grupoproc.abreviacion.to_s == @gproc.abreviacion.to_s
+					case tare.state
+						when "creada"
+							@contcrea += 1
+						when "habilitada"
+							@conthab += 1
+						when "iniciada"
+							@contini += 1
+						when "enviada"
+							@contenv += 1
+						when "recibida"
+							@contrec += 1
+						when "reiniciada"
+							@contrei += 1
+						when "detenida"
+							@contdet += 1
+						when "terminada"
+							@contter += 1
+						else
+							"desconocido"
+					 end
+					 @cont += 1
+				 end
+				 
+			 end
+			 unless @cont == 0
+					if @contdet >= 1
+						@estag = "detenida"
+					elsif @contini >= 1
+						@estag = "iniciada"
+					elsif @conthab >= 1
+						@estag = "habilitada"
+					elsif @contcrea >= 1
+						@estag = "creada"
+					elsif @contrec >= 1
+						@estag = "recibido"
+					elsif @contenv >= 1
+						@estag = "enviado"
+					elsif @contrei >= 1
+						@estag = "cambios"
+					elsif @contter >= 1
+						@estag = "terminada"
+					end
+				else
+					@estag = ""
+				end
+    end
      @estag
-   end
+  end
         	    
 	  
 #	  <% @todas.each do |tod| %>

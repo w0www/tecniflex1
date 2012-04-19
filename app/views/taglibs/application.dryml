@@ -131,11 +131,11 @@
     <after-submit go-back/>
       <error-messages param/>
         <table class="shower">
-        <tr><th colspan="2">Cliente</th><td colspan="5"><input:cliente/></td><th>Prioridad</th><td><input:prioridad style="width:70px"/></td><th>Fecha:&nbsp;<input:fecha style="width:7em;"/></th><th>O.T.</th><td></td></tr>
+        <tr><th colspan="2">Cliente</th><td colspan="4"><input:cliente/></td><th>Prioridad</th><td colspan="2"><input:prioridad style="width:70px"/></td><th>Fecha:&nbsp;<input:fecha style="width:7em;"/></th><th>O.T.</th><td></td></tr>
         <tr><th colspan="2">Producto</th><td colspan="7"><input:nomprod style="width:95%;"/></td><th colspan="2" style="text-align: right">Numero de Factura:&nbsp;</th><td><input:numFact style="width:100px;"/></td></tr>
         <tr><th colspan="2">Cliente Final</th><td colspan="7"><input:cfinal style="width:95%;"/></td><th colspan="3"/></tr>
         <tr><td colspan="12" style="background-color:transparent"></td></tr>
-        <tr><th colspan="3" style="display:disabled">Cod. Cliente</th><td colspan ="2"><input:codCliente/></td><th class="centrada" colspan="3">Codigo de Producto</th><th>Version</th><th colspan="3" class="centrada">Impresora: &nbsp;
+        <tr><th colspan="3" style="display:disabled">Cod. Producto</th><td colspan ="2"><input:codTflex/></td><th class="centrada" colspan="3">Codigo de Cliente</th><th>Version</th><th colspan="3" class="centrada">Impresora: &nbsp;
           <do part="primter">
             <if test="&@ord_trab.cliente">
              <!-- <select-one options="&@ord_trab.cliente.impresoras" class="impresora ord-trab-impresora input belongs_to ord_trab_impresora"/> -->
@@ -155,7 +155,7 @@
             </else>
           </do>
         </th></tr>
-        <tr><th class="centrada" colspan="5">Solicitud a Ejecutar</th><td class="centrada" colspan="3"><input:codTflex/></td><td><input:version value="#{ this.version || 1 }" style="width=3em"/></td><th colspan="3" class="centrada">Disposici&oacute;n Clisse</th></tr>
+        <tr><th class="centrada" colspan="5">Solicitud a Ejecutar</th><td class="centrada" part="siglac" colspan="3"><if test="&@ord_trab.cliente"><view:cliente.sigla/></if>&nbsp;-&nbsp;<input:codCliente  style="width:4em"/></td><td><input:version value="#{ this.version || 1 }" style="width:3em"/></td><th colspan="3" class="centrada">Disposici&oacute;n Clisse</th></tr>
         <tr><td colspan="5" style="font-size:80%"><input:visto/>&nbsp;V.B.&nbsp;&nbsp;<input:ptr/>&nbsp;Printer&nbsp;&nbsp;<input:mtz/>&nbsp;MTZ&nbsp;&nbsp;<input:mtje/>&nbsp;MTJE</td><th colspan="4" class="centrada">Medidas de Impresion</th><td style="width:155px;">
            <do part="cyl">
             <if test="&@ord_trab.impresora">
@@ -175,7 +175,7 @@
             </else>
           </do>
         </td><td colspan="2">Ancho&nbsp;<input:distorAncho style="width:4em"/></td></tr>
-        <tr><th colspan="3">Mat. Proporcionado</th><th>Cantidad</th><th>Dev.</th><td>Desarrollo</td><td><input:mdi_desarrollo style="width:90%"/></td><td><input:mdi_ancho style="width:90%"/></td><td>Ancho</td><td style="font-size:90%" >Distorsion Cil.&nbsp;<view:cilindro.distorsion part="distor" style="font-weight: bold"/></td><td colspan="2" style="font-size:90%;">% distorsion&nbsp;<span part="pctdistor"><%= if this.cilindro then number_to_percentage(this.cilindro.pctDistor) end -%></span></td></tr>
+        <tr><th colspan="3">Mat. Proporcionado</th><th>Cantidad</th><th>Dev.</th><td>Desarrollo</td><td><input:mdi_desarrollo style="width:3em"/></td><td><input:mdi_ancho style="width:3em"/></td><td>Ancho</td><td style="font-size:90%" >Distorsion Cil.&nbsp;<view:cilindro.distorsion part="distor" style="font-weight: bold"/></td><td colspan="2" style="font-size:90%;">% distorsion&nbsp;<span part="pctdistor"><%= if this.cilindro then number_to_percentage(this.cilindro.pctDistor) end -%></span></td></tr>
         <tr><td style="width:10px !important"><input:mpFTP style="font-size:70%"/></td><td colspan="2">Bajar de FTP</td><td><input:mpFTPq style="width:40px"/></td><td><input:mpFTPdev style="font-size:60%"/></td><th colspan="3">Codigo de Barras</th><th>Color</th><td>&nbsp;</td><td colspan="2">&nbsp;</td></tr>
         <tr><td style="width:10px !important"><input:mpPel style="font-size:70%"/></td><td colspan="2">Peliculas</td><td><input:mpPelq style="width:40px"/></td><td><input:mpPeldev style="font-size:60%"/></td><td colspan="3">N&deg;&nbsp;<input:barcode style="width:80%"/></td><td><input:colorBarcode style="width:40px"/></td><th colspan="3" class="centrada">Disposicion de bandas</th></tr>
         <tr><td style="width:10px !important"><input:mpImp style="font-size:70%"/></td><td colspan="2">Muestra Imp.</td><td><input:mpImpq style="width:40px"/></td><td><input:mpImpdev style="font-size:60%"/></td><th colspan="3">Marcas en los Clisse</th><th>Colores</th><td colspan="3" rowspan="5" style="text-align: center"><input:dispBandas style="font-size:80%"/>&nbsp;(0=Bandas alineadas   1=Bandas desplazadas)</td></tr>
@@ -196,7 +196,7 @@
       <hjq-input-many:separacions>
         <empty-message:>No hay colores definidos</empty-message:>
         <item:>
-        <div><%= if this.position then this.position else "-" end%>&nbsp;Color:<input:color style="width:13%"/> Anilox:<input:anilox style="width:5%"/> Lineatura:<input:lpi style="width:5%"/> Material:<input:tipomat/> Espesor:<input:espesor/>&nbsp;&nbsp; Alto:<input:alto style="width:5%"/> x Ancho:<input:ancho  style="width:5%"/><hidden-id-field/></div>
+        <div><%= if this.position then this.position else "-" end%>&nbsp;Color:<input:color style="width:13%"/> Anilox:<input:anilox style="width:5%"/> Lineatura:<input:lpi style="width:5%"/> Material:<input:tipomat/> Espesor:<input:espesor blank-message="0.00"/>&nbsp;&nbsp; Alto:<input:alto style="width:5%"/> x Ancho:<input:ancho  style="width:5%"/><hidden-id-field/></div>
         </item:>
         <add-item:>Agregar color</add-item:>
       </hjq-input-many:separacions>

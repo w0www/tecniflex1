@@ -2143,6 +2143,52 @@
   </page>
 </def>
 
+<def tag="iniciar-page" polymorphic/>
+<def tag="iniciar-page" for="OrdTrab">
+  <page title="#{ht 'ord_trabs.iniciar.title', :default=>['Iniciar']}" merge>
+
+    <body: class="lifecycle-transition-page iniciar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="ord_trabs.iniciar.heading">
+            Iniciar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <iniciar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="detener-page" polymorphic/>
+<def tag="detener-page" for="OrdTrab">
+  <page title="#{ht 'ord_trabs.detener.title', :default=>['Detener']}" merge>
+
+    <body: class="lifecycle-transition-page detener-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="ord_trabs.detener.heading">
+            Detener
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <detener-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
 <def tag="terminar-page" polymorphic/>
 <def tag="terminar-page" for="OrdTrab">
   <page title="#{ht 'ord_trabs.terminar.title', :default=>['Terminar']}" merge>
@@ -3188,6 +3234,29 @@
 
       <section param="content-body">
         <habilitar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="cambiar-page" polymorphic/>
+<def tag="cambiar-page" for="Tarea">
+  <page title="#{ht 'tareas.cambiar.title', :default=>['Cambiar']}" merge>
+
+    <body: class="lifecycle-transition-page cambiar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.cambiar.heading">
+            Cambiar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <cambiar-form param="form"/>
       </section>
     </content:>
 

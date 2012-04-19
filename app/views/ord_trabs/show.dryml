@@ -9,8 +9,8 @@
         <tr><th colspan="2">Producto</th><td colspan="7"><view:nomprod/></td><th class="centrada" colspan="2">Numero de Factura</th><td><if test="&this.numFact"><view:numFact/></if></td></tr>
         <tr><th colspan="2">Cliente Final</th><td colspan="7"><view:cfinal/></td><th colspan="3"/></tr>
         <tr><td colspan="12"></td></tr>
-        <tr><th colspan="2">Cod. Cliente</th><td colspan ="3"><view:codCliente if="codCliente"/></td><th colspan="3" class="centrada">Codigo de Producto</th><th>Version</th><th colspan="3" class="centrada">Disposici&oacute;n Clisse</th></tr>
-        <tr><th colspan="5" class="centrada">Solicitud a Ejecutar</th><td colspan="3"><view:cliente.sigla/>-<view:codTflex if="codTflex"/></td><td><view:version if="version"/></td><td>Cilindro:&nbsp;<view:cilindro if="cilindro"/></td><td colspan="2">D.Ancho&nbsp;<view:distorAncho if="distorAncho"/></td></tr>
+        <tr><th colspan="2">Cod. Producto</th><td colspan ="3"><view:codTflex if="codTflex"/></td><th colspan="3" class="centrada">Codigo de Cliente</th><th>Version</th><th colspan="3" class="centrada">Disposici&oacute;n Clisse</th></tr>
+        <tr><th colspan="5" class="centrada">Solicitud a Ejecutar</th><td colspan="3"><view:cliente.sigla/>-<view:codCliente if="codCliente"/></td><td><view:version if="version"/></td><td>Cilindro:&nbsp;<view:cilindro if="cilindro"/></td><td colspan="2">D.Ancho&nbsp;<view:distorAncho if="distorAncho"/></td></tr>
         <tr><td colspan="1" style="font-size:80%">V.B.: <view:visto class="boolshow#{@this.visto}"/></td><td>Printer: <view:ptr class="boolshow#{@this.ptr}"/></td><td>MTZ: <view:mtz class="boolshow#{@this.mtz}"/></td><td colspan="2">Mtje: <view:mtje class="boolshow#{@this.mtje}"/></td><th colspan="4" class="centrada">Medidas de Impresion</th><td style="font-size:80%">Distorsion Cil.&nbsp;<%= if this.cilindro then this.cilindro.distorsion end -%></td><td colspan="2" style="font-size:80%;">pct distorsion&nbsp;<%= if this.cilindro then number_to_percentage(this.cilindro.pctDistor) end-%></td></tr>
         <tr><th colspan="3" title="Material Proporcionado">Mat. Prop.</th><th title="Cantidad">Cant.</th><th title="Devolver">Dev.</th><th>Desarrollo</th><td ><view:mdi_desarrollo if="mdi_desarrollo"/>&nbsp;mm.</td><td><view:mdi_ancho if="mdi_ancho"/> &nbsp;mm.</td><th>Ancho</th><td>&nbsp;</td><td colspan="2">&nbsp;</td></tr>
         <tr><td><view:mpFTP class="boolshow#{@this.mpFTP}"/></td><td colspan="2">Bajar de FTP</td><td><if test="&this.mpFTPq"><view:mpFTPq style="width:40px"/></if></td><td><view:mpFTPdev class="boolshow#{@this.mpFTPdev}"/></td><th colspan="3" class="centrada">Codigo de Barras</th><th colspan="2" class="centrada">Color</th><th colspan="2" class="centrada">Disposicion de bandas</th></tr>
@@ -32,6 +32,7 @@
           <tr><td><view:position/></td><td><view:color if="color"/></td><td><view:anilox if="anilox"/></td><td><view:lpi if="lpi"/></td><td><view:tipomat if="tipomat"/></td><td><view:alto if="alto"/></td><td><view:ancho if="ancho"/></td><td><view:area if="area"/></td></tr>
         </repeat>
         <tr/>
+        <% if User.supervisores.include?(current_user)%>
           <tr><th>Tarea</th><th colspan="3">Operador</th></tr>
           
           
@@ -40,6 +41,7 @@
                 <tr><td><if test="&this.proceso"><%= this.proceso -%></if></td><td colspan="3"><editor:asignado options="&@tara.opciones" include-none blank-message="Sin asignar"/></td>	</tr>
                 
             </repeat>
+         <%end%>
           
         </table>
         <transition-buttons class="centrada"/>

@@ -199,6 +199,28 @@
     </div>
   </form>
 </def>
+<def tag="iniciar-form" polymorphic/>
+<def tag="iniciar-form" for="OrdTrab">
+  <form lifecycle="iniciar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.iniciar', :default=>['Iniciar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="detener-form" polymorphic/>
+<def tag="detener-form" for="OrdTrab">
+  <form lifecycle="detener" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.detener', :default=>['Detener']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
 <def tag="eliminar-form" polymorphic/>
 <def tag="eliminar-form" for="OrdTrab">
   <form lifecycle="eliminar" merge param="default">
@@ -326,6 +348,28 @@
   </form>
 </def>
 
+<def tag="habilitar-form" polymorphic/>
+<def tag="habilitar-form" for="Tarea">
+  <form lifecycle="habilitar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.habilitar', :default=>['Habilitar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="cambiar-form" polymorphic/>
+<def tag="cambiar-form" for="Tarea">
+  <form lifecycle="cambiar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.cambiar', :default=>['Cambiar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
 <def tag="habilitar-form" polymorphic/>
 <def tag="habilitar-form" for="Tarea">
   <form lifecycle="habilitar" merge param="default">

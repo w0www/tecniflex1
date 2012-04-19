@@ -109,6 +109,7 @@ table.shower th, table.showerin th, table.showerhi th, table.tarea th {
 }
 
 table.tablero {
+		margin-top: 10px;
     border-style: solid;
     border-width: 2px;
     font-family:Helvetica,Arial,sans-serif;
@@ -270,25 +271,33 @@ th.Repeticion {
     background-color: green !important;
 }
 
-.creada, .creado {
+.creada{
     background-color: #ccc !important;
 }
 
-.habilitada, .habilitado {
+.habilitada{
     background-color: deepskyblue !important;
 }
 
-.iniciada, .enviado {
+.iniciada{
     background-color: lightgreen !important;
 }
 
-.detenida, .observaciones {
+.detenida{
     background-color: sandybrown !important;
 }
 
-.terminada, .aprobado {
+.enviada, .enviado{
+		background-color: yellow !important;
+}
+
+.recibida, .recibido{
+		background-color: purple !important;
+}
+
+.terminada{
     background-color:#999999 !important;
-    color:#ccc;
+    color:#027300;
 }
 
 #stock td,#stock th {

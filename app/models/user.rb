@@ -29,6 +29,10 @@
    def self.admines
     User.find(:all, :conditions => {:administrator => true})
   end
+  
+  def self.supervisores
+		User.rol_is("Supervisor")
+	end
 
   lifecycle do
 

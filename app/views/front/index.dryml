@@ -32,23 +32,25 @@
       <section with="&@asignacions">
         <if test="&@asignacions"><h2>Ordenes de Trabajo Asignadas</h2>
                <repeat with="&@asignacions.group_by(&:ord_trab)">
-                  <h4>Orden: <a with="&this_key"/></h4>
+                  <h4 style="margin-left: 40%"><a with="&this_key"/> : <%= this.first.ord_trab.nomprod %></h4>
                   <collection/>
                </repeat>
         </if>
       </section>
-<!--	<unless test="current_user.procesos.blank?"> -->
-      <section with="&Tarea.find_utiles(current_user)">
-		<br/>
-		<br/>
-		<h2>Ordenes de Trabajo Disponibles </h2>
-              <repeat with="&this.group_by(&:ord_trab)">
-                <h4>Orden: <a with="&this_key"/></h4>
-                <collection/>
-              </repeat>
-		
-      </section>
-<!-- </unless> -->
+			<unless test="current_user.procesos== []">
+				<unless test="&Tarea.find_utiles(current_user) == []">
+					<section with="&Tarea.find_utiles(current_user)">
+						<br/>
+						<br/>
+						<h2>Ordenes de Trabajo Disponibles </h2>
+									<repeat with="&this.group_by(&:ord_trab)">
+										<h4 style="margin-left: 40%"><a with="&this_key"/> : <%= this.first.ord_trab.nomprod %></h4>
+										<collection/>
+									</repeat>
+				
+					</section>
+				</unless>
+		</unless>
     </section>
     <% end -%>
   </content:>
