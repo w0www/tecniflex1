@@ -13,16 +13,8 @@ class IntervencionsController < ApplicationController
           this.tarea.lifecycle.terminar!(current_user)
 				elsif params[:envio] == "recibir"
 					this.tarea.lifecycle.recibir!(current_user)		
-			  elsif params[:envio] == "iniciar"
-					if this.tarea.proceso.reinit
-						if params[:vuelta] == "off"
-							this.tarea.lifecycle.reiniciar!(current_user)
-						else
-							this.tarea.lifecycle.cambiar!(current_user)
-						end
-					else
-						this.tarea.lifecycle.reiniciar!(current_user)
-					end	
+			  elsif params[:envio] == "iniciar"					
+					this.tarea.lifecycle.reiniciar!(current_user)
 				end
       hobo_ajax_response if request.xhr? 
     end
@@ -37,6 +29,15 @@ class IntervencionsController < ApplicationController
 				elsif params[:envio] == "enviar"
 					this.tarea.lifecycle.enviar!(current_user)
 				elsif params[:envio] == "recibir"
+	##			  if this.tarea.preinit
+	##					if params[:vuelta] == "off"
+	##						this.tarea.lifecycle.reiniciar!(current_user)
+	##					else
+	##						this.tarea.lifecycle.cambiar!(current_user)
+	##					end
+	##				else
+	##					this.tarea.lifecycle.reiniciar!(current_user)
+	##				end	
 	##			&& (params[:vuelta] == "inicio"))
 					this.tarea.lifecycle.recibir!(current_user)					
         end

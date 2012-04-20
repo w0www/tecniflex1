@@ -56,7 +56,7 @@ class Tarea < ActiveRecord::Base
   end
 
 
-  named_scope :activa, :conditions => ["state IN (?)", ["habilitada","detenida","enviada"]] # se elimina "iniciada" para evitar 2 operadores trabajando en la misma tarea.
+  named_scope :activa, :conditions => ["state IN (?)", ["habilitada","detenida","enviada","recibida"]] # se elimina "iniciada" para evitar 2 operadores trabajando en la misma tarea.
 
 
   lifecycle do
