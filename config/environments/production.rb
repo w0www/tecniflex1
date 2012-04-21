@@ -27,11 +27,7 @@ config.action_view.cache_template_loading            = true
 config.action_mailer.smtp_settings = {
 	:address => "smtp.tecniflex.cl",
 	:port	=> 25,
-	:domain	=> "tecniflex.cl",
-	:authentication => :login,
-	:user_name => "pre21926",
-	:password => "preprensa",
-	:enable_starttls_auto => false}
+	:domain	=> "tecniflex.cl"}
 	
 	
 # Enable threaded mode
