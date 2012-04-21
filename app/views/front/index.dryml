@@ -37,7 +37,7 @@
                </repeat>
         </if>
       </section>
-			<unless test="current_user.procesos== []">
+			<unless test="&current_user.procesos== []">
 				<unless test="&Tarea.find_utiles(current_user) == []">
 					<section with="&Tarea.find_utiles(current_user)">
 						<br/>

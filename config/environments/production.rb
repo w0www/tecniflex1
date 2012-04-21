@@ -25,11 +25,11 @@ config.action_view.cache_template_loading            = true
 # config.action_mailer.raise_delivery_errors = false
 
 config.action_mailer.smtp_settings = {
-	:address => "mail.tecniflex.cl",
-	:port	=> 26,
+	:address => "smtp.tecniflex.cl",
+	:port	=> 25,
 	:domain	=> "tecniflex.cl",
 	:authentication => :login,
-	:user_name => "preprensa+tecniflex.cl",
+	:user_name => "pre21926",
 	:password => "preprensa",
 	:enable_starttls_auto => false}
 	
