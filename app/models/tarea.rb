@@ -84,7 +84,7 @@ class Tarea < ActiveRecord::Base
 		transition :iniciar, { :habilitada => :iniciada }, :available_to => :all 
 
 		transition :enviar, { :iniciada => :enviada }, :available_to => :all, :if => "self.proceso.prueba" do
-			RecibArchMailer.deliver_enviado(this.ord_trab.cliente, this.ord_trab)
+			RecibArchMailer.deliver_enviado(self.ord_trab.cliente, self.ord_trab)
 		end
 		
 		transition :recibir, { :enviada => :recibida }, :available_to => :all, :if => "self.proceso.prueba"
