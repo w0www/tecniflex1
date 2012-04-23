@@ -287,6 +287,10 @@ th.Repeticion {
     background-color: sandybrown !important;
 }
 
+.reiniciada,.cambios{
+		background-color: plum !important;
+}
+
 .enviada, .enviado{
 		background-color: yellow !important;
 }

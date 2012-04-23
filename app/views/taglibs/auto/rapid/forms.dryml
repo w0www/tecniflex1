@@ -381,6 +381,17 @@
     </div>
   </form>
 </def>
+<def tag="habilitar-form" polymorphic/>
+<def tag="habilitar-form" for="Tarea">
+  <form lifecycle="habilitar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.habilitar', :default=>['Habilitar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
 <def tag="iniciar-form" polymorphic/>
 <def tag="iniciar-form" for="Tarea">
   <form lifecycle="iniciar" merge param="default">

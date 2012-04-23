@@ -52,7 +52,16 @@
                     <th style="width:70px;" class="#{@tod.prioridad}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a><br/><%= tod.codTflex %></th><th rowspan="2" style="width: 12em;" class="#{@tod.state}"><%=  tod.nomprod -%></th>
                     <% @grupro.each do |proce|%>
                       <td class="#{tod.estgrupro(proce.abreviacion)}" rowspan="2"> 
-                       <%= @tod.estgrupro(proce.abreviacion) -%> <br/> 
+                       <%if @tod.tareas.proceso_is(proce.procesos.first) != [] %>
+                       <%if @tod.tareas.proceso_is(proce.procesos.first).first.proceso.prueba %>
+                       	<%if @tod.tareas.proceso_is(proce.procesos.first).first.proceso.reinit %>
+                       		<%= @tod.tareas.proceso_is(proce.procesos.first).first.cicloptr %>
+                       	<% else %>
+                       		<%= @tod.tareas.proceso_is(proce.procesos.first).first.ciclovb %>
+                       	<% end %>
+                       <% end %>
+                      <% end %>
+                      <%= @tod.estgrupro(proce.abreviacion) -%> <br/> 
 											
                         <p class="iniciales"><%= @tod.usersgp(proce.abreviacion) -%></p>
                         </td>

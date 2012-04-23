@@ -36,6 +36,7 @@ class Tarea < ActiveRecord::Base
 		if self == self.ord_trab.sortars.first
 			if estot.state == "habilitada"
 				self.state = "habilitada"
+				self.save
 			end
 		end
   end
@@ -76,10 +77,12 @@ class Tarea < ActiveRecord::Base
 			self.ciclovb += 1
 			self.cicloptr += 1
 			self.save
-			self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.reiniciar!(acting_user) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1]
+			self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.habilitar!(acting_user) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1]
 		end
 		
 		transition :habilitar, { :reiniciada => :habilitada }, :available_to => :all, :if => "self.proceso.reinit"
+		
+		transition :habilitar, { :terminada => :habilitada }, :available_to => :all , :if => "self.proceso.prueba"
 		
 		transition :iniciar, { :habilitada => :iniciada }, :available_to => :all do
 			if self.ord_trab.state == "habilitada"
@@ -100,10 +103,8 @@ class Tarea < ActiveRecord::Base
 			if self.proceso.prueba 
 				if self.proceso.reinit
 					self.cicloptr += 1
-					self.save
 				else
 					self.ciclovb += 1
-					self.save
 				end
 					self.save
 			end
