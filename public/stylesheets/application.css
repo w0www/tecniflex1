@@ -109,6 +109,8 @@ table.shower th, table.showerin th, table.showerhi th, table.tarea th {
 }
 
 table.tablero {
+	position: relative;
+	display:block;
 		margin-top: 10px;
     border-style: solid;
     border-width: 2px;
@@ -131,6 +133,19 @@ table.tablero td{
     border-style: solid dotted;
     border-width: 1px;
     
+}
+
+.ciclo{
+	display:block;
+	top:0;
+	width: 20%;
+	height:auto;
+	position:relative;
+	text-align:center;
+	color: white;
+	background-color:red;
+	float: right;
+	
 }
 
 .tablero .hr1 {

@@ -54,11 +54,13 @@
                       <td class="#{tod.estgrupro(proce.abreviacion)}" rowspan="2"> 
                        <%if @tod.tareas.proceso_is(proce.procesos.first) != [] %>
                        <%if @tod.tareas.proceso_is(proce.procesos.first).first.proceso.prueba %>
-                       	<%if @tod.tareas.proceso_is(proce.procesos.first).first.proceso.reinit %>
-                       		<%= @tod.tareas.proceso_is(proce.procesos.first).first.cicloptr %>
-                       	<% else %>
-                       		<%= @tod.tareas.proceso_is(proce.procesos.first).first.ciclovb %>
-                       	<% end %>
+                       	<div class="ciclo">
+							<%if @tod.tareas.proceso_is(proce.procesos.first).first.proceso.reinit %>
+								<%= @tod.tareas.proceso_is(proce.procesos.first).first.cicloptr %>
+							<% else %>
+								<%= @tod.tareas.proceso_is(proce.procesos.first).first.ciclovb %>
+							<% end %>
+						</div>
                        <% end %>
                       <% end %>
                       <%= @tod.estgrupro(proce.abreviacion) -%> <br/> 
