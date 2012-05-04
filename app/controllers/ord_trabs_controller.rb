@@ -40,30 +40,32 @@ class OrdTrabsController < ApplicationController
       hobo_ajax_response if request.xhr?
     end
   end
-  
+
   show_action :mipag
-  
+
+  show_action :improt
+
   def update
     hobo_update do
       hobo_ajax_response if request.xhr?
    end
   end
-  
- 
+
+
 	def index
 		hobo_index do
 		  @ord_trabs = OrdTrab.all.reverse
 		end
 	end
-  
-  
+
+
   def show
     hobo_show do
 #nopol = Grupoproc.find(:all, :conditions => ["nombre != (?) AND nombre != (?)", "Polimero", "Prep"]).*.nombre
    @taras = this.tareas.find(:all, :conditions => ["proceso_id IN (?)", Proceso.asignables])
     end
   end
-  
+
   def modificar
     hobo_new do
       @ot_anterior = OrdTrab.find (params[:id])
@@ -83,13 +85,13 @@ class OrdTrabsController < ApplicationController
       else
         @from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
         @to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
-        @todas = OrdTrab.find(:all, :conditions => ["created_at > ? and created_at < ?",@from_date,@to_date])      
+        @todas = OrdTrab.find(:all, :conditions => ["created_at > ? and created_at < ?",@from_date,@to_date])
       end
     end
     hobo_ajax_response if request.xhr?
   end
 
-  
+
   index_action :tablerojax do
   @proces = Proceso.find(:all)
    if params[:startdate].blank? && params[:enddate].blank?
@@ -97,11 +99,11 @@ class OrdTrabsController < ApplicationController
     else
       @from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
       @to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
-      @todas = OrdTrab.find(:all,conditions => ["created_at > ? and created_at < ?",@from_date,@end_date])      
+      @todas = OrdTrab.find(:all,conditions => ["created_at > ? and created_at < ?",@from_date,@end_date])
     end
     hobo_ajax_response if request.xhr?
   end
-  
+
   index_action :reporte
 
   def do_eliminar
@@ -109,12 +111,12 @@ class OrdTrabsController < ApplicationController
       redirect_to ord_trabs_path
     end
   end
-  
+
   def habilitar
     transition_page_action :habilitar
   end
-  
-   
+
+
   #   @esta = OrdTrab.find (params[:id])
   #          if (@esta.visto == true) || (@esta.ptr == true)
    #           if @esta.mdi_desarrollo && @esta.mdi_ancho
@@ -126,7 +128,7 @@ class OrdTrabsController < ApplicationController
   #         else
   #            do_transition_action :habilitar
  #          end
- 
+
  #end
 
 end

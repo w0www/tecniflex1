@@ -18,18 +18,18 @@ class Tarea < ActiveRecord::Base
   has_many :intervencions, :accessible => true, :dependent => :destroy
   has_many :users, :through => :intervencions
 
-  
+
   def name
     self.ord_trab.numOT.to_s + '_' + self.proceso.nombre.to_s
   end
-  
+
   after_initialize :init
-  
+
   def init
 		self.ciclovb ||= 1
 		self.cicloptr ||= 1
 	end
-	
+
   def before_create
  #  Usar index, maps y sort_by para encontrar la tarea siguiente de la OT, segun posicion (y habilitarla o no)
 		estot = self.ord_trab
@@ -40,16 +40,16 @@ class Tarea < ActiveRecord::Base
 			end
 		end
   end
-	
+
   def aptos
     User.with_procesos(self.proceso)
   end
-  
+
   def opciones
   	@opciones ||= self.aptos.map {|uapto| [uapto.name, uapto.id]}
 	end
-  
-	
+
+
   def self.find_utiles(usuario)
     @cuser = usuario
     @uprocid = @cuser.procesos.*.id
@@ -64,13 +64,13 @@ class Tarea < ActiveRecord::Base
 
 		state :creada, :default => true
 
-		state :habilitada, :iniciada, :detenida, :enviada, :recibida, :terminada, :reiniciada
+		state :habilitada, :iniciada, :detenida, :enviada, :cambiada, :recibida, :terminada, :reiniciada
 
 		create :crear, :become => :creada, :available_to => :all
 
 		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :unless => "(self.asignada_a == nil) && (self.proceso.grupoproc.asignar == true)"
 
-		transition :cambiar, { :enviada => :reiniciada }, :available_to => :all, :if => "self.proceso.reinit" do
+		transition :cambiar, { :enviada => :cambiada }, :available_to => :all, :if => "self.proceso.reinit" do
 			self.ciclovb ||= 1
 			self.cicloptr ||= 1
 			self.save
@@ -79,11 +79,12 @@ class Tarea < ActiveRecord::Base
 			self.save
 			self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.habilitar!(acting_user) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1]
 		end
-		
-		transition :habilitar, { :reiniciada => :habilitada }, :available_to => :all, :if => "self.proceso.reinit"
-		
+
+		transition :habilitar, { :cambiada => :habilitada }, :available_to => :all, :if => "self.proceso.reinit"
+
+		##Agregar condición para rehabilitar toda la OT, a pedido de un supervisor.
 		transition :habilitar, { :terminada => :habilitada }, :available_to => :all , :if => "self.proceso.prueba"
-		
+
 		transition :iniciar, { :habilitada => :iniciada }, :available_to => :all do
 			if self.ord_trab.state == "habilitada"
 				self.ord_trab.lifecycle.iniciar!(User.first)
@@ -93,14 +94,14 @@ class Tarea < ActiveRecord::Base
 		transition :enviar, { :iniciada => :enviada }, :available_to => :all, :if => "self.proceso.prueba" do
 			RecibArchMailer.deliver_enviado(self.ord_trab.cliente, self.ord_trab)
 		end
-		
+
 		transition :recibir, { :enviada => :recibida }, :available_to => :all, :if => "self.proceso.prueba"
-		
-		transition :reiniciar, { :recibida => :iniciada }, :available_to => :all, :if => "self.proceso.prueba" do		
+
+		transition :reiniciar, { :recibida => :iniciada }, :available_to => :all, :if => "self.proceso.prueba" do
 			self.ciclovb ||= 1
 			self.cicloptr ||= 1
 			self.save
-			if self.proceso.prueba 
+			if self.proceso.prueba
 				if self.proceso.reinit
 					self.cicloptr += 1
 				else
@@ -109,11 +110,11 @@ class Tarea < ActiveRecord::Base
 					self.save
 			end
 		end
-		
+
 		transition :reiniciar, { :detenida => :iniciada }, :available_to => :all
-	
+
 		transition :detener, { :iniciada => :detenida }, :available_to => :all
-		
+
 		transition :terminar, { :enviada => :terminada }, :available_to => :all do
 				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(acting_user) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
 		end
@@ -140,11 +141,11 @@ class Tarea < ActiveRecord::Base
   def view_permitted?(field)
     true
   end
-  
+
   private
     def notificar
       email = RecibArchMailer.deliver_enviado(self.ord_trab.cliente, self.ord_trab.nomprod)
     end
-    
+
 end
 

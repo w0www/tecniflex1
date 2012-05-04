@@ -89,7 +89,7 @@ class OrdTrab < ActiveRecord::Base
   has_many :procesos, :through => :tareas, :accessible => true
   has_many :tareas, :accessible => true, :dependent => :destroy
   belongs_to :encargado, :class_name => "User", :scope => {:rol_is => 'Supervisor' || 'Gerente'}
-  belongs_to :curva                             
+  belongs_to :curva
 
   belongs_to :cliente
   belongs_to :impresora
@@ -97,7 +97,7 @@ class OrdTrab < ActiveRecord::Base
   belongs_to :tipomat
   belongs_to :espesor
   belongs_to  :sustrato
-  
+
   def tarasigs
   @tarasi = true
   	self.tareas.each do |latask|
@@ -139,11 +139,11 @@ class OrdTrab < ActiveRecord::Base
     transition :reactivar, {:terminada => :habilitada}, :available_to => "User.supervisores"
 
 	end
-	
+
   validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.visto || self.ptr", :on => :habilitar
   validates_presence_of :trapping, :curva, :impresora, :cilindro, :nBandas, :nPasos, :nCopias, :sustrato, :fechaEntrega, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_associated :separacions, :if => "(self.mtje || self.mtz) && self.activa? ", :on => :update
-  
+
   def before_create
 	if OrdTrab.all == []
 		self.numOT = 60000
@@ -156,11 +156,11 @@ class OrdTrab < ActiveRecord::Base
       self.codCliente = 1
     end
   end
-  
+
   def activa?
     ['habilitada','iniciada','detenida'].include?(self.state)
   end
-  
+
   def after_update
 
   	# Hash para asignar usuarios a tareas segun su grupo de procesos
@@ -180,7 +180,7 @@ class OrdTrab < ActiveRecord::Base
       end
     end
    end
-   
+
   # Ordena las tareas de una OT segun la posicion de sus procesos. Permite habilitar las tareas en orden.
   def sortars
 	estatars = self.tareas.map {|tar| [tar.id, tar.proceso.position]}
@@ -191,8 +191,8 @@ class OrdTrab < ActiveRecord::Base
 	end
 	sortares
   end
-	
-	     
+
+
   def before_save
     unless self.nBandas?
       self.nBandas = 1
@@ -200,12 +200,12 @@ class OrdTrab < ActiveRecord::Base
     unless self.nPasos?
       self.nPasos = 1
     end
-           
+
     if self.visto
       unless self.procesos.*.grupoproc.*.saevb.include?(true)
       	Proceso.checkproc('saevb').each do |provisto|
           self.procesos << provisto
-        end 
+        end
       end
     end
     if self.mtz
@@ -234,7 +234,7 @@ class OrdTrab < ActiveRecord::Base
 
   def after_save
     separacions.each {|sepa| sepa.areasep}
-   # tareas.each do |tare| 
+   # tareas.each do |tare|
    #   if tare.asignada_a
 
   end
@@ -264,7 +264,7 @@ class OrdTrab < ActiveRecord::Base
 #      end
 #    end
   end
-  
+
 # Usado para asignar clases de acuerdo a la prioridad de la OT.
   def claset
     @valorc = "shower"
@@ -275,7 +275,7 @@ class OrdTrab < ActiveRecord::Base
     end
 		@valorc
 	end
-	
+
 	def usersgp(grupro)
 	  @gproc = Grupoproc.find_by_abreviacion(grupro)
 	  @usrs = []
@@ -295,7 +295,7 @@ class OrdTrab < ActiveRecord::Base
 	  end
 	  @usrs.uniq.join("-")
 	end
-	
+
 	def estgrupro(grupro)
 	  @gproc = Grupoproc.find_by_abreviacion(grupro)
 	  @estag = ""
@@ -318,11 +318,13 @@ class OrdTrab < ActiveRecord::Base
 							@conthab += 1
 						when "iniciada"
 							@contini += 1
+						when "reiniciada"
+							@contini += 1
 						when "enviada"
 							@contenv += 1
 						when "recibida"
 							@contrec += 1
-						when "reiniciada"
+						when "cambiada"
 							@contrei += 1
 						when "detenida"
 							@contdet += 1
@@ -333,7 +335,7 @@ class OrdTrab < ActiveRecord::Base
 					 end
 					 @cont += 1
 				 end
-				 
+
 			 end
 			 unless @cont == 0
 					if @contdet >= 1
@@ -359,11 +361,11 @@ class OrdTrab < ActiveRecord::Base
     end
      @estag
   end
-        	    
-	  
+
+
 #	  <% @todas.each do |tod| %>
 #            <!-- <repeat with="&@todas"> -->
-#              <% @tod = tod %>  
+#              <% @tod = tod %>
 #              <tr>
 #                  <th style="width:70px;" class="#{@tod.state}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a></th><th rowspan="2" style="width: 12em;" class="#{@tod.state}"><%=  tod.nomprod -%></th>
 #                  <%@ctr = 0%>
@@ -384,9 +386,9 @@ class OrdTrab < ActiveRecord::Base
 #                    <%end%>
 #                    <% @ctr = 0 %>
 #                  <% end %>
-	  
-	  
-	  
+
+
+
 	def valcol(listacol)
     @valor = 0
     @colarr = listacol.split(',')

@@ -9,7 +9,7 @@
     </edit-link:>
 
   <content-body: >
-    <div part="campos">      
+    <div part="campos">
       <table class="tarea">
         <tr><th>Cliente</th><td colspan="2"><view:ord_trab.cliente/></td><th>Fecha tope:</th><td colspan="2"><view:ord_trab.fechaEntrega/></td></tr>
         <tr><th>C&oacute;digo Cliente:</th><td colspan="2"><view:ord_trab.codCliente/></td><th>C&oacute;digo Tecniflex:</th><td colspan="2"><view:ord_trab.codTflex/></td></tr>
@@ -18,35 +18,35 @@
         <tr></tr>
         <tr/>
       </table>
-      <% if current_user.hace?("Grabado") %>
-        
+      <% if (current_user.hace?("Grabado") && this.proceso.grupoproc.saemtje) %>
+
         <table class="tarea">
-        
+
         <tr><th>Color</th><th>Anilox</th><th>Lineatura</th><th>Material</th><th style="width:100px">Alto</th><th style="width:100px">Ancho</th><th>Area</th><th>Stock</th></tr>
  <!--       </table>
         <table class="shower">-->
-        <repeat with="&@sepas" part="sepas">  
-         
+        <repeat with="&@sepas" part="sepas">
+
    <!--       <form with="&sepa" update="resumen">   -->
             <% @polis = [this.tipomat,this.ancho,this.alto,this.espesor] %>
-         
+
             <tr><td><view:color/></td><td><view:anilox/></td><td><view:lpi/></td><td><view:tipomat/></td><td><editor:ancho update="sepas" />&nbsp;cm.</td><td><editor:alto update="sepas" />&nbsp;cm.</td><td><%= this.areasep -%>&nbsp;cm<sup>2</sup></td><td></td></tr>
    <!--         </form>  -->
          </repeat>
-        
+
           </table>
         <%end%>
-        
- <% @intervs = this.intervencions.find(:all, :joins => :user, :conditions => ["name = ?", current_user.name]) %>     
- <%if this.state != "terminada"%>
-  
+
+ <% @intervs = this.intervencions.find(:all, :joins => :user, :conditions => ["name = ?", current_user.name]) %>
+ <%if (this.state != "terminada") && (this.state != "cambiada")%>
+
     <%if @intervs != []%>
- 
+
         <% if @intervs.last.termino == nil%>
             <% @termin = 0 %>
                  <form with="&@intervs.last" update="campos">
-                 			
-                      <after-submit uri="/front/index"	/>
+
+
                       <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
                       <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{this.tarea.id}"/>
                       <input class="hidden" type="text" name="intervencion[termino]" value="#{Time.now}"/>
@@ -58,14 +58,14 @@
 												<%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminar", :class => "button submit-button" %>
 											<% else %>
 													<%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
-													<%= submit_tag "enviar", :onclick =>"$('envio').value='enviar';", :id => "enviar", :class => "button submit-button", :name => "enviar" %>											
+													<%= submit_tag "enviar", :onclick =>"$('envio').value='enviar';", :id => "enviar", :class => "button submit-button", :name => "enviar" %>
 											<% end %>
-												
+
                 </form>
          <% else %>
               <% @estatarea = this.id %>
                <form with="&Intervencion.new" update="campos">
-                    <after-submit stay-here/>
+
                     <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
                     <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{@estatarea}"/>
                     <input class="hidden" type="text" name="intervencion[inicio]" value="#{Time.now}"/>
@@ -85,7 +85,7 @@
    <% else %>
           <br/>
           <form with="&Intervencion.new" update="campos">
-                <after-submit stay-here/>
+
                 <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
                 <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{params[:id]}"/>
                 <input class="hidden" type="text" name="intervencion[inicio]" value="#{Time.now}"/>

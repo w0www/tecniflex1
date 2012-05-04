@@ -16,12 +16,6 @@
     <custom-scripts:>
       <hjq-assets/>
     </custom-scripts:>
-    <append-body:>
-    <br/>
-    <h4 style="color:#999999">Informacion para desarrollo: </h4>
-    <br/>
-    <p><%= debug(params) %></p>
-    </append-body:>
 
   </old-page>
 </extend>
@@ -218,7 +212,7 @@
 <extend tag="habilitar-form" for="OrdTrab">
   <form for-type="OrdTrab" merge>
 		<before-actions:><input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/></before-actions:>
-	  
+
     <actions:>
       <submit label="#{ht 'ord_trabs.actions.habilitar', :default=>['Habilitar']}" param/><or-cancel param="cancel"/>
     </actions:>
@@ -398,7 +392,7 @@
   <card class="proceso" param="default" merge>
     <header: param>
       <h4 param="heading"><a><name/></a>&nbsp;&nbsp;<view:position/>&nbsp;<span style="margin-left:15%">Grupo: <editor:grupoproc/></span></h4>
-    
+
     <div param="actions">
         <a action="edit" if="&can_edit?" param="edit-link">
           <ht key="proceso.actions.edit">Edit</ht>
