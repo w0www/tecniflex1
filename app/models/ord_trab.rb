@@ -142,7 +142,7 @@ class OrdTrab < ActiveRecord::Base
 
   validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.visto || self.ptr", :on => :habilitar
   validates_presence_of :trapping, :curva, :impresora, :cilindro, :nBandas, :nPasos, :nCopias, :sustrato, :fechaEntrega, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
-  validates_associated :separacions, :if => "(self.mtje || self.mtz) && self.activa? ", :on => :update
+  validates_associated :separacions, :if => "(self.mtje || self.mtz) && self.activa? ", :on => :habilitar
 
   def before_create
 	if OrdTrab.all == []
