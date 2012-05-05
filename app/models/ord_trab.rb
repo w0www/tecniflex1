@@ -125,6 +125,8 @@ class OrdTrab < ActiveRecord::Base
 
 		transition :iniciar, { :habilitada => :iniciada }, :available_to => "User.supervisores"
 
+		transition :reiniciar, { :detenida => :iniciada }, :available_to => "User.supervisores"
+
 		transition :detener, { :iniciada => :detenida }, :available_to => "User.supervisores"
 
     transition :eliminar, { :iniciada => :destroy }, :available_to => "User.supervisores"
