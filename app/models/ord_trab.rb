@@ -151,9 +151,9 @@ class OrdTrab < ActiveRecord::Base
 		self.numOT = (OrdTrab.all.last.id.to_i || 0) + 60001
 	end
     if OrdTrab.cliente_is(self.cliente) != []
-      self.codCliente = (OrdTrab.cliente_is(self.cliente).last.codTflex.to_i || 1) + 1
+      self.codCliente = (OrdTrab.cliente_is(self.cliente).last.codTflex.to_i || 1) + 2000
     else
-      self.codCliente = 1
+      self.codCliente = 2000
     end
   end
 

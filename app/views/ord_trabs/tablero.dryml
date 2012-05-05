@@ -14,9 +14,9 @@
         <li><a href="#tabs-2">Usuarios</a></li>
       </ul>
       <div id="tabs-1">
-          <div class='header' >       
+          <div class='header' >
             <div style="float:right;">
-							<form  method='get' action=''>            
+							<form  method='get' action=''>
               <hidden-fields for-query-string skip='page, search'/>
 								<span>Filtrar por fecha</span>
 								<input type='text' style='width:90px' id='datepicker' name='startdate' value="#{params[:startdate] || 'Fecha Inicial'}"/>
@@ -25,13 +25,13 @@
 							</form>
 						</div>
             <span style="margin-left:10%;">
-              <form method='get' action=''>          
+              <form method='get' action=''>
                 <hidden-fields for-query-string skip='page, search'/>
                 <span>Buscar O.T.</span>
                 <input type='text' style='width:90px' id='orden' name='orden' value="#{params[:orden] || 'Orden'}"/>
                 <submit class='search-button'  label='Ir'/>
               </form>
-            </span>       
+            </span>
           </div>
           <table class="tablero" part="dashboard">
             <thead>
@@ -47,11 +47,11 @@
             <tbody>
               <% @todas.reverse.each do |tod| %>
               <!-- <repeat with="&@todas"> -->
-                <% @tod = tod %>  
+                <% @tod = tod %>
                 <tr>
-                    <th style="width:70px;" class="#{@tod.prioridad}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a><br/><%= tod.codTflex %></th><th rowspan="2" style="width: 12em;" class="#{@tod.state}"><%=  tod.nomprod -%></th>
+                    <th style="width:70px;" class="#{@tod.prioridad}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a><br/><%= tod.cliente.sigla -%>-<%= tod.codCliente %></th><th rowspan="2" style="width: 12em;" class="#{@tod.state}"><%=  tod.nomprod -%></th>
                     <% @grupro.each do |proce|%>
-                      <td class="#{tod.estgrupro(proce.abreviacion)}" rowspan="2"> 
+                      <td class="#{tod.estgrupro(proce.abreviacion)}" rowspan="2">
                        <%if @tod.tareas.proceso_is(proce.procesos.first) != [] %>
                        <%if @tod.tareas.proceso_is(proce.procesos.first).first.proceso.prueba %>
                        	<div class="ciclo">
@@ -63,8 +63,8 @@
 						</div>
                        <% end %>
                       <% end %>
-                      <%= @tod.estgrupro(proce.abreviacion) -%> <br/> 
-											
+                      <%= @tod.estgrupro(proce.abreviacion) -%> <br/>
+
                         <p class="iniciales"><%= @tod.usersgp(proce.abreviacion) -%></p>
                         </td>
 
@@ -73,7 +73,7 @@
                     </tr>
                     <tr/>
                <%end%>
-              <!-- </repeat> -->  
+              <!-- </repeat> -->
             </tbody>
           </table>
         </div>
@@ -82,7 +82,7 @@
             <thead>
               <tr>
                 <th>Usuario</th><th>Rol</th><th>Procesos</th><th>Tareas Disponibles</th><th>Tareas Completadas hoy</th>
-              </tr>        
+              </tr>
             </thead>
             <tbody>
               <% @usuarios=User.find(:all, :order => :name) %>
@@ -101,6 +101,6 @@
       jQuery("#datepicker2").datepicker();
       jQuery("#tabs").tabs();
     });
-    
+
   </page-scripts:>
 </page>
