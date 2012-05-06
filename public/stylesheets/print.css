@@ -1,0 +1,113 @@
+html, body { background:#FFF }
+
+body {
+	width: 960px;
+	margin: 0 auto 20px;
+	font: 12px "Lucida Grande", "Trebuchet MS", Arial, sans-serif; line-height: 18px;
+}
+h1, h2, h3 {font-weight: normal;}
+h1 {margin: 20px 0 10px; font-size: 22px; line-height: 22px;}
+h2 {margin: 15px 0 10px; font-size: 18px; line-height: 18px;}
+h3 {margin: 10px 0 5px;  font-size: 16px; line-height: 16px;}
+h4 {margin: 10px 0 5px;  font-size: 14px; line-height: 14px;}
+h5 {margin: 10px 0 5px;  font-size: 12px; line-height: 12px;}
+h6 {margin: 10px 0 5px;  font-size: 10px; line-height: 10px;}
+
+li {margin-left: 20px;}
+
+a {
+	border-bottom: 0px;
+	text-decoration: none;
+        color:black;
+}
+
+a:visited {
+	border-bottom: 0px;
+	text-decoration: none;
+        color:black;
+}
+
+a:hover {
+	border-bottom: 1px dotted #aaa;
+	color: black; background: #f2f2f2;
+}
+h1 a, h2 a, h3 a {border: none; background: none;}
+
+pre, code {
+    font-family:  "Courier New", Courier, monospace;
+}
+
+td {
+
+    border-collapse:collapse;
+}
+
+table,td {
+    font-size: 90%;
+    border: 1px solid black;
+}
+
+table.tarea {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 2px;
+    margin-top: 5px;
+    padding: 5px;
+		background-color: darkgray;
+}
+
+table.shower {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 2px;
+    margin-top: 17px;
+    padding: 10px;
+		background-color: darkgray;
+}
+
+.showerhi {
+	  width: 100%;
+    border-collapse: collapse;
+    border-spacing: 2px;
+    margin-top: 17px;
+		padding: 10px;
+		background-color: red;
+}
+
+table.showerin {
+	   width: 100%;
+    border-collapse: separate;
+    border-spacing: 2px;
+    margin-top: 17px;
+		padding: 10px;
+		background-color: green;
+}
+
+table.shower td, table.showerin td, table.showerhi td, table.tarea{
+    padding: 3px;
+    background-color: antiquewhite !important;
+    border: 1px solid black;
+}
+
+table.shower th, table.showerin th, table.showerhi th, table.tarea th {
+    font-weight: bold;
+    padding: 3px;
+    font-size: 110%;
+    background-color: wheat !important;
+    border: 1px solid black;
+}
+
+.shower .editor, .tarea .editor {
+    background-color: lightgreen;
+    padding: 3px;
+}
+
+.centrada {
+    text-align: center;
+}
+
+
+.shower textarea{
+    height: 3em;
+    width: 90%;
+}

@@ -32,6 +32,8 @@ class IntervencionsController < ApplicationController
     hobo_update do
 				if params[:envio] == "terminar"
           this.tarea.lifecycle.terminar!(current_user)
+          this.final = true
+          this.save
 				elsif params[:envio] == "detener"
           this.tarea.lifecycle.detener!(current_user)
 				elsif params[:envio] == "enviar"
