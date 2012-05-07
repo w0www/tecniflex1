@@ -1,5 +1,5 @@
 class RecibArchMailer < ActionMailer::Base
-  
+
   def enviado(cliente,trabajo)
   	@cliente = cliente
     subject   'Envio de Visto Bueno'
@@ -14,10 +14,14 @@ class RecibArchMailer < ActionMailer::Base
 		recipients 	['patricio.arluciaga@gmail.com']
 		from				'preprensa@tecniflex.cl'
 		content_type 'multipart/alternative'
+		body				:ot => @ord_trab.nomprod
+		part "text/plain" do |p|
+			p.body = render_message("enviapdf_plain", :ot => @ord_trab.nomprod)
+		end
 		attachment "application/pdf" do |a|
 			a.body = email
 		end
-		body				:ot => @ord_trab.nomprod
+
 	end
-	
+
 end
