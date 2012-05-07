@@ -13,8 +13,7 @@ class RecibArchMailer < ActionMailer::Base
 		subject 		'Orden de Trabajo Tecniflex'
 		recipients 	['patricio.arluciaga@gmail.com']
 		from				'preprensa@tecniflex.cl'
-		content_type 'multipart/alternative'
-		body				:ot => @ord_trab.nomprod
+		content_type 'multipart/mixed'
 		part "text/plain" do |p|
 			p.body = render_message("enviapdf_plain", :ot => @ord_trab.nomprod)
 		end
