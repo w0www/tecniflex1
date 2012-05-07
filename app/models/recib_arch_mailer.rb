@@ -19,7 +19,6 @@ class RecibArchMailer < ActionMailer::Base
 		end
 		attachment "application/pdf" do |a|
 			a.body = email
-			a.filename = @ord_trab.numOT
 		end
 
 	end
