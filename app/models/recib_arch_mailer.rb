@@ -8,4 +8,12 @@ class RecibArchMailer < ActionMailer::Base
     body      :cliente => cliente, :trabajo => trabajo
   end
 
+	def enviapdf(ord_trab,email)
+		@ord_trab = ord_trab
+		subject 		'Orden de Trabajo Tecniflex'
+		recipients 	['patricio.arluciaga@gmail.com']
+		from				'preprensa@tecniflex.cl'
+		body				:ot => @ord_trab.nomprod
+	end
+	
 end

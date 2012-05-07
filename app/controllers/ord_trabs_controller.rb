@@ -43,7 +43,9 @@ class OrdTrabsController < ApplicationController
 
   show_action :mipag
 
-  show_action :improt
+  show_action :improt do
+		@ord_trab = OrdTrab.find(params[:id])
+	end
 
   def update
     hobo_update do
@@ -60,10 +62,9 @@ class OrdTrabsController < ApplicationController
 
 
   def show
-    hobo_show do
-#nopol = Grupoproc.find(:all, :conditions => ["nombre != (?) AND nombre != (?)", "Polimero", "Prep"]).*.nombre
+    hobo_show
+  	#nopol = Grupoproc.find(:all, :conditions => ["nombre != (?) AND nombre != (?)", "Polimero", "Prep"]).*.nombre
    @taras = this.tareas.find(:all, :conditions => ["proceso_id IN (?)", Proceso.asignables])
-    end
   end
 
   def modificar
@@ -99,7 +100,7 @@ class OrdTrabsController < ApplicationController
     else
       @from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
       @to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
-      @todas = OrdTrab.find(:all,conditions => ["created_at > ? and created_at < ?",@from_date,@end_date])
+      @todas = OrdTrab.find(:all,conditions => ["created_at >= ? and created_at < ?",@from_date,@end_date])
     end
     hobo_ajax_response if request.xhr?
   end
@@ -113,10 +114,23 @@ class OrdTrabsController < ApplicationController
   end
 
   def habilitar
-    transition_page_action :habilitar
+    transition_page_action :habilitar do
+			flash[:notice] = "Habilitacion exitosa"
+		end
   end
+  
 
 
+  def mail_ot  
+      @ot = OrdTrab.find(params[:id])  
+      email = render_to_string(:action => 'improt', :layout => false, :object => @ot)
+      email = PDFKit.new(email)  
+      email.stylesheets << "#{Rails.root}/public/stylesheets/print.css"  
+      email = email.to_pdf  
+      RecibArchMailer.deliver_enviapdf(@ot,email)
+      redirect_to :action => 'index'  
+	end  
+		
   #   @esta = OrdTrab.find (params[:id])
   #          if (@esta.visto == true) || (@esta.ptr == true)
    #           if @esta.mdi_desarrollo && @esta.mdi_ancho
