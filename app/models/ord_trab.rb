@@ -76,7 +76,7 @@ class OrdTrab < ActiveRecord::Base
     nCopias        :integer
     colorUnion     :integer
     supRev enum_string(:'Superficie', :'Reverso')
-    tipofotop enum_string(:'Convencional', :'Digital')
+    tipofotop enum_string(:'Digital', :'Convencional')
     trapping       :decimal
     prioridad enum_string(:'Normal', :'Repeticion', :'Urgencia')
     pctdistor      :decimal
@@ -97,6 +97,8 @@ class OrdTrab < ActiveRecord::Base
   belongs_to :tipomat
   belongs_to :espesor
   belongs_to  :sustrato
+
+	default_scope :order => 'numOT DESC'
 
   def tarasigs
   @tarasi = true

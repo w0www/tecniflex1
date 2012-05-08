@@ -45,7 +45,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @todas.reverse.each do |tod| %>
+              <% @todas.each do |tod| %>
               <!-- <repeat with="&@todas"> -->
                 <% @tod = tod %>
                 <tr>

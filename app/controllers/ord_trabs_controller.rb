@@ -10,7 +10,9 @@ class OrdTrabsController < ApplicationController
   def new
     if params[:id]
       @prima = OrdTrab.find(params[:id])
-      @primat = @prima.attributes.except(:numOT)
+      @prima.version += 1
+      @prima.save
+      @primat = @prima.attributes.except('numOT')
       @sepas = []
       #@impre = @prima.impresora.attributes[:id]
 
@@ -118,19 +120,19 @@ class OrdTrabsController < ApplicationController
 			flash[:notice] = "Habilitacion exitosa"
 		end
   end
-  
 
 
-  def mail_ot  
-      @ot = OrdTrab.find(params[:id])  
+
+  def mail_ot
+      @ot = OrdTrab.find(params[:id])
       email = render_to_string(:action => 'improt', :layout => false, :object => @ot)
-      email = PDFKit.new(email)  
-      email.stylesheets << "#{Rails.root}/public/stylesheets/print.css"  
-      email = email.to_pdf  
+      email = PDFKit.new(email)
+      email.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
+      email = email.to_pdf
       RecibArchMailer.deliver_enviapdf(@ot,email)
-      redirect_to :action => 'index'  
-	end  
-		
+      redirect_to :action => 'index'
+	end
+
   #   @esta = OrdTrab.find (params[:id])
   #          if (@esta.visto == true) || (@esta.ptr == true)
    #           if @esta.mdi_desarrollo && @esta.mdi_ancho

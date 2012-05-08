@@ -4,9 +4,7 @@
       <view:ord_trab/>&nbsp;>&nbsp;<view:ord_trab.nomprod/>&nbsp;>&nbsp;<view:proceso/>
     </heading:>
 
-    <edit-link: >
-      Editar Tarea
-    </edit-link:>
+
 
   <content-body: >
     <div part="campos">
