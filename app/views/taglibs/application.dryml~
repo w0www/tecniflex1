@@ -16,12 +16,6 @@
     <custom-scripts:>
       <hjq-assets/>
     </custom-scripts:>
-    <append-body:>
-    <br/>
-    <h4 style="color:#999999">Informacion para desarrollo: </h4>
-    <br/>
-    <p><%= debug(params) %></p>
-    </append-body:>
 
   </old-page>
 </extend>
@@ -84,7 +78,7 @@
   <card class="ord-trab" param="default" merge>
     <header: param>
       <% @orig = this %>
-      <h4 param="heading"><a><name/></a>&nbsp;-&nbsp;<view:state/><span style="float:right"><%= link_to 'Modificar', new_ord_trab_path(:id => @orig.id)%>&nbsp;&nbsp;&nbsp;&nbsp;<a  action="edit">Editar</a><transition-buttons/></span></h4>
+      <h4 param="heading"><a><name/></a>&nbsp;-&nbsp;<view:state/><span style="float:right"><%= link_to 'Nueva version', new_ord_trab_path(:id => @orig.id)%>&nbsp;&nbsp;&nbsp;&nbsp;<a  action="edit">Editar</a></span></h4>
     </header:>
   <body:>
     <view:nomprod/>
@@ -128,15 +122,14 @@
 
 <def tag="form" for="OrdTrab">
   <form merge param="default">
-      <error-messages param/>
     <after-submit go-back/>
       <error-messages param/>
         <table class="shower">
-        <tr><th colspan="2">Cliente</th><td colspan="5"><input:cliente/></td><th>Prioridad</th><td><input:prioridad style="width:70px"/></td><th>Fecha:&nbsp;<input:fecha style="width:7em;"/></th><th>O.T.</th><td></td></tr>
+        <tr><th colspan="2">Cliente</th><td colspan="4"><input:cliente/></td><th>Prioridad</th><td colspan="2"><input:prioridad style="width:70px"/></td><th>Fecha:&nbsp;<input:fecha style="width:7em;"/></th><th>O.T.</th><td></td></tr>
         <tr><th colspan="2">Producto</th><td colspan="7"><input:nomprod style="width:95%;"/></td><th colspan="2" style="text-align: right">Numero de Factura:&nbsp;</th><td><input:numFact style="width:100px;"/></td></tr>
         <tr><th colspan="2">Cliente Final</th><td colspan="7"><input:cfinal style="width:95%;"/></td><th colspan="3"/></tr>
         <tr><td colspan="12" style="background-color:transparent"></td></tr>
-        <tr><th colspan="3" style="display:disabled">Cod. Cliente</th><td colspan ="2"></td><th class="centrada" colspan="4">Codigo de Producto</th><th colspan="3" class="centrada">Impresora: &nbsp;
+        <tr><th colspan="3" style="display:disabled">Cod. Producto</th><td colspan ="2"><input:codTflex/></td><th class="centrada" colspan="3">Codigo de Cliente</th><th>Version</th><th colspan="3" class="centrada">Impresora: &nbsp;
           <do part="primter">
             <if test="&@ord_trab.cliente">
              <!-- <select-one options="&@ord_trab.cliente.impresoras" class="impresora ord-trab-impresora input belongs_to ord_trab_impresora"/> -->
@@ -156,7 +149,7 @@
             </else>
           </do>
         </th></tr>
-        <tr><th class="centrada" colspan="5">Solicitud a Ejecutar</th><td class="centrada" colspan="4"><input:codTflex/></td><th colspan="3" class="centrada">Disposici&oacute;n Clisse</th></tr>
+        <tr><th class="centrada" colspan="5">Solicitud a Ejecutar</th><td class="centrada" part="siglac" colspan="3"><if test="&@ord_trab.cliente"><view:cliente.sigla/></if>&nbsp;-&nbsp;<input:codCliente  style="width:4em"/></td><td><input:version value="#{ this.version || 1 }" style="width:3em"/></td><th colspan="3" class="centrada">Disposici&oacute;n Clisse</th></tr>
         <tr><td colspan="5" style="font-size:80%"><input:visto/>&nbsp;V.B.&nbsp;&nbsp;<input:ptr/>&nbsp;Printer&nbsp;&nbsp;<input:mtz/>&nbsp;MTZ&nbsp;&nbsp;<input:mtje/>&nbsp;MTJE</td><th colspan="4" class="centrada">Medidas de Impresion</th><td style="width:155px;">
            <do part="cyl">
             <if test="&@ord_trab.impresora">
@@ -176,7 +169,7 @@
             </else>
           </do>
         </td><td colspan="2">Ancho&nbsp;<input:distorAncho style="width:4em"/></td></tr>
-        <tr><th colspan="3">Mat. Proporcionado</th><th>Cantidad</th><th>Dev.</th><td>Desarrollo</td><td><input:mdi_desarrollo style="width:90%"/></td><td><input:mdi_ancho style="width:90%"/></td><td>Ancho</td><td style="font-size:90%" >Distorsion Cil.&nbsp;<view:cilindro.distorsion part="distor" style="font-weight: bold"/></td><td colspan="2" style="font-size:90%;">% distorsion&nbsp;<span part="pctdistor"><%= if this.cilindro then number_to_percentage(this.cilindro.pctDistor) end -%></span></td></tr>
+        <tr><th colspan="3">Mat. Proporcionado</th><th>Cantidad</th><th>Dev.</th><td>Desarrollo</td><td><input:mdi_desarrollo style="width:3em"/></td><td><input:mdi_ancho style="width:3em"/></td><td>Ancho</td><td style="font-size:90%" >Distorsion Cil.&nbsp;<view:cilindro.distorsion part="distor" style="font-weight: bold"/></td><td colspan="2" style="font-size:90%;">% distorsion&nbsp;<span part="pctdistor"><%= if this.cilindro then number_to_percentage(this.cilindro.pctDistor) end -%></span></td></tr>
         <tr><td style="width:10px !important"><input:mpFTP style="font-size:70%"/></td><td colspan="2">Bajar de FTP</td><td><input:mpFTPq style="width:40px"/></td><td><input:mpFTPdev style="font-size:60%"/></td><th colspan="3">Codigo de Barras</th><th>Color</th><td>&nbsp;</td><td colspan="2">&nbsp;</td></tr>
         <tr><td style="width:10px !important"><input:mpPel style="font-size:70%"/></td><td colspan="2">Peliculas</td><td><input:mpPelq style="width:40px"/></td><td><input:mpPeldev style="font-size:60%"/></td><td colspan="3">N&deg;&nbsp;<input:barcode style="width:80%"/></td><td><input:colorBarcode style="width:40px"/></td><th colspan="3" class="centrada">Disposicion de bandas</th></tr>
         <tr><td style="width:10px !important"><input:mpImp style="font-size:70%"/></td><td colspan="2">Muestra Imp.</td><td><input:mpImpq style="width:40px"/></td><td><input:mpImpdev style="font-size:60%"/></td><th colspan="3">Marcas en los Clisse</th><th>Colores</th><td colspan="3" rowspan="5" style="text-align: center"><input:dispBandas style="font-size:80%"/>&nbsp;(0=Bandas alineadas   1=Bandas desplazadas)</td></tr>
@@ -186,8 +179,8 @@
         <tr><th colspan="5" class="centrada">Sustrato a imprimir</th><td colspan="3"><input:mcTacas style="font-size:60%"/>&nbsp;Tacas&nbsp;<input:mcTacasH style="width:30px"/>x<input:mcTacasV style="width:30px"/></td><td><input:mcTacascol style="width:40px"/></td></tr>
         <tr><td colspan="5"><input:sustrato/></td><td colspan="3"><input:mcTiras style="font-size:60%"/>&nbsp;Tiras de control</td><td><input:mcTirascol style="width:40px"/></td><td colspan="3" class="centrada">N. de Pasos:&nbsp;<input:nPasos/></td></tr>
         <tr><th colspan="5" class="centrada">Fotopolimero</th><td colspan="3"><input:mcExceso style="font-size:60%"/>&nbsp;Exceso</td><td><input:mcExcesocol style="width:40px"/></td><td colspan="3" class="centrada">N. de Bandas&nbsp;<input:nBandas/></td></tr>
-        <tr><td colspan="2" class="centrada"><input:espesor/></td><td colspan="3" class="centrada">Tipo: <input:tipofotop/></td><td colspan="3"><input:mcMarcas style="font-size:60%"/>&nbsp;Marcas de calce</td><td/><td colspan="3" rowspan="2">N. de Copias&nbsp;<input:nCopias/></td></tr>
-        <tr><td colspan="5" class="centrada"><input:supRev/></td><td colspan="3"><input:mcPimp style="font-size:60%"/>&nbsp;Pie de Imprenta</td><td><input:mcPimpcol style="width:40px"/></td></tr>
+        <tr><td colspan="2" class="centrada"><input:espesor/></td><td colspan="3" class="centrada">Tipo:<input:tipofotop/></td><td colspan="3"><input:mcMarcas style="font-size:60%"/>&nbsp;Marcas de calce</td><td/><td colspan="3" rowspan="2">N. de Copias&nbsp;<input:nCopias/></td></tr>
+        <tr><td colspan="5" class="centrada"><input:supRev sort="DESC"/></td><td colspan="3"><input:mcPimp style="font-size:60%"/>&nbsp;Pie de Imprenta</td><td><input:mcPimpcol style="width:40px"/></td></tr>
         <tr><th colspan="9" class="centrada">Observaciones</th><th colspan="3">Entrega: <input:fechaEntrega style="width:7em"/></th></tr>
     <tr><td rowspan="4" colspan="9" class="centrada"><input:observaciones/></td><th colspan="1" class="centrada" style="width:30px">Trapping</th><th class="centrada" style="width:30px" colspan="2">Curva</th></tr>
 	  <tr><td colspan="1" class="centrada"><input:trapping  style="width:30px"/></td><td class="centrada" colspan="2"><input:curva style="width:100px"/></td></tr>
@@ -197,7 +190,7 @@
       <hjq-input-many:separacions>
         <empty-message:>No hay colores definidos</empty-message:>
         <item:>
-        <div><%= if this.position then this.position else "-" end%>&nbsp;Color:<input:color style="width:13%"/> Anilox:<input:anilox style="width:5%"/> Lineatura:<input:lpi style="width:5%"/> Material:<input:tipomat/> Espesor:<input:espesor/>&nbsp;&nbsp; Alto:<input:alto style="width:5%"/> x Ancho:<input:ancho  style="width:5%"/><hidden-id-field/></div>
+        <div><%= if this.position then this.position else "-" end%>&nbsp;Color:<input:color style="width:13%"/> Anilox:<input:anilox style="width:5%"/> Lineatura:<input:lpi style="width:5%"/> Material:<input:tipomat/> Espesor:<input:espesor blank-message="0.00"/>&nbsp;&nbsp; Alto:<input:alto style="width:5%"/> x Ancho:<input:ancho  style="width:5%"/><hidden-id-field/></div>
         </item:>
         <add-item:>Agregar color</add-item:>
       </hjq-input-many:separacions>
@@ -216,27 +209,21 @@
   <td style="width:80px" />
 </def>
 
-<def tag="habilitar-form" for="OrdTrab">
-  <form lifecycle="habilitar" merge param="default">
-    <after-submit uri="/ord_trabs/tablero"/>
-    <error-messages param/>
-    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
-    <field-list fields="numOT, fecha, nomprod, mdi_desarrollo, mdi_ancho, barcode" param/>
-    <div param="actions">
-      <submit label="#{ht 'ord_trabs.actions.habilitar', :default=>['Habilitar']}" param/><or-cancel param="cancel"/>
-    </div>
-  </form>
-</def>
+<extend tag="habilitar-form" for="OrdTrab">
+  <form for-type="OrdTrab" merge>
+		<before-actions:><input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/></before-actions:>
 
-<!--<extend tag="form" for="Producto">
-  <old-form merge>
-    <error-messages param/>
-    <b>Cliente</b><input:cliente/>&nbsp;&nbsp;<b>Producto</b><name/>&nbsp;&nbsp;<b>C&oacute;digo de Cliente</b><view:codCliente/><br />
-    <div param="actions">
-      <submit label="#{ht 'ord_trabs.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
-    </div>
-  </old-form>
-</extend>-->
+    <actions:>
+      <submit label="#{ht 'ord_trabs.actions.habilitar', :default=>['Habilitar']}" param/><or-cancel param="cancel"/>
+    </actions:>
+  </form>
+</extend>
+
+<extend tag="card" for="Intervencion">
+  <header:>
+		<h4><view with="&this.tarea.ord_trab.nomprod"></view> :<a><view with="&this.tarea"/></a></h4>
+	</header:>
+</extend>
 
 <def tag="ver" param>
   <view: class="vista" />
@@ -297,11 +284,18 @@
   </old-edit-page>
 </extend>
 
-<extend tag="reset-password-form" for="User">
-  <append-reset-password-form>
+<def tag="reset-password-form" polymorphic/>
+<def tag="reset-password-form" for="User">
+  <form lifecycle="reset_password" merge param="default">
+    <error-messages param/>
     <after-submit go-back/>
-  </append-reset-password-form>
-</extend>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="password, password_confirmation" param/>
+    <div param="actions">
+      <submit label="#{ht 'users.actions.reset_password', :default=>['Reset Password']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
 
 <extend tag="show-page" for="Cliente">
   <old-show-page merge>
@@ -398,7 +392,7 @@
   <card class="proceso" param="default" merge>
     <header: param>
       <h4 param="heading"><a><name/></a>&nbsp;&nbsp;<view:position/>&nbsp;<span style="margin-left:15%">Grupo: <editor:grupoproc/></span></h4>
-    
+
     <div param="actions">
         <a action="edit" if="&can_edit?" param="edit-link">
           <ht key="proceso.actions.edit">Edit</ht>
@@ -422,9 +416,9 @@
 </def>
 
 <def tag="card" for="Tarea">
-  <card class="tarea" param="default" merge>
-    <header: param>
-      <h4 param="heading"><a><name/></a>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: normal;font-size: 90%"><%= this.ord_trab.nomprod%></span>&nbsp;&nbsp;</h4>
+  <card class="tarea #{this.state}" param="default" merge>
+    <header: param >
+      <h4 param="heading" ><a><name/></a>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: normal;font-size: 90%;"><%= this.ord_trab.nomprod%></span>&nbsp;&nbsp;</h4>
     </header:>
   </card>
 </def>
@@ -475,4 +469,14 @@
     </li>
   </ul>
 </def>
+
+<extend tag="form" for="User">
+	<old-form merge>
+    <field-list: fields="name, rol, email_address, administrator, iniciales, state, procesos">
+    	<procesos-view:>
+    		<check-many/>
+    	</procesos-view:>
+    </field-list:>
+	</old-form>
+</extend>
 

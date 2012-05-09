@@ -3,5 +3,5 @@ PDFKit.configure do |config|
 		:page_size => 'Letter',
 		:print_media_type => true
 	}
-	config.root_url = "http://0.0.0.0"
+	config.root_url = "http://preprensa.tecniflex.cl"
 end

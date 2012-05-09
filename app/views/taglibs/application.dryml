@@ -12,11 +12,11 @@
   <old-page merge without-live-search>
      <append-head:>
        <javascript name="jquery.ui.datepicker-es" />
+       <base href="http://preprensa.tecniflex.cl" target="_blank" />
      </append-head:>
     <custom-scripts:>
       <hjq-assets/>
     </custom-scripts:>
-
   </old-page>
 </extend>
 
