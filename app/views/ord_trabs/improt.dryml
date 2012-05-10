@@ -5,6 +5,7 @@
   <theme-stylesheet:></theme-stylesheet:>
   <header: replace></header:>
   <content: style="background:#fff" with="&@ord_trab">
+	<h1 class="titulot">Orden de Trabajo</h1> 
   		<div class="logo"></div>
 			<table class="#{ @ord_trab.claset}">
 				<% @this = @ord_trab %>
