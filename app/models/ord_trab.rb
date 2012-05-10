@@ -149,16 +149,16 @@ class OrdTrab < ActiveRecord::Base
   validates_associated :separacions, :if => "(self.mtje || self.mtz) && self.activa? ", :on => :habilitar
 
   def before_create
-	if OrdTrab.all == []
-		self.numOT = 60000
-	else
-		self.numOT = (OrdTrab.all.last.id.to_i || 0) + 60001
-	end
-    if OrdTrab.cliente_is(self.cliente) != []
-      self.codCliente = (OrdTrab.cliente_is(self.cliente).last.codTflex.to_i || 1) + 2000
-    else
-      self.codCliente = 2000
-    end
+		if OrdTrab.all == []
+			self.numOT = 60000
+		else
+			self.numOT = (OrdTrab.order_by(:id).last.id.to_i || 0) + 60001
+		end
+		if OrdTrab.cliente_is(self.cliente) != []
+			self.codCliente = (OrdTrab.order_by(:id).cliente_is(self.cliente).last.codTflex.to_i || 1) + 2000
+		else
+			self.codCliente = 2000
+		end
   end
 
   def activa?
@@ -166,7 +166,6 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def after_update
-
   	# Hash para asignar usuarios a tareas segun su grupo de procesos
     @gptar = Hash.new
     self.tareas.asignada_a_is_not('nil').each do |tare|

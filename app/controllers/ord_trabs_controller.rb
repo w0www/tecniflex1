@@ -10,6 +10,7 @@ class OrdTrabsController < ApplicationController
   def new
     if params[:id]
       @prima = OrdTrab.find(params[:id])
+      @prima.version ||= 1
       @prima.version += 1
       @prima.save
       @primat = @prima.attributes.except('numOT')
