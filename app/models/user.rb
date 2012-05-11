@@ -16,7 +16,7 @@
   has_many :asignacions, :class_name => "Tarea", :foreign_key => "asignada_a"
   has_many :procesos, :through => :user_labors, :accessible => true
   has_many :user_labors
-  
+
   # This gives admin rights to the first sign-up.
   # Just remove it if you don't want that
   before_create { |user| user.administrator = true if !Rails.env.test? && count == 0 }
@@ -29,7 +29,7 @@
    def self.admines
     User.find(:all, :conditions => {:administrator => true})
   end
-  
+
   def self.supervisores
 		User.rol_is("Supervisor")
 	end
@@ -37,7 +37,7 @@
   lifecycle do
 
     state :active, :default => true
-             
+
     transition :request_password_reset, { :active => :active }, :new_key => true do
       UserMailer.deliver_forgot_password(self, lifecycle.key)
     end
@@ -46,21 +46,21 @@
                :params => [ :password, :password_confirmation ]
 
   end
-  
+
   def superv?
     self.rol == "Supervisor"
   end
-  
+
   def hace?(proce)
     self.procesos.*.nombre.include?(proce)
   end
-  
+
   def sinfin
-		self.intervencions.all(:conditions => {:termino => nil})
+		self.intervencions.all(:conditions => {:termino => nil, :final => false})
 	end
-  
- 
-  
+
+
+
 
   # --- Permissions --- #
 
@@ -69,7 +69,7 @@
   end
 
   def update_permitted?
-    acting_user.administrator? || 
+    acting_user.administrator? ||
       (acting_user == self && only_changed?(:email_address, :crypted_password,
                                             :current_password, :password, :password_confirmation))
     # Note: crypted_password has attr_protected so although it is permitted to change, it cannot be changed

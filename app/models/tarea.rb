@@ -15,7 +15,9 @@ class Tarea < ActiveRecord::Base
   belongs_to :proceso
   belongs_to :recurso
   belongs_to :asignado, :class_name => "User", :foreign_key => :asignada_a
-  has_many :intervencions, :accessible => true, :dependent => :destroy
+  # Se elimina dependent => destroy, porque podría borrarse una tarea y perder el registro del trabajo de los operadores.
+  has_many :intervencions, :accessible => true
+
   has_many :users, :through => :intervencions
 
 
@@ -40,6 +42,14 @@ class Tarea < ActiveRecord::Base
 			end
 		end
   end
+
+	# Marcar las intervenciones pertenecientes a una tarea destruida, para que no aparezcan en la lista inicial.
+	def before_destroy
+		self.intervencions.each do |estin|
+			estin.final = true
+			estin.save
+		end
+	end
 
   def aptos
     User.with_procesos(self.proceso)

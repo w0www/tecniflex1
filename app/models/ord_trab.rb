@@ -133,15 +133,28 @@ class OrdTrab < ActiveRecord::Base
 
     transition :eliminar, { :iniciada => :destroy }, :available_to => "User.supervisores"
 
-		transition :terminar, { :iniciada => :terminada }, :available_to => "User.supervisores" do
+		transition :terminar, { :iniciada => :terminada }, :available_to => "User.supervisores" , :if => "self.termtars?" do
       self.tareas.each do |task|
           task.state = "terminada"
           task.save
       end
     end
 
-    transition :reactivar, {:terminada => :habilitada}, :available_to => "User.supervisores"
-
+    transition :reactivar, {:terminada => :habilitada}, :available_to => "User.supervisores" do
+    	esta = self
+    	self.tareas.each do |tara|
+    		if tara == esta.tareas.first
+    			tara.state = "habilitada"
+    		else
+    			tara.state = "creada"
+    	  end
+    		tara.save
+    	end
+    	self.tareas.first do |prima|
+    		prima.state = "habilitada"
+    		prima.save
+    	end
+    end
 	end
 
   validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.visto || self.ptr", :on => :habilitar
@@ -165,7 +178,41 @@ class OrdTrab < ActiveRecord::Base
     ['habilitada','iniciada','detenida'].include?(self.state)
   end
 
+	def termtars?
+		if self.tareas != []
+			if self.tareas.*.state.rindex{|x| x!="terminada"} == nil
+				true
+			else
+				false
+			end
+		end
+	end
   def after_update
+  	# Verificar si las tareas asignadas corresponden a las SolAEjec seleccionadas
+  	estot = self
+  	self.tareas.each do |tara|
+  		if tara.proceso.grupoproc.saevb
+  			unless estot.visto
+  				tara.destroy
+  				tara.save
+  			end
+  		elsif tara.proceso.grupoproc.saeptr
+  			unless estot.ptr
+  				tara.destroy
+  				tara.save
+  			end
+  		elsif tara.proceso.grupoproc.saemtz
+  			unless estot.mtz
+  				tara.destroy
+  				tara.save
+  			end
+  		elsif tara.proceso.grupoproc.saemtje
+  			unless estot.mtje
+  				tara.destroy
+  				tara.save
+  			end
+  		end
+  	end
   	# Hash para asignar usuarios a tareas segun su grupo de procesos
     @gptar = Hash.new
     self.tareas.asignada_a_is_not('nil').each do |tare|
