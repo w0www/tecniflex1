@@ -35,8 +35,8 @@ class Tarea < ActiveRecord::Base
   def before_create
  #  Usar index, maps y sort_by para encontrar la tarea siguiente de la OT, segun posicion (y habilitarla o no)
 		estot = self.ord_trab
-		if self == self.ord_trab.sortars.first
-			if estot.state == "habilitada"
+		if self == self.ord_trab.find_by_numOT(60020).tareas.state_is("creada").first
+			if estot.activa?
 				self.state = "habilitada"
 				self.save
 			end

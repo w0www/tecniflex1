@@ -51,7 +51,7 @@ class OrdTrab < ActiveRecord::Base
     mcTirascol    :string
     mcTirasapy    :string
     mcExceso      :boolean
-    mcExcesoq     :integer
+    mcExcesoq     :decimal, :precision => 5, :scale => 3
     mcExcesocol   :string
     mcExcesoapy   :string
     mcMarcas      :boolean
@@ -110,6 +110,10 @@ class OrdTrab < ActiveRecord::Base
   @tarasi
 	end
 
+	def self.dacod(cli)
+		 (OrdTrab.order_by(:id).cliente_is(cli).last.codCliente.to_i || 2000) + 1
+ end
+
 
   lifecycle do
 
@@ -167,11 +171,6 @@ class OrdTrab < ActiveRecord::Base
 		else
 			self.numOT = (OrdTrab.order_by(:id).last.id.to_i || 0) + 60001
 		end
-		if OrdTrab.cliente_is(self.cliente) != []
-			self.codCliente = (OrdTrab.order_by(:id).cliente_is(self.cliente).last.codTflex.to_i || 1) + 2000
-		else
-			self.codCliente = 2000
-		end
   end
 
   def activa?
@@ -187,6 +186,7 @@ class OrdTrab < ActiveRecord::Base
 			end
 		end
 	end
+
   def after_update
   	# Verificar si las tareas asignadas corresponden a las SolAEjec seleccionadas
   	estot = self
@@ -250,7 +250,6 @@ class OrdTrab < ActiveRecord::Base
     unless self.nPasos?
       self.nPasos = 1
     end
-
     if self.visto
       unless self.procesos.*.grupoproc.*.saevb.include?(true)
       	Proceso.checkproc('saevb').each do |provisto|

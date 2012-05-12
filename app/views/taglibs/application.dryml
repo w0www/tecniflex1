@@ -148,7 +148,8 @@
             </else>
           </do>
         </th></tr>
-        <tr><th class="centrada" colspan="5">Solicitud a Ejecutar</th><td class="centrada" part="siglac" colspan="3"><if test="&@ord_trab.cliente"><view:cliente.sigla/></if>&nbsp;-&nbsp;<input:codCliente  style="width:4em"/></td><td><input:version value="#{ this.version || 1 }" style="width:3em"/></td><th colspan="3" class="centrada">Disposici&oacute;n Clisse</th></tr>
+        <tr><th class="centrada" colspan="5">Solicitud a Ejecutar</th>
+        <td class="centrada" part="siglac" colspan="3"><if test="&@ord_trab.cliente"><view:cliente.sigla/>&nbsp;-&nbsp;<input:codCliente value="#{ this.codCliente || OrdTrab.dacod(@ord_trab.cliente)}" style="width:4em"/></if></td><td><input:version value="#{ this.version || 1 }" style="width:3em"/></td><th colspan="3" class="centrada">Disposici&oacute;n Clisse</th></tr>
         <tr><td colspan="5" style="font-size:80%"><input:visto/>&nbsp;V.B.&nbsp;&nbsp;<input:ptr/>&nbsp;Printer&nbsp;&nbsp;<input:mtz/>&nbsp;MTZ&nbsp;&nbsp;<input:mtje/>&nbsp;MTJE</td><th colspan="4" class="centrada">Medidas de Impresion</th><td style="width:155px;">
            <do part="cyl">
             <if test="&@ord_trab.impresora">
@@ -177,7 +178,7 @@
         <tr><td style="width:10px !important"><input:mpPtr style="font-size:70%"/></td><td colspan="2">Printer</td><td><input:mpPtrq style="width:40px"/></td><td><input:mpPtrdev style="font-size:60%"/></td><td colspan="3"><input:mcCruces style="font-size:60%"/>&nbsp;Cruces</td><td><input:mcCrucescol style="width:40px"/></td></tr>
         <tr><th colspan="5" class="centrada">Sustrato a imprimir</th><td colspan="3"><input:mcTacas style="font-size:60%"/>&nbsp;Tacas&nbsp;<input:mcTacasH style="width:30px"/>x<input:mcTacasV style="width:30px"/></td><td><input:mcTacascol style="width:40px"/></td></tr>
         <tr><td colspan="5"><input:sustrato/></td><td colspan="3"><input:mcTiras style="font-size:60%"/>&nbsp;Tiras de control</td><td><input:mcTirascol style="width:40px"/></td><td colspan="3" class="centrada">N. de Pasos:&nbsp;<input:nPasos/></td></tr>
-        <tr><th colspan="5" class="centrada">Fotopolimero</th><td colspan="3"><input:mcExceso style="font-size:60%"/>&nbsp;Exceso</td><td><input:mcExcesocol style="width:40px"/></td><td colspan="3" class="centrada">N. de Bandas&nbsp;<input:nBandas/></td></tr>
+        <tr><th colspan="5" class="centrada">Fotopolimero</th><td colspan="3"><input:mcExceso style="font-size:60%"/>&nbsp;Exceso&nbsp;<input:mcExcesoq/></td><td><input:mcExcesocol style="width:40px"/></td><td colspan="3" class="centrada">N. de Bandas&nbsp;<input:nBandas/></td></tr>
         <tr><td colspan="2" class="centrada"><input:espesor/></td><td colspan="3" class="centrada">Tipo:<input:tipofotop/></td><td colspan="3"><input:mcMarcas style="font-size:60%"/>&nbsp;Marcas de calce</td><td/><td colspan="3" rowspan="2">N. de Copias&nbsp;<input:nCopias/></td></tr>
         <tr><td colspan="5" class="centrada"><input:supRev sort="DESC"/></td><td colspan="3"><input:mcPimp style="font-size:60%"/>&nbsp;Pie de Imprenta</td><td><input:mcPimpcol style="width:40px"/></td></tr>
         <tr><th colspan="9" class="centrada">Observaciones</th><th colspan="3">Entrega: <input:fechaEntrega style="width:7em"/></th></tr>
