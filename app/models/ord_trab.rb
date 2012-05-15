@@ -539,7 +539,7 @@ def self.dacod(cli)
 	private
 
 	def fecha_posterior
-		errors.add(:fechaEntrega, 'La fecha de entrega debe ser posterior a la fecha actual') if fechaEntrega < fecha
+		errors.add(:fechaEntrega, 'La fecha de entrega debe ser posterior a la fecha actual') if self.fechaEntrega < self.fecha
 	end
 end
 
