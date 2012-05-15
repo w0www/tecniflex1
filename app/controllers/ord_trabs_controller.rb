@@ -82,22 +82,18 @@ class OrdTrabsController < ApplicationController
     @clies = Cliente.all
     if params[:orden].blank? && ((params[:startdate].blank? && params[:enddate].blank?) && (params[:cliente].blank? && params[:codCliente].blank?))
 	    @todas = OrdTrab.find(:all)
-	    @test = "Primera"
 	  elsif params[:orden]
       @orde = params[:orden]
       @todas = OrdTrab.find(:all, :conditions => ["numot = ?", @orde])
-      @test = "Segunda"
       #hobo_index OrdTrab.apply_scopes(:search => [params[:orden], :numOT], :order_by => :numOT)
     elsif params[:cliente] && params[:codCliente]
     	@elcli = params[:cliente]
     	@cocli = params[:codCliente]
-    	@test = "Tercera"
     	@todas = OrdTrab.find(:all, :conditions => ["codCliente = ? and cliente_id = ?", @cocli, @elcli])
     elsif params[:startdate] && params[:enddate]
         @from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
         @to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
         @todas = OrdTrab.find(:all, :conditions => ["created_at > ? and created_at < ?",@from_date,@to_date])
-        @test = "Cuarta"
     end
     hobo_ajax_response if request.xhr?
   end
