@@ -164,6 +164,7 @@ class OrdTrab < ActiveRecord::Base
   validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.visto || self.ptr", :on => :habilitar
   validates_presence_of :trapping, :curva, :impresora, :cilindro, :nBandas, :nPasos, :nCopias, :sustrato, :fechaEntrega, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_associated :separacions, :if => "(self.mtje || self.mtz) && self.activa? ", :on => :habilitar
+	validate :fecha_posterior
 
   def before_create
 		if OrdTrab.all == []
@@ -233,15 +234,25 @@ class OrdTrab < ActiveRecord::Base
 
   # Ordena las tareas de una OT segun la posicion de sus procesos. Permite habilitar las tareas en orden.
   def sortars
-	estatars = self.tareas.map {|tar| [tar.id, tar.proceso.position]}
-	estatarsort = estatars.sort_by{|item| item[1]}
-	sortares = []
-	estatarsort.each do |estata|
-		sortares << Tarea.find(estata[0])
-	end
-	sortares
+		estatars = self.tareas.map {|tar| [tar.id, tar.proceso.position]}
+		estatarsort = estatars.sort_by{|item| item[1]}
+		sortares = []
+			estatarsort.each do |estata|
+				sortares << Tarea.find(estata[0])
+			end
+		sortares
   end
 
+	def sortarasigs
+		taras = self.tareas.find(:all, :conditions => ["proceso_id IN (?)", Proceso.asignables])
+		estatars = taras.map {|tar| [tar.id, tar.proceso.position]}
+		estatarsort = estatars.sort_by{|item| item[1]}
+		sortares = []
+			estatarsort.each do |estata|
+				sortares << Tarea.find(estata[0])
+			end
+		sortares
+  end
 
   def before_save
     unless self.nBandas?
@@ -505,5 +516,10 @@ class OrdTrab < ActiveRecord::Base
     true
   end
 
+	private
+
+	def fecha_posterior
+		errors.add(:fechaEntrega, 'La fecha de entrega debe ser posterior a la fecha actual') if fechaEntrega < fecha
+	end
 end
 

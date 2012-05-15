@@ -67,7 +67,7 @@ class OrdTrabsController < ApplicationController
   def show
     hobo_show
   	#nopol = Grupoproc.find(:all, :conditions => ["nombre != (?) AND nombre != (?)", "Polimero", "Prep"]).*.nombre
-   @taras = this.tareas.find(:all, :conditions => ["proceso_id IN (?)", Proceso.asignables])
+   @taras = this.sortarasigs
   end
 
   def modificar
@@ -79,18 +79,25 @@ class OrdTrabsController < ApplicationController
 
   index_action :tablero do
     @grupro = Grupoproc.tablero.order_by(:position)
-    unless params[:orden].blank?
+    @clies = Cliente.all
+    if params[:orden].blank? && ((params[:startdate].blank? && params[:enddate].blank?) && (params[:cliente].blank? && params[:codCliente].blank?))
+	    @todas = OrdTrab.find(:all)
+	    @test = "Primera"
+	  elsif params[:orden]
       @orde = params[:orden]
       @todas = OrdTrab.find(:all, :conditions => ["numot = ?", @orde])
+      @test = "Segunda"
       #hobo_index OrdTrab.apply_scopes(:search => [params[:orden], :numOT], :order_by => :numOT)
-    else
-      if params[:startdate].blank? && params[:enddate].blank?
-        @todas = OrdTrab.find(:all)
-      else
+    elsif params[:cliente] && params[:codCliente]
+    	@elcli = params[:cliente]
+    	@cocli = params[:codCliente]
+    	@test = "Tercera"
+    	@todas = OrdTrab.find(:all, :conditions => ["codCliente = ? and cliente_id = ?", @cocli, @elcli])
+    elsif params[:startdate] && params[:enddate]
         @from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
         @to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
         @todas = OrdTrab.find(:all, :conditions => ["created_at > ? and created_at < ?",@from_date,@to_date])
-      end
+        @test = "Cuarta"
     end
     hobo_ajax_response if request.xhr?
   end

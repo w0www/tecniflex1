@@ -124,7 +124,7 @@ table.tablero th{
     font-size: 110%;
     border-style: solid dotted;
     border-width: 1px;
-    min-width: 75px;
+    min-width: 65px;
 }
 
 table.tablero td{
@@ -132,7 +132,7 @@ table.tablero td{
     padding: 3px;
     border-style: solid dotted;
     border-width: 1px;
-    
+
 }
 
 .ciclo{
@@ -145,11 +145,11 @@ table.tablero td{
 	color: white;
 	background-color:red;
 	float: right;
-	
+
 }
 
 .tablero .hr1 {
-    width: 70px;
+    width: 85px;
 }
 
 .tablero .hr2 {

@@ -3,12 +3,13 @@ class Proceso < ActiveRecord::Base
   hobo_model # Don't put anything above this
 
   acts_as_list
-  
+
   fields do
     nombre      :string, :name => :true
     descripcion :text
     prueba			:boolean
     reinit			:boolean
+    edmeds			:boolean
     timestamps
   end
 
@@ -25,11 +26,11 @@ class Proceso < ActiveRecord::Base
 		@gasig = Grupoproc.asignar
 		Proceso.find(:all, :conditions => ["grupoproc_id IN (?)", @gasig])
 	end
-	
+
 	def self.checkproc(ticket)
   	gpro = Proceso.all(:joins => [:grupoproc], :conditions => {"grupoprocs.#{ticket}" => true})
 	end
-	
+
   # --- Permissions --- #
 
   def create_permitted?

@@ -16,7 +16,8 @@
         <tr></tr>
         <tr/>
       </table>
-      <% if (current_user.hace?("Grabado") && this.proceso.grupoproc.saemtje) %>
+    </div>
+      <% if (current_user.hace?("Grabado") && this.proceso.edmeds) %>
 
         <table class="tarea">
 
@@ -34,7 +35,7 @@
 
           </table>
         <%end%>
-
+<div part="botones">
  <% @intervs = this.intervencions.find(:all, :joins => :user, :conditions => ["name = ?", current_user.name]) %>
  <%if (this.state != "terminada") && (this.state != "cambiada")%>
 
@@ -42,7 +43,7 @@
 
         <% if @intervs.last.termino == nil%>
             <% @termin = 0 %>
-                 <form with="&@intervs.last" update="campos">
+                 <form with="&@intervs.last" update="campos,botones">
 
 
                       <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
@@ -62,7 +63,7 @@
                 </form>
          <% else %>
               <% @estatarea = this.id %>
-               <form with="&Intervencion.new" update="campos">
+               <form with="&Intervencion.new" update="campos,botones">
 
                     <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
                     <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{@estatarea}"/>
@@ -82,7 +83,7 @@
 
    <% else %>
           <br/>
-          <form with="&Intervencion.new" update="campos">
+          <form with="&Intervencion.new" update="campos,botones">
 
                 <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
                 <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{params[:id]}"/>
@@ -93,7 +94,7 @@
    <% end %>
 
   <%end%>
-  </div>
+</div>
  <!--  <form with="&Intervencion.new" update="campos">
       <input class="hidden" type="text" name="intervencion[fhinicio]" value="#{Time.now}"/>
       <input type="text" name="intervencion[user]" value="#{current_user}"/>
