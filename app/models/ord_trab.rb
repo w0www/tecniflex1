@@ -98,22 +98,37 @@ class OrdTrab < ActiveRecord::Base
   belongs_to :espesor
   belongs_to  :sustrato
 
-	default_scope :order => 'numOT DESC'
+default_scope :order => 'numOT DESC'
 
   def tarasigs
   @tarasi = true
   	self.tareas.each do |latask|
-		    if latask.proceso.grupoproc.asignar && (latask.asignado == nil)
+		 if latask.proceso.grupoproc.asignar && (latask.asignado == nil)
 		        @tarasi = (@tarasi && false)
-        end
-    end
+        	end
+   	 end
   @tarasi
-	end
+end
 
-	def self.dacod(cli)
-		 (OrdTrab.order_by(:id).cliente_is(cli).last.codCliente.to_i || 2000) + 1
+def self.dacod(cli)
+	if OrdTrab.all != []
+	 	(OrdTrab.order_by(:id).cliente_is(cli).last.codCliente.to_i || 2000) + 1
+	else
+		2000
+	end
  end
 
+
+  # Ordena las tareas de una OT segun la posicion de sus procesos. Permite habilitar las tareas en orden.
+  def sortars
+	estatars = self.tareas.map {|tar| [tar.id, tar.proceso.position]}
+	estatarsort = estatars.sort_by{|item| item[1]}
+	sortares = []
+	estatarsort.each do |estata|
+		sortares << Tarea.find(estata[0])
+	end
+	sortares
+  end
 
   lifecycle do
 
@@ -123,11 +138,9 @@ class OrdTrab < ActiveRecord::Base
 
 		create :crear, :become => :creada, :available_to => "User.supervisores"
 
-		transition :habilitar, { :creada => :habilitada }, :available_to => "User.supervisores", :if => "self.tarasigs" do
-			self.sortars.first.lifecycle.habilitar!(acting_user) if self.sortars.first
-    end
+		transition :habilitar, { :creada => :habilitada }, :available_to => "User.supervisores", :if => "self.tarasigs"
 
-    transition :eliminar, { :habilitada => :destroy }, :available_to => "User.supervisores"
+   		transition :eliminar, { :habilitada => :destroy }, :available_to => "User.supervisores"
 
 		transition :iniciar, { :habilitada => :iniciada }, :available_to => "User.supervisores"
 
@@ -191,7 +204,24 @@ class OrdTrab < ActiveRecord::Base
   def after_update
   	# Verificar si las tareas asignadas corresponden a las SolAEjec seleccionadas
   	estot = self
-  	self.tareas.each do |tara|
+  	estot.tareas.each do |tara|
+		if tara == estot.sortars[estot.sortars.*.state.index("creada").to_i]
+			if estot.activa?
+				if tara == estot.sortars.first
+					if tara.state == "creada"
+						tara.state = "habilitada"
+						tara.save
+					end
+				end
+
+				unless estot.sortars[estot.sortars.index(tara)-1].state == "habilitada"
+					if tara.state == "creada"
+						tara.state = "habilitada"
+						tara.save
+					end
+				end
+			end
+		end
   		if tara.proceso.grupoproc.saevb
   			unless estot.visto
   				tara.destroy
@@ -232,16 +262,6 @@ class OrdTrab < ActiveRecord::Base
     end
    end
 
-  # Ordena las tareas de una OT segun la posicion de sus procesos. Permite habilitar las tareas en orden.
-  def sortars
-		estatars = self.tareas.map {|tar| [tar.id, tar.proceso.position]}
-		estatarsort = estatars.sort_by{|item| item[1]}
-		sortares = []
-			estatarsort.each do |estata|
-				sortares << Tarea.find(estata[0])
-			end
-		sortares
-  end
 
 	def sortarasigs
 		taras = self.tareas.find(:all, :conditions => ["proceso_id IN (?)", Proceso.asignables])

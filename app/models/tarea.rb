@@ -27,21 +27,10 @@ class Tarea < ActiveRecord::Base
 
   after_initialize :init
 
-  def init
+  	def init
 		self.ciclovb ||= 1
 		self.cicloptr ||= 1
 	end
-
-  def before_create
- #  Usar index, maps y sort_by para encontrar la tarea siguiente de la OT, segun posicion (y habilitarla o no)
-		estot = self.ord_trab
-		if self == self.ord_trab.tareas.state_is("creada").first
-			if estot.activa?
-				self.state = "habilitada"
-				self.save
-			end
-		end
-  end
 
 	# Marcar las intervenciones pertenecientes a una tarea destruida, para que no aparezcan en la lista inicial.
 	def before_destroy
