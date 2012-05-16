@@ -111,7 +111,11 @@ default_scope :order => 'numOT DESC'
 end
 
 def self.dacod(cli)
-	 (OrdTrab.order_by(:id).cliente_is(cli).last.codCliente.to_i || 2000) + 1
+	if OrdTrab.all != []
+	 	(OrdTrab.order_by(:id).cliente_is(cli).last.codCliente.to_i || 2000) + 1
+	else
+		2000
+	end
  end
 
 
@@ -134,7 +138,7 @@ def self.dacod(cli)
 
 		create :crear, :become => :creada, :available_to => "User.supervisores"
 
-		transition :habilitar, { :creada => :habilitada }, :available_to => "User.supervisores", :if => "self.tarasigs" 
+		transition :habilitar, { :creada => :habilitada }, :available_to => "User.supervisores", :if => "self.tarasigs"
 
    		transition :eliminar, { :habilitada => :destroy }, :available_to => "User.supervisores"
 
@@ -173,6 +177,7 @@ def self.dacod(cli)
   validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.visto || self.ptr", :on => :habilitar
   validates_presence_of :trapping, :curva, :impresora, :cilindro, :nBandas, :nPasos, :nCopias, :sustrato, :fechaEntrega, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_associated :separacions, :if => "(self.mtje || self.mtz) && self.activa? ", :on => :habilitar
+	validate :fecha_posterior
 
   def before_create
 		if OrdTrab.all == []
@@ -208,7 +213,7 @@ def self.dacod(cli)
 						tara.save
 					end
 				end
-			
+
 				unless estot.sortars[estot.sortars.index(tara)-1].state == "habilitada"
 					if tara.state == "creada"
 						tara.state = "habilitada"
@@ -258,6 +263,16 @@ def self.dacod(cli)
    end
 
 
+	def sortarasigs
+		taras = self.tareas.find(:all, :conditions => ["proceso_id IN (?)", Proceso.asignables])
+		estatars = taras.map {|tar| [tar.id, tar.proceso.position]}
+		estatarsort = estatars.sort_by{|item| item[1]}
+		sortares = []
+			estatarsort.each do |estata|
+				sortares << Tarea.find(estata[0])
+			end
+		sortares
+  end
 
   def before_save
     unless self.nBandas?
@@ -521,5 +536,10 @@ def self.dacod(cli)
     true
   end
 
+	private
+
+	def fecha_posterior
+		errors.add(:fechaEntrega, 'La fecha de entrega debe ser posterior a la fecha actual') if fechaEntrega < fecha
+	end
 end
 

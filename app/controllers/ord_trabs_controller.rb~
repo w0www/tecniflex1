@@ -10,7 +10,10 @@ class OrdTrabsController < ApplicationController
   def new
     if params[:id]
       @prima = OrdTrab.find(params[:id])
-      @primat = @prima.attributes.except(:numOT)
+      @prima.version ||= 1
+      @prima.version += 1
+      @prima.save
+      @primat = @prima.attributes.except('numOT')
       @sepas = []
       #@impre = @prima.impresora.attributes[:id]
 
@@ -28,7 +31,6 @@ class OrdTrabsController < ApplicationController
       end
     else
       hobo_new do
-
         this.attributes = params[:ord_trab] || {}
         hobo_ajax_response if request.xhr?
       end
@@ -41,25 +43,33 @@ class OrdTrabsController < ApplicationController
       hobo_ajax_response if request.xhr?
     end
   end
-  
-  index_action :mipag
-  
+
+  show_action :mipag
+
+  show_action :improt do
+		@ord_trab = OrdTrab.find(params[:id])
+	end
+
   def update
     hobo_update do
       hobo_ajax_response if request.xhr?
    end
   end
-  
- 
-  
-  
+
+
+	def index
+		hobo_index do
+		  @ord_trabs = OrdTrab.all.reverse
+		end
+	end
+
+
   def show
-    hobo_show do
-      nopol = Grupoproc.find(:all, :conditions => ["nombre != (?) AND nombre != (?)", "Polimero", "Prep"]).*.nombre
-      @otars = this.tareas.*.proceso.*.grupoproc.*.nombre & nopol
-    end
+    hobo_show
+  	#nopol = Grupoproc.find(:all, :conditions => ["nombre != (?) AND nombre != (?)", "Polimero", "Prep"]).*.nombre
+   @taras = this.sortarasigs
   end
-  
+
   def modificar
     hobo_new do
       @ot_anterior = OrdTrab.find (params[:id])
@@ -69,23 +79,26 @@ class OrdTrabsController < ApplicationController
 
   index_action :tablero do
     @grupro = Grupoproc.tablero.order_by(:position)
-    unless params[:orden].blank?
+    @clies = Cliente.all
+    if params[:orden].blank? && ((params[:startdate].blank? && params[:enddate].blank?) && (params[:cliente].blank? && params[:codCliente].blank?))
+	    @todas = OrdTrab.find(:all)
+	  elsif params[:orden]
       @orde = params[:orden]
       @todas = OrdTrab.find(:all, :conditions => ["numot = ?", @orde])
       #hobo_index OrdTrab.apply_scopes(:search => [params[:orden], :numOT], :order_by => :numOT)
-    else
-      if params[:startdate].blank? && params[:enddate].blank?
-        @todas = OrdTrab.find(:all)
-      else
+    elsif params[:cliente] && params[:codCliente]
+    	@elcli = params[:cliente]
+    	@cocli = params[:codCliente]
+    	@todas = OrdTrab.find(:all, :conditions => ["codCliente = ? and cliente_id = ?", @cocli, @elcli])
+    elsif params[:startdate] && params[:enddate]
         @from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
         @to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
-        @todas = OrdTrab.find(:all, :conditions => ["created_at > ? and created_at < ?",@from_date,@to_date])      
-      end
+        @todas = OrdTrab.find(:all, :order => :id, :conditions => ["created_at >= ? and created_at <= ?",@from_date.to_datetime.in_time_zone(Time.zone).utc,@to_date.to_datetime.in_time_zone(Time.zone).utc])
     end
     hobo_ajax_response if request.xhr?
   end
 
-  
+
   index_action :tablerojax do
   @proces = Proceso.find(:all)
    if params[:startdate].blank? && params[:enddate].blank?
@@ -93,11 +106,11 @@ class OrdTrabsController < ApplicationController
     else
       @from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
       @to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
-      @todas = OrdTrab.find(:all,conditions => ["created_at > ? and created_at < ?",@from_date,@end_date])      
+      @todas = OrdTrab.find(:all,conditions => ["created_at >= ? and created_at < ?",@from_date,@end_date])
     end
     hobo_ajax_response if request.xhr?
   end
-  
+
   index_action :reporte
 
   def do_eliminar
@@ -105,26 +118,38 @@ class OrdTrabsController < ApplicationController
       redirect_to ord_trabs_path
     end
   end
-  
+
   def habilitar
-    transition_page_action :habilitar
+    transition_page_action :habilitar do
+			flash[:notice] = "Habilitacion exitosa"
+		end
   end
-  
-  def do_habilitar
-   
-     @esta = OrdTrab.find (params[:id])
-            if (@esta.visto == true) || (@esta.ptr == true)
-              if @esta.mdi_desarrollo && @esta.mdi_ancho
-                do_transition_action :habilitar
-              else
-                flash[:error] = 'Falta el desarrollo y el ancho'
-                render 'mipag'
-              end
-           else
-              do_transition_action :habilitar
-           end
- 
- end
+
+
+
+  def mail_ot
+      @ot = OrdTrab.find(params[:id])
+      email = render_to_string(:action => 'improt', :layout => false, :object => @ot)
+      email = PDFKit.new(email)
+      email.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
+      email = email.to_pdf
+      RecibArchMailer.deliver_enviapdf(@ot,email)
+      redirect_to :action => 'index'
+	end
+
+  #   @esta = OrdTrab.find (params[:id])
+  #          if (@esta.visto == true) || (@esta.ptr == true)
+   #           if @esta.mdi_desarrollo && @esta.mdi_ancho
+  #              do_transition_action :habilitar
+  #            else
+  #              flash[:error] = 'Falta el desarrollo y el ancho'
+  #              render 'mipag'
+  #            end
+  #         else
+  #            do_transition_action :habilitar
+ #          end
+
+ #end
 
 end
 

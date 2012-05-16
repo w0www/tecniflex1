@@ -177,7 +177,7 @@ def self.dacod(cli)
   validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.visto || self.ptr", :on => :habilitar
   validates_presence_of :trapping, :curva, :impresora, :cilindro, :nBandas, :nPasos, :nCopias, :sustrato, :fechaEntrega, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_associated :separacions, :if => "(self.mtje || self.mtz) && self.activa? ", :on => :habilitar
-	validate :fecha_posterior
+#	validate :fecha_posterior
 
   def before_create
 		if OrdTrab.all == []
@@ -538,8 +538,8 @@ def self.dacod(cli)
 
 	private
 
-	def fecha_posterior
-		errors.add(:fechaEntrega, 'La fecha de entrega debe ser posterior a la fecha actual') if fechaEntrega < fecha
-	end
+#	def fecha_posterior
+#		errors.add(:fechaEntrega, 'La fecha de entrega debe ser posterior a la fecha actual') if fechaEntrega < fecha
+#	end
 end
 
