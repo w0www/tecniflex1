@@ -93,7 +93,7 @@ class OrdTrabsController < ApplicationController
     elsif params[:startdate] && params[:enddate]
         @from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
         @to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
-        @todas = OrdTrab.find(:all, :order => :id, :conditions => ["created_at >= ? and created_at <= ?",@from_date.to_datetime.in_time_zone(Time.zone).utc,@to_date.to_datetime.in_time_zone(Time.zone).utc])
+        @todas = OrdTrab.find(:all, :order => :id, :conditions => ["created_at >= ? and created_at <= ?",@from_date.to_datetime.in_time_zone(Time.zone),@to_date.to_datetime.in_time_zone(Time.zone)])
     end
     hobo_ajax_response if request.xhr?
   end
