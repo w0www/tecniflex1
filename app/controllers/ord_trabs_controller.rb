@@ -59,7 +59,11 @@ class OrdTrabsController < ApplicationController
 
 	def index
 		hobo_index do
-		  @ord_trabs = OrdTrab.all.reverse
+			if params[:ocultar]
+				@ord_trabs = OrdTrab.state_is_not("terminada")
+			else
+		  	@ord_trabs = OrdTrab.all
+		  end
 		end
 	end
 

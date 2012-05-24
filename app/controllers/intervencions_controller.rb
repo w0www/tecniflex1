@@ -22,7 +22,9 @@ class IntervencionsController < ApplicationController
 						end
 					end
 			  elsif params[:envio] == "iniciar"
-					this.tarea.lifecycle.reiniciar!(current_user)
+			  	unless this.tarea.state == "habilitada"
+						this.tarea.lifecycle.reiniciar!(current_user)
+					end
 				end
       hobo_ajax_response if request.xhr?
     end
@@ -31,6 +33,7 @@ class IntervencionsController < ApplicationController
   def update
     hobo_update do
 				if params[:envio] == "terminar"
+					flash[:notice] = 'Ejecutando la transicion terminar!'
           this.tarea.lifecycle.terminar!(current_user)
           this.final = true
           this.save

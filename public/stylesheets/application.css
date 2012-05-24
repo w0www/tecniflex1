@@ -127,6 +127,10 @@ table.tablero th{
     min-width: 65px;
 }
 
+.stdetenida td, .stdetenida .detenida, .stdetenida .Normal, .stdetenida .Urgencia, .stdetenida .Repeticion, .stdetenida .ord-trab-link {
+		color: #999;
+}
+
 table.tablero td{
     text-size: 100%;
     padding: 3px;
@@ -312,6 +316,7 @@ th.Repeticion {
 
 .recibida, .recibido{
 		background-color: purple !important;
+		color: white !important;
 }
 
 .terminada{

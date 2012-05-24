@@ -7,6 +7,7 @@
 
 
   <content-body: >
+  <flash-message/>
     <div part="campos">
       <table class="tarea">
         <tr><th>Cliente</th><td colspan="2"><view:ord_trab.cliente/></td><th>Fecha tope:</th><td colspan="2"><view:ord_trab.fechaEntrega/></td></tr>

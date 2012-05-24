@@ -62,7 +62,7 @@
               <% @todas.each do |tod| %>
               <!-- <repeat with="&@todas"> -->
                 <% @tod = tod %>
-                <tr>
+                <tr class="st#{tod.state}">
                     <th style="width:70px;" class="#{@tod.prioridad}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a><br/><span style="font-weight:normal"><%= tod.cliente.sigla -%>-<%= tod.codCliente %>- v.<%= tod.version || 1 %></span></th><th rowspan="2" style="width: 12em;" class="#{@tod.state}"><%=  tod.nomprod -%></th>
                     <% @grupro.each do |proce|%>
                       <td class="#{tod.estgrupro(proce.abreviacion)}" rowspan="2">

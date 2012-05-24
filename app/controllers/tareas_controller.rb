@@ -40,9 +40,16 @@ class TareasController < ApplicationController
     end
   end
 
+  def terminar
+  	creator_page_action :terminar
+  	flash[:notice] = 'Terminar sin do_'
+  	redirect_to '/front/index'
+  end
+
   def do_terminar
   	do_transition_action :terminar do
-  	 redirect_to(:controller => 'front', :action => 'index')
+			flash[:notice] = 'Ejecutando la transicion terminar!'
+			redirect_to '/front/index'
   	end
   end
 

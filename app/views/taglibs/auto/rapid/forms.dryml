@@ -210,14 +210,14 @@
     </div>
   </form>
 </def>
-<def tag="reiniciar-form" polymorphic/>
-<def tag="reiniciar-form" for="OrdTrab">
-  <form lifecycle="reiniciar" merge param="default">
+<def tag="reanudar-form" polymorphic/>
+<def tag="reanudar-form" for="OrdTrab">
+  <form lifecycle="reanudar" merge param="default">
     <error-messages param/>
     <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
     <field-list fields="" param/>
     <div param="actions">
-      <submit label="#{ht 'ord_trabs.actions.reiniciar', :default=>['Reiniciar']}" param/><or-cancel param="cancel"/>
+      <submit label="#{ht 'ord_trabs.actions.reanudar', :default=>['Reanudar']}" param/><or-cancel param="cancel"/>
     </div>
   </form>
 </def>

@@ -140,11 +140,11 @@ def self.dacod(cli)
 
 		transition :habilitar, { :creada => :habilitada }, :available_to => "User.supervisores", :if => "self.tarasigs"
 
-   		transition :eliminar, { :habilitada => :destroy }, :available_to => "User.supervisores"
+   	transition :eliminar, { :habilitada => :destroy }, :available_to => "User.supervisores"
 
 		transition :iniciar, { :habilitada => :iniciada }, :available_to => "User.supervisores"
 
-		transition :reiniciar, { :detenida => :iniciada }, :available_to => "User.supervisores"
+		transition :reanudar, { :detenida => :iniciada }, :available_to => "User.supervisores"
 
 		transition :detener, { :iniciada => :detenida }, :available_to => "User.supervisores"
 

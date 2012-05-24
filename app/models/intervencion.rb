@@ -12,15 +12,15 @@ class Intervencion < ActiveRecord::Base
 
   belongs_to :tarea, :accessible => true
   belongs_to :user
-  
+
 	attr_accessor :vuelta
 
   before_create :rellenar
-  
+
   after_create :actitar
-  
+
 #  after_save :checktar
-  
+
   def find_interu(cuser)
     @cuser = cuser
     Intervencion.find(:all, :joins => :user, :conditions => ["name = ?", @cuser.name.to_s])
@@ -42,12 +42,12 @@ class Intervencion < ActiveRecord::Base
   def view_permitted?(field)
     true
   end
-  
+
   private
     def rellenar
       self.inicio = Time.now
     end
-    
+
     def actitar
 				if self.tarea.state == "habilitada"
 					self.tarea.lifecycle.iniciar!(acting_user)
@@ -56,7 +56,7 @@ class Intervencion < ActiveRecord::Base
 					end
 				end
     end
-    
+
     def checktar
       @ter = 0
       if self.termino

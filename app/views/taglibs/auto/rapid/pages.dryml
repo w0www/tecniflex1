@@ -2166,23 +2166,23 @@
   </page>
 </def>
 
-<def tag="reiniciar-page" polymorphic/>
-<def tag="reiniciar-page" for="OrdTrab">
-  <page title="#{ht 'ord_trabs.reiniciar.title', :default=>['Reiniciar']}" merge>
+<def tag="reanudar-page" polymorphic/>
+<def tag="reanudar-page" for="OrdTrab">
+  <page title="#{ht 'ord_trabs.reanudar.title', :default=>['Reanudar']}" merge>
 
-    <body: class="lifecycle-transition-page reiniciar-page" param/>
+    <body: class="lifecycle-transition-page reanudar-page" param/>
 
     <content:>
       <header param="content-header">
         <h2 param="heading">
-          <ht key="ord_trabs.reiniciar.heading">
-            Reiniciar
+          <ht key="ord_trabs.reanudar.heading">
+            Reanudar
           </ht>
         </h2>
       </header>
 
       <section param="content-body">
-        <reiniciar-form param="form"/>
+        <reanudar-form param="form"/>
       </section>
     </content:>
 

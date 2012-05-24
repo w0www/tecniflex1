@@ -25,11 +25,16 @@ class Tarea < ActiveRecord::Base
     self.ord_trab.numOT.to_s + '_' + self.proceso.nombre.to_s
   end
 
-  after_initialize :init
 
-  	def init
-		self.ciclovb ||= 1
-		self.cicloptr ||= 1
+  def after_create
+  	if self.proceso.prueba
+  		if self.proceso.reinit
+  			self.cicloptr ||= 1
+  		else
+  			self.ciclovb ||= 1
+  		end
+    end
+		self.save
 	end
 
 	# Marcar las intervenciones pertenecientes a una tarea destruida, para que no aparezcan en la lista inicial.
@@ -70,12 +75,6 @@ class Tarea < ActiveRecord::Base
 		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :unless => "(self.asignada_a == nil) && (self.proceso.grupoproc.asignar == true)"
 
 		transition :cambiar, { :enviada => :cambiada }, :available_to => :all, :if => "self.proceso.reinit" do
-			self.ciclovb ||= 1
-			self.cicloptr ||= 1
-			self.save
-			self.ciclovb += 1
-			self.cicloptr += 1
-			self.save
 			self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.habilitar!(acting_user) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1]
 		end
 
@@ -85,6 +84,9 @@ class Tarea < ActiveRecord::Base
 		transition :habilitar, { :terminada => :habilitada }, :available_to => :all , :if => "self.proceso.prueba"
 
 		transition :iniciar, { :habilitada => :iniciada }, :available_to => :all do
+			unless (self.ciclovb == 1 || self.cicloptr == 1)
+				aumentaciclo
+			end
 			if self.ord_trab.state == "habilitada"
 				self.ord_trab.lifecycle.iniciar!(User.first)
 			end
@@ -97,17 +99,7 @@ class Tarea < ActiveRecord::Base
 		transition :recibir, { :enviada => :recibida }, :available_to => :all, :if => "self.proceso.prueba"
 
 		transition :reiniciar, { :recibida => :iniciada }, :available_to => :all, :if => "self.proceso.prueba" do
-			self.ciclovb ||= 1
-			self.cicloptr ||= 1
-			self.save
-			if self.proceso.prueba
-				if self.proceso.reinit
-					self.cicloptr += 1
-				else
-					self.ciclovb += 1
-				end
-					self.save
-			end
+			aumentaciclo
 		end
 
 		transition :reiniciar, { :detenida => :iniciada }, :available_to => :all
@@ -146,5 +138,13 @@ class Tarea < ActiveRecord::Base
       email = RecibArchMailer.deliver_enviado(self.ord_trab.cliente, self.ord_trab.nomprod)
     end
 
+		def aumentaciclo
+			if self.ciclovb
+				self.ciclovb += 1
+			elsif self.cicloptr
+				self.cicloptr += 1
+			end
+			self.save
+		end
 end
 
