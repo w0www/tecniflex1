@@ -111,7 +111,7 @@ default_scope :order => 'numOT DESC'
 end
 
 def self.dacod(cli)
-	if OrdTrab.all != []
+	if OrdTrab.all != [] && OrdTrab.cliente_is(cli) != [] && OrdTrab.order_by(:id).cliente_is(cli).last.codCliente != nil
 	 	(OrdTrab.order_by(:id).cliente_is(cli).last.codCliente.to_i || 2000) + 1
 	else
 		2000
