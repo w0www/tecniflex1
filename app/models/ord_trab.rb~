@@ -140,11 +140,11 @@ def self.dacod(cli)
 
 		transition :habilitar, { :creada => :habilitada }, :available_to => "User.supervisores", :if => "self.tarasigs"
 
-   		transition :eliminar, { :habilitada => :destroy }, :available_to => "User.supervisores"
+   	transition :eliminar, { :habilitada => :destroy }, :available_to => "User.supervisores"
 
 		transition :iniciar, { :habilitada => :iniciada }, :available_to => "User.supervisores"
 
-		transition :reiniciar, { :detenida => :iniciada }, :available_to => "User.supervisores"
+		transition :reanudar, { :detenida => :iniciada }, :available_to => "User.supervisores"
 
 		transition :detener, { :iniciada => :detenida }, :available_to => "User.supervisores"
 
@@ -538,14 +538,10 @@ def self.dacod(cli)
 
 	private
 
-<<<<<<< HEAD
+
 #	def fecha_posterior
 #		errors.add(:fechaEntrega, 'La fecha de entrega debe ser posterior a la fecha actual') if fechaEntrega < fecha
 #	end
-=======
-	def fecha_posterior
-		errors.add(:fechaEntrega, 'La fecha de entrega debe ser posterior a la fecha actual') if self.fechaEntrega < self.fecha
-	end
->>>>>>> 026409fbe97c2d282add6e560b4020c12ca8a149
+
 end
 
