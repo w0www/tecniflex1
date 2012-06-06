@@ -7,7 +7,6 @@
 
 
   <content-body: >
-  <flash-message/>
     <div part="campos">
       <table class="tarea">
         <tr><th>Cliente</th><td colspan="2"><view:ord_trab.cliente/></td><th>Fecha tope:</th><td colspan="2"><view:ord_trab.fechaEntrega/></td></tr>
@@ -38,34 +37,47 @@
         <%end%>
 <div part="botones">
  <% @intervs = this.intervencions.find(:all, :joins => :user, :conditions => ["name = ?", current_user.name]) %>
- <%if (this.state != "terminada") && (this.state != "cambiada")%>
+ <%if this.activa? %>
 
     <%if @intervs != []%>
 
         <% if @intervs.last.termino == nil%>
             <% @termin = 0 %>
-                 <form with="&@intervs.last" update="campos,botones">
-
+                 <form with="&@intervs.last" >
+											<after-submit uri="/tareas/#{this.tarea.id}" />
 
                       <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
                       <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{this.tarea.id}"/>
                       <input class="hidden" type="text" name="intervencion[termino]" value="#{Time.now}"/>
                       Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
                       <%= hidden_field_tag 'envio', ''%>
-                      <% unless this.tarea.proceso.prueba %>
+                      <% if this.tarea.proceso.prueba %>
 												<!-- :onclick =>"javascript:jQuery('envio').value='algo' se usa para asegurarse de que el parametro 'envio' sea seteado correctamente -->
-												<%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
-												<%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminar", :class => "button submit-button" %>
-											<% else %>
 													<%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
 													<%= submit_tag "enviar", :onclick =>"$('envio').value='enviar';", :id => "enviar", :class => "button submit-button", :name => "enviar" %>
+											<% elsif this.tarea.proceso.varev %>
+													<%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
+													<%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminar", :class => "button submit-button", :name => "enviar" %>
+													<%= submit_tag "rechazar", :onclick =>"$('envio').value='rechazar';", :id => "rechazar", :class => "button submit-button" %>
+											<% elsif this.tarea.proceso.rev %>
+													<%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
+													<%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminar", :class => "button submit-button", :name => "enviar" %>
+													<select  class="input belongs_to" name="procdest">
+														<%@destas.each do |proce| %>
+																<option value="#{proce.id}"><%= proce.nombre -%></option>
+														<%end%>
+													</select>
+													<%= submit_tag "rechazar", :onclick =>"$('envio').value='rechazar';", :id => "rechazar", :class => "button submit-button" %>
+											<% else %>
+												<%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
+												<%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminar", :class => "button submit-button" %>
 											<% end %>
 
                 </form>
          <% else %>
               <% @estatarea = this.id %>
-               <form with="&Intervencion.new" update="campos,botones">
-
+               <form with="&Intervencion.new">
+										<after-submit uri="/tareas/#{@estatarea}" />
                     <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
                     <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{@estatarea}"/>
                     <input class="hidden" type="text" name="intervencion[inicio]" value="#{Time.now}"/>
@@ -84,8 +96,8 @@
 
    <% else %>
           <br/>
-          <form with="&Intervencion.new" update="campos,botones">
-
+          <form with="&Intervencion.new">
+								<after-submit uri="/tareas/#{params[:id]}" />
                 <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
                 <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{params[:id]}"/>
                 <input class="hidden" type="text" name="intervencion[inicio]" value="#{Time.now}"/>

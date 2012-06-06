@@ -100,22 +100,38 @@ class OrdTrab < ActiveRecord::Base
 
 default_scope :order => 'numOT DESC'
 
+  # Boolean para informar si estan asignadas todas las tareas cuyos procesos pertenecen a grupos de procesos asignables.
   def tarasigs
-  @tarasi = true
-  	self.tareas.each do |latask|
-		 if latask.proceso.grupoproc.asignar && (latask.asignado == nil)
-		        @tarasi = (@tarasi && false)
-        	end
-   	 end
-  @tarasi
-end
+		@tarasi = true
+			self.tareas.each do |latask|
+			 if latask.proceso.grupoproc.asignar && (latask.asignado == nil)
+							@tarasi = (@tarasi && false)
+						end
+			 end
+		@tarasi
+	end
 
+# Asigna un codigo de producto (codCliente) a la orden de trabajo, correlativo desde la ultima para ese cliente
 def self.dacod(cli)
 	if OrdTrab.all != []
 	 	(OrdTrab.order_by(:id).cliente_is(cli).last.codCliente.to_i || 2000) + 1
 	else
 		2000
 	end
+ end
+
+ # Permite volver a una tarea anterior, y se encarga de manejar los estados de las tareas correctamente
+ def volver_a(procid,usuario)
+ 		esteprocid = Proceso.find(procid)
+ 		tares = self.tareas || []
+ 		if tares != []
+			estata = tares.proceso_id_is(procid).first
+			if Proceso.destderev.include?(Proceso.find(procid)) || Proceso.rev.include?(Proceso.find(procid))
+				estata.lifecycle.habilitar!(usuario)
+			else
+				nil
+			end
+		end
  end
 
 
@@ -191,6 +207,7 @@ def self.dacod(cli)
     ['habilitada','iniciada','detenida'].include?(self.state)
   end
 
+	# Boolean que indica si todas las tareas están terminadas
 	def termtars?
 		if self.tareas != []
 			if self.tareas.*.state.rindex{|x| x!="terminada"} == nil
@@ -202,7 +219,7 @@ def self.dacod(cli)
 	end
 
   def after_update
-  	# Verificar si las tareas asignadas corresponden a las SolAEjec seleccionadas
+  	# Habilita la primera tarea al activarse la OT.
   	estot = self
   	estot.tareas.each do |tara|
 		if tara == estot.sortars[estot.sortars.*.state.index("creada").to_i]
@@ -213,7 +230,7 @@ def self.dacod(cli)
 						tara.save
 					end
 				end
-
+# TODO: Verificar que el procedimiento que sigue sirve de algo
 				unless estot.sortars[estot.sortars.index(tara)-1].state == "habilitada"
 					if tara.state == "creada"
 						tara.state = "habilitada"
@@ -222,6 +239,7 @@ def self.dacod(cli)
 				end
 			end
 		end
+		# Verificar si las tareas asignadas corresponden a las SolAEjec seleccionadas
   		if tara.proceso.grupoproc.saevb
   			unless estot.visto
   				tara.destroy
@@ -378,7 +396,7 @@ def self.dacod(cli)
 
 	def estgrupro(grupro)
 	  @gproc = Grupoproc.find_by_abreviacion(grupro)
-	  @estag = ""
+	  @estag = []
     @contcrea = 0
     @conthab = 0
     @contini = 0
@@ -386,30 +404,44 @@ def self.dacod(cli)
     @contenv = 0
     @contdet = 0
     @contter = 0
+    @contrej = 0
     @contrec = 0
     @cont = 0
+    @conthash = {}
     unless self.tareas == []
 			self.tareas.each do |tare|
 				if tare.proceso.grupoproc.abreviacion.to_s == @gproc.abreviacion.to_s
 					case tare.state
 						when "creada"
 							@contcrea += 1
+							@conthash["creada"]=tare.proceso.nombre
 						when "habilitada"
 							@conthab += 1
+							@conthash["habilitada"]=tare.proceso.nombre
 						when "iniciada"
 							@contini += 1
+							@conthash["iniciada"]=tare.proceso.nombre
 						when "reiniciada"
 							@contini += 1
+							@conthash["iniciada"]=tare.proceso.nombre
 						when "enviada"
 							@contenv += 1
+							@conthash["enviada"]=tare.proceso.nombre
 						when "recibida"
 							@contrec += 1
+							@conthash["recibida"]=tare.proceso.nombre
 						when "cambiada"
 							@contrei += 1
+							@conthash["cambiada"]=tare.proceso.nombre
 						when "detenida"
 							@contdet += 1
+							@conthash["detenida"]=tare.proceso.nombre
+						when "rechazada"
+							@contrej += 1
+							@conthash["rechazada"]=tare.proceso.nombre
 						when "terminada"
 							@contter += 1
+							@conthash["terminada"]=tare.proceso.nombre
 						else
 							"desconocido"
 					 end
@@ -419,24 +451,35 @@ def self.dacod(cli)
 			 end
 			 unless @cont == 0
 					if @contdet >= 1
-						@estag = "detenida"
+						@estag << @conthash["detenida"]
+						@estag << "detenida"
+					elsif @contrej >= 1
+						@estag << @conthash["rechazada"]
+						@estag << "rechazada"
 					elsif @contini >= 1
-						@estag = "iniciada"
+						@estag << @conthash["iniciada"]
+						@estag << "iniciada"
 					elsif @conthab >= 1
-						@estag = "habilitada"
+						@estag << @conthash["habilitada"]
+						@estag << "habilitada"
 					elsif @contcrea >= 1
-						@estag = "creada"
+						@estag << @conthash["creada"]
+						@estag << "creada"
 					elsif @contrec >= 1
-						@estag = "recibido"
+						@estag << @conthash["recibida"]
+						@estag << "recibido"
 					elsif @contenv >= 1
-						@estag = "enviado"
+						@estag << @conthash["enviada"]
+						@estag << "enviado"
 					elsif @contrei >= 1
-						@estag = "cambios"
+						@estag << @conthash["cambios"]
+						@estag << "cambios"
 					elsif @contter >= 1
-						@estag = "terminada"
+						@estag << @conthash["terminada"]
+						@estag << "terminada"
 					end
 				else
-					@estag = ""
+					@estag << ""
 				end
     end
      @estag

@@ -9,6 +9,9 @@ class Proceso < ActiveRecord::Base
     descripcion :text
     prueba			:boolean
     reinit			:boolean
+    varev				:boolean
+    rev					:boolean
+    destderev		:boolean
     edmeds			:boolean
     timestamps
   end
@@ -21,6 +24,7 @@ class Proceso < ActiveRecord::Base
   belongs_to :sucesor, :class_name => "Proceso"
   belongs_to :grupoproc
 
+	default_scope :order => 'position'
 
 	def self.asignables
 		@gasig = Grupoproc.asignar

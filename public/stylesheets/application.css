@@ -147,10 +147,21 @@ table.tablero td{
 	position:relative;
 	text-align:center;
 	color: white;
-	background-color:red;
 	float: right;
-
 }
+
+.ciclo.red{
+		background-color:red;
+}
+
+.ciclo.yel{
+		background-color:#ffcc33;
+}
+
+.ciclo.ver{
+		background-color:#99cc99;
+}
+
 
 .tablero .hr1 {
     width: 85px;
@@ -163,22 +174,6 @@ table.tablero td{
 .iniciales {
 	font-size: 80%;
 }
-/*.creada {*/
-/*    background-color: #00f;
-    color: #fff;
-}
-.enmatriceria, .encurso, .enVB, .printer, .enmontaje, .plotter, .filmada, .expuesta, .lavada, .seca, .facturada, .despachada {
-    background-color: #f90;
-}
-
-.terminada{
-    background-color: #0f0;
-}
-
-.enpausa, .detenida {
-    background-color: #f00;
-    color: #fff;
-}*/
 
 ul.hjq-input-many div.buttons {
     float: right;
@@ -322,6 +317,11 @@ th.Repeticion {
 .terminada{
     background-color:#999999 !important;
     color:#027300;
+}
+
+.rechazada{
+		background-color: plum !important;
+		color:black;
 }
 
 #stock td,#stock th {

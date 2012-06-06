@@ -4,7 +4,7 @@
 #  - Tsutomu Kuroda - http://github.com/kuroda (t-kuroda@oiax.jp)
 
 es:
-        
+
     hobo:
         # hobos default pages translations
         page:
@@ -94,10 +94,10 @@ es:
 
         action:
           edit: "Editar"
-        # hobos default message translation  
+        # hobos default message translation
         messages:
           create:
-            success: "El %{model} fue creado exitosamente"
+            success: "Cambios guardados"
             error: "No fue posible crear el %{model}.\n%{errors}"
           creator:
             error: "No fue posible la creación de %{name}.\n%{errors}"
@@ -109,11 +109,11 @@ es:
             error: "Ocurrió un problema con la modificación.\n%{errors}"
           destroy:
             success: "%{model} fue eliminado"
-          signup: 
+          signup:
             success: "¡Gracias por inscribirse!"
             must_activate: "Usted debe activar su registro antes de ingresar. Por favor, verifique su email."
-          login: 
-            success: "Usted ha ingresado."
+          login:
+            success: "Clave aceptada"
             error: "¡No especificó un usuario válido (%{login}) o contraseña!"
           logout: "Se ha desconectado"
           reset_password: "Su contraseña fue reiniciada."
@@ -156,7 +156,7 @@ es:
           empty: "Ningún %{model} para mostrar"
 
         live_search:
-          label: "Buscar" 
+          label: "Buscar"
           results_label: "Resultado de búsqueda"
           close_button: "cerrar"
           more: "Más"

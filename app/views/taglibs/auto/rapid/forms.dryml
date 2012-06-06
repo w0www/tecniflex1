@@ -281,7 +281,7 @@
 <def tag="form" for="Proceso">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="position, nombre, descripcion, prueba, reinit, edmeds, grupoproc, sucesor" param/>
+    <field-list fields="position, nombre, descripcion, prueba, reinit, varev, rev, destderev, edmeds, grupoproc, sucesor" param/>
     <div param="actions">
       <submit label="#{ht 'procesos.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -341,7 +341,7 @@
 <def tag="form" for="Tarea">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="position, instrucciones, fechatope, ciclovb, cicloptr, asignada_a, state, asignado, intervencions, ord_trab, proceso, recurso" param/>
+    <field-list fields="position, instrucciones, fechatope, ciclo, asignada_a, state, asignado, intervencions, ord_trab, proceso, recurso" param/>
     <div param="actions">
       <submit label="#{ht 'tareas.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -378,6 +378,17 @@
     <field-list fields="" param/>
     <div param="actions">
       <submit label="#{ht 'tareas.actions.cambiar', :default=>['Cambiar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="habilitar-form" polymorphic/>
+<def tag="habilitar-form" for="Tarea">
+  <form lifecycle="habilitar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.habilitar', :default=>['Habilitar']}" param/><or-cancel param="cancel"/>
     </div>
   </form>
 </def>
@@ -466,6 +477,17 @@
     <field-list fields="" param/>
     <div param="actions">
       <submit label="#{ht 'tareas.actions.detener', :default=>['Detener']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="rechazar-form" polymorphic/>
+<def tag="rechazar-form" for="Tarea">
+  <form lifecycle="rechazar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.rechazar', :default=>['Rechazar']}" param/><or-cancel param="cancel"/>
     </div>
   </form>
 </def>

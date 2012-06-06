@@ -23,7 +23,13 @@ class TareasController < ApplicationController
   end
 
   def show
-    hobo_show do
+  	esta = Tarea.find(params[:id])
+  	dests = Proceso.destderev
+  	@destas = dests & esta.ord_trab.tareas.*.proceso || []
+  	unless esta.activa?
+  		redirect_to(:controller => 'front', :action => 'index')
+  	else
+    	hobo_show do
     	if this.state == "terminada"
     		redirect_to(:controller => 'front', :action => 'index')
     	else
@@ -38,6 +44,14 @@ class TareasController < ApplicationController
       	end
       end
     end
+    end
+    if request.xhr?
+    	unless esta.activa?
+  			redirect_to(:controller => 'front', :action => 'index')
+  		else
+  			hobo_ajax_response
+  		end
+  	end
   end
 
   def terminar
@@ -48,7 +62,7 @@ class TareasController < ApplicationController
 
   def do_terminar
   	do_transition_action :terminar do
-			flash[:notice] = 'Ejecutando la transicion terminar!'
+			flash[:notice] = 'Tarea #{this.proceso.nombre} de orden #{this.ord_trab.numOT} terminada'
 			redirect_to '/front/index'
   	end
   end

@@ -25,6 +25,8 @@ class Intervencion < ActiveRecord::Base
     @cuser = cuser
     Intervencion.find(:all, :joins => :user, :conditions => ["name = ?", @cuser.name.to_s])
   end
+
+
   # --- Permissions --- #
 
   def create_permitted?

@@ -6,8 +6,7 @@ class Tarea < ActiveRecord::Base
   fields do
     instrucciones :text
     fechatope     :date
-    ciclovb					:integer
-    cicloptr				:integer
+    ciclo					:integer
     timestamps
   end
 
@@ -27,13 +26,7 @@ class Tarea < ActiveRecord::Base
 
 
   def after_create
-  	if self.proceso.prueba
-  		if self.proceso.reinit
-  			self.cicloptr ||= 1
-  		else
-  			self.ciclovb ||= 1
-  		end
-    end
+  	self.ciclo ||= 1
 		self.save
 	end
 
@@ -53,11 +46,19 @@ class Tarea < ActiveRecord::Base
   	@opciones ||= self.aptos.map {|uapto| [uapto.name, uapto.id]}
 	end
 
+	def activa?
+    ['habilitada','iniciada','detenida','recibida','enviada'].include?(self.state)
+  end
+
 
   def self.find_utiles(usuario)
     @cuser = usuario
-    @uprocid = @cuser.procesos.*.id
-    Tarea.activa.find(:all, :conditions => {:proceso_id => @uprocid, :asignada_a => nil})
+    if @cuser.procesos != []
+			@uprocid = @cuser.procesos.*.id
+			Tarea.activa.find(:all, :conditions => {:proceso_id => @uprocid, :asignada_a => nil})
+		else
+			[]
+		end
   end
 
 
@@ -68,7 +69,7 @@ class Tarea < ActiveRecord::Base
 
 		state :creada, :default => true
 
-		state :habilitada, :iniciada, :detenida, :enviada, :cambiada, :recibida, :terminada, :reiniciada
+		state :habilitada, :iniciada, :detenida, :enviada, :cambiada, :recibida, :terminada, :reiniciada, :rechazada
 
 		create :crear, :become => :creada, :available_to => :all
 
@@ -81,16 +82,24 @@ class Tarea < ActiveRecord::Base
 		transition :habilitar, { :cambiada => :habilitada }, :available_to => :all, :if => "self.proceso.reinit"
 
 		##Agregar condición para rehabilitar toda la OT, a pedido de un supervisor.
-		transition :habilitar, { :terminada => :habilitada }, :available_to => :all , :if => "self.proceso.prueba"
+		transition :habilitar, { :terminada => :habilitada }, :available_to => :all do
+		  aumentaciclo
+		end
+
+		transition :habilitar, { :rechazada => :habilitada}, :available_to => :all do
+			aumentaciclo
+		end
 
 		transition :iniciar, { :habilitada => :iniciada }, :available_to => :all do
-			unless (self.ciclovb == 1 || self.cicloptr == 1)
-				aumentaciclo
-			end
 			if self.ord_trab.state == "habilitada"
 				self.ord_trab.lifecycle.iniciar!(User.first)
 			end
 		end
+
+		###########
+		## Idea: aumentar contadores al terminar tarea anterior, para todas excepto la primera
+		## Crear método "volver_a(proceso)" que maneje el flujo y los estados de las tareas.
+		############
 
 		transition :enviar, { :iniciada => :enviada }, :available_to => :all, :if => "self.proceso.prueba" do
 			RecibArchMailer.deliver_enviado(self.ord_trab.cliente, self.ord_trab)
@@ -106,6 +115,8 @@ class Tarea < ActiveRecord::Base
 
 		transition :detener, { :iniciada => :detenida }, :available_to => :all
 
+		transition :rechazar, { :iniciada => :rechazada }, :available_to => :all
+
 		transition :terminar, { :enviada => :terminada }, :available_to => :all do
 				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(acting_user) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
 		end
@@ -113,6 +124,8 @@ class Tarea < ActiveRecord::Base
 		transition :terminar, { :iniciada => :terminada }, :available_to => :all do
 				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(acting_user) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
 		end
+
+
 	end
 
   # --- Permissions --- #
@@ -139,11 +152,7 @@ class Tarea < ActiveRecord::Base
     end
 
 		def aumentaciclo
-			if self.ciclovb
-				self.ciclovb += 1
-			elsif self.cicloptr
-				self.cicloptr += 1
-			end
+			self.ciclo += 1
 			self.save
 		end
 end
