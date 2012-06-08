@@ -115,7 +115,34 @@ class OrdTrabsController < ApplicationController
     hobo_ajax_response if request.xhr?
   end
 
-  index_action :reporte
+  index_action :reporte do
+  	@ordenes = OrdTrab.find(:all)
+  	respond_to do |wants|
+			wants.html
+			wants.csv do
+				csv_string = CSV.generate do |csv|
+					# header row
+					csv << ["Codigo_Producto", "O.T.", "Proceso", "Usuario", "Inicio", "Termino", "Observaciones"]
+					# data rows
+					@ordenes.each do |orden|
+						if orden.tareas != []
+							orden.tareas.each do |tara|
+								if tara.intervencions != []
+									tara.intervencions.each do |inte|
+										csv << [orden.codCliente, orden.numOT, tara.proceso.nombre, inte.user.name, inte.inicio, inte.termino, inte.observaciones]
+									end
+								end
+							end
+						end
+					end
+				end
+				# send it to the browsah
+				send_data(csv_string.force_encoding('ASCII-8BIT'),
+									:type => 'text/csv; charset=iso-8859-1; header=present',
+									:disposition => "attachment", :filename => "ordenes.csv")
+			end
+		end
+	end
 
   def do_eliminar
     do_transition_action :eliminar do
