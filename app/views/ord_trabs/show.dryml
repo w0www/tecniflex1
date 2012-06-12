@@ -4,7 +4,9 @@
   </heading:>
   <content-body:>
 
-			<%= button_to "Enviar OT", :action => 'mail_ot', :id => this.id %>
+			<div>
+				<%= button_to "Enviar OT", :action => 'mail_ot', :id => this.id %>
+			</div>
 
 			<transition-buttons class="centrada"/>
       <table class="#{ @this.claset}">
