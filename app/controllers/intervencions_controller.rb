@@ -51,7 +51,6 @@ class IntervencionsController < ApplicationController
 						this.tarea.lifecycle.rechazar!(current_user)
 						this.tarea.ord_trab.volver_a(params[:procdest],current_user)
 					end
-
         end
   ##    redirect_to '/front/index' if valid?
       hobo_ajax_response if request.xhr?

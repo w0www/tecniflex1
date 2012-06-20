@@ -54,7 +54,7 @@ class Intervencion < ActiveRecord::Base
 				if self.tarea.state == "habilitada"
 					self.tarea.lifecycle.iniciar!(acting_user)
 					if self.tarea.ord_trab.state ==	"habilitada"
-						self.tarea.ord_trab.lifecycle.iniciar!(acting_user)
+						self.tarea.ord_trab.lifecycle.iniciar!(User.first)
 					end
 				end
     end

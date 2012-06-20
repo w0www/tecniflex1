@@ -76,7 +76,7 @@ class Tarea < ActiveRecord::Base
 		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :unless => "(self.asignada_a == nil) && (self.proceso.grupoproc.asignar == true)"
 
 		transition :cambiar, { :enviada => :cambiada }, :available_to => :all, :if => "self.proceso.reinit" do
-			self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.habilitar!(acting_user) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1]
+			self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1]
 		end
 
 		transition :habilitar, { :cambiada => :habilitada }, :available_to => :all, :if => "self.proceso.reinit"
@@ -118,14 +118,22 @@ class Tarea < ActiveRecord::Base
 		transition :rechazar, { :iniciada => :rechazada }, :available_to => :all
 
 		transition :terminar, { :enviada => :terminada }, :available_to => :all do
-				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(acting_user) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
 		end
 
 		transition :terminar, { :iniciada => :terminada }, :available_to => :all do
-				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(acting_user) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
 		end
 
 
+	end
+
+	def interventor?
+		if self.intervencions != []
+			self.intervencions.*.user_id.include?(acting_user.id)
+		else
+			false
+		end
 	end
 
   # --- Permissions --- #
@@ -135,7 +143,7 @@ class Tarea < ActiveRecord::Base
   end
 
   def update_permitted?
-    acting_user.superv? || acting_user.hace?("Grabado")
+    acting_user.superv? || acting_user.hace?("Grabado") || interventor?
   end
 
   def destroy_permitted?

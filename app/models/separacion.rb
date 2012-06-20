@@ -17,15 +17,15 @@ class Separacion < ActiveRecord::Base
   belongs_to :tipomat
   belongs_to :espesor
   has_many :movimientos
-  
-	
+
+
   acts_as_list :scope => :ord_trab
-  
-  validates_presence_of :color, :anilox, :tipomat, :espesor, :if => :activa?
-  
+
+  validates_presence_of :color, :lpi, :anilox, :tipomat, :espesor, :if => :activa?
+
   def activa?
     self.ord_trab.activa?
-  end 
+  end
   def before_create
   	orden = self.ord_trab
   	unless orden.separacions.count <= 1
@@ -50,14 +50,14 @@ class Separacion < ActiveRecord::Base
     self.save
     end
   end
-  
+
   #def poliaptos(polspec)
    # Bodega.find(:all).repeat |bode|
    #   bode
   #end
-  
-  
-  
+
+
+
   # --- Permissions --- #
   def create_permitted?
     acting_user.administrator?

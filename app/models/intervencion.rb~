@@ -11,15 +11,15 @@ class Intervencion < ActiveRecord::Base
 
   belongs_to :tarea, :accessible => true
   belongs_to :user
-  
+
 
 
   before_create :rellenar
-  
+
   after_create :actitar
-  
+
 #  after_save :checktar
-  
+
   def find_interu(cuser)
     @cuser = cuser
     Intervencion.find(:all, :joins => :user, :conditions => ["name = ?", @cuser.name.to_s])
@@ -41,23 +41,23 @@ class Intervencion < ActiveRecord::Base
   def view_permitted?(field)
     true
   end
-  
+
   private
     def rellenar
       self.inicio = Time.now
     end
-    
+
     def actitar
-      if self.tarea.state = "habilitada"
+      if self.tarea.state == "habilitada"
         self.tarea.state = "iniciada"
         self.tarea.save
-        if self.tarea.ord_trab.state = "habilitada"
+        if self.tarea.ord_trab.state == "habilitada"
           self.tarea.ord_trab.state = "iniciada"
           self.tarea.ord_trab.save
         end
       end
     end
-    
+
     def checktar
       @ter = 0
       if self.termino
