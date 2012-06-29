@@ -2,9 +2,10 @@
   <old-page merge>
     <stylesheets: param>
       <stylesheet name="reset"/>
+      <stylesheet name="print" media="print"/>
       <theme-stylesheet/>
       <theme-stylesheet name="rapid-ui"/>
       <stylesheet name="application" param="app-stylesheet"/>
     </stylesheets:>
   </old-page>
-</extend>  
+</extend>

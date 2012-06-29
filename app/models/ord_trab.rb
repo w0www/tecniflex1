@@ -90,6 +90,8 @@ class OrdTrab < ActiveRecord::Base
   has_many :tareas, :accessible => true, :dependent => :destroy
   belongs_to :encargado, :class_name => "User", :scope => {:rol_is => 'Supervisor' || 'Gerente'}
   belongs_to :curva
+ # HABILITAR CONTACTO ASOCIADO A OT, ELEGIDO ENTRE CONTACTOS DEL CLIENTE (VER SCOPE)
+ # belongs_to :contacter, :class_name => "Contacto"
 
   belongs_to :cliente
   belongs_to :impresora
