@@ -59,11 +59,19 @@ class OrdTrabsController < ApplicationController
 
 	def index
 		hobo_index do
+			@ordenes = OrdTrab.find(:all)
+			if (params[:startdate].blank? && params[:enddate].blank?)
+				@ordenes = OrdTrab.find(:all)
+			elsif params[:startdate] && params[:enddate]
+				@from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
+				@to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
+				@ordenes = OrdTrab.order_by(:id).all(:conditions => ["created_at >= ? and created_at <= ? and state != ?",@from_date.to_datetime.in_time_zone(Time.zone),@to_date.to_datetime.in_time_zone(Time.zone),"terminada"])
+			end
 			if params[:ocultar]
-				@ord_trabs = OrdTrab.state_is_not("terminada")
+				@ord_trabs = @ordenes & OrdTrab.state_is_not("terminada")
 			else
-		  	@ord_trabs = OrdTrab.all
-		  end
+				@ord_trabs = @ordenes
+			end
 		end
 	end
 
