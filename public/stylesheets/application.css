@@ -233,6 +233,28 @@ ul.hjq-input-many div.buttons {
     background-position: -290px -290px;
 }
 
+#terminax {
+	margin-left: 4%;
+  display: inline;
+	width: 144px; height: 144px;
+	background-image: url(images/BotonesTX.png);
+	background-position: -290px -2px;
+	text-indent: -9999px;
+        background-color: gainsboro;
+}
+
+#terminax:hover {
+    background-position: -290px -146px;
+}
+
+#terminax:active {
+    background-position: -290px -290px;
+}
+
+#terminax.desact {
+    background-position: -290px -146px;
+}
+
 #enviar {
 	margin-left: 4%;
   display: inline;

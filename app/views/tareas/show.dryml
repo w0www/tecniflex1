@@ -85,9 +85,9 @@
                     <%= hidden_field_tag 'envio', ''%>
                     <% if Tarea.find(@estatarea).state == "enviada" %>
                       <input class="hidden" type="text" name="intervencion[termino]" value="#{Time.now}"/>
-                      <% if Tarea.find(@estatarea).proceso.reinit %><input type="checkbox" name="vuelta"/>Generar nuevo V.B.<% end %>
+                      <% if Tarea.find(@estatarea).proceso.reinit %><input type="checkbox" id="checker" name="vuelta" onchange="toggler()"/>Generar nuevo V.B.<% end %>
 											<%= submit_tag "recibir", :onclick =>"$('envio').value='recibir';", :id => "recibir", :class => "button submit-button" %>
-											<%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminar", :class => "button submit-button" %>
+											<%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminax", :class => "button submit-button" %>
                     <% else %>
 											<%= submit_tag "iniciar", :onclick =>"$('envio').value='iniciar';", :id=>"iniciar", :class => "button submit-button" %>
 										<% end %>
@@ -117,7 +117,9 @@
     </form>
       -->
   </content-body:>
-
+	<page-scripts:>
+			
+	</page-scripts:>
 
 </show-page>
 

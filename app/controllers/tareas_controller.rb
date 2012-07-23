@@ -7,24 +7,24 @@ class TareasController < ApplicationController
   auto_actions_for :ord_trab, :index
 
   def update
-
-    hobo_update do
-      if request.xhr?
-				if this.state == "terminada"
-					render :json => {
-						:location => url_for(:controller => 'front', :action => 'index')
-					}
-				else
-					hobo_ajax_response
+		hobo_update do
+			if request.xhr?
+					if this.state == "terminada"
+						render :json => {
+							:location => url_for(:controller => 'front', :action => 'index')
+						}
+					else
+						hobo_ajax_response
+					end
 				end
 			end
-   	end
-  # *************************
   end
 
   def show
   	esta = Tarea.find(params[:id])
+  	#Procesos que esten habilitados como destinos luego de la revision
   	dests = Proceso.destderev
+  	#dests que pertenezcan tambien a la OT madre de esta tarea
   	@destas = dests & esta.ord_trab.tareas.*.proceso || []
   	unless esta.activa?
   		redirect_to(:controller => 'front', :action => 'index')

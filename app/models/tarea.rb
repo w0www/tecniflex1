@@ -1,7 +1,7 @@
 class Tarea < ActiveRecord::Base
 
   hobo_model # Don't put anything above this
-  acts_as_list :scope => :recurso
+  #acts_as_list :scope => :recurso
 
   fields do
     instrucciones :text
@@ -24,19 +24,21 @@ class Tarea < ActiveRecord::Base
     self.ord_trab.numOT.to_s + '_' + self.proceso.nombre.to_s
   end
 
-
+	named_scope :activa, :conditions => ["state IN (?)", ["habilitada","iniciada","detenida","enviada","recibida"]]
+  named_scope :disp, :conditions => ["state IN (?)", ["habilitada","detenida","enviada","recibida"]]
+  
   def after_create
   	self.ciclo ||= 1
 		self.save
 	end
 
 	# Marcar las intervenciones pertenecientes a una tarea destruida, para que no aparezcan en la lista inicial.
-	def before_destroy
-		self.intervencions.each do |estin|
-			estin.final = true
-			estin.save
-		end
-	end
+	#def before_destroy
+	#	self.intervencions.each do |estin|
+	#		estin.final = true
+	#		estin.save
+	#	end
+	#end
 
   def aptos
     User.with_procesos(self.proceso)
@@ -49,21 +51,25 @@ class Tarea < ActiveRecord::Base
 	def activa?
     ['habilitada','iniciada','detenida','recibida','enviada'].include?(self.state)
   end
+  
+  def gp(grupo)
+		self.proceso.grupoproc.send(grupo.to_sym)
+	end	
 
 
   def self.find_utiles(usuario)
     @cuser = usuario
     if @cuser.procesos != []
 			@uprocid = @cuser.procesos.*.id
-			Tarea.activa.find(:all, :conditions => {:proceso_id => @uprocid, :asignada_a => nil})
+			Tarea.disp.find(:all, :conditions => {:proceso_id => @uprocid, :asignada_a => nil}) # se elimina "iniciada" para evitar 2 operadores trabajando en la misma tarea.
 		else
 			[]
 		end
   end
 
 
-  named_scope :activa, :conditions => ["state IN (?)", ["habilitada","detenida","enviada","recibida"]] # se elimina "iniciada" para evitar 2 operadores trabajando en la misma tarea.
-
+  
+	#named_scope :saevb, :conditions => 
 
   lifecycle do
 

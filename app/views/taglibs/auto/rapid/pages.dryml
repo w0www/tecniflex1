@@ -2041,7 +2041,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, visto, mtz, mtje, ptr, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, prioridad, pctdistor, state, cilindro, cliente, curva, encargado, espesor, impresora, sustrato, tipomat" param/>
+            <field-list fields="numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, prioridad, pctdistor, state, cilindro, cliente, curva, encargado, espesor, impresora, sustrato, tipomat" param/>
           </section>
     </content:>
 
@@ -3143,7 +3143,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="position, instrucciones, fechatope, ciclo, asignada_a, state, asignado, ord_trab, proceso, recurso" param/>
+            <field-list fields="instrucciones, fechatope, ciclo, asignada_a, state, asignado, ord_trab, proceso, recurso" param/>
           </section>
     </content:>
 

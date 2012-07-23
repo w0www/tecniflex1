@@ -4,7 +4,8 @@
 
   <content:>
     <header class="content-header">
-      <unless test="&@asignacions && (Tarea.find_utiles(current_user) != [])"><h1>Bienvenido a <app-name/></h1></unless>
+			
+      <if test="&@asignacions == [] && Tarea.find_utiles(current_user) == []"><h1>Bienvenido a <app-name/></h1></if>
 				<section class="welcome-message">
 
 
@@ -37,7 +38,6 @@
       </section>
 				<unless test="&Tarea.find_utiles(current_user) == []">
 					<section with="&Tarea.find_utiles(current_user)">
-						<br/>
 						<br/>
 						<h2>Ordenes de Trabajo Disponibles </h2>
 									<repeat with="&this.group_by(&:ord_trab)">

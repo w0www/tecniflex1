@@ -11,7 +11,7 @@ class OrdTrab < ActiveRecord::Base
     fechaEntrega  :date
     observaciones :text
     cfinal        :string
-    visto         :boolean
+		vb        		:boolean
     mtz           :boolean
     mtje          :boolean
     ptr           :boolean
@@ -104,25 +104,25 @@ default_scope :order => 'numOT DESC'
 
   # Boolean para informar si estan asignadas todas las tareas cuyos procesos pertenecen a grupos de procesos asignables.
   def tarasigs
-		@tarasi = true
+		tarasi = true
 			self.tareas.each do |latask|
-			 if latask.proceso.grupoproc.asignar && (latask.asignado == nil)
-							@tarasi = (@tarasi && false)
-						end
-			 end
-		@tarasi
+				if latask.proceso.grupoproc.asignar && (latask.asignado == nil)
+						@tarasi = (@tarasi && false)
+				end
+			end
+		tarasi
 	end
 
 # Asigna un codigo de producto (codCliente) a la orden de trabajo, correlativo desde la ultima para ese cliente
-def self.dacod(cli)
-	if OrdTrab.all != [] && OrdTrab.cliente_is(cli) != [] && OrdTrab.order_by(:id).cliente_is(cli).last.codCliente != nil
-	 	(OrdTrab.order_by(:id).cliente_is(cli).last.codCliente.to_i || 2000) + 1
-	else
-		2000
-	end
+	def self.dacod(cli)
+		if OrdTrab.all != [] && OrdTrab.cliente_is(cli) != [] && OrdTrab.order_by(:id).cliente_is(cli).last.codCliente != nil
+			(OrdTrab.order_by(:id).cliente_is(cli).last.codCliente.to_i || 2000) + 1
+		else
+			2000
+		end
  end
 
- # Permite volver a una tarea anterior, y se encarga de manejar los estados de las tareas correctamente
+ # Permite volver a una tarea anterior, habilitándola
  def volver_a(procid,usuario)
  		esteprocid = Proceso.find(procid)
  		tares = self.tareas || []
@@ -139,13 +139,13 @@ def self.dacod(cli)
 
   # Ordena las tareas de una OT segun la posicion de sus procesos. Permite habilitar las tareas en orden.
   def sortars
-	estatars = self.tareas.map {|tar| [tar.id, tar.proceso.position]}
-	estatarsort = estatars.sort_by{|item| item[1]}
-	sortares = []
-	estatarsort.each do |estata|
-		sortares << Tarea.find(estata[0])
-	end
-	sortares
+		estatars = self.tareas.map {|tar| [tar.id, tar.proceso.position]}
+		estatarsort = estatars.sort_by{|item| item[1]}
+		sortares = []
+		estatarsort.each do |estata|
+				sortares << Tarea.find(estata[0])
+			end
+		sortares
   end
 
   lifecycle do
@@ -192,7 +192,7 @@ def self.dacod(cli)
     end
 	end
 
-  validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.visto || self.ptr", :on => :habilitar
+  validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.vb || self.ptr", :on => :habilitar
   validates_presence_of :trapping, :curva, :impresora, :cilindro, :nBandas, :nPasos, :nCopias, :sustrato, :fechaEntrega, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_associated :separacions, :if => "(self.mtje || self.mtz) && self.activa? ", :on => :habilitar
 #	validate :fecha_posterior
@@ -219,52 +219,71 @@ def self.dacod(cli)
 			end
 		end
 	end
-
-  def after_update
-  	# Habilita la primera tarea al activarse la OT.
-  	estot = self
-  	estot.tareas.each do |tara|
-		if tara == estot.sortars[estot.sortars.*.state.index("creada").to_i]
-			if estot.activa?
-				if tara == estot.sortars.first
-					if tara.state == "creada"
-						tara.state = "habilitada"
-						tara.save
-					end
-				end
-# TODO: Verificar que el procedimiento que sigue sirve de algo
-				unless estot.sortars[estot.sortars.index(tara)-1].state == "habilitada"
-					if tara.state == "creada"
-						tara.state = "habilitada"
-						tara.save
+	
+	#Elimina tareas que no correspondan a lo seleccionado en la OT. Debe ser ejecutado antes de save
+	def kiltar(saejec)
+		saegp = "sae" + saejec.to_s
+			unless self.send(saejec)
+				self.tareas.each do |estata|
+					if estata.gp(saegp)
+						estata.destroy
+						estata.save
 					end
 				end
 			end
+	end
+		
+	def before_update
+		estaot = self
+		sarr = ["vb", "ptr", "mtz", "mtje"]
+		sarr.each do |saejec|
+			tes = saejec + "_changed?"
+			if estaot.send(tes.to_sym)
+				kiltar(saejec)
+			end
 		end
+	end
+	
+  def after_update
+  	# Habilita la primera tarea al activarse la OT.
+  	
+  	###### SOLO AL DESACTIVAR TODO FUNCIONA. AL DESACTIVAR POR PARTES SE CAE IGUAL (VERIFICAR EL BLOQUE SIGUIENTE)
+  	
+  	estot = self
+  	ordtars = estot.sortars
+  	unless ordtars.*.state.index("creada") == nil
+				if ordtars[ordtars.*.state.index("creada").to_i] == ordtars.first
+					if ordtars.first.asignada_a != nil
+						ordtars.first.lifecycle.habilitar!(User.first)
+					end
+				else
+					# Habilita la primera tarea que aparezca "creada"
+					if (ordtars[ordtars.*.state.index("creada").to_i].asignada_a != nil) && (ordtars[ordtars.*.state.index("creada").to_i-1].state != "habilitada")
+						ordtars[ordtars.*.state.index("creada").to_i].lifecycle.habilitar!(User.first)
+					end
+				end
+		end	
+		
+		
+  	#~ estot.tareas.each do |tara|
+		#~ if tara == estot.sortars[estot.sortars.*.state.index("creada").to_i]
+				#~ if estot.activa?
+					#~ if tara == estot.sortars.first
+							#~ tara.lifecycle.habilitar!(User.first)					
+	#~ # TODO: Verificar que el procedimiento que sigue sirve de algo
+					#~ else
+						#~ unless estot.sortars[estot.sortars.index(tara)-1].state == "habilitada"
+							#~ tara.lifecycle.habilitar!(User.first)
+						#~ end
+					#~ end
+				#~ end
+		#~ end
 		# Verificar si las tareas asignadas corresponden a las SolAEjec seleccionadas
-  		if tara.proceso.grupoproc.saevb
-  			unless estot.visto
-  				tara.destroy
-  				tara.save
-  			end
-  		elsif tara.proceso.grupoproc.saeptr
-  			unless estot.ptr
-  				tara.destroy
-  				tara.save
-  			end
-  		elsif tara.proceso.grupoproc.saemtz
-  			unless estot.mtz
-  				tara.destroy
-  				tara.save
-  			end
-  		elsif tara.proceso.grupoproc.saemtje
-  			unless estot.mtje
-  				tara.destroy
-  				tara.save
-  			end
-  		end
-  	end
+  		
+  	#~ end
   	# Hash para asignar usuarios a tareas segun su grupo de procesos
+  	
+  	
     @gptar = Hash.new
     self.tareas.asignada_a_is_not('nil').each do |tare|
       @gptar[tare.proceso.grupoproc.id.to_s] = tare.asignada_a.to_s
@@ -301,7 +320,7 @@ def self.dacod(cli)
     unless self.nPasos?
       self.nPasos = 1
     end
-    if self.visto
+    if self.vb
       unless self.procesos.*.grupoproc.*.saevb.include?(true)
       	Proceso.checkproc('saevb').each do |provisto|
           self.procesos << provisto
@@ -376,6 +395,7 @@ def self.dacod(cli)
 		@valorc
 	end
 
+	#Se usa para mostrar los usuarios asignados o involucrados con una tarea en el tablero
 	def usersgp(grupro)
 	  @gproc = Grupoproc.find_by_abreviacion(grupro)
 	  @usrs = []
@@ -396,6 +416,7 @@ def self.dacod(cli)
 	  @usrs.uniq.join("-")
 	end
 
+	#Entrega el estado de un grupo de procesos (para determinar el color de la celda en el trablero)
 	def estgrupro(grupro)
 	  @gproc = Grupoproc.find_by_abreviacion(grupro)
 	  @estag = []

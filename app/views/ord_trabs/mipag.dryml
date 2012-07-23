@@ -38,7 +38,7 @@
           </do>
         </th></tr>
         <tr><th class="centrada" colspan="5">Solicitud a Ejecutar</th><td class="centrada" colspan="4"><input:codTflex/></td><th colspan="3" class="centrada">Disposici&oacute;n Clisse</th></tr>
-        <tr><td colspan="5" style="font-size:80%"><input:visto/>&nbsp;V.B.&nbsp;&nbsp;<input:ptr/>&nbsp;Printer&nbsp;&nbsp;<input:mtz/>&nbsp;MTZ&nbsp;&nbsp;<input:mtje/>&nbsp;MTJE</td><th colspan="4" class="centrada">Medidas de Impresion</th><td style="width:155px;">
+        <tr><td colspan="5" style="font-size:80%"><input:vb/>&nbsp;V.B.&nbsp;&nbsp;<input:ptr/>&nbsp;Printer&nbsp;&nbsp;<input:mtz/>&nbsp;MTZ&nbsp;&nbsp;<input:mtje/>&nbsp;MTJE</td><th colspan="4" class="centrada">Medidas de Impresion</th><td style="width:155px;">
            <do part="cyl">
             <if test="&@ord_trab.impresora">
                 <select  class="cilindro ord-trab-cilindro input belongs_to ord_trab_cilindro" name="ord_trab[cilindro_id]">

@@ -1,6 +1,16 @@
 // Place your application-specific JavaScript functions and classes here
 // This file is automatically included by javascript_include_tag :defaults
         LowPro.optimize$$ = false;
+        
+        function toggler() {
+				if (jQuery('#checker').is(':checked')) {
+					jQuery('#terminax').attr('disabled', true);
+					jQuery('#terminax').addClass('desact');
+				} else {
+					jQuery('#terminax').removeAttr('disabled');
+					jQuery('#terminax').removeClass('desact');
+				}
+			}
 
         jQuery(function() {
           jQuery( ".selector" ).datepicker({ defaultDate: null });
