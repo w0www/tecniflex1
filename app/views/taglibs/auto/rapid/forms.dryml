@@ -513,6 +513,39 @@
     </div>
   </form>
 </def>
+<def tag="eliminar-form" polymorphic/>
+<def tag="eliminar-form" for="Tarea">
+  <form lifecycle="eliminar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.eliminar', :default=>['Eliminar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="eliminar-form" polymorphic/>
+<def tag="eliminar-form" for="Tarea">
+  <form lifecycle="eliminar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.eliminar', :default=>['Eliminar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="eliminar-form" polymorphic/>
+<def tag="eliminar-form" for="Tarea">
+  <form lifecycle="eliminar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.eliminar', :default=>['Eliminar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
 
 <def tag="form" for="Tinta">
   <form merge param="default">

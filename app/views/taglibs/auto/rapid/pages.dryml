@@ -3174,47 +3174,6 @@
   </page>
 </def>
 
-<def tag="index-for-ord-trab-page" polymorphic/>
-<def tag="index-for-ord-trab-page" for="Tarea">
-  <page merge title="#{ht 'tareas.index_for_owner.title', :default=>['Tareas for']} #{name :with => @ord_trab, :no_wrapper => true}">    
-    <body: class="index-for-owner-page ord-trab tarea" param/>
-    <content: param>
-      <header param="content-header">
-        <div param="back-to">
-          <ht key="hobo.actions.back">Back to</ht> <a with="&@ord_trab"/>
-        </div>
-        <h2 param="heading">
-          <ht key="tareas.index_for_owner.heading.other">
-            Tareas
-          </ht>
-        </h2>
-        <h3 param="subheading">
-          <ht key="tareas.index_for_owner.subheading">
-            For:
-          </ht>
-          <a with="&@ord_trab"/>
-        </h3>
-        <p param="count" if>
-          <ht key="tareas.collection.count" count="&this.size">
-            There <count prefix="are"/>
-          </ht>
-        </p>
-      </header>
-
-      <section param="content-body">
-
-        <page-nav param="top-page-nav"/>
-
-        <collection param/>
-
-        <page-nav param="bottom-page-nav"/>
-      </section>
-    </content:>
-  </page>
-</def>
-
-
-
 
 <def tag="crear-page" polymorphic/>
 <def tag="crear-page" for="Tarea">
@@ -3441,6 +3400,29 @@
 
       <section param="content-body">
         <terminar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="eliminar-page" polymorphic/>
+<def tag="eliminar-page" for="Tarea">
+  <page title="#{ht 'tareas.eliminar.title', :default=>['Eliminar']}" merge>
+
+    <body: class="lifecycle-transition-page eliminar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.eliminar.heading">
+            Eliminar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <eliminar-form param="form"/>
       </section>
     </content:>
 

@@ -56,6 +56,12 @@ class Tarea < ActiveRecord::Base
 		self.proceso.grupoproc.send(grupo.to_sym)
 	end	
 
+	def borrar(saegp)
+		if self.gp(saegp)
+			self.destroy
+			self.save
+		end
+	end
 
   def self.find_utiles(usuario)
     @cuser = usuario
@@ -82,7 +88,8 @@ class Tarea < ActiveRecord::Base
 		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :unless => "(self.asignada_a == nil) && (self.proceso.grupoproc.asignar == true)"
 
 		transition :cambiar, { :enviada => :cambiada }, :available_to => :all, :if => "self.proceso.reinit" do
-			self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1]
+			estor = self.ord_trab.sortars
+			estor[estor.index(self)-1].lifecycle.habilitar!(User.first) if estor[estor.index(self)-1]
 		end
 
 		transition :habilitar, { :cambiada => :habilitada }, :available_to => :all, :if => "self.proceso.reinit"
@@ -130,7 +137,12 @@ class Tarea < ActiveRecord::Base
 		transition :terminar, { :iniciada => :terminada }, :available_to => :all do
 				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
 		end
+		
+		transition :eliminar, {:creada => :destroy}, :available_to => :all
+    
+    transition :eliminar, {:habilitada => :destroy}, :available_to => :all
 
+    transition :eliminar, {:terminada => :destroy}, :available_to => :all
 
 	end
 
@@ -153,7 +165,8 @@ class Tarea < ActiveRecord::Base
   end
 
   def destroy_permitted?
-    acting_user.administrator?
+    #~ acting_user.administrator?
+    true
   end
 
   def view_permitted?(field)

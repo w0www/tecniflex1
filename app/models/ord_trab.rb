@@ -190,10 +190,11 @@ default_scope :order => 'numOT DESC'
     		prima.save
     	end
     end
+
 	end
 
   validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.vb || self.ptr", :on => :habilitar
-  validates_presence_of :trapping, :curva, :impresora, :cilindro, :nBandas, :nPasos, :nCopias, :sustrato, :fechaEntrega, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
+  validates_presence_of :trapping, :curva, :impresora, :cilindro, :nCopias, :sustrato, :fechaEntrega, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_associated :separacions, :if => "(self.mtje || self.mtz) && self.activa? ", :on => :habilitar
 #	validate :fecha_posterior
 
@@ -225,30 +226,14 @@ default_scope :order => 'numOT DESC'
 		saegp = "sae" + saejec.to_s
 			unless self.send(saejec)
 				self.tareas.each do |estata|
-					if estata.gp(saegp)
-						estata.destroy
-						estata.save
-					end
+					estata.borrar(saegp)
 				end
 			end
 	end
 		
-	def before_update
-		estaot = self
-		sarr = ["vb", "ptr", "mtz", "mtje"]
-		sarr.each do |saejec|
-			tes = saejec + "_changed?"
-			if estaot.send(tes.to_sym)
-				kiltar(saejec)
-			end
-		end
-	end
 	
   def after_update
-  	# Habilita la primera tarea al activarse la OT.
-  	
-  	###### SOLO AL DESACTIVAR TODO FUNCIONA. AL DESACTIVAR POR PARTES SE CAE IGUAL (VERIFICAR EL BLOQUE SIGUIENTE)
-  	
+  	# Habilita la primera tarea al activarse la OT.  	
   	estot = self
   	ordtars = estot.sortars
   	unless ordtars.*.state.index("creada") == nil
@@ -263,26 +248,6 @@ default_scope :order => 'numOT DESC'
 					end
 				end
 		end	
-		
-		
-  	#~ estot.tareas.each do |tara|
-		#~ if tara == estot.sortars[estot.sortars.*.state.index("creada").to_i]
-				#~ if estot.activa?
-					#~ if tara == estot.sortars.first
-							#~ tara.lifecycle.habilitar!(User.first)					
-	#~ # TODO: Verificar que el procedimiento que sigue sirve de algo
-					#~ else
-						#~ unless estot.sortars[estot.sortars.index(tara)-1].state == "habilitada"
-							#~ tara.lifecycle.habilitar!(User.first)
-						#~ end
-					#~ end
-				#~ end
-		#~ end
-		# Verificar si las tareas asignadas corresponden a las SolAEjec seleccionadas
-  		
-  	#~ end
-  	# Hash para asignar usuarios a tareas segun su grupo de procesos
-  	
   	
     @gptar = Hash.new
     self.tareas.asignada_a_is_not('nil').each do |tare|
@@ -320,6 +285,14 @@ default_scope :order => 'numOT DESC'
     unless self.nPasos?
       self.nPasos = 1
     end
+    estaot = self
+		sarr = ["vb", "ptr", "mtz", "mtje"]
+		sarr.each do |saejec|
+			tes = saejec + "_changed?"
+			if estaot.send(tes.to_sym)
+				kiltar(saejec)
+			end
+		end
     if self.vb
       unless self.procesos.*.grupoproc.*.saevb.include?(true)
       	Proceso.checkproc('saevb').each do |provisto|
@@ -355,7 +328,6 @@ default_scope :order => 'numOT DESC'
     separacions.each {|sepa| sepa.areasep}
    # tareas.each do |tare|
    #   if tare.asignada_a
-
   end
 
   def validate
