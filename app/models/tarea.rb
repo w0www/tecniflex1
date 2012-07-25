@@ -26,7 +26,7 @@ class Tarea < ActiveRecord::Base
 
 	named_scope :activa, :conditions => ["state IN (?)", ["habilitada","iniciada","detenida","enviada","recibida"]]
   named_scope :disp, :conditions => ["state IN (?)", ["habilitada","detenida","enviada","recibida"]]
-  
+
   def after_create
   	self.ciclo ||= 1
 		self.save
@@ -51,16 +51,9 @@ class Tarea < ActiveRecord::Base
 	def activa?
     ['habilitada','iniciada','detenida','recibida','enviada'].include?(self.state)
   end
-  
+
   def gp(grupo)
 		self.proceso.grupoproc.send(grupo.to_sym)
-	end	
-
-	def borrar(saegp)
-		if self.gp(saegp)
-			self.destroy
-			self.save
-		end
 	end
 
   def self.find_utiles(usuario)
@@ -74,8 +67,8 @@ class Tarea < ActiveRecord::Base
   end
 
 
-  
-	#named_scope :saevb, :conditions => 
+
+	#named_scope :saevb, :conditions =>
 
   lifecycle do
 
@@ -137,9 +130,9 @@ class Tarea < ActiveRecord::Base
 		transition :terminar, { :iniciada => :terminada }, :available_to => :all do
 				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
 		end
-		
+
 		transition :eliminar, {:creada => :destroy}, :available_to => :all
-    
+
     transition :eliminar, {:habilitada => :destroy}, :available_to => :all
 
     transition :eliminar, {:terminada => :destroy}, :available_to => :all

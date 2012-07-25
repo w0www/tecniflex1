@@ -4,7 +4,6 @@ class OrdTrabsController < ApplicationController
 
   auto_actions :all
   # , :except => :index
-  @prueba = 1
 
 
   def new
@@ -50,11 +49,11 @@ class OrdTrabsController < ApplicationController
 		@ord_trab = OrdTrab.find(params[:id])
 	end
 
-  def update
-    hobo_update do
-      hobo_ajax_response if request.xhr?
-   end
-  end
+  # def update
+#     hobo_update do
+#       hobo_ajax_response if request.xhr?
+#    end
+#   end
 
 
 	def index

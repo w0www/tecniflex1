@@ -4,11 +4,13 @@ class TareasController < ApplicationController
 
   auto_actions :all
 
-  auto_actions_for :ord_trab, :index
+  #auto_actions_for :ord_trab, :index
 
   def update
 		hobo_update do
-			if request.xhr?
+			logger.debug "Inicio de tareas.update"
+				if request.xhr?
+					debugger
 					if this.state == "terminada"
 						render :json => {
 							:location => url_for(:controller => 'front', :action => 'index')

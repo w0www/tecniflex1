@@ -87,7 +87,7 @@ class OrdTrab < ActiveRecord::Base
   has_many :tipopruebas, :through => :pruebas, :accessible => true
   has_many :separacions, :dependent => :destroy, :accessible => true, :order => :position
   has_many :procesos, :through => :tareas, :accessible => true
-  has_many :tareas, :accessible => true, :dependent => :destroy
+  has_many :tareas, :accessible => true, :dependent => :destroy, :autosave => true
   belongs_to :encargado, :class_name => "User", :scope => {:rol_is => 'Supervisor' || 'Gerente'}
   belongs_to :curva
  # HABILITAR CONTACTO ASOCIADO A OT, ELEGIDO ENTRE CONTACTOS DEL CLIENTE (VER SCOPE)
@@ -122,7 +122,7 @@ default_scope :order => 'numOT DESC'
 		end
  end
 
- # Permite volver a una tarea anterior, habilitándola
+ # Permite volver a una tarea anterior, habilitndola
  def volver_a(procid,usuario)
  		esteprocid = Proceso.find(procid)
  		tares = self.tareas || []
@@ -139,12 +139,12 @@ default_scope :order => 'numOT DESC'
 
   # Ordena las tareas de una OT segun la posicion de sus procesos. Permite habilitar las tareas en orden.
   def sortars
-		estatars = self.tareas.map {|tar| [tar.id, tar.proceso.position]}
+		estatars = Tarea.ord_trab_is(self).map {|tar| [tar.id, tar.proceso.position]}
 		estatarsort = estatars.sort_by{|item| item[1]}
 		sortares = []
 		estatarsort.each do |estata|
-				sortares << Tarea.find(estata[0])
-			end
+			sortares << Tarea.find(estata[0])
+		end
 		sortares
   end
 
@@ -210,7 +210,7 @@ default_scope :order => 'numOT DESC'
     ['habilitada','iniciada','detenida'].include?(self.state)
   end
 
-	# Boolean que indica si todas las tareas están terminadas
+	# Boolean que indica si todas las tareas estn terminadas
 	def termtars?
 		if self.tareas != []
 			if self.tareas.*.state.rindex{|x| x!="terminada"} == nil
@@ -220,20 +220,22 @@ default_scope :order => 'numOT DESC'
 			end
 		end
 	end
-	
+
 	#Elimina tareas que no correspondan a lo seleccionado en la OT. Debe ser ejecutado antes de save
 	def kiltar(saejec)
 		saegp = "sae" + saejec.to_s
 			unless self.send(saejec)
 				self.tareas.each do |estata|
-					estata.borrar(saegp)
+					if estata.gp(saegp)
+						estata.mark_for_destruction
+					end
 				end
 			end
 	end
-		
-	
+
+
   def after_update
-  	# Habilita la primera tarea al activarse la OT.  	
+  	# Habilita la primera tarea al activarse la OT.
   	estot = self
   	ordtars = estot.sortars
   	unless ordtars.*.state.index("creada") == nil
@@ -247,8 +249,8 @@ default_scope :order => 'numOT DESC'
 						ordtars[ordtars.*.state.index("creada").to_i].lifecycle.habilitar!(User.first)
 					end
 				end
-		end	
-  	
+		end
+
     @gptar = Hash.new
     self.tareas.asignada_a_is_not('nil').each do |tare|
       @gptar[tare.proceso.grupoproc.id.to_s] = tare.asignada_a.to_s
@@ -285,15 +287,14 @@ default_scope :order => 'numOT DESC'
     unless self.nPasos?
       self.nPasos = 1
     end
-    estaot = self
 		sarr = ["vb", "ptr", "mtz", "mtje"]
 		sarr.each do |saejec|
 			tes = saejec + "_changed?"
-			if estaot.send(tes.to_sym)
+			if self.send(tes.to_sym)
 				kiltar(saejec)
 			end
 		end
-    if self.vb
+		if self.vb
       unless self.procesos.*.grupoproc.*.saevb.include?(true)
       	Proceso.checkproc('saevb').each do |provisto|
           self.procesos << provisto
@@ -321,13 +322,13 @@ default_scope :order => 'numOT DESC'
        	end
       end
     end
-
   end
 
   def after_save
     separacions.each {|sepa| sepa.areasep}
    # tareas.each do |tare|
    #   if tare.asignada_a
+
   end
 
   def validate
