@@ -21,36 +21,49 @@ class Separacion < ActiveRecord::Base
 
   acts_as_list :scope => :ord_trab
 
-  validates_presence_of :color, :lpi, :anilox, :tipomat, :espesor, :if => :activa?
+  validates_presence_of :color, :lpi, :anilox, :tipomat, :espesor, :if => :mtzomtje?
 
-  def activa?
-    self.ord_trab.activa?
+  def mtzomtje?
+	(self.ord_trab.mtje ||  self.ord_trab.mtz) && self.ord_trab.activa?	
   end
+
   def before_create
   	orden = self.ord_trab
   	unless orden.separacions.count <= 1
   		anterior = orden.separacions.last
-  		self.lpi = anterior.lineatura
+  		self.lpi = anterior.lpi
   		self.tipomat = anterior.tipomat
   		self.espesor = anterior.espesor
   	end
 	end
+
 	#Para crear un nuevo item en input-many : <input-many template="&Locmathist.new(:field_tech => @current_user, :project => @current_project)">
   def areasep
+	orden = self.ord_trab
     unless (alto == nil && ancho == nil)
-      @areasep=(alto*ancho)
+
+	if orden.nCopias > 1
+		@areasep = alto*ancho*orden.nCopias
+	else
+     		 @areasep=(alto*ancho)
+	end
+
     else
-      @orden=self.ord_trab
-      unless (@orden.mdi_ancho == nil && @orden.mdi_desarrollo == nil)
-        @areasep=(@orden.mdi_ancho*@orden.mdi_desarrollo)
-      else
-        @areasep = 0
-      end
-    self.area=@areasep
-    self.save
+	@areasep=0	
+   #   @orden=self.ord_trab
+   #   unless (@orden.mdi_ancho == nil && @orden.mdi_desarrollo == nil)
+ #       @areasep=(@orden.mdi_ancho*@orden.mdi_desarrollo)
+  #    else
+   #     @areasep = 0
+   #   end
+  #  self.area=@areasep
+  #  self.save
     end
   end
 
+def before_update
+	self.area = self.areasep
+end
   #def poliaptos(polspec)
    # Bodega.find(:all).repeat |bode|
    #   bode
@@ -64,7 +77,8 @@ class Separacion < ActiveRecord::Base
   end
 
   def update_permitted?
-    acting_user.administrator? || acting_user.hace?("Grabado")
+	 true   
+# acting_user.administrator? || acting_user.hace?("Grabado")
   end
 
   def destroy_permitted?

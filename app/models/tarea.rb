@@ -154,7 +154,7 @@ class Tarea < ActiveRecord::Base
   end
 
   def update_permitted?
-    acting_user.superv? || acting_user.hace?("Grabado") || interventor?
+    acting_user.superv? || self.proceso.edmeds
   end
 
   def destroy_permitted?

@@ -10,14 +10,14 @@
     <div part="campos">
       <table class="tarea">
         <tr><th>Cliente</th><td colspan="2"><view:ord_trab.cliente/></td><th>Fecha tope:</th><td colspan="2"><view:ord_trab.fechaEntrega/></td></tr>
-        <tr><th>C&oacute;digo Cliente:</th><td colspan="2"><view:ord_trab.codCliente/></td><th>C&oacute;digo Tecniflex:</th><td colspan="2"><view:ord_trab.codTflex/></td></tr>
-        <tr rowspan="2"><th>Instrucciones</th><td colspan="2"><view:ord_trab.observaciones/></td></tr>
+        <tr><th>C&oacute;digo Cliente:</th><td colspan="2"><view:ord_trab.codTflex/></td><th>C&oacute;digo Tecniflex:</th><td colspan="2"><%= this.ord_trab.cliente.sigla %>-<view:ord_trab.codCliente/></td></tr>
+        <tr rowspan="2"><th>Instrucciones</th><td colspan="4"><view:ord_trab.observaciones/></td></tr>
         <tr><th>Estado:</th><td colspan="2"><view:state/></td></tr>
         <tr></tr>
         <tr/>
       </table>
     </div>
-      <% if (current_user.hace?("Grabado") && this.proceso.edmeds) %>
+      <% if this.proceso.edmeds %>
 
         <table class="tarea">
 

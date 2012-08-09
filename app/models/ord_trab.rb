@@ -324,12 +324,13 @@ default_scope :order => 'numOT DESC'
     end
   end
 
-  def after_save
-    separacions.each {|sepa| sepa.areasep}
+ # Se elimina y se traslada a separacion->after_update
+#def after_save
+  #  separacions.each {|sepa| sepa.areasep}
    # tareas.each do |tare|
    #   if tare.asignada_a
 
-  end
+  #end
 
   def validate
 #    if (mdi_desarrollo*nPasos) > cilindro.desarr
