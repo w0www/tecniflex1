@@ -381,7 +381,9 @@ default_scope :order => 'numOT DESC'
 	        end
 	        if tare.intervencions
 	        	tare.intervencions.each do |inter|
-	          	@usrs << inter.user.iniciales
+				if inter.user
+	          			@usrs << inter.user.iniciales
+				end
 	         	end
 	        end
 	      end
