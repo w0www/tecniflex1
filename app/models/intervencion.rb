@@ -19,6 +19,8 @@ class Intervencion < ActiveRecord::Base
 
   after_create :actitar
 
+  after_update :appendobs # SEGUIR DESDE AQUI
+
 #  after_save :checktar
 
   def find_interu(cuser)
@@ -58,6 +60,26 @@ class Intervencion < ActiveRecord::Base
 					end
 				end
     end
+
+    def appendobs
+    		if self.tarea
+    			otobs = self.tarea.ord_trab
+    			locobs = self.observaciones
+    			ahora = self.termino.strftime('%H:%M %d/%m/%y')
+    			if otobs.observaciones.length == 0
+    				nllocobs = self.user.iniciales + " " + ahora + ": " + locobs
+    			else
+    				nllocobs = "\n" + self.user.iniciales + " " + ahora + ": " + locobs
+    			end
+    			unless locobs.length == 0
+						unless otobs.observaciones.include?(ahora)
+							otobs.observaciones = otobs.observaciones << nllocobs
+							otobs.save
+						end
+					end
+    		end
+    end
+
 
     def checktar
       @ter = 0
