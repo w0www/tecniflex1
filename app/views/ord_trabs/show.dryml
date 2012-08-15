@@ -32,9 +32,9 @@
         <tr><td class="centrada" colspan="5">Tipo de Impresion: <view:supRev/></td><th colspan="2" class="centrada">Trapping</th><th colspan="3" class="centrada">Curva</th><th colspan="3" class="centrada">Encargado</th></tr>
         <tr><td class="centrada" colspan="5"/><td colspan="2" class="centrada"><view:trapping if="trapping"/></td><td colspan="3" class="centrada"><view:curva if="curva"/></td><td colspan="3" class="centrada"><view:encargado if="encargado"/></td></tr>
 				<tr><th class="centrada" colspan="7">Colores</th><th colspan="5" class="centrada">Observaciones</th></tr>
-        <tr><th>Pos</th><th>Color</th><th>Anilox</th><th>lpi</th><th>Material</th><th>Alto</th><th>Ancho</th><th>Area</th><td colspan="8" rowspan="<%=  1+this.separacions.count %>">&nbsp;<view:observaciones/></td></tr>
+        <tr><th>Pos</th><th>Color</th><th>Anilox</th><th>lpi</th><th>Material</th><th>Alto</th><th>Ancho</th><th>Area</th><th>Copias</th><td colspan="7" rowspan="<%=  1+this.separacions.count %>">&nbsp;<view:observaciones/></td></tr>
         <repeat with="&this.separacions">
-          <tr><td><view:position/></td><td><view:color if="color"/></td><td><view:anilox if="anilox"/></td><td><view:lpi if="lpi"/></td><td><view:tipomat if="tipomat"/></td><td><view:alto if="alto"/></td><td><view:ancho if="ancho"/></td><td><view:area if="area"/></td></tr>
+          <tr><td><view:position/></td><td><view:color if="color"/></td><td><view:anilox if="anilox"/></td><td><view:lpi if="lpi"/></td><td><view:tipomat if="tipomat"/></td><td><view:alto if="alto"/></td><td><view:ancho if="ancho"/></td><td><view:area if="area"/></td><td><view:ord_trab.nCopias if="&this.ord_trab.nCopias"/></td></tr>
         </repeat>
         <tr/>
         <% if User.supervisores.include?(current_user)%>
