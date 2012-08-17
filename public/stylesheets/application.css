@@ -398,3 +398,17 @@ ul.navigation {
     margin: 0 30px 7px;
     padding: 0;
 }
+
+ul.hjq-input-many li {
+	list-style: none;
+	margin-left: 0;
+}
+
+ul.hjq-input-many li div.card {
+		float: left;
+		width:85%;
+}
+
+ul.hjq-input-many input {
+	font-size:0.9em;
+}

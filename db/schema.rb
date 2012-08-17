@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120724025519) do
+ActiveRecord::Schema.define(:version => 20120817025607) do
 
   create_table "aniloxes", :force => true do |t|
     t.integer  "lineatura"
@@ -286,10 +286,12 @@ ActiveRecord::Schema.define(:version => 20120724025519) do
     t.integer  "espesor_id"
     t.integer  "sustrato_id"
     t.integer  "version"
+    t.integer  "contacter_id"
   end
 
   add_index "ord_trabs", ["cilindro_id"], :name => "index_ord_trabs_on_cilindro_id"
   add_index "ord_trabs", ["cliente_id"], :name => "index_ord_trabs_on_cliente_id"
+  add_index "ord_trabs", ["contacter_id"], :name => "index_ord_trabs_on_contacter_id"
   add_index "ord_trabs", ["curva_id"], :name => "index_ord_trabs_on_curva_id"
   add_index "ord_trabs", ["encargado_id"], :name => "index_ord_trabs_on_encargado_id"
   add_index "ord_trabs", ["espesor_id"], :name => "index_ord_trabs_on_espesor_id"
