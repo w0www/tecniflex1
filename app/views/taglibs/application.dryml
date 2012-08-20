@@ -136,11 +136,21 @@
 									 <% if @ord_trab.contacter_id %>
 										<option selected="selected" value="<%= @ord_trab.contacter_id%> "><%= @ord_trab.contacter.name %></option>
 									 <%else%>
-										<option selected="selected">Ninguna</option>
+										<% if @ord_trab.cliente%>
+											<%if @ord_trab.cliente.contactos != [] %>
+												<%if @ord_trab.cliente.contactos.count == 1%>
+													<option selected="selected"  value="<%= @ord_trab.cliente.contactos.first.id %>"><%= @ord_trab.cliente.contactos.first.name %></option>
+												<%else %>	 
+													<option selected="selected">Ninguno</option>
+													<repeat with="&@ord_trab.cliente.contactos" >
+														 <option value="<%= this.id %>"><%=  this.name %></option>
+													 </repeat>
+												<%end%>
+											<% end%>
+										<% end %>
+									
 									 <%end%>
-									 <repeat with="&@ord_trab.cliente.contactos">
-										 <option value="<%= this.id %>"><%=  this.name %></option>
-									 </repeat>
+									
 							 </select>
              </do>
              </th>
