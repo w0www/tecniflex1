@@ -133,8 +133,8 @@
         		Contacto
 						<do part="contac">
 								<select  class="contacter ord-trab-contacter input belongs_to ord_trab_contacter" name="ord_trab[contacter_id]">
-									 <% if @ord_trab.contacter_id %>
-										<option selected="selected" value="<%= @ord_trab.contacter_id%> "><%= @ord_trab.contacter.name %></option>
+									 <% if @ord_trab.contacter_id != 0%>
+										<option selected="selected" value="<%= @ord_trab.contacter_id%> "><% if  @ord_trab.contacter != nil %><%= @ord_trab.contacter.name %><% end %></option>
 									 <%else%>
 										<% if @ord_trab.cliente%>
 											<%if @ord_trab.cliente.contactos != [] %>
