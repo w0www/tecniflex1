@@ -43,9 +43,9 @@ class Separacion < ActiveRecord::Base
     unless (alto == nil && ancho == nil)
 
 	if orden.nCopias > 1
-		@areasep = alto*ancho*orden.nCopias
+		@areasep = alto.to_f*ancho.to_f*orden.nCopias
 	else
-     		 @areasep=(alto*ancho)
+     		 @areasep= alto.to_f*ancho.to_f
 	end
 
     else

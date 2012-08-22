@@ -24,7 +24,7 @@ class Separacion < ActiveRecord::Base
   validates_presence_of :color, :lpi, :anilox, :tipomat, :espesor, :if => :mtzomtje?
 
   def mtzomtje?
-	(self.ord_trab.mtje ||  self.ord_trab.mtz) && self.ord_trab.activa?	
+	(self.ord_trab.mtje ||  self.ord_trab.mtz) && self.ord_trab.activa?
   end
 
   def before_create
@@ -49,7 +49,7 @@ class Separacion < ActiveRecord::Base
 	end
 
     else
-	@areasep=0	
+	@areasep=0
    #   @orden=self.ord_trab
    #   unless (@orden.mdi_ancho == nil && @orden.mdi_desarrollo == nil)
  #       @areasep=(@orden.mdi_ancho*@orden.mdi_desarrollo)
@@ -77,7 +77,8 @@ end
   end
 
   def update_permitted?
-    acting_user.administrator? || acting_user.hace?("Grabado")
+	 true
+# acting_user.administrator? || acting_user.hace?("Grabado")
   end
 
   def destroy_permitted?
