@@ -1,0 +1,58 @@
+<index-page>
+     <content-body:>
+     <style>
+			#button { padding: .5em 1em; text-decoration: none; }
+			#ocultable { width: 850px; height: 40px; padding: 0.4em; position: relative; display:none}
+			#efecto h3 { margin: 0; padding: 0.4em; text-align: center; }
+		</style>
+        <a action="new" to="&model">
+          <ht key="ord_trabs.actions.new">New O.T.</ht>
+        </a>
+        <div>
+					<div id='ocultable'>
+						<div style="float:right;">
+										<form  method='get' action=''>
+										<hidden-fields for-query-string skip='page, search'/>
+											<span>Filtrar por fecha</span>
+											<input type='text' style='width:90px' id='datepicker' name='startdate' value="#{params[:startdate] || 'Fecha Inicial'}"/>
+											<input type='text' style='width:90px' id='datepicker2' name='enddate' value="#{params[:enddate] || 'Fecha Final'}"/>
+											<submit class='search-button'  label='Ir'/>
+										</form>
+						</div>
+						<form  method='get' action='' style="float:right">
+									<hidden-fields for-query-string skip='page, search'/>
+										<span>Ocultar terminadas</span>
+										<input type="checkbox" checked="#{params[:ocultar] || '' } " name="ocultar"/>
+										<submit class='search-button'  label='Ir'/>&nbsp;&nbsp;&nbsp;
+						</form>
+						<br />
+			  <a href="#{base_url}/ord_trabs/reporte.csv" if="&current_user.administrator?" class="button submit-button search-button">Exportar historial</a>
+					</div>
+				<a style="margin:40px" href="#" id="button" class="ui-state-default ui-corner-all">Filtrar</a>
+				</div>
+
+				<% if @ord_trabs != [] %>
+        	<collection with="&@ord_trabs"/>
+        <% end %>
+      </content-body:>
+      <page-scripts:>
+				jQuery(document).ready(function() {
+					jQuery("#datepicker").datepicker();
+					jQuery("#datepicker2").datepicker();
+					function runEffect() {
+
+							// run the effect
+							jQuery( "#ocultable" ).slideToggle( 'slow', function(){
+							} );
+						};
+
+						// set effect from select menu value
+					jQuery( "#button" ).click(function() {
+							runEffect();
+							return false;
+						});
+
+
+				});
+			</page-scripts:>
+</index-page>
