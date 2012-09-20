@@ -43,8 +43,8 @@ class OrdTrab < ActiveRecord::Base
     mcCrucescol   :string
     mcCrucesapy   :string
     mcTacas       :boolean
-    mcTacasH      :integer
-    mcTacasV      :integer
+    mcTacasH      :decimal, :precision => 5, :scale => 3
+    mcTacasV      :decimal, :precision => 5, :scale => 3
     mcTacascol    :string
     mcTacasapy    :string
     mcTiras       :boolean
@@ -78,7 +78,7 @@ class OrdTrab < ActiveRecord::Base
     supRev enum_string(:'Superficie', :'Reverso')
     tipofotop enum_string(:'Digital', :'Convencional')
     trapping       :decimal
-    prioridad enum_string(:'Normal', :'Repeticion', :'Urgencia')
+    prioridad enum_string(:'Normal', :'Repeticion', :'Sin Costo*')
     pctdistor      :decimal
     timestamps
   end
