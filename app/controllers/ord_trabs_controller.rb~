@@ -4,7 +4,6 @@ class OrdTrabsController < ApplicationController
 
   auto_actions :all
   # , :except => :index
-  @prueba = 1
 
 
   def new
@@ -50,16 +49,28 @@ class OrdTrabsController < ApplicationController
 		@ord_trab = OrdTrab.find(params[:id])
 	end
 
-  def update
-    hobo_update do
-      hobo_ajax_response if request.xhr?
-   end
-  end
+  # def update
+#     hobo_update do
+#       hobo_ajax_response if request.xhr?
+#    end
+#   end
 
 
 	def index
 		hobo_index do
-		  @ord_trabs = OrdTrab.all.reverse
+			@ordenes = OrdTrab.all
+			if (params[:startdate].blank? && params[:enddate].blank?)
+				@ordenes = OrdTrab.find(:all)
+			elsif params[:startdate] && params[:enddate]
+				@from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
+				@to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
+				@ordenes = OrdTrab.order_by(:id).all(:conditions => ["created_at >= ? and created_at <= ? and state != ?",@from_date.to_datetime.in_time_zone(Time.zone),@to_date.to_datetime.in_time_zone(Time.zone),"terminada"])
+			end
+			if params[:ocultar]
+				@ord_trabs = @ordenes & OrdTrab.state_is_not("terminada")
+			else
+				@ord_trabs = @ordenes
+			end
 		end
 	end
 
@@ -93,7 +104,7 @@ class OrdTrabsController < ApplicationController
     elsif params[:startdate] && params[:enddate]
         @from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
         @to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
-        @todas = OrdTrab.find(:all, :order => :id, :conditions => ["created_at >= ? and created_at <= ?",@from_date.to_datetime.in_time_zone(Time.zone),@to_date.to_datetime.in_time_zone(Time.zone)])
+        @todas = OrdTrab.order_by(:id).all(:conditions => ["created_at >= ? and created_at <= ?",@from_date.to_datetime.in_time_zone(Time.zone),@to_date.to_datetime.in_time_zone(Time.zone)])
     end
     hobo_ajax_response if request.xhr?
   end
@@ -111,7 +122,37 @@ class OrdTrabsController < ApplicationController
     hobo_ajax_response if request.xhr?
   end
 
-  index_action :reporte
+  index_action :reporte do
+  	@ordenes = OrdTrab.find(:all)
+  	respond_to do |wants|
+			wants.html
+			wants.csv do
+				csv_string = CSV.generate do |csv|
+					# header row
+					csv << ["Codigo_Producto", "O.T.", "Proceso", "Usuario", "Inicio", "Termino", "Observaciones"]
+					# data rows
+					@ordenes.each do |orden|
+						if orden.tareas != []
+							orden.tareas.each do |tara|
+								if tara.intervencions != []
+									tara.intervencions.each do |inte|
+									if inte.user != nil
+										codig = orden.cliente.sigla.to_s + orden.codCliente.to_s
+										csv << [codig; orden.numOT; tara.proceso.nombre; inte.user.name; inte.inicio; inte.termino;inte.observaciones]
+									end									
+									end
+								end
+							end
+						end
+					end
+				end
+				# send it to the browsah
+				send_data(csv_string.force_encoding('ASCII-8BIT'),
+									:type => 'text/csv; charset=iso-8859-1; header=present',
+									:disposition => "attachment", :filename => Time.now.strftime("Ordenes_al_%d_%m_%Y") + ".csv")
+			end
+		end
+	end
 
   def do_eliminar
     do_transition_action :eliminar do
