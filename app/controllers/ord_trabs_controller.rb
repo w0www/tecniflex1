@@ -58,7 +58,7 @@ class OrdTrabsController < ApplicationController
 
 	def index
 		hobo_index do
-			@ordenes = OrdTrab.find(:all)
+			@ordenes = OrdTrab.all
 			if (params[:startdate].blank? && params[:enddate].blank?)
 				@ordenes = OrdTrab.find(:all)
 			elsif params[:startdate] && params[:enddate]

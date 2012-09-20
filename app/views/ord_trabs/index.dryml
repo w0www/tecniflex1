@@ -28,9 +28,9 @@
 						<br />
 			  <a href="#{base_url}/ord_trabs/reporte.csv" if="&current_user.administrator?" class="button submit-button search-button">Exportar historial</a>
 					</div>
-				<a style="margin:40px" href="#" id="button" class="ui-state-default ui-corner-all">Filtrar</a>
+				<a href="#" id="button" class="ui-state-default ui-corner-all" style="margin:40px" >Filtrar</a>
 				</div>
-
+				<page-nav/>
 				<% if @ord_trabs != [] %>
         	<collection with="&@ord_trabs"/>
         <% end %>
