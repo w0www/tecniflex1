@@ -15,9 +15,13 @@ es:
           back: "Volver a"
           send: "Enviar"
           remove: "Remover"
-          
+
     bodegas:
       collection:
         heading:
           other: "Stock"
 
+    will_paginate:
+    	previous_label: "Anterior"
+    	next_label: "Proxima"
+    	page_gap: "..."

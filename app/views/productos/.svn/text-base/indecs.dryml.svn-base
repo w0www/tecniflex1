@@ -1,7 +1,0 @@
-<def tag="index-page" for="Producto">
-	<collection: replace>
-		<div> 
-			<table-plus fields="this,cliente"/>
-		</div> 
-	</collection:>
-</def>
