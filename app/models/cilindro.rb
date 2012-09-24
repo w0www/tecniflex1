@@ -3,7 +3,7 @@
   hobo_model # Don't put anything above this
 
   fields do
-    name		   :string
+    nombre		   :string
     distorsion :decimal
     pctDistor   :decimal, :precision => 5, :scale => 3
     duplo      :string
@@ -11,16 +11,21 @@
     timestamps
   end
 
-  validates_presence_of :name, :distorsion
+  validates_presence_of :nombre, :distorsion
   belongs_to :impresora
   has_many :ord_trabs
-  
-  default_scope :order => 'name'
 
 
   def before_save
     self.pctDistor = (distorsion / name.to_f) * 100
   end
+
+  def name
+		self.nombre.to_s + '_' + self.distorsion.to_s
+	end
+
+  default_scope :order => 'nombre'
+
   # --- Permissions --- #
 
   def create_permitted?

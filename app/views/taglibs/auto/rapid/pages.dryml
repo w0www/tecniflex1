@@ -389,7 +389,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="distorsion, pctDistor, duplo, espesor" param/>
+            <field-list fields="nombre, distorsion, pctDistor, duplo, espesor" param/>
           </section>
     </content:>
 
@@ -3554,14 +3554,14 @@
 <!-- ====== Tipomat Pages ====== -->
 
 <def tag="index-page" for="Tipomat">
-  <page merge title="#{ht 'tipomats.index.title', :default=>['Tipomats'] }">
+  <page merge title="#{ht 'tipomats.index.title', :default=>['Nombre de materials'] }">
     <body: class="index-page tipomat" param/>
 
     <content: param>
       <header param="content-header">
         <h2 param="heading">
           <ht key="tipomats.index.heading">
-            Tipomats
+            Nombre de materials
           </ht>
         </h2>
 
@@ -3583,7 +3583,7 @@
 
         <div param="new-form">
           <h3 param="new-form-heading">
-            <ht key="tipomats.form.new.heading">New Tipomat</ht>
+            <ht key="tipomats.form.new.heading">New Nombre de material</ht>
           </h3>
           <form with="&@invalid_record || new_for_current_user(Tipomat)" param/>
         </div>
@@ -3595,21 +3595,21 @@
 
 
 <def tag="new-page" for="Tipomat">
-  <page merge title="#{ht 'tipomats.new.title', :default=>[' New Tipomat'] }">
+  <page merge title="#{ht 'tipomats.new.title', :default=>[' New Nombre de material'] }">
     <body: class="new-page tipomat" param/>
 
     <content: param>
       <section param="content-header">
         <h2 param="heading">
           <ht key="tipomats.new.heading">
-            New Tipomat
+            New Nombre de material
           </ht>
         </h2>
       </section>
 
       <section param="content-body">
         <form param>
-          <submit: label="#{ht 'tipomats.actions.create', :default=>['Create Tipomat']}"/>
+          <submit: label="#{ht 'tipomats.actions.create', :default=>['Create Nombre de material']}"/>
         </form>
       </section>
     </content:>
@@ -3618,7 +3618,7 @@
 
 
 <def tag="show-page" for="Tipomat">
-  <page merge title="#{ht 'tipomats.show.title', :default=>['Tipomat'] }">
+  <page merge title="#{ht 'tipomats.show.title', :default=>['Nombre de material'] }">
 
     <body: class="show-page tipomat" param/>
 
@@ -3634,7 +3634,7 @@
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="tipomats.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
-                Edit Tipomat
+                Edit Nombre de material
               </ht>
             </a>
           </header>
@@ -3649,7 +3649,7 @@
 
 
 <def tag="edit-page" for="Tipomat">
-  <page merge title="#{ht 'tipomats.edit.title', :default=>['Edit Tipomat'] }">
+  <page merge title="#{ht 'tipomats.edit.title', :default=>['Edit Nombre de material'] }">
 
     <body: class="edit-page tipomat" param/>
 
@@ -3660,7 +3660,7 @@
             Edit <type-name/>
           </ht>
         </h2>
-        <delete-button label="#{ht 'tipomats.actions.delete', :default=>['Remove This Tipomat']}" param/>
+        <delete-button label="#{ht 'tipomats.actions.delete', :default=>['Remove This Nombre de material']}" param/>
       </section>
 
       <section param="content-body">

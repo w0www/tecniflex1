@@ -27,7 +27,7 @@
 <def tag="form" for="Cilindro">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="name, distorsion, pctDistor, duplo, espesor, impresora" param/>
+    <field-list fields="nombre, distorsion, pctDistor, duplo, espesor, impresora" param/>
     <div param="actions">
       <submit label="#{ht 'cilindros.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
