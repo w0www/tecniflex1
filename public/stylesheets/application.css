@@ -36,13 +36,17 @@ h2 {
 }
 
 td {
-
     border-collapse:collapse;
+
 }
 
 table,td {
     font-size: 90%;
     border-collapse:collapse;
+}
+
+.card .ord-trab {
+	background-color: inherit;
 }
 
 table.tarea {
@@ -365,6 +369,11 @@ th.Repeticion {
     padding: 5px;
 }
 
+.even > .card {
+	background-color: #ccf;
+	border-color: #ccf;
+}
+
 ul.navigation {
     background-color: #003;
 }
@@ -412,3 +421,4 @@ ul.hjq-input-many li div.card {
 ul.hjq-input-many input {
 	font-size:0.9em;
 }
+

@@ -148,6 +148,10 @@ default_scope :order => 'numOT DESC'
 		sortares
   end
 
+  def empty?
+  	OrdTrab.all == []
+  end
+
   lifecycle do
 
 		state :creada, :default => true

@@ -80,10 +80,10 @@
   <card class="ord-trab" param="default" merge>
     <header: param>
       <% @orig = this %>
-      <h4 param="heading"><a><name/></a>&nbsp;-&nbsp;<view:state/><span style="float:right"><%= link_to 'Nueva version', new_ord_trab_path(:id => @orig.id)%>&nbsp;&nbsp;&nbsp;&nbsp;<a  action="edit">Editar</a></span></h4>
+  <!--    <h4 param="heading"><a><name/></a>&nbsp;-&nbsp;<view:state/><span style="float:right"><%= link_to 'Nueva version', new_ord_trab_path(:id => @orig.id)%>&nbsp;&nbsp;&nbsp;&nbsp;<a  action="edit">Editar</a></span></h4>  -->
+      <table width="100%"><tr class="#{scope.even_odd}"><td width="10%"><a><%= this.cliente.sigla %>-<%= this.codCliente %></a></td><td width="10%"><a><name/></a></td><td width="50%"><%= this.nomprod %></td><td width="15%"><%= link_to 'Nueva version', new_ord_trab_path(:id => @orig.id)%></td><td width="15%"><a  action="edit">Editar</a></td></tr></table>
     </header:>
   <body:>
-    <view:nomprod/>
   </body:>
   </card>
 </def>
@@ -254,11 +254,11 @@
   </form>
 </extend>
 
-<extend tag="card" for="Intervencion">
-  <header:>
-		<h4><view with="&this.tarea.ord_trab.nomprod"></view> :<a><view with="&this.tarea"/></a></h4>
-	</header:>
-</extend>
+<!-- <extend tag="card" for="Intervencion"> -->
+<!--  <header:> -->
+<!--		<h4><view with="&this.tarea.ord_trab.nomprod"></view> :<a><view with="&this.tarea"/></a></h4> -->
+<!--	</header:> -->
+<!-- </extend> -->
 
 <def tag="ver" param>
   <view: class="vista" />
@@ -451,9 +451,9 @@
 </def>
 
 <def tag="card" for="Tarea">
-  <card class="tarea #{this.state}" param="default" merge>
+  <card class="  #{this.state}" param="default" merge>
     <header: param >
-      <h4 param="heading" ><a><name/></a>&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-weight: normal;font-size: 90%;"><%= this.ord_trab.nomprod%></span>&nbsp;&nbsp;</h4>
+      <a><table width="80%"><tr><td width="15%"><%= this.ord_trab.cliente.sigla %>-<%= this.ord_trab.codCliente %></td><td width="20%"><name/></td><td width="65%"><%= this.ord_trab.nomprod%></td></tr></table></a>
     </header:>
   </card>
 </def>

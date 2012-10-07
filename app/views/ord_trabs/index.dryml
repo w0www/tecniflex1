@@ -8,11 +8,13 @@
 			#ocultable { width: 850px; height: 40px; padding: 0.4em; position: relative; display:none}
 			#efecto h3 { margin: 0; padding: 0.4em; text-align: center; }
 		</style>
+        <div style="float:right">
         <a action="new" to="&model">
           <ht key="ord_trabs.actions.new">New O.T.</ht>
         </a>
+        </div>
         <div>
-					<div id='ocultable'>
+					<div id='ocultable' style="background-color:#cccccc">
 						<div style="float:right;">
 										<form  method='get' action=''>
 										<hidden-fields for-query-string skip='page, search'/>
@@ -38,6 +40,7 @@
 				<% if @ord_trabs != [] %>
         	<collection with="&@ord_trabs"/>
         <% end %>
+        <%= will_paginate @ordenes %>
       </content-body:>
       <page-scripts:>
 				jQuery(document).ready(function() {
