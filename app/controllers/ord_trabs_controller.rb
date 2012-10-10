@@ -92,7 +92,7 @@ class OrdTrabsController < ApplicationController
     @grupro = Grupoproc.tablero.order_by(:position)
     @clies = Cliente.all
     if params[:orden].blank? && ((params[:startdate].blank? && params[:enddate].blank?) && (params[:cliente].blank? && params[:codCliente].blank?))
-	    @todas = OrdTrab.find(:all)
+	    @todas = OrdTrab.paginate(:page => params[:page], :per_page => 50)
 	  elsif params[:orden]
       @orde = params[:orden]
       @todas = OrdTrab.find(:all, :conditions => ["numot = ?", @orde])

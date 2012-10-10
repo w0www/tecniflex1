@@ -56,6 +56,7 @@
             </div>
             <a href="#" id="button" class="ui-state-default ui-corner-all">Filtrar</a>
           </div>
+          <%= will_paginate @todas %>
           <table class="tablero" part="dashboard">
             <thead>
               <tr>
@@ -109,6 +110,7 @@
               <!-- </repeat> -->
             </tbody>
           </table>
+          <%= will_paginate @todas %>
         </div>
         <div id="tabs-2">
           <table class="tablero">
