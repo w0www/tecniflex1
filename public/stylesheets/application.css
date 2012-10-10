@@ -45,10 +45,6 @@ table,td {
     border-collapse:collapse;
 }
 
-.card .ord-trab {
-	background-color: inherit;
-}
-
 table.tarea {
     width: 100%;
     border-collapse: separate;

@@ -52,6 +52,10 @@ class Tarea < ActiveRecord::Base
     ['habilitada','iniciada','detenida','recibida','enviada'].include?(self.state)
   end
 
+	def activa_poli?
+    ['habilitada','iniciada','detenida','recibida','enviada'].include?(self.state)
+  end
+
   def gp(grupo)
 		self.proceso.grupoproc.send(grupo.to_sym)
 	end
@@ -60,7 +64,7 @@ class Tarea < ActiveRecord::Base
     @cuser = usuario
     if @cuser.procesos != []
 			@uprocid = @cuser.procesos.*.id
-			Tarea.disp.find(:all, :conditions => {:proceso_id => @uprocid, :asignada_a => nil}) # se elimina "iniciada" para evitar 2 operadores trabajando en la misma tarea.
+			Tarea.activa.find(:all, :conditions => {:proceso_id => @uprocid, :asignada_a => nil})
 		else
 			[]
 		end

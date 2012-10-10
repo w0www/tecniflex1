@@ -21,7 +21,12 @@
   end
 
   def name
-		self.nombre.to_s + '_' + self.distorsion.to_s
+  	esp = self.espesor
+  	if esp != ''
+			self.nombre.to_s + '_' + self.distorsion.to_s + '_' + esp.to_s
+		else
+			self.nombre.to_s + '_' + self.distorsion.to_s
+		end
 	end
 
   default_scope :order => 'nombre'
