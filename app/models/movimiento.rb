@@ -15,11 +15,13 @@ class Movimiento < ActiveRecord::Base
   belongs_to :ord_trab
   belongs_to :user
   belongs_to :polimero
-  
+
+  validate_presence_of :bodega_id, :polimero_id
+
   def before_save
-    if self.serie != nil 
+    if self.serie != nil
       @nueva = Existencia.new({:cantidad => self.cantidad, :numfact => self.mov_header.factura, :lote => self.lote, :serie => self.serie, :polimero => self.polimero, :bodega => self.bodega})
-      @nueva.save    
+      @nueva.save
     elsif self.lote != nil
       @nea = Existencia.find(:first, :conditions => ["lote = (?)", self.lote])
       unless @nea == []
@@ -27,13 +29,14 @@ class Movimiento < ActiveRecord::Base
         @nea.cantidad == @neacant + self.cantidad.to_i
         @nea.save
       end
-    else Existencia.finpol(self.polimero) != []
-      @nea = Existencia.finpol(self.polimero)
-      unless @nea == []
-        @neacant = @nea.cantidad
-        @nea.cantidad == @neacant + self.cantidad.to_i
-        @nea.save
-      end
+    elsif Existencia.finpol(self.polimero,self.bodega) != nil
+    	if self.bodega != nil
+				@nea = Existencia.finpol(self.polimero)
+				unless @nea == []
+					@neacant = @nea.cantidad
+					@nea.cantidad == @neacant + self.cantidad.to_i
+					@nea.save
+				end
     end
   end
 

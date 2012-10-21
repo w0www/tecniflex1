@@ -48,6 +48,14 @@
   </old-show-page>
 </extend>
 
+<extend tag="new-page" for="MovHeader">
+  <old-new-page merge>
+  	<heading:>
+  		Nuevo Ingreso
+  	</heading:>
+  </old-new-page>
+</extend>
+
 <extend tag="show-page" for="Separacion">
   <old-show-page merge>
     <append-content-body:>
@@ -109,7 +117,8 @@
       <tr><th>Factura</th><td><input:factura/></td><th>Proveedor</th><td><input:proveedor/></td><th>Fecha</th><td><input:fecha style="width:80px"/></td></tr>
       <tr><th>Observaciones</th><td colspan="6"><input:observaciones/></td></tr>
     </table>
-    <hjq-input-many:movimientos>
+    <h2>Items</h2>
+    <hjq-input-many:movimientos minimum="1">
       <empty-message:>No hay items</empty-message:>
       <item:>
         <div>Polimero:&nbsp;<input:polimero/> Serie: <input:serie style="width:80px"/> Lote: <input:lote style="width:80px"/> Cantidad <input:cantidad style="width:80px"/></div>

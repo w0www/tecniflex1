@@ -10,7 +10,7 @@ class MovHeader < ActiveRecord::Base
     timestamps
   end
 
-  has_many :movimientos
+  has_many :movimientos, :accessible => true
 
   # --- Permissions --- #
 

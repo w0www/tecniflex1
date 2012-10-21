@@ -1,6 +1,6 @@
 class MovHeaderHints < Hobo::ViewHints
 
-  # model_name "My Model"
+  model_name "Ingreso"
   # field_names :field1 => "First Field", :field2 => "Second Field"
   # field_help :field1 => "Enter what you want in this field"
   children :movimientos

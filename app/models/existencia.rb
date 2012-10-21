@@ -25,15 +25,19 @@ class Existencia < ActiveRecord::Base
   def self.findex(polspec)
     self.find(:all, :joins => :polimero, :conditions => ["polimeros.tipomat = (?) AND polimeros.ancho > (?) AND polimeros.alto > (?) AND polimeros.espesor = (?)", polspec[0], polspec[1].to_f, polspec[2].to_f, polspec[3].to_s])
   end
-  
-  def self.finpol(pol)
-    self.find(:all, :joins => :polimero, :conditions => ["polimeros.id = (?)", pol])
+
+  def self.finpol(pol,bod)
+    self.find(:all, :conditions => ["polimero_id = (?) AND bodega_id = (?)", pol,bod])
   end
-  
+
+  def self.sumaex(pol,bod)
+  	self.sum('cantidad', :conditions => ["polimero_id = (?) AND bodega_id = (?)", pol, bod])
+  end
+
   def self.finduniq(polspec)
     self.find(:all, :joins => :polimero, :conditions => ["polimeros.tipomat = (?) AND polimeros.ancho > (?) AND polimeros.alto > (?) AND polimeros.espesor = (?) AND bodega_id = (?)", polspec[0], polspec[1].to_f, polspec[2].to_f, polspec[3].to_s, polspec[4].to_i], :group => 'polimero_id')
   end
-  
+
   def self.countuniq(polspec)
     self.count(:all, :joins => :polimero, :conditions => ["polimeros.tipomat = (?) AND polimeros.ancho > (?) AND polimeros.alto > (?) AND polimeros.espesor = (?) AND bodega_id = (?)", polspec[0], polspec[1].to_f, polspec[2].to_f, polspec[3].to_s, polspec[4].to_i], :group => 'polimero_id')
   end

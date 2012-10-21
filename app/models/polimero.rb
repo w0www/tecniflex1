@@ -12,7 +12,11 @@ class Polimero < ActiveRecord::Base
   end
 
   def name
-    self.tipomat.to_s + '_' + self.tipo.to_s + '_' + self.espesor.to_s
+  	if self.espesor
+    	self.tipomat.to_s + '_' + self.tipo.to_s + '_' + "%.2f" % self.espesor.calibre
+    else
+    	self.tipomat.to_s + '_' + self.tipo.to_s + '_'
+    end
   end
 
   belongs_to :tipomat
@@ -20,9 +24,9 @@ class Polimero < ActiveRecord::Base
   has_many :movimientos
   has_many :existencias
   has_many :bodegas, :through => :existencias
-  
+
   validates_presence_of :tipomat, :espesor
-  
+
   def exisbod(bodega)
     @bode = bodega
     self.existencias.find(:all, :conditions => ["bodega_id = (?)", @bode])

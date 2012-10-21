@@ -135,7 +135,7 @@
 <def tag="form" for="MovHeader">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="factura, fecha, proveedor, observaciones" param/>
+    <field-list fields="factura, fecha, proveedor, observaciones, movimientos" param/>
     <div param="actions">
       <submit label="#{ht 'mov_headers.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -586,7 +586,7 @@
 <def tag="form" for="Unidad">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="nombre, descripcion" param/>
+    <field-list fields="nombre, descripcion, unimenor" param/>
     <div param="actions">
       <submit label="#{ht 'unidads.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

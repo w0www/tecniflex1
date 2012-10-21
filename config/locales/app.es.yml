@@ -21,6 +21,10 @@ es:
         heading:
           other: "Stock"
 
+    mov_headers:
+    	new:
+    		heading: "Nuevo Ingreso"
+
     will_paginate:
     	previous_label: "Anterior"
     	next_label: "Proxima"

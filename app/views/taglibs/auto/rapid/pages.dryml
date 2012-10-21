@@ -1694,14 +1694,14 @@
 <!-- ====== MovHeader Pages ====== -->
 
 <def tag="index-page" for="MovHeader">
-  <page merge title="#{ht 'mov_headers.index.title', :default=>['Mov Headers'] }">
+  <page merge title="#{ht 'mov_headers.index.title', :default=>['Ingresos'] }">
     <body: class="index-page mov-header" param/>
 
     <content: param>
       <header param="content-header">
         <h2 param="heading">
           <ht key="mov_headers.index.heading">
-            Mov Headers
+            Ingresos
           </ht>
         </h2>
 
@@ -1714,7 +1714,7 @@
 
       <section param="content-body">
         <a action="new" to="&model" param="new-link">
-          <ht key="mov_headers.actions.new">New Mov Header</ht>
+          <ht key="mov_headers.actions.new">New Ingreso</ht>
         </a>
 
         <page-nav param="top-page-nav"/>
@@ -1731,21 +1731,21 @@
 
 
 <def tag="new-page" for="MovHeader">
-  <page merge title="#{ht 'mov_headers.new.title', :default=>[' New Mov Header'] }">
+  <page merge title="#{ht 'mov_headers.new.title', :default=>[' New Ingreso'] }">
     <body: class="new-page mov-header" param/>
 
     <content: param>
       <section param="content-header">
         <h2 param="heading">
           <ht key="mov_headers.new.heading">
-            New Mov Header
+            New Ingreso
           </ht>
         </h2>
       </section>
 
       <section param="content-body">
         <form param>
-          <submit: label="#{ht 'mov_headers.actions.create', :default=>['Create Mov Header']}"/>
+          <submit: label="#{ht 'mov_headers.actions.create', :default=>['Create Ingreso']}"/>
         </form>
       </section>
     </content:>
@@ -1754,7 +1754,7 @@
 
 
 <def tag="show-page" for="MovHeader">
-  <page merge title="#{ht 'mov_headers.show.title', :default=>['Mov Header'] }">
+  <page merge title="#{ht 'mov_headers.show.title', :default=>['Ingreso'] }">
 
     <body: class="show-page mov-header" param/>
 
@@ -1770,7 +1770,7 @@
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="mov_headers.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
-                Edit Mov Header
+                Edit Ingreso
               </ht>
             </a>
           </header>
@@ -1806,7 +1806,7 @@
 
 
 <def tag="edit-page" for="MovHeader">
-  <page merge title="#{ht 'mov_headers.edit.title', :default=>['Edit Mov Header'] }">
+  <page merge title="#{ht 'mov_headers.edit.title', :default=>['Edit Ingreso'] }">
 
     <body: class="edit-page mov-header" param/>
 
@@ -1817,7 +1817,7 @@
             Edit <type-name/>
           </ht>
         </h2>
-        <delete-button label="#{ht 'mov_headers.actions.delete', :default=>['Remove This Mov Header']}" param/>
+        <delete-button label="#{ht 'mov_headers.actions.delete', :default=>['Remove This Ingreso']}" param/>
       </section>
 
       <section param="content-body">
@@ -3884,7 +3884,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="descripcion" param/>
+            <field-list fields="descripcion, unimenor" param/>
           </section>
     </content:>
 

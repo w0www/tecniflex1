@@ -5,11 +5,14 @@ class Unidad < ActiveRecord::Base
   fields do
     nombre      :string, :name => true
     descripcion :text
+    cantunimenor	:integer
     timestamps
   end
 
   has_many :existencias
-  
+  belongs_to :unimenor, :class_name => "Unidad", :foreign_key => "unimenor_id"
+  has_many :unimayor, :class_name => "Unidad", :foreign_key => "unimayor_id"
+
   default_scope :order => 'nombre'
   # --- Permissions --- #
 
