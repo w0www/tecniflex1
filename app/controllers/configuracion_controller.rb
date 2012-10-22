@@ -1,9 +1,9 @@
  class ConfiguracionController < ApplicationController
 
-  skip_before_filter :login_required, :only => :index
-  
+  hobo_controller
+
   def index
-  
+
    end
 
 end

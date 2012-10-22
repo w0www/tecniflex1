@@ -16,7 +16,7 @@ class Movimiento < ActiveRecord::Base
   belongs_to :user
   belongs_to :polimero
 
-  validate_presence_of :bodega_id, :polimero_id
+  #validate_presence_of :bodega_id, :polimero_id
 
   def before_save
     if self.serie != nil
@@ -29,14 +29,15 @@ class Movimiento < ActiveRecord::Base
         @nea.cantidad == @neacant + self.cantidad.to_i
         @nea.save
       end
-    elsif Existencia.finpol(self.polimero,self.bodega) != nil
+    elsif Existencia.finpol(self.polimero_id,self.bodega_id) != nil
     	if self.bodega != nil
-				@nea = Existencia.finpol(self.polimero)
+				@nea = Existencia.finpol(self.polimero_id,self.bodega_id).first
 				unless @nea == []
 					@neacant = @nea.cantidad
 					@nea.cantidad == @neacant + self.cantidad.to_i
 					@nea.save
 				end
+			end
     end
   end
 
