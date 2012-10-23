@@ -129,7 +129,7 @@ class OrdTrabsController < ApplicationController
 			wants.csv do
 				csv_string = CSV.generate(:col_sep => ";") do |csv|
 					# header row
-					csv << ["Codigo_Producto", "O.T.", "Proceso", "Usuario", "Inicio", "Termino", "Observaciones"]
+					csv << ["Codigo_Producto", "O.T.", "Producto", "Proceso", "Usuario", "Fecha Inicio", "Hora Inicio", "Fecha Termino", "Hora Termino", "Observaciones"]
 					# data rows
 					@ordenes.each do |orden|
 						if orden.tareas != []
@@ -138,7 +138,7 @@ class OrdTrabsController < ApplicationController
 									tara.intervencions.each do |inte|
 									if inte.user != nil
 										codig = orden.cliente.sigla.to_s + orden.codCliente.to_s
-										csv << [codig,  orden.numOT, tara.proceso.nombre, inte.user.name, inte.inicio, inte.termino, inte.observaciones]
+										csv << [codig,  orden.numOT, orden.nomprod, tara.proceso.nombre, inte.user.name, inte.inicio.strftime("%m/%d/%y"), inte.inicio.strftime("%H:%M:%S"), inte.termino.strftime("%m/%d/%y"), inte.termino.strftime("%H:%M:%S"), inte.observaciones]
 									end
 									end
 								end

@@ -3,7 +3,7 @@ class RecibArchMailer < ActionMailer::Base
   def enviado(cliente,trabajo)
   	@cliente = cliente
     subject   'Envio de Visto Bueno'
-    recipients ['patricio.arluciaga@gmail.com', 'jaime.kunze@tecniflex.cl']
+    recipients ['patricio.arluciaga@gmail.com', 'preprensa@tecniflex.cl']
     from      'preprensa@tecniflex.cl'
     body      :cliente => cliente, :trabajo => trabajo
   end
@@ -11,7 +11,7 @@ class RecibArchMailer < ActionMailer::Base
 	def enviapdf(ord_trab,email)
 		@ord_trab = ord_trab
 		subject 		'Orden de Trabajo Tecniflex'
-		recipients 	['patricio.arluciaga@gmail.com', 'jaime.kunze@tecniflex.cl']
+		recipients 	['patricio.arluciaga@gmail.com', 'preprensa@tecniflex.cl']
 		from				'preprensa@tecniflex.cl'
 		content_type 'multipart/mixed'
 		part "text/plain" do |p|
