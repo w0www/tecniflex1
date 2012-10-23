@@ -58,13 +58,13 @@ class OrdTrabsController < ApplicationController
 
 	def index
 		hobo_index do
-			@ordenes = OrdTrab.all
+			@ordenes = OrdTrab.paginate(:page => params[:page], :per_page => 20)
 			if (params[:startdate].blank? && params[:enddate].blank?)
-				@ordenes = OrdTrab.find(:all)
+				@ordenes = OrdTrab.paginate(:page => params[:page], :per_page => 20)
 			elsif params[:startdate] && params[:enddate]
 				@from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
 				@to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
-				@ordenes = OrdTrab.order_by(:id).all(:conditions => ["created_at >= ? and created_at <= ? and state != ?",@from_date.to_datetime.in_time_zone(Time.zone),@to_date.to_datetime.in_time_zone(Time.zone),"terminada"])
+				@ordenes = OrdTrab.order_by(:id).paginate(:page => params[:page], :per_page => 20, :conditions => ["created_at >= ? and created_at <= ? and state != ?",@from_date.to_datetime.in_time_zone(Time.zone),@to_date.to_datetime.in_time_zone(Time.zone),"terminada"])
 			end
 			if params[:ocultar]
 				@ord_trabs = @ordenes & OrdTrab.state_is_not("terminada")
@@ -92,7 +92,7 @@ class OrdTrabsController < ApplicationController
     @grupro = Grupoproc.tablero.order_by(:position)
     @clies = Cliente.all
     if params[:orden].blank? && ((params[:startdate].blank? && params[:enddate].blank?) && (params[:cliente].blank? && params[:codCliente].blank?))
-	    @todas = OrdTrab.find(:all)
+	    @todas = OrdTrab.paginate(:page => params[:page], :per_page => 50)
 	  elsif params[:orden]
       @orde = params[:orden]
       @todas = OrdTrab.find(:all, :conditions => ["numot = ?", @orde])
@@ -127,7 +127,7 @@ class OrdTrabsController < ApplicationController
   	respond_to do |wants|
 			wants.html
 			wants.csv do
-				csv_string = CSV.generate do |csv|
+				csv_string = CSV.generate(:col_sep => ";") do |csv|
 					# header row
 					csv << ["Codigo_Producto", "O.T.", "Proceso", "Usuario", "Inicio", "Termino", "Observaciones"]
 					# data rows
@@ -138,8 +138,8 @@ class OrdTrabsController < ApplicationController
 									tara.intervencions.each do |inte|
 									if inte.user != nil
 										codig = orden.cliente.sigla.to_s + orden.codCliente.to_s
-										csv << [codig; orden.numOT; tara.proceso.nombre; inte.user.name; inte.inicio; inte.termino;inte.observaciones]
-									end									
+										csv << [codig,  orden.numOT, tara.proceso.nombre, inte.user.name, inte.inicio, inte.termino, inte.observaciones]
+									end
 									end
 								end
 							end
