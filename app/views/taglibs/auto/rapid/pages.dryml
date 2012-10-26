@@ -389,7 +389,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="distorsion, pctDistor, duplo, espesor" param/>
+            <field-list fields="nombre, distorsion, pctDistor, duplo, espesor" param/>
           </section>
     </content:>
 

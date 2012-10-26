@@ -57,20 +57,26 @@ class OrdTrabsController < ApplicationController
 
 
 	def index
+	@clies = Cliente.all
 		hobo_index do
-			@ordenes = OrdTrab.paginate(:page => params[:page], :per_page => 20)
-			if (params[:startdate].blank? && params[:enddate].blank?)
-				@ordenes = OrdTrab.paginate(:page => params[:page], :per_page => 20)
+			@ordenes = OrdTrab.paginate(:page => params[:page], :per_page => 30)
+			if params[:cliente]
+				@elcli = params[:cliente]
+				@cocli = params[:codCliente]
+				if params[:codCliente] == "Cod. Cliente"
+					@ordenes = OrdTrab.paginate( :conditions => ["cliente_id = ?", @elcli], :page => params[:page], :per_page => 30 )
+				else
+					@ordenes = OrdTrab.paginate( :conditions => ["codCliente = ? and cliente_id = ?", @cocli, @elcli],:page => params[:page], :per_page => 30 )
+				end
+			elsif (params[:startdate].blank? && params[:enddate].blank?)
+				@ordenes = OrdTrab.paginate(:page => params[:page], :per_page => 30)
 			elsif params[:startdate] && params[:enddate]
 				@from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
 				@to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
-				@ordenes = OrdTrab.order_by(:id).paginate(:page => params[:page], :per_page => 20, :conditions => ["created_at >= ? and created_at <= ? and state != ?",@from_date.to_datetime.in_time_zone(Time.zone),@to_date.to_datetime.in_time_zone(Time.zone),"terminada"])
+				@ordenes = OrdTrab.order_by(:id).paginate(:page => params[:page], :per_page => 30, :conditions => ["created_at >= ? and created_at <= ? and state != ?",@from_date.to_datetime.in_time_zone(Time.zone),@to_date.to_datetime.in_time_zone(Time.zone),"terminada"])
+
 			end
-			if params[:ocultar]
-				@ord_trabs = @ordenes & OrdTrab.state_is_not("terminada")
-			else
-				@ord_trabs = @ordenes
-			end
+
 		end
 	end
 
@@ -97,10 +103,14 @@ class OrdTrabsController < ApplicationController
       @orde = params[:orden]
       @todas = OrdTrab.paginate( :conditions => ["numot = ?", @orde],:page => params[:page], :per_page => 35)
       #hobo_index OrdTrab.apply_scopes(:search => [params[:orden], :numOT], :order_by => :numOT)
-    elsif params[:cliente] && params[:codCliente]
+    elsif params[:cliente]
     	@elcli = params[:cliente]
     	@cocli = params[:codCliente]
-    	@todas = OrdTrab.paginate( :conditions => ["codCliente = ? and cliente_id = ?", @cocli, @elcli],:page => params[:page], :per_page => 35 )
+    	if params[:codCliente] == "Cod. Cliente"
+    		@todas = OrdTrab.paginate( :conditions => ["cliente_id = ?", @elcli], :page => params[:page], :per_page => 35 )
+    	else
+    		@todas = OrdTrab.paginate( :conditions => ["codCliente = ? and cliente_id = ?", @cocli, @elcli],:page => params[:page], :per_page => 35 )
+    	end
     elsif params[:startdate] && params[:enddate]
         @from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
         @to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
