@@ -136,7 +136,7 @@
     <!--<after-submit go-back/>-->
       <error-messages param/>
         <table class="shower">
-        <tr><th colspan="2">Cliente</th><td colspan="4"><input:cliente/></td><th>Prioridad</th><td colspan="2"><input:prioridad style="width:70px"/></td><th>Fecha:&nbsp;<input:fecha style="width:7em;"/></th><th>O.T.</th><td></td></tr>
+        <tr><th colspan="2">Cliente</th><td colspan="3"><input:cliente/></td><th>Prioridad</th><td colspan="2"><input:prioridad style="width:70px"/></td><td>Urg.<input:urgente/></td><th>Fecha:&nbsp;<input:fecha style="width:7em;"/></th><th>O.T.</th><td></td></tr>
         <tr><th colspan="2">Producto</th><td colspan="7"><input:nomprod style="width:95%;"/></td><th colspan="2" style="text-align: right">Numero de Factura:&nbsp;</th><td><input:numFact style="width:100px;"/></td></tr>
         <tr><th colspan="2">Cliente Final</th><td colspan="7"><input:cfinal style="width:95%;"/></td><th colspan="3">
         		Contacto
@@ -194,7 +194,7 @@
         </th></tr>
         <tr><th class="centrada" colspan="5">Solicitud a Ejecutar</th>
         <td class="centrada" part="siglac" colspan="3"><if test="&@ord_trab.cliente"><view:cliente.sigla/>&nbsp;-&nbsp;<input:codCliente value="#{ this.codCliente || OrdTrab.dacod(@ord_trab.cliente)}" style="width:4em"/></if></td><td><input:version value="#{ this.version || 1 }" style="width:3em"/></td><th colspan="3" class="centrada">Disposici&oacute;n Clisse</th></tr>
-        <tr><td colspan="5" style="font-size:80%"><input:vb/>&nbsp;V.B.&nbsp;&nbsp;<input:ptr/>&nbsp;Printer&nbsp;&nbsp;<input:mtz/>&nbsp;MTZ&nbsp;&nbsp;<input:mtje/>&nbsp;MTJE</td><th colspan="4" class="centrada">Medidas de Impresion</th><td style="width:155px;">
+        <tr><td colspan="5" style="font-size:80%"><input:vb/>&nbsp;V.B.&nbsp;&nbsp;<input:ptr/>&nbsp;Printer&nbsp;&nbsp;<input:mtz/>&nbsp;MTZ&nbsp;&nbsp;<input:mtje/>&nbsp;MTJE&nbsp;&nbsp;<input:pol/>&nbsp;POL</td><th colspan="4" class="centrada">Medidas de Impresion</th><td style="width:155px;">
            <do part="cyl">
             <if test="&@ord_trab.impresora">
                 <select  class="cilindro ord-trab-cilindro input belongs_to ord_trab_cilindro" name="ord_trab[cilindro_id]">

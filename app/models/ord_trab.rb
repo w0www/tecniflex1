@@ -15,6 +15,7 @@ class OrdTrab < ActiveRecord::Base
     mtz           :boolean
     mtje          :boolean
     ptr           :boolean
+    pol						:boolean
     mpFTP         :boolean
     mpFTPq        :integer
     mpFTPdev      :boolean
@@ -78,6 +79,7 @@ class OrdTrab < ActiveRecord::Base
     supRev enum_string(:'Superficie', :'Reverso')
     tipofotop enum_string(:'Digital', :'Convencional')
     trapping       :decimal
+    urgente				:boolean
     prioridad enum_string(:'Normal', :'Repeticion', :'Sin Costo*')
     pctdistor      :decimal
     timestamps
@@ -199,7 +201,9 @@ default_scope :order => 'numOT DESC'
 
   validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.vb || self.ptr", :on => :habilitar
   validates_presence_of :trapping, :curva, :impresora, :cilindro, :nCopias, :sustrato, :fechaEntrega, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
-  validates_associated :separacions, :if => "(self.mtje || self.mtz) && self.activa? ", :on => :habilitar
+  validates_presence_of :cliente, :nomprod, :codCliente, :espesor, :supRev, :if => "self.pol && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
+
+  validates_associated :separacions, :if => "(self.mtje || self.mtz || self.pol) && self.activa? ", :on => :habilitar
 #	validate :fecha_posterior
 
   def before_create
@@ -367,7 +371,7 @@ default_scope :order => 'numOT DESC'
     @valorc = "shower"
 		if self.prioridad == "Urgencia"
 			@valorc = "showerhi"
-		elsif self.prioridad == "Sin_cobro"
+		elsif self.prioridad == "Sin Costo*"
 			@valorc = "showerin"
     end
 		@valorc

@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120924024651) do
+ActiveRecord::Schema.define(:version => 20121026025521) do
 
   create_table "aniloxes", :force => true do |t|
     t.integer  "lineatura"
@@ -88,8 +88,8 @@ ActiveRecord::Schema.define(:version => 20120924024651) do
     t.string   "impresion"
     t.integer  "tipomat_id"
     t.integer  "espesor_id"
-    t.string   "lineatura"
     t.integer  "sustrato_id"
+    t.string   "lineatura"
     t.integer  "impresora_id"
   end
 
@@ -125,12 +125,12 @@ ActiveRecord::Schema.define(:version => 20120924024651) do
   add_index "existencias", ["unidad_id"], :name => "index_existencias_on_unidad_id"
 
   create_table "grupoprocs", :force => true do |t|
+    t.integer  "position"
     t.string   "nombre"
+    t.string   "abreviacion"
     t.text     "descripcion"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "abreviacion"
-    t.integer  "position"
     t.boolean  "tablero"
     t.boolean  "asignar"
     t.boolean  "saevb"
@@ -170,10 +170,10 @@ ActiveRecord::Schema.define(:version => 20120924024651) do
   create_table "mov_headers", :force => true do |t|
     t.integer  "factura"
     t.date     "fecha"
+    t.string   "proveedor"
     t.text     "observaciones"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "proveedor"
   end
 
   create_table "movimientos", :force => true do |t|
@@ -181,13 +181,13 @@ ActiveRecord::Schema.define(:version => 20120924024651) do
     t.string   "tipo"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "bodega_id"
-    t.integer  "user_id"
-    t.integer  "ord_trab_id"
-    t.integer  "mov_header_id"
+    t.integer  "polimero_id"
     t.string   "lote"
     t.string   "serie"
-    t.integer  "polimero_id"
+    t.integer  "mov_header_id"
+    t.integer  "bodega_id"
+    t.integer  "ord_trab_id"
+    t.integer  "user_id"
   end
 
   add_index "movimientos", ["bodega_id"], :name => "index_movimientos_on_bodega_id"
@@ -267,6 +267,8 @@ ActiveRecord::Schema.define(:version => 20120924024651) do
     t.string   "tipofotop"
     t.decimal  "trapping"
     t.integer  "encargado_id"
+    t.string   "state",          :default => "creada"
+    t.datetime "key_timestamp"
     t.string   "cfinal"
     t.string   "mcGuiaapy"
     t.string   "mcMPuntoapy"
@@ -283,10 +285,10 @@ ActiveRecord::Schema.define(:version => 20120924024651) do
     t.integer  "tipomat_id"
     t.integer  "espesor_id"
     t.integer  "sustrato_id"
-    t.string   "state",          :default => "creada"
-    t.datetime "key_timestamp"
     t.integer  "version"
     t.integer  "contacter_id"
+    t.boolean  "urgente"
+    t.boolean  "pol"
   end
 
   add_index "ord_trabs", ["cilindro_id"], :name => "index_ord_trabs_on_cilindro_id"
@@ -438,7 +440,11 @@ ActiveRecord::Schema.define(:version => 20120924024651) do
     t.text     "descripcion"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "cantunimenor"
+    t.integer  "unimenor_id"
   end
+
+  add_index "unidads", ["unimenor_id"], :name => "index_unidads_on_unimenor_id"
 
   create_table "user_labors", :force => true do |t|
     t.datetime "created_at"
