@@ -330,6 +330,13 @@ default_scope :order => 'numOT DESC'
        	end
       end
     end
+    if self.pol
+      unless self.procesos.*.grupoproc.*.saepol.include?(true)
+        Proceso.checkproc('saepol').each do |propol|
+          self.procesos << propol
+       	end
+      end
+    end
   end
 
  # Se elimina y se traslada a separacion->after_update

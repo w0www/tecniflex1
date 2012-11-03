@@ -12,15 +12,16 @@
     saemtz			:boolean
     saemtje			:boolean
     saeptr			:boolean
+    saepol			:boolean
     descripcion :text
     timestamps
   end
 
 
   has_many :procesos
-  
+
   default_scope :order => 'position'
-  
+
   # --- Permissions --- #
 
   def create_permitted?

@@ -194,7 +194,7 @@
         </th></tr>
         <tr><th class="centrada" colspan="5">Solicitud a Ejecutar</th>
         <td class="centrada" part="siglac" colspan="3"><if test="&@ord_trab.cliente"><view:cliente.sigla/>&nbsp;-&nbsp;<input:codCliente value="#{ this.codCliente || OrdTrab.dacod(@ord_trab.cliente)}" style="width:4em"/></if></td><td><input:version value="#{ this.version || 1 }" style="width:3em"/></td><th colspan="3" class="centrada">Disposici&oacute;n Clisse</th></tr>
-        <tr><td colspan="5" style="font-size:80%"><input:vb/>&nbsp;V.B.&nbsp;&nbsp;<input:ptr/>&nbsp;Printer&nbsp;&nbsp;<input:mtz/>&nbsp;MTZ&nbsp;&nbsp;<input:mtje/>&nbsp;MTJE&nbsp;&nbsp;<input:pol/>&nbsp;POL</td><th colspan="4" class="centrada">Medidas de Impresion</th><td style="width:155px;">
+        <tr><td colspan="5" style="font-size:80%"><input:vb/>&nbsp;VB&nbsp;&nbsp;<input:ptr/>&nbsp;PTR&nbsp;&nbsp;<input:mtz/>&nbsp;MTZ&nbsp;&nbsp;<input:mtje/>&nbsp;MTJE&nbsp;&nbsp;<input:pol/>&nbsp;POL</td><th colspan="4" class="centrada">Medidas de Impresion</th><td style="width:155px;">
            <do part="cyl">
             <if test="&@ord_trab.impresora">
                 <select  class="cilindro ord-trab-cilindro input belongs_to ord_trab_cilindro" name="ord_trab[cilindro_id]">
@@ -226,7 +226,7 @@
         <tr><td colspan="2" class="centrada"><input:espesor/></td><td colspan="3" class="centrada">Tipo:<input:tipofotop/></td><td colspan="3"><input:mcMarcas style="font-size:60%"/>&nbsp;Marcas de calce</td><td/><td/><td colspan="2" rowspan="2">N. de Copias&nbsp;<input:nCopias/></td></tr>
         <tr><td colspan="5" class="centrada"><input:supRev sort="DESC"/></td><td colspan="3"><input:mcPimp style="font-size:60%"/>&nbsp;Pie de Imprenta</td><td><input:mcPimpcol style="width:40px"/></td><td><input:mcPimpapy style="width:40px"/></td></tr>
         <tr><th colspan="9" class="centrada">Observaciones</th><th colspan="3">Entrega: <input:fechaEntrega style="width:7em"/></th></tr>
-    <tr><td rowspan="4" colspan="9" class="centrada"><input:observaciones/></td><th colspan="1" class="centrada" style="width:30px">Trapping</th><th class="centrada" style="width:30px" colspan="2">Curva</th></tr>
+    <tr><td rowspan="4" colspan="9" class="centrada"><input:observaciones rows="5"/></td><th colspan="1" class="centrada" style="width:30px">Trapping</th><th class="centrada" style="width:30px" colspan="2">Curva</th></tr>
 	  <tr><td colspan="1" class="centrada"><input:trapping  style="width:30px"/></td><td class="centrada" colspan="2"><input:curva style="width:100px"/></td></tr>
         <tr><th colspan="2">Encargado:</th></tr>
         <tr><td colspan="2"><input:encargado/></td></tr>

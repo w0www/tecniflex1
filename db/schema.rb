@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20121026025521) do
+ActiveRecord::Schema.define(:version => 20121030022025) do
 
   create_table "aniloxes", :force => true do |t|
     t.integer  "lineatura"
@@ -137,6 +137,7 @@ ActiveRecord::Schema.define(:version => 20121026025521) do
     t.boolean  "saemtz"
     t.boolean  "saemtje"
     t.boolean  "saeptr"
+    t.boolean  "saepol"
   end
 
   create_table "impresoras", :force => true do |t|
