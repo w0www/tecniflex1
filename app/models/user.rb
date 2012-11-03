@@ -24,7 +24,10 @@
   #named_scope :administrators, lambda {|acting_user| {:conditions => {acting_user.administrator?} }}
 
 
-  # --- Signup lifecycle --- #
+	def facturador?
+		self.rol == "Facturador"
+	end
+
 
    def self.admines
     User.find(:all, :conditions => {:administrator => true})
@@ -33,6 +36,8 @@
   def self.supervisores
 		User.rol_is("Supervisor")
 	end
+
+  # --- Signup lifecycle --- #
 
   lifecycle do
 

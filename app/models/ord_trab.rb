@@ -582,7 +582,7 @@ default_scope :order => 'numOT DESC'
   end
 
   def update_permitted?
-    acting_user.administrator?  || acting_user.superv?
+    acting_user.administrator?  || acting_user.superv? || acting_user.facturador?
   end
 
   def destroy_permitted?
