@@ -15,7 +15,7 @@ class Intervencion < ActiveRecord::Base
 
 	attr_accessor :vuelta
 
-  before_create :rellenar
+ #before_save :rellenar
 
   after_create :actitar
 

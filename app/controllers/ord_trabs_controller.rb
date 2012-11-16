@@ -147,8 +147,13 @@ class OrdTrabsController < ApplicationController
 								if tara.intervencions != []
 									tara.intervencions.each do |inte|
 									if inte.user != nil
+										if inte.termino 
+											termi = inte.termino
+										else
+											termi = Time.at(0)
+										end
 										codig = orden.cliente.sigla.to_s + orden.codCliente.to_s
-										csv << [codig,  orden.numOT, orden.nomprod, tara.proceso.nombre, inte.user.name, inte.inicio.strftime("%m/%d/%y"), inte.inicio.strftime("%H:%M:%S"), inte.termino.strftime("%m/%d/%y"), inte.termino.strftime("%H:%M:%S"), inte.observaciones]
+										csv << [codig,  orden.numOT, orden.nomprod, tara.proceso.nombre, inte.user.name, inte.inicio.strftime("%m/%d/%y"), inte.inicio.strftime("%H:%M:%S"), termi.strftime("%m/%d/%y"), termi.strftime("%H:%M:%S"), inte.observaciones]
 									end
 									end
 								end
