@@ -60,6 +60,22 @@ class Tarea < ActiveRecord::Base
 		self.proceso.grupoproc.send(grupo.to_sym)
 	end
 
+	def after_update
+		ordtars = self.ord_trab.sortars
+		unless ordtars.*.state.index("creada") == nil
+				if ordtars[ordtars.*.state.index("creada").to_i] == ordtars.first
+					if ordtars.first.asignada_a != nil
+						ordtars.first.lifecycle.habilitar!(User.first)
+					end
+				else
+					# Habilita la primera tarea que aparezca "creada"
+					if (ordtars[ordtars.*.state.index("creada").to_i].asignada_a != nil) && (ordtars[ordtars.*.state.index("creada").to_i-1].state = "terminada")
+						ordtars[ordtars.*.state.index("creada").to_i].lifecycle.habilitar!(User.first)
+					end
+				end
+		end
+	end
+	
   def self.find_utiles(usuario)
     @cuser = usuario
     if @cuser.procesos != []
