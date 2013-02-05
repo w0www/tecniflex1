@@ -80,7 +80,7 @@
     <nav-item with="&Cliente" if="&current_user.administrator?"><ht key="clientes.nav_item">Clientes</ht></nav-item>
     <nav-item with="&Contacto" if="&current_user.administrator?"><ht key="contactos.nav_item">Contactos</ht></nav-item>
     <nav-item with="&User" if="&current_user.administrator?"><ht key="users.nav_item">Usuarios</ht></nav-item>
-    <nav-item href="#{base_url}/ord_trabs/informes/index.html" if="&current_user.administrator?">Informes</nav-item>
+    <nav-item href="#{base_url}/informes" if="&current_user.administrator?">Informes</nav-item>
     <nav-item href="#{base_url}/inventario" if="&current_user.administrator?">Inventario</nav-item>
     <nav-item href="#{base_url}/configuracion" if="&current_user.administrator?">Configurar</nav-item>
   </navigation>
