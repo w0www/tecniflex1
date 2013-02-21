@@ -1,0 +1,94 @@
+<page title="Intervenciones por Usuario">
+  <body: class="definir"/>
+  <content:>
+    <header class="content-header">
+	</header>
+    <section class="content-body" with='&@ord_trabs'>
+    <style>
+			#button { padding: .5em 1em; text-decoration: none; }
+			#efecto { width: 850px; height: 78px; padding: 0.4em; position: relative; display:none}
+			#efecto h3 { margin: 0; padding: 0.4em; text-align: center; }
+		</style>
+		<h1>Intervenciones por usuario</h1>
+
+          <div class='header' >
+          	<div class='ocultable'>
+          		<div id='efecto' class="ui-widget-content ui-corner-all">
+									<form  method='get' action=''>
+									<hidden-fields for-query-string skip='page, search'/>
+										<h2>Seleccionar Usuario</h2>
+										<select name="user">
+											 <% if params[:user] %>
+													<option selected="selected" value="<%= @usuario%> "><%= @usuario %></option>
+											 <%else%>
+													<option selected="selected">Usuario</option>
+											 <%end%>
+											 <% @usuarios.each do |x| %>
+												 <option value="<%= x.id %>"><%=  x.iniciales %></option>
+											 <% end %>
+										</select>
+										<span>Filtrar por fecha</span>
+										<input type='text' style='width:90px' id='datepicker' name='startdate' value="#{params[:startdate] || 'Fecha Inicial'}"/>
+										<input type='text' style='width:90px' id='datepicker2' name='enddate' value="#{params[:enddate] || 'Fecha Final'}"/>
+										<submit class='search-button'  label='Ir'/>
+									</form>
+								</div>
+            </div>
+            <a href="#" id="button" class="ui-state-default ui-corner-all">Filtrar</a>
+          </div>
+          <%if params[:user] %>
+          	Intervenciones para <%= User.find(params[:user]) %>
+          <% end %>
+          <table class="tablero" part="dashboard">
+            <thead>
+              <tr>
+                <th class="hr1">Cod. Prod.</th>
+								<th>OT</th>
+								<th>Producto</th>
+								<th>Proceso</th>
+								<th>F. ini.</th>
+								<th>H. ini.</th>
+								<th>F. ter.</th>
+								<th>H. ter.</th>
+								<th>OBS.</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @todas.each do |tod| %>
+              <!-- <repeat with="&@todas"> -->
+								<%if tod.tarea%>
+								<% tod.inicio ||= "" %>
+								<% tod.termino ||= Time.at(0)%>
+         				<tr><td><%=tod.tarea.ord_trab.codTflex%></td><td><%=tod.tarea.ord_trab.numOT%></td><td><%=tod.tarea.ord_trab.nomprod%></td><td><%=tod.tarea.proceso%></td><td><%=tod.inicio.strftime("%d/%m/%y")%></td><td><%=tod.inicio.strftime("%H:%M:%S")%></td><td><%=tod.termino.strftime("%d/%m/%y")%></td><td><%=tod.termino.strftime("%H:%M:%S")%></td><td><%=tod.observaciones%></td></tr>
+                <%end%>
+               <%end%>
+              <!-- </repeat> -->
+            </tbody>
+          </table>
+
+    </section>
+  </content:>
+  <page-scripts:>
+    jQuery(document).ready(function() {
+      jQuery("#datepicker").datepicker();
+      jQuery("#datepicker2").datepicker();
+      jQuery("#tabs").tabs();
+				// run the currently selected effect
+			function runEffect() {
+
+					// run the effect
+					jQuery( "#efecto" ).slideToggle( 'slow', function(){
+					} );
+				};
+
+				// set effect from select menu value
+			jQuery( "#button" ).click(function() {
+					runEffect();
+					return false;
+				});
+
+
+    });
+
+  </page-scripts:>
+</page>

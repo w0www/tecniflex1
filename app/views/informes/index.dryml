@@ -1,0 +1,19 @@
+<page title="Informes">
+  <body: class="configurar"/>
+  <content:>
+    <header class="content-header">
+      <h1>
+        Informes de produccion
+      </h1>
+      <br/>
+      <br/>
+    </header>
+    <section class="content-body">
+    <ul>
+    	<li><h3><a to="&User" action="intervs">Intervenciones por Usuario</a></h3></li>
+	    <li><h3>Trabajos por Cliente</h3></li>
+			<li><h3>Historial de OT</h3></li>
+		</ul>
+    </section>
+  </content:>
+</page>
