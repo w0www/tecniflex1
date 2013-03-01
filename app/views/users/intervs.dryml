@@ -24,7 +24,7 @@
 													<option selected="selected">Usuario</option>
 											 <%end%>
 											 <% @usuarios.each do |x| %>
-												 <option value="<%= x.id %>"><%=  x.iniciales %></option>
+												 <option value="<%= x.id %>"><%=  x.name %></option>
 											 <% end %>
 										</select>
 										<span>Filtrar por fecha</span>
@@ -39,6 +39,7 @@
           <%if params[:user] %>
           	Intervenciones para <%= User.find(params[:user]) %>
           <% end %>
+          <%= will_paginate @todas %>
           <table class="tablero" part="dashboard">
             <thead>
               <tr>
@@ -65,6 +66,7 @@
               <!-- </repeat> -->
             </tbody>
           </table>
+          <%= will_paginate @todas %>
 
     </section>
   </content:>
