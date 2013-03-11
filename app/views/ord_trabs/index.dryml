@@ -35,7 +35,7 @@
 														<option selected="selected">Cliente</option>
 												 <%end%>
 												 <% @clies.each do |x| %>
-													 <option value="<%= x.id %>"><%=  x.sigla %></option>
+													 <option value="<%= x.id %>"><%=  x.name %></option>
 												 <% end %>
 											</select>
 											<!-- <select-one options="Cliente.all.*.sigla"/> --> -  <input type='text' style='width:50px' id='codclie' name='codCliente' value="#{params[:codCliente] || 'Cod. Cliente'}"/>
@@ -44,7 +44,12 @@
 							</span>
 
 							<br />
-			  			<a href="#{base_url}/ord_trabs/reporte.csv" if="&current_user.administrator?" class="button submit-button search-button">Exportar historial</a>
+              <% cliente ||= ''%>
+              <% codCliente ||= ''%>
+              <% orden ||= ''%>
+              <% startdate ||= ''%>
+              <% enddate ||= ''%>
+			  			<a href="#{base_url}/ord_trabs/reporte.csv" params="&{cliente=>:cliente, codCliente=>:codcliente, orden=>:orden, startdate=>:startdate, enddate=>:enddate}" if="&current_user.administrator?" class="button submit-button search-button">Exportar historial</a>
 						</div>
 					</div>
 				<a href="#" id="button" class="ui-state-default ui-corner-all" style="margin:40px" >Filtrar</a>

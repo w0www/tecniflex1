@@ -95,7 +95,7 @@ class OrdTrab < ActiveRecord::Base
  # HABILITAR CONTACTO ASOCIADO A OT, ELEGIDO ENTRE CONTACTOS DEL CLIENTE (VER SCOPE)
   belongs_to :contacter, :class_name => "Contacto"
 
-  belongs_to :cliente
+  belongs_to :cliente, :accessible => true
   belongs_to :impresora
   belongs_to :cilindro
   belongs_to :tipomat
@@ -174,18 +174,14 @@ default_scope :order => 'numOT DESC'
 
     transition :eliminar, { :iniciada => :destroy }, :available_to => "User.supervisores"
 
-		transition :terminar, { :iniciada => :terminada }, :available_to => "User.supervisores" , :if => "self.termtars?" do
-      self.tareas.each do |task|
-          task.state = "terminada"
-          task.save
-      end
-    end
+		transition :terminar, { :iniciada => :terminada }, :available_to => "User.supervisores"
+
 
     transition :reactivar, {:terminada => :habilitada}, :available_to => "User.supervisores" do
     	esta = self
     	self.tareas.each do |tara|
     		if tara == esta.tareas.first
-    			tara.state = "habilitada"
+          tara.lifecycle.habilitar!(User.first)
     		else
     			tara.state = "creada"
     	  end
@@ -294,6 +290,9 @@ default_scope :order => 'numOT DESC'
     end
     unless self.nPasos?
       self.nPasos = 1
+    end
+    unless self.nCopias?
+      self.nCopias = 1
     end
 		sarr = ["vb", "ptr", "mtz", "mtje"]
 		sarr.each do |saejec|

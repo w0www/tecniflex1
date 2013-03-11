@@ -12,7 +12,7 @@ class OrdTrabsController < ApplicationController
       @prima.version ||= 1
       @prima.version += 1
       @prima.save
-      @primat = @prima.attributes.except('numOT')
+      @primat = @prima.attributes.except('numOT','numFact','numGuia')
       @sepas = []
       #@impre = @prima.impresora.attributes[:id]
 
@@ -127,21 +127,52 @@ class OrdTrabsController < ApplicationController
     else
       @from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
       @to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
-      @todas = OrdTrab.find(:all,conditions => ["created_at >= ? and created_at < ?",@from_date,@end_date])
+      @todas = OrdTrab.find(:all,:conditions => ["created_at >= ? and created_at < ?",@from_date,@end_date])
     end
     hobo_ajax_response if request.xhr?
   end
-
+ 
+  index_action :otscreadas do
+    @inicio = 1.year.ago
+    if params[:search]
+      @otultsem = OrdTrab.apply_scopes(:search => [params[:search], :cliente_id], :order_by => parse_sort_param(:cliente_id, :nomprod))
+    else
+      @otultsem = OrdTrab.paginate(:page => params[:page], :per_page => 35)
+    end
+  end
+  
   index_action :reporte do
-  	@ordenes = OrdTrab.find(:all)
+  	@todas = OrdTrab.find(:all)
+
+  @clies = Cliente.all
+    if params[:orden].blank? && ((params[:startdate].blank? && params[:enddate].blank?) && (params[:cliente].blank? && params[:codCliente].blank?))
+	    @todas = OrdTrab.all
+	  elsif params[:orden]
+      @orde = params[:orden]
+      @todas = OrdTrab.all
+      #hobo_index OrdTrab.apply_scopes(:search => [params[:orden], :numOT], :order_by => :numOT)
+    elsif params[:cliente]
+    	@elcli = params[:cliente]
+    	@cocli = params[:codCliente]
+    	if params[:codCliente] == "Cod. Cliente"
+    		@todas = OrdTrab.find( :conditions => ["cliente_id = ?", @elcli])
+    	else
+    		@todas = OrdTrab.find( :conditions => ["codCliente = ? and cliente_id = ?", @cocli, @elcli])
+    	end
+    elsif params[:startdate] && params[:enddate]
+        @from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
+        @to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
+        @todas = OrdTrab.order_by(:id).find(:conditions => ["created_at >= ? and created_at <= ?",@from_date.to_datetime.in_time_zone(Time.zone),@to_date.to_datetime.in_time_zone(Time.zone)])
+    end
+
   	respond_to do |wants|
 			wants.html
 			wants.csv do
 				csv_string = CSV.generate(:col_sep => ";") do |csv|
 					# header row
-					csv << ["Codigo_Producto", "O.T.", "Producto", "Proceso", "Usuario", "Fecha Inicio", "Hora Inicio", "Fecha Termino", "Hora Termino", "Observaciones"]
+					csv << ["Cliente", "Codigo_Producto", "N.Fact.", "Ciclos", "O.T.", "Producto", "Proceso", "Usuario", "Fecha Inicio", "Hora Inicio", "Fecha Termino", "Hora Termino", "Colores", "cm2 tot.", "Observaciones"]
 					# data rows
-					@ordenes.each do |orden|
+					@todas.each do |orden|
 						if orden.tareas != []
 							orden.tareas.each do |tara|
 								if tara.intervencions != []
@@ -153,7 +184,10 @@ class OrdTrabsController < ApplicationController
 											termi = Time.at(0)
 										end
 										codig = orden.cliente.sigla.to_s + orden.codCliente.to_s
-										csv << [codig,  orden.numOT, orden.nomprod, tara.proceso.nombre, inte.user.name, inte.inicio.strftime("%m/%d/%y"), inte.inicio.strftime("%H:%M:%S"), termi.strftime("%m/%d/%y"), termi.strftime("%H:%M:%S"), inte.observaciones]
+                    atot = 0
+                    atot = orden.separacions.sum("area")     
+                    colores = orden.separacions.*.color.join(", ")           
+										csv << [orden.cliente.name, codig,  orden.numOT, orden.nomprod, tara.proceso.nombre, inte.user.name, inte.inicio.strftime("%m/%d/%y"), inte.inicio.strftime("%H:%M:%S"), termi.strftime("%m/%d/%y"), termi.strftime("%H:%M:%S"), colores, atot, inte.observaciones ]
 									end
 									end
 								end

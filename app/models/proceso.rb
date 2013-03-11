@@ -8,11 +8,12 @@ class Proceso < ActiveRecord::Base
     nombre      :string, :name => :true
     descripcion :text
     prueba			:boolean
-    reinit			:boolean
-    varev				:boolean
-    rev					:boolean
-    destderev		:boolean
-    edmeds			:boolean
+    reinit			:boolean #reiniciar procesos
+    varev				:boolean #volver a revision                    
+    rev					:boolean #revision
+    destderev		:boolean #destino de revision
+    edmeds			:boolean #Edicion de medidas
+    factura     :boolean, :default => false #Facturacion
     timestamps
   end
 

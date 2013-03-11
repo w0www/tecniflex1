@@ -16,9 +16,6 @@
     <custom-scripts:>
       <hjq-assets/>
     </custom-scripts:>
-    <append-body:>
-    	<%= debug(params) %>
-    </append-body:>
   </old-page>
 </extend>
 
@@ -141,7 +138,7 @@
       <error-messages param/>
         <table class="shower">
         <tr><th colspan="2">Cliente</th><td colspan="3"><input:cliente/></td><th>Prioridad</th><td colspan="2"><input:prioridad style="width:70px"/></td><td>Urg.<input:urgente/></td><th>Fecha:&nbsp;<input:fecha style="width:7em;"/></th><th>O.T.</th><td></td></tr>
-        <tr><th colspan="2">Producto</th><td colspan="7"><input:nomprod style="width:95%;"/></td><th colspan="2" style="text-align: right">Numero de Factura:&nbsp;</th><td><input:numFact style="width:100px;"/></td></tr>
+        <tr><th colspan="2">Producto</th><td colspan="6"><input:nomprod style="width:95%;"/></td><th style="text-align: right">N.Fact.:&nbsp;</th><td><input:numFact style="width:100px;"/></td><th style="text-align: right">N.Guia:&nbsp;</th><td><input:numGuia style="width:100px;"/></td></tr>
         <tr><th colspan="2">Cliente Final</th><td colspan="7"><input:cfinal style="width:95%;"/></td><th colspan="3">
         		Contacto
 						<do part="contac">

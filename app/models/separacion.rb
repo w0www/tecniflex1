@@ -41,27 +41,19 @@ class Separacion < ActiveRecord::Base
   def areasep
 	orden = self.ord_trab
     unless (alto == nil && ancho == nil)
-
-	if orden.nCopias > 1
-		@areasep = alto.to_f*ancho.to_f*orden.nCopias
-	else
-     		 @areasep= alto.to_f*ancho.to_f
-	end
-
-    else
-	@areasep=0
-   #   @orden=self.ord_trab
-   #   unless (@orden.mdi_ancho == nil && @orden.mdi_desarrollo == nil)
- #       @areasep=(@orden.mdi_ancho*@orden.mdi_desarrollo)
-  #    else
-   #     @areasep = 0
-   #   end
-  #  self.area=@areasep
-  #  self.save
+      if orden.nCopias != nil
+        if orden.nCopias > 1
+          @areasep = alto.to_f*ancho.to_f*orden.nCopias
+        else
+          @areasep= alto.to_f*ancho.to_f
+        end
+      else
+        @areasep=0
+      end
     end
   end
 
-def before_update
+def before_save
 	self.area = self.areasep
 end
   #def poliaptos(polspec)
