@@ -170,7 +170,7 @@ class OrdTrabsController < ApplicationController
 			wants.csv do
 				csv_string = CSV.generate(:col_sep => ";") do |csv|
 					# header row
-					csv << ["Cliente", "Codigo_Producto", "N.Fact.", "Ciclos", "O.T.", "Producto", "Proceso", "Usuario", "Fecha Inicio", "Hora Inicio", "Fecha Termino", "Hora Termino", "Colores", "cm2 tot.", "Observaciones"]
+					csv << ["Cliente", "Codigo_Producto",  "O.T.", "N.Fact.", "Producto", "Proceso", "Usuario", "Fecha Inicio", "Hora Inicio", "Fecha Termino", "Hora Termino", "Colores", "cm2 tot.", "Observaciones"]
 					# data rows
 					@todas.each do |orden|
 						if orden.tareas != []
@@ -187,7 +187,7 @@ class OrdTrabsController < ApplicationController
                     atot = 0
                     atot = orden.separacions.sum("area")     
                     colores = orden.separacions.*.color.join(", ")           
-										csv << [orden.cliente.name, codig,  orden.numOT, orden.nomprod, tara.proceso.nombre, inte.user.name, inte.inicio.strftime("%m/%d/%y"), inte.inicio.strftime("%H:%M:%S"), termi.strftime("%m/%d/%y"), termi.strftime("%H:%M:%S"), colores, atot, inte.observaciones ]
+										csv << [orden.cliente.name, codig,  orden.numOT, orden.numFact, orden.nomprod, tara.proceso.nombre, inte.user.name, inte.inicio.strftime("%d/%m/%y"), inte.inicio.strftime("%H:%M:%S"), termi.strftime("%d/%m/%y"), termi.strftime("%H:%M:%S"), colores, atot, inte.observaciones ]
 									end
 									end
 								end
