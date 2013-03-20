@@ -183,7 +183,11 @@ class OrdTrabsController < ApplicationController
 										else
 											termi = Time.at(0)
 										end
-										codig = orden.cliente.sigla.to_s + orden.codCliente.to_s
+										if orden.cliente
+                      codig = orden.cliente.sigla.to_s + orden.codCliente.to_s
+                    else
+                      codig = "" + orden.codCliente.to_s
+                    end
                     atot = 0
                     atot = orden.separacions.sum("area")     
                     colores = orden.separacions.*.color.join(", ")           
