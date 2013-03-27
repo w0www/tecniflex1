@@ -104,6 +104,26 @@ class OrdTrab < ActiveRecord::Base
 
 default_scope :order => 'numOT DESC'
 
+  def armacod
+    armac = ""
+    if self.cliente
+      if self.cliente.sigla != ""
+        armac = self.cliente.sigla + "-" + self.codCliente
+      else
+        armac = self.codCliente
+      end
+    end
+    armac
+  end
+
+  def areatot
+    atot = 0
+    self.separacions.each do |lasepa|
+      atot += lasepa.areasep
+    end
+    atot
+  end
+  
   # Boolean para informar si estan asignadas todas las tareas cuyos procesos pertenecen a grupos de procesos asignables.
   def tarasigs
 		tarasi = true

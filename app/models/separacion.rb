@@ -40,17 +40,19 @@ class Separacion < ActiveRecord::Base
 	#Para crear un nuevo item en input-many : <input-many template="&Locmathist.new(:field_tech => @current_user, :project => @current_project)">
   def areasep
 	orden = self.ord_trab
+    arease = 0
     unless (alto == nil && ancho == nil)
       if orden.nCopias != nil
         if orden.nCopias > 1
-          @areasep = alto.to_f*ancho.to_f*orden.nCopias
+          arease = alto.to_f*ancho.to_f*orden.nCopias
         else
-          @areasep= alto.to_f*ancho.to_f
+          arease = alto.to_f*ancho.to_f
         end
       else
-        @areasep=0
+        arease= alto.to_f*ancho.to_f
       end
     end
+    arease
   end
 
 def before_save
