@@ -1,0 +1,31 @@
+<page title="Tablero de Control">
+  <body: class="definir"/>
+  <content:>
+<header class="content-header">
+      <h1>
+        OTs Creadas y OTs Facturadas
+      </h1>
+    </header>
+    <section class="content-body" with='&@ord_trabs'>
+      <style>
+        #button { padding: .5em 1em; text-decoration: none; }
+        #efecto { width: 850px; height: 78px; padding: 0.4em; position: relative; display:none}
+        #efecto h3 { margin: 0; padding: 0.4em; text-align: center; }
+      </style>
+      <repeat with="&@ctes.each">
+        <h2>Cliente :<%= this.name %></h2>
+        <table class="tablero">
+        <tr><th>OT</th><th>Producto</th><th>Codigo</th><th>Creada</th><th>Facturada</th><th>Tiempo Total</th><th>Area</th><th>Ciclos VB</th></tr>
+        <repeat with="&this.ord_trabs">
+          <tr><th><%=this.numOT%></th><td><%=this.nomprod%></td><td><%=this.armacod%></td><td><%=this.created_at%></td><td><%= if this.numFact then this.updated_at else "" end%></td><td><%= (this.updated_at - this.created_at)/86400%></td><td><%=this.areatot%></td><td><%=this.tareas.first.ciclo%></td></tr>
+        </repeat>
+        </table>
+        <br/>
+
+      </repeat>
+
+
+      </section>
+  </content:>
+ 
+</page>
