@@ -17,7 +17,7 @@
         <table class="tablero">
         <tr><th>OT</th><th>Producto</th><th>Codigo</th><th>Creada</th><th>Facturada</th><th>Tiempo Total</th><th>Area</th><th>Ciclos VB</th></tr>
         <repeat with="&this.ord_trabs">
-          <tr><th><%=this.numOT%></th><td><%=this.nomprod%></td><td><%=this.armacod%></td><td><%=this.created_at%></td><td><%= if this.numFact then this.updated_at else "" end%></td><td><%= (this.updated_at - this.created_at)/86400%></td><td><%=this.areatot%></td><td><%=this.tareas.first.ciclo%></td></tr>
+          <tr><th><%=this.numOT%></th><td><%=this.nomprod%></td><td><%=this.armacod%></td><td><%=this.created_at%></td><td><%= if this.numFact then this.updated_at else "" end%></td><td><%= (this.updated_at - this.created_at)/86400%></td><td><%=this.areatot%></td><td></td></tr>
         </repeat>
         </table>
         <br/>
