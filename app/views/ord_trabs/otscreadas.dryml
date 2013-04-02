@@ -14,11 +14,24 @@
       </style>
       <repeat with="&@ctes.each">
         <h2>Cliente :<%= this.name %></h2>
-        <table class="tablero">
-        <tr><th>OT</th><th>Producto</th><th>Codigo</th><th>Creada</th><th>Facturada</th><th>Tiempo Total</th><th>Area</th><th>Ciclos VB</th></tr>
-        <repeat with="&this.ord_trabs">
-          <tr><th><%=this.numOT%></th><td><%=this.nomprod%></td><td><%=this.armacod%></td><td><%=this.created_at%></td><td><%= if this.numFact then this.updated_at else "" end%></td><td><%= (this.updated_at - this.created_at)/86400%></td><td><%=this.areatot%></td><td></td></tr>
-        </repeat>
+        <table class="informe">
+          <tr><th>OT</th><th>Producto</th><th>Codigo</th><th>Creada</th><th>Fact.</th><th>Tiempo Total</th><th>Area</th>
+            <repeat with="&@proces">
+              <th style="font-size:x-small"><%=this%></th>
+            </repeat> 
+          </tr>
+          <% @ttot = 0 %>
+          <repeat with="&this.ord_trabs">
+            <%@estot = this.ciclos %>
+            <% tpar = ((this.updated_at - this.created_at)/86400) %>
+            <tr><th><%=this.numOT%></th><td><%=this.nomprod%></td><td><%=this.armacod%></td><td><view:created_at format="%d-%m-%y"/></td><td><view:updated_at if="numFact" format="%d-%m-%y"/></td><td><%= sprintf "%.2f",tpar%></td><td><%=this.areatot%></td>
+              <% @ttot += tpar %>
+              <repeat with="&@proces">
+                <td><view with="&@estot.assoc(this)[1]" if="&@estot.assoc(this)" else="-"/></td>
+              </repeat>
+            </tr>
+          </repeat>
+          <tr><td colspan="5"/><td><%= sprintf "%.2f",@ttot %></td></tr>
         </table>
         <br/>
 

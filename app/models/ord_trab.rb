@@ -124,12 +124,17 @@ default_scope :order => 'numOT DESC'
     atot
   end
   
+  def ciclos
+    self.sortars.map { |tar| [tar.proceso.nombre, tar.ciclo]}
+  end
+    
+  
   # Boolean para informar si estan asignadas todas las tareas cuyos procesos pertenecen a grupos de procesos asignables.
   def tarasigs
 		tarasi = true
 			self.tareas.each do |latask|
 				if latask.proceso.grupoproc.asignar && (latask.asignado == nil)
-						@tarasi = (@tarasi && false)
+						tarasi = (tarasi && false)
 				end
 			end
 		tarasi

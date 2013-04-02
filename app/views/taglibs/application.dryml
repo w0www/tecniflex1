@@ -8,6 +8,9 @@
 
 <def tag="app-name">Tecniflex</def>
 
+<def tag="nil-view">-</def>
+
+
 <extend tag="page">
   <old-page merge without-live-search>
      <append-head:>

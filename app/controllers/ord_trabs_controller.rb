@@ -135,6 +135,7 @@ class OrdTrabsController < ApplicationController
   index_action :otscreadas do
     @inicio = 1.year.ago
     @ctes = Cliente.all
+    @proces = Proceso.all.*.nombre
     if params[:search]
       @otultsem = OrdTrab.apply_scopes(:search => [params[:search], :cliente_id], :order_by => parse_sort_param(:cliente_id, :nomprod))
     else

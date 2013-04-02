@@ -17,9 +17,7 @@ class Tarea < ActiveRecord::Base
   # Se elimina dependent => destroy, porque podría borrarse una tarea y perder el registro del trabajo de los operadores.
   has_many :intervencions, :accessible => true
 
-  has_many :users, :through => :intervencions
-
-
+  has_many :users, :through => :intervencions 
   def name
     self.ord_trab.numOT.to_s + '_' + self.proceso.nombre.to_s
   end
@@ -67,11 +65,12 @@ class Tarea < ActiveRecord::Base
 					if ordtars.first.asignada_a != nil
 						ordtars.first.lifecycle.habilitar!(User.first)
 					end
-				else
+				#else
+           # REVISAR LA CONDICION DE HABILITACION DE LAS TAREAS
 					# Habilita la primera tarea que aparezca "creada"
-					if (ordtars[ordtars.*.state.index("creada").to_i].asignada_a != nil) && (ordtars[ordtars.*.state.index("creada").to_i-1].state = "terminada")
+					#if (ordtars[ordtars.*.state.index("creada").to_i].asignada_a != nil) && (ordtars[ordtars.*.state.index("creada").to_i-1].state = "terminada")
 						ordtars[ordtars.*.state.index("creada").to_i].lifecycle.habilitar!(User.first)
-					end
+					#end
 				end
 		end
 	end
@@ -144,12 +143,16 @@ class Tarea < ActiveRecord::Base
 		transition :rechazar, { :iniciada => :rechazada }, :available_to => :all
 
 		transition :terminar, { :enviada => :terminada }, :available_to => :all do
+      if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
 				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
-		end
+      end
+    end
 
 		transition :terminar, { :iniciada => :terminada }, :available_to => :all do
-				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
-		end
+			if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+      	self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+      end
+    end
 
 		transition :eliminar, {:creada => :destroy}, :available_to => :all
 

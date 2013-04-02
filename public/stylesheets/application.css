@@ -127,16 +127,43 @@ table.tablero th{
     min-width: 65px;
 }
 
-.stdetenida td, .stdetenida .detenida, .stdetenida .Normal, .stdetenida .Urgencia, .stdetenida .Repeticion, .stdetenida .ord-trab-link {
-		color: #999;
-}
-
 table.tablero td{
     text-size: 100%;
     padding: 3px;
     border-style: solid dotted;
     border-width: 1px;
 
+}
+
+table.informe th{
+    background-color: #ccc;
+    padding: 3px;
+    font-weight: bold;
+    font-size: 100%;
+    border-style: solid dotted;
+    border-width: 1px;
+}
+
+table.informe {
+	position: relative;
+	display:block;
+		margin-top: 10px;
+    border-style: solid;
+    border-width: 2px;
+    font-family:Helvetica,Arial,sans-serif;
+    background-color: #eee;
+}
+
+table.informe td{
+    text-size: 90%;
+    padding: 1px;
+    border-style: solid dotted;
+    border-width: 1px;
+
+}
+
+.stdetenida td, .stdetenida .detenida, .stdetenida .Normal, .stdetenida .Urgencia, .stdetenida .Repeticion, .stdetenida .ord-trab-link {
+		color: #999;
 }
 
 .ciclo{

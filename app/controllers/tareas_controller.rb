@@ -8,13 +8,7 @@ class TareasController < ApplicationController
 
   def update
 		hobo_update do
-			logger.debug "Inicio de tareas.update"
-      if this.proceso.factura && this.state = "terminada"
-        this.OrdTrab.facturada = true
-      end
-				if request.xhr?
-					debugger
-          
+				if request.xhr?          
 					if this.state == "terminada"
 						render :json => {
 							:location => url_for(:controller => 'front', :action => 'index')
