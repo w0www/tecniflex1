@@ -103,7 +103,9 @@
                         </td>
 
                     <% end %>
-                     <td rowspan="2"><do with="&@tod"><transition-buttons/></do></td>
+                    <% transitions = this.lifecycle.publishable_transitions_for(current_user) %>
+    
+                     <td rowspan="2"><do with="&@tod"><if test='&transitions'><transition-buttons/></if><if test!='&transitions'>Asignar Tareas</if></do></td>
                     </tr>
                     <tr/>
                <%end%>
