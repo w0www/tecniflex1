@@ -274,7 +274,7 @@ default_scope :order => 'numOT DESC'
 					end
 				else
 					# Habilita la primera tarea que aparezca "creada"
-					if (ordtars[ordtars.*.state.index("creada").to_i].asignada_a != nil) && (ordtars[ordtars.*.state.index("creada").to_i-1].state = "terminada")
+					if (ordtars[ordtars.*.state.index("creada").to_i].asignada_a != nil) && (ordtars[ordtars.*.state.index("creada").to_i-1].state == "terminada")
 						ordtars[ordtars.*.state.index("creada").to_i].lifecycle.habilitar!(User.first)
 					end
 				end

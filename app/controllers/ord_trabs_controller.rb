@@ -143,6 +143,24 @@ class OrdTrabsController < ApplicationController
     end
   end
   
+  index_action :vbenvios do
+    @grupro = Grupoproc.tablero.order_by(:position)
+        @ctes = Cliente.all
+          @todas = OrdTrab.paginate(:page => params[:page], :per_page => 35)
+        if params[:cliente]
+          @elcli = params[:cliente]
+          
+          if params[:codCliente] == "Cod. Cliente"
+            @todas = OrdTrab.paginate( :conditions => ["cliente_id = ?", @elcli], :page => params[:page], :per_page => 35 )
+          end
+        elsif params[:startdate] && params[:enddate]
+            @from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
+            @to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
+            @todas = OrdTrab.order_by(:id).paginate(:conditions => ["created_at >= ? and created_at <= ?",@from_date.to_datetime.in_time_zone(Time.zone),@to_date.to_datetime.in_time_zone(Time.zone)],:page => params[:page], :per_page => 35)
+        end
+        hobo_ajax_response if request.xhr?
+  end
+  
   index_action :reporte do
   	@todas = OrdTrab.find(:all)
 

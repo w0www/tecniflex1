@@ -1,9 +1,9 @@
-<page title="Tablero de Control">
+<page title="OTs por Cliente">
   <body: class="definir"/>
   <content:>
 <header class="content-header">
       <h1>
-        OTs Creadas y OTs Facturadas
+        OTs Facturadas por Cliente
       </h1>
     </header>
     <section class="content-body" with='&@ord_trabs'>
