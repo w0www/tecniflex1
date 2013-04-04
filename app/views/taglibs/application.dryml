@@ -466,7 +466,7 @@
 <def tag="card" for="Tarea">
   <card class="  #{this.state}" param="default" merge>
     <header: param >
-      <a><table width="80%"><tr><th width="15%" class="  #{this.ord_trab.claset}"><%= if this.ord_trab.cliente then this.ord_trab.cliente.sigla else "" end %>-<%= this.ord_trab.codCliente %></td><td width="20%"><name/></td><td width="65%"><%= this.ord_trab.nomprod%></td></tr></table></a>
+      <a><table width="80%"><tr><th width="15%" class="  #{this.ord_trab.claset}"><%= if this.ord_trab.cliente then this.ord_trab.cliente.sigla else "" end %>-<%= this.ord_trab.codCliente %></th><td width="20%"><name/></td><td width="65%"><%= this.ord_trab.nomprod%></td></tr></table></a>
     </header:>
   </card>
 </def>
