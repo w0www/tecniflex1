@@ -407,6 +407,13 @@ default_scope :order => 'numOT DESC'
     end
 		@valorc
 	end
+  
+  def urgclass
+    if self.urgente
+      "Urgencia"
+    end
+  end
+  
 
 	#Se usa para mostrar los usuarios asignados o involucrados con una tarea en el tablero
 	def usersgp(grupro)
