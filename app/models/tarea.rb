@@ -61,7 +61,7 @@ class Tarea < ActiveRecord::Base
 	def after_update
 		ordtars = self.ord_trab.sortars
 		unless ordtars.*.state.index("creada") == nil
-      if self.ord_trab.state == "habilitada"
+      if ["habilitada","iniciada"].include?(self.ord_trab.state)
 				if ordtars[ordtars.*.state.index("creada").to_i] == ordtars.first
 					if ordtars.first.asignada_a != nil
 						ordtars.first.lifecycle.habilitar!(User.first)

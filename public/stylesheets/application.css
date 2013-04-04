@@ -63,7 +63,7 @@ table.shower {
 		background-color: darkgray;
 }
 
-.showerhi {
+table.showerhi {
 	  width: 100%;
     border-collapse: separate;
     border-spacing: 2px;
@@ -322,15 +322,27 @@ ul.hjq-input-many div.buttons {
     color: #999999;
 }
 
-th.Normal {
+.Normal {
     background-color: lightgray !important;
 }
 
-th.Urgencia {
+.shower {
+    background-color: lightgray !important;
+}
+
+.Urgencia {
     background-color: red !important;
 }
 
-th.Repeticion {
+.showerhi {
+    background-color: red !important;
+}
+
+.Repeticion {
+    background-color: green !important;
+}
+
+.showerin {
     background-color: green !important;
 }
 

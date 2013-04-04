@@ -400,7 +400,7 @@ default_scope :order => 'numOT DESC'
 # Usado para asignar clases de acuerdo a la prioridad de la OT.
   def claset
     @valorc = "shower"
-		if self.prioridad == "Urgencia"
+		if self.prioridad == "Repeticion"
 			@valorc = "showerhi"
 		elsif self.prioridad == "Sin Costo*"
 			@valorc = "showerin"
