@@ -16,10 +16,10 @@
   has_many :ord_trabs
 
 
-  def before_update
-    self.pctDistor = (distorsion / name.to_f) * 100
+  def before_save
+    self.pctDistor = ((self.distorsion / self.nombre.to_f) * 100)
   end
-
+  
   def name
   	esp = self.espesor
   	if esp != ''
