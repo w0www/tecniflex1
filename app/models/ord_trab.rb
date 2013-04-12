@@ -149,7 +149,7 @@ default_scope :order => 'numOT DESC'
 		end
  end
 
- # Permite volver a una tarea anterior, habilitndola
+ # Permite volver a una tarea anterior, habilitandola
  def volver_a(procid,usuario)
  		esteprocid = Proceso.find(procid)
  		tares = self.tareas || []
@@ -160,9 +160,16 @@ default_scope :order => 'numOT DESC'
 			else
 				nil
 			end
+      
 		end
  end
 
+#  def convtiem(segs)
+#    horas = segs/3600.to_i
+#    minutos = (segs/60 - horas*60).to_i
+#    segundos = (segs - (minutos * 60 + horas * 3600))
+#    homise = [horas,minutos,segundos]
+#  end
 
   # Ordena las tareas de una OT segun la posicion de sus procesos. Permite habilitar las tareas en orden.
   def sortars

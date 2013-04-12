@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<JOBS>
+    <CreateJobParameters>
+        <OrderID><%=@ord_trab.armacod%></OrderID>
+        <SubOrderID><%=@ord_trab.version%></SubOrderID>
+        <JobName><%=@ord_trab.nomprod%></JobName>
+        <JobDescription></JobDescription>
+        <DueDate><%=@ord_trab.fechaEntrega%></DueDate>
+        <CSRName><%= if @ord_trab.encargado then @ord_trab.encargado.name end%></CSRName>
+        <CSREmail><%= if @ord_trab.encargado then @ord_trab.encargado.email_address end%></CSREmail>
+        <CustomerID><%= if @ord_trab.cliente then @ord_trab.cliente.id end%></CustomerID>
+        <CustomerName><%= if @ord_trab.cliente then @ord_trab.cliente.name end%></CustomerName>
+        <CustomerContact><%= if @ord_trab.contacter then @ord_trab.contacter.name end%></CustomerContact>
+        <CustomerEmail><%= if @ord_trab.contacter then @ord_trab.contacter.email end%></CustomerEmail>
+        <ProofType></ProofType>
+        <Press></Press>
+        <Trapping>Yes</Trapping>
+        <Trap_Distance><%=@ord_trab.trapping%></Trap_Distance>
+        <Workflow></Workflow>
+        <FileName></FileName>
+        <DynaTemplate></DynaTemplate>
+        <StepV><%=@ord_trab.nPasos%></StepV>
+        <StepH><%=@ord_trab.nBandas%></StepH>
+        <HorizontalGap></HorizontalGap>
+        <VerticalGap></VerticalGap>
+        <Rotation>0</Rotation>
+        <Bleed><%=@ord_trab.mcExcesoq%></Bleed>
+        <HorizontalDistortion><%= if @ord_trab.cilindro then @ord_trab.cilindro.pctDistor end%></HorizontalDistortion>
+        <VerticalDistortion><%= if @ord_trab.cilindro then @ord_trab.cilindro.pctDistor end%></VerticalDistortion>
+        <iCutMaterialWidth>2000</iCutMaterialWidth>
+        <iCutMaterialHeight>1000</iCutMaterialHeight>
+    </CreateJobParameters>
+</JOBS>

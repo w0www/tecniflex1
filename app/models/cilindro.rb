@@ -16,7 +16,7 @@
   has_many :ord_trabs
 
 
-  def before_save
+  def before_update
     self.pctDistor = (distorsion / name.to_f) * 100
   end
 
