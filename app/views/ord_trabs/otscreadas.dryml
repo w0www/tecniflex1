@@ -28,6 +28,13 @@
 											<submit class='search-button' label='Ir'/>
 										</form>
       </div>
+                     <% cliente ||= ''%>
+              <% codCliente ||= ''%>
+              <% orden ||= ''%>
+              <% startdate ||= ''%>
+              <% enddate ||= ''%>
+      			  			<a href="#{base_url}/ord_trabs/reporteot.csv" params="&{cliente=>:cliente}" if="&current_user.administrator?" class="button submit-button search-button">Exportar informe</a>
+
       <repeat with="&@ctes.each">
         <h2>Cliente :<%= this.name %></h2>
         <table class="informe">
