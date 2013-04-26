@@ -33,30 +33,37 @@
               <% orden ||= ''%>
               <% startdate ||= ''%>
               <% enddate ||= ''%>
-      			  			<a href="#{base_url}/ord_trabs/reporteot.csv" params="&{cliente=>:cliente}" if="&current_user.administrator?" class="button submit-button search-button">Exportar informe</a>
+      			  			<%= link_to "Informe Excel", {:controller => "ord_trabs", :format => :csv, :action => "reporteot", :cliente => "#{params[:cliente]}"}, :class => "button submit-button search-button" %>
 
       <repeat with="&@ctes.each">
-        <h2>Cliente :<%= this.name %></h2>
-        <table class="informe">
-          <tr><th>OT</th><th>Producto</th><th>Codigo</th><th>Creada</th><th>Fact.</th><th>Tiempo Total</th><th>Area</th>
-            <repeat with="&@proces">
-              <th style="font-size:x-small"><%=this%></th>
-            </repeat> 
-          </tr>
-          <% @ttot = 0 %>
-          <repeat with="&this.ord_trabs">
-            <%@estot = this.ciclos %>
-            <% tpar = ((this.updated_at - this.created_at)) %>
-            <tr><th><%=this.numOT%></th><td><%=this.nomprod%></td><td><%=this.armacod%></td><td><view:created_at format="%d-%m-%y"/></td><td><view:updated_at if="numFact" format="%d-%m-%y"/></td><td><%= sprintf "%.2f",tpar%></td><td><%=this.areatot%></td>
-              <% @ttot += tpar %>
+        <% unless this.ord_trabs.count == 0 %>
+          <h2>Cliente :<%= this.name %></h2>
+          <table class="informe">
+            <tr><th>OT</th><th>Producto</th><th>Codigo</th><th>Creada</th><th>Fact.</th><th>Tiempo Total</th><th>Area</th>
               <repeat with="&@proces">
-                <td><view with="&@estot.assoc(this)[1]" if="&@estot.assoc(this)" else="-"/></td>
-              </repeat>
+                <th style="font-size:x-small"><%=this%></th>
+              </repeat> 
+              
             </tr>
-          </repeat>
-          <tr><td colspan="5"/><td><%= sprintf "%.2f",@ttot %></td></tr>
-        </table>
-        <br/>
+            <% @ttot = 0 %>
+            <repeat with="&this.ord_trabs">
+              <%@estot = this.ciclos %>
+              <% @tpar = ((this.updated_at - this.created_at)) %>
+              <% @tparh = Time.at(@tpar).utc.strftime("%H:%M:%S") %>
+              <tr><th><%=this.numOT%></th><td><%=this.nomprod%></td><td><%=this.armacod%></td><td><view:created_at format="%d-%m-%y"/></td><td><view:updated_at if="numFact" format="%d-%m-%y"/></td><td><%= OrdTrab.duracion(this.created_at,this.updated_at)%></td><td><%=this.areatot%></td>
+                <% @ttot += @tpar %>
+                <% @ttoth = Time.at(@ttot).utc.strftime("%H:%M:%S") %>
+                <repeat with="&@proces">
+                  <td><view with="&@estot.assoc(this)[1]" if="&@estot.assoc(this)" else="-"/></td>
+                </repeat>
+              </tr>
+            </repeat>
+            <% unless @ttot == 0 %>
+              <tr><td colspan="5"/><td><%= OrdTrab.duracion(Time.at(0).to_f,@ttot) %></td></tr>
+            <% end %>
+          </table>
+          <br/>
+        <% end %>
 
       </repeat>
 

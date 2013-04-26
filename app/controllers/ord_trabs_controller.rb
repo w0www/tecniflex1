@@ -136,16 +136,14 @@ class OrdTrabsController < ApplicationController
  
   index_action :otscreadas do
     @inicio = 1.year.ago
-    condcli = []
-    condcli = ["id = ?", params[:id]] if params[:id].present?
-    @ctes = Cliente.find(:all, :conditions => condcli )
-    
-  
+    @otultsem = OrdTrab.all
+    @ctes = Cliente.all
     @proces = Proceso.all.*.nombre
-    if params[:search]
-      @otultsem = OrdTrab.apply_scopes(:search => [params[:search], :cliente_id], :order_by => parse_sort_param(:cliente_id, :nomprod))
-    else
-      @otultsem = OrdTrab.paginate(:page => params[:page], :per_page => 35)
+    if params[:cliente]
+      @clies = params[:cliente]
+      @otultsem = OrdTrab.paginate(:conditions => ["cliente_id = ?", @clies], :page => params[:page], :per_page => 35)
+ # HACER QUE CTES LISTE LOS CLIENTES DE FORMA UNICA
+      @ctes = @otultsem.*.cliente.uniq
     end
   end 
   
@@ -172,56 +170,48 @@ class OrdTrabsController < ApplicationController
   	@todas = OrdTrab.find(:all)
 
     @clies = Cliente.all
-    if params[:orden].blank? && ((params[:startdate].blank? && params[:enddate].blank?) && (params[:cliente].blank? && params[:codCliente].blank?))
-	    @todas = OrdTrab.all
-      elsif params[:orden]
-        @orde = params[:orden]
-        @todas = OrdTrab.all
-        #hobo_index OrdTrab.apply_scopes(:search => [params[:orden], :numOT], :order_by => :numOT)
-      elsif params[:cliente]
-        @elcli = params[:cliente]
-        @cocli = params[:codCliente]
-        if params[:codCliente] == "Cod. Cliente"
-          @todas = OrdTrab.find( :conditions => ["cliente_id = ?", @elcli])
-        else
-          @todas = OrdTrab.find( :conditions => ["codCliente = ? and cliente_id = ?", @cocli, @elcli])
-        end
-      elsif params[:startdate] && params[:enddate]
-          @from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
-          @to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
-          @todas = OrdTrab.order_by(:id).find(:conditions => ["created_at >= ? and created_at <= ?",@from_date.to_datetime.in_time_zone(Time.zone),@to_date.to_datetime.in_time_zone(Time.zone)])
+    if params[:cliente]
+	    @clies = params[:cliente]
+      @todas = OrdTrab.all(:conditions => ["cliente_id = ?", @clies])
     end
-
+ 
   	respond_to do |wants|
 			wants.html
 			wants.csv do
 				csv_string = CSV.generate(:col_sep => ";") do |csv|
 					# header row
           @proces = Proceso.all.*.nombre
-          @ciclous = ""
-          @proces.each do |pros|
-            prostr = "; " + pros
-            @ciclous << prostr
-          end
+          #@ciclous = ""
+          #@proces.each do |pros|
+            #if @ciclous == ""
+              #prostr = pros
+            #else
+              #prostr = "\"; " + pros 
+            #end
+            #@ciclous << prostr
+          #end
       #    @ciclous = @ciclous[1,@ciclous.length-2]
-					csv << ["Cliente", "O.T.", "Producto", "Codigo", "Fecha Inicio", "Fecha Termino", "Fecha Termino", "Tiempo total", "cm2 tot.", "#{@ciclous}"]
+          arre = ["Cliente", "O.T.", "Producto", "Codigo", "Fecha Inicio", "Fecha Termino", "Tiempo total", "cm2 tot."] + @proces
+					csv << arre
 					# data rows
 					@todas.each do |orden|
             @estot = orden.ciclos
             tpar = ((orden.updated_at - orden.created_at))
+            @tparh = Time.at(tpar).utc.strftime("%H:%M:%S")
             atot = 0
             atot = orden.areatot    
-            if orden.numFact != ""
+            if orden.numFact != nil
               factur = orden.updated_at.strftime("%Y-%m-%d %l:%M:%S")
             else
               factur = ""
             end
-            @listaciclos = ""
+            @listaciclos = []
             @proces.each do |prociclo|
               if @estot.assoc(prociclo)
                 @listaciclos << @estot.assoc(prociclo)[1].to_s
+              else
+                @listaciclos << ""
               end
-              @listaciclos << "; "
             end
          #   @listaciclos = @listaciclos[1,@listaciclos.length-2]
         #    colores = orden.separacions.*.color.join(", ")
@@ -230,10 +220,11 @@ class OrdTrabsController < ApplicationController
             else
               elcli = ""
             end
-            csv << [elcli, orden.numOT, orden.nomprod, orden.armacod, orden.created_at.strftime("%Y-%m-%d %l:%M:%S"), factur, " ", orden.areatot, @listaciclos ]
+            arri = [elcli, orden.numOT, orden.nomprod, orden.armacod, orden.created_at.strftime("%Y-%m-%d %l:%M:%S"), factur, @tparh, orden.areatot] + @listaciclos 
+            csv << arri
             
           end				
-				# send it to the browsah
+				# send it to da browsah
         end
 				send_data(csv_string.force_encoding('ASCII-8BIT'),
 									:type => 'text/csv; charset=iso-8859-1; header=present',
