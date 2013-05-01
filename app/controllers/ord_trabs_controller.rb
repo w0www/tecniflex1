@@ -104,7 +104,6 @@ class OrdTrabsController < ApplicationController
 	  elsif params[:orden]
       @orde = params[:orden]
       @todas = OrdTrab.paginate( :conditions => ["numot = ?", @orde],:page => params[:page], :per_page => 35)
-      #hobo_index OrdTrab.apply_scopes(:search => [params[:orden], :numOT], :order_by => :numOT)
     elsif params[:cliente]
     	@elcli = params[:cliente]
     	@cocli = params[:codCliente]
@@ -135,16 +134,111 @@ class OrdTrabsController < ApplicationController
   end
  
   index_action :otscreadas do
-    @inicio = 1.year.ago
-    @otultsem = OrdTrab.all
-    @ctes = Cliente.all
-    @proces = Proceso.all.*.nombre
-    if params[:cliente]
-      @clies = params[:cliente]
-      @otultsem = OrdTrab.paginate(:conditions => ["cliente_id = ?", @clies], :page => params[:page], :per_page => 35)
- # HACER QUE CTES LISTE LOS CLIENTES DE FORMA UNICA
-      @ctes = @otultsem.*.cliente.uniq
+    respond_to do |wants|
+			wants.html do
+          @otultsem = OrdTrab.all.group_by(&:cliente_id)
+          @proces = Proceso.all.*.nombre
+          if params[:cliente]
+            @clies = params[:cliente]
+            if (params[:startdate].blank? && params[:enddate].blank?)
+              @otultsem = OrdTrab.all(:conditions => ["cliente_id = ?", @clies]).group_by(&:cliente_id)
+            elsif params[:startdate]
+              @clies = params[:cliente]
+              @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
+              if params[:enddate].blank?
+                @otultsem = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
+              else 
+                @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
+                @otultsem = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ? and created_at <= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
+              end
+            elsif (params[:startdate].blank? && params[:enddate])
+              @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
+              @otultsem = OrdTrab.all(:conditions => ["cliente_id = ? and created_at <= ?", @clies, @fenal.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
+            end 
+          elsif params[:startdate]
+              @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
+              if params[:enddate].blank?
+                @otultsem = OrdTrab.all(:conditions => ["created_at >= ?", @fechini.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
+              else 
+                @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
+                @otultsem = OrdTrab.all(:conditions => ["created_at >= ? and created_at <= ?", @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
+              end
+          elsif (params[:startdate].blank? && params[:enddate])
+            @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
+            @otultsem = OrdTrab.all(:conditions => ["created_at <= ?", @fenal.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
+          end
+      end
+      wants.csv do
+  #####
+        csv_string = CSV.generate(:col_sep => ";") do |csv|
+          ##################
+          @otultsem = OrdTrab.all
+          @proces = Proceso.all.*.nombre
+          if params[:cliente]
+            @clies = params[:cliente]
+            if (params[:startdate].blank? && params[:enddate].blank?)
+              @otultsem = OrdTrab.all(:conditions => ["cliente_id = ?", @clies])
+            elsif params[:startdate]
+              @clies = params[:cliente]
+              @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
+              if params[:enddate].blank?
+                @otultsem = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone)])
+              else 
+                @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
+                @otultsem = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ? and created_at <= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
+              end
+            elsif (params[:startdate].blank? && params[:enddate])
+              @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
+              @otultsem = OrdTrab.all(:conditions => ["cliente_id = ? and created_at <= ?", @clies, @fenal.to_datetime.in_time_zone(Time.zone)])
+            end 
+          elsif params[:startdate]
+              @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
+              if params[:enddate].blank?
+                @otultsem = OrdTrab.all(:conditions => ["created_at >= ?", @fechini.to_datetime.in_time_zone(Time.zone)])
+              else 
+                @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
+                @otultsem = OrdTrab.all(:conditions => ["created_at >= ? and created_at <= ?", @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
+              end
+          elsif (params[:startdate].blank? && params[:enddate])
+            @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
+            @otultsem = OrdTrab.all(:conditions => ["created_at <= ?", @fenal.to_datetime.in_time_zone(Time.zone)])
+          end
+          ##################
+          arre = ["Cliente", "O.T.", "Producto", "Codigo", "Fecha Inicio", "Fecha Termino","N.Fact", "Tiempo total", "cm2 tot."] + @proces
+          csv << arre
+          # data rows
+            @elclie = Cliente.all(:conditions => ["id = ?",params[:cliente]]).first
+            @otultsem.each do |orden|
+              @estot = orden.ciclos
+              tpar = ((orden.updated_at - orden.created_at))
+              @tparh = Time.at(tpar).utc.strftime("%H:%M:%S")
+              atot = 0
+              atot = orden.areatot    
+              if orden.numFact != nil
+                factur = orden.updated_at.strftime("%Y-%m-%d %l:%M:%S")
+              else
+                factur = ""
+              end
+              @listaciclos = []
+              @proces.each do |prociclo|
+                if @estot.assoc(prociclo)
+                  @listaciclos << @estot.assoc(prociclo)[1].to_s
+                else
+                  @listaciclos << ""
+                end
+              end            
+            arri = [@elclie, orden.numOT, orden.nomprod, orden.armacod, orden.created_at.strftime("%Y-%m-%d %l:%M:%S"), factur, orden.numFact, @tparh, orden.areatot] + @listaciclos 
+            csv << arri
+            end
+          				
+        # send it to da browsah
+        end
+        send_data(csv_string.force_encoding('ASCII-8BIT'),
+                  :type => 'text/csv; charset=iso-8859-1; header=present',
+                  :disposition => "attachment", :filename => Time.now.strftime("Ordenes fact_al_%d_%m_%Y") + ".csv")
+      end
     end
+  #####      
   end 
   
   index_action :vbenvios do
@@ -165,75 +259,7 @@ class OrdTrabsController < ApplicationController
         hobo_ajax_response if request.xhr?
   end
   
-  #####################################
-  index_action :reporteot do
-  	@todas = OrdTrab.find(:all)
-
-    @clies = Cliente.all
-    if params[:cliente]
-	    @clies = params[:cliente]
-      @todas = OrdTrab.all(:conditions => ["cliente_id = ?", @clies])
-    end
- 
-  	respond_to do |wants|
-			wants.html
-			wants.csv do
-				csv_string = CSV.generate(:col_sep => ";") do |csv|
-					# header row
-          @proces = Proceso.all.*.nombre
-          #@ciclous = ""
-          #@proces.each do |pros|
-            #if @ciclous == ""
-              #prostr = pros
-            #else
-              #prostr = "\"; " + pros 
-            #end
-            #@ciclous << prostr
-          #end
-      #    @ciclous = @ciclous[1,@ciclous.length-2]
-          arre = ["Cliente", "O.T.", "Producto", "Codigo", "Fecha Inicio", "Fecha Termino", "Tiempo total", "cm2 tot."] + @proces
-					csv << arre
-					# data rows
-					@todas.each do |orden|
-            @estot = orden.ciclos
-            tpar = ((orden.updated_at - orden.created_at))
-            @tparh = Time.at(tpar).utc.strftime("%H:%M:%S")
-            atot = 0
-            atot = orden.areatot    
-            if orden.numFact != nil
-              factur = orden.updated_at.strftime("%Y-%m-%d %l:%M:%S")
-            else
-              factur = ""
-            end
-            @listaciclos = []
-            @proces.each do |prociclo|
-              if @estot.assoc(prociclo)
-                @listaciclos << @estot.assoc(prociclo)[1].to_s
-              else
-                @listaciclos << ""
-              end
-            end
-         #   @listaciclos = @listaciclos[1,@listaciclos.length-2]
-        #    colores = orden.separacions.*.color.join(", ")
-            if orden.cliente
-              elcli = orden.cliente.name
-            else
-              elcli = ""
-            end
-            arri = [elcli, orden.numOT, orden.nomprod, orden.armacod, orden.created_at.strftime("%Y-%m-%d %l:%M:%S"), factur, @tparh, orden.areatot] + @listaciclos 
-            csv << arri
-            
-          end				
-				# send it to da browsah
-        end
-				send_data(csv_string.force_encoding('ASCII-8BIT'),
-									:type => 'text/csv; charset=iso-8859-1; header=present',
-									:disposition => "attachment", :filename => Time.now.strftime("Ordenes fact_al_%d_%m_%Y") + ".csv")
-      end
-    end
-  end
-  #####################################
-  
+    
   index_action :reporte do
   	@todas = OrdTrab.find(:all)
 
@@ -281,10 +307,8 @@ class OrdTrabsController < ApplicationController
                       else
                         codig = "" + orden.codCliente.to_s
                       end
-                      atot = 0
-                      atot = orden.separacions.sum("area")     
                       colores = orden.separacions.*.color.join(", ")           
-                      csv << [orden.cliente.name, codig,  orden.numOT, orden.numFact, orden.nomprod, tara.proceso.nombre, inte.user.name, inte.inicio.strftime("%d/%m/%y"), inte.inicio.strftime("%H:%M:%S"), termi.strftime("%d/%m/%y"), termi.strftime("%H:%M:%S"), colores, atot, inte.observaciones ]
+                      csv << [orden.cliente.name, codig,  orden.numOT, orden.numFact, orden.nomprod, tara.proceso.nombre, inte.user.name, inte.inicio.strftime("%d/%m/%y"), inte.inicio.strftime("%H:%M:%S"), termi.strftime("%d/%m/%y"), termi.strftime("%H:%M:%S"), colores, orden.areatot, inte.observaciones ]
                     end
 									end
 								end

@@ -12,45 +12,54 @@
         #efecto { width: 850px; height: 78px; padding: 0.4em; position: relative; display:none}
         #efecto h3 { margin: 0; padding: 0.4em; text-align: center; }
       </style>
-      <div>
-        <form method='get' action=''>
-											<hidden-fields for-query-string skip='page, search'/>
-											<select name="cliente">
-												 <% if params[:name] %>
-														<option selected="selected" value="<%= @codclie%> "><%= @codclie %></option>
-												 <%else%>
-														<option selected="selected">Cliente</option>
-												 <%end%>
-												 <% Cliente.all.each do |x| %>
-													 <option value="<%= x.id %>"><%=  x.name %></option>
-												 <% end %>
-											</select>
-											<submit class='search-button' label='Ir'/>
-										</form>
-      </div>
-                     <% cliente ||= ''%>
+        <div style="float:right;">
+          <form  method='get' action=''>
+          <hidden-fields for-query-string skip='page, search'/>
+            
+            <h3>Fecha Inicial: <input type='text' style='width:90px' id='datepicker' name='startdate' value="#{params[:startdate]}"/> 
+            Fecha Final: <input type='text' style='width:90px' id='datepicker2' name='enddate' value="#{params[:enddate]}"/> 
+            <submit class='search-button'  label='Ir'/></h3>
+          </form>
+        </div>
+        <div>
+          <form method='get' action=''>
+            <hidden-fields for-query-string skip='page, search'/>
+            <select name="cliente">
+               <% if params[:name] %>
+                  <option selected="selected" value="<%= @codclie%> "><%= @codclie %></option>
+               <%else%>
+                  <option selected="selected" value="">Cliente</option>
+               <%end%>
+               <% Cliente.all.each do |x| %>
+                 <option value="<%= x.id %>"><%=  x.name %></option>
+               <% end %>
+            </select>
+            <submit class='search-button' label='Ir'/>
+          </form>
+        </div>
+              <% cliente ||= ''%>
               <% codCliente ||= ''%>
               <% orden ||= ''%>
               <% startdate ||= ''%>
               <% enddate ||= ''%>
-      			  			<%= link_to "Informe Excel", {:controller => "ord_trabs", :format => :csv, :action => "reporteot", :cliente => "#{params[:cliente]}"}, :class => "button submit-button search-button" %>
+      			  			<%= link_to "Informe Excel", {:controller => "ord_trabs", :format => :csv, :action => "otscreadas", :cliente => "#{params[:cliente]}", :startdate => "#{params[:startdate]}", :enddate => "#{params[:enddate]}"}, :class => "button submit-button search-button" %>
 
-      <repeat with="&@ctes.each">
-        <% unless this.ord_trabs.count == 0 %>
-          <h2>Cliente :<%= this.name %></h2>
+      <repeat with="&@otultsem.keys">
+        <% unless Cliente.all(:conditions => ["id = ?", this]).blank? %>
+          <h2>Cliente :<%= Cliente.find(this).name %></h2>
           <table class="informe">
-            <tr><th>OT</th><th>Producto</th><th>Codigo</th><th>Creada</th><th>Fact.</th><th>Tiempo Total</th><th>Area</th>
+            <tr><th>OT</th><th>Producto</th><th>Codigo</th><th>Creada</th><th>F.Fact.</th><th>N.Fact.</th><th>Tiempo Total</th><th>Area</th>
               <repeat with="&@proces">
                 <th style="font-size:x-small"><%=this%></th>
               </repeat> 
               
             </tr>
             <% @ttot = 0 %>
-            <repeat with="&this.ord_trabs">
+            <repeat with="&@otultsem[this]">
               <%@estot = this.ciclos %>
               <% @tpar = ((this.updated_at - this.created_at)) %>
               <% @tparh = Time.at(@tpar).utc.strftime("%H:%M:%S") %>
-              <tr><th><%=this.numOT%></th><td><%=this.nomprod%></td><td><%=this.armacod%></td><td><view:created_at format="%d-%m-%y"/></td><td><view:updated_at if="numFact" format="%d-%m-%y"/></td><td><%= OrdTrab.duracion(this.created_at,this.updated_at)%></td><td><%=this.areatot%></td>
+              <tr><th><%=this.numOT%></th><td><%=this.nomprod%></td><td><%=this.armacod%></td><td><view:created_at format="%d-%m-%y"/></td><td><view:updated_at if="numFact" format="%d-%m-%y"/></td><td><%= this.numFact %> </td><td><%= OrdTrab.duracion(this.created_at,this.updated_at)%></td><td><%=this.areatot%></td>
                 <% @ttot += @tpar %>
                 <% @ttoth = Time.at(@ttot).utc.strftime("%H:%M:%S") %>
                 <repeat with="&@proces">
@@ -59,16 +68,34 @@
               </tr>
             </repeat>
             <% unless @ttot == 0 %>
-              <tr><td colspan="5"/><td><%= OrdTrab.duracion(Time.at(0).to_f,@ttot) %></td></tr>
+              <tr><td colspan="6"/><td><%= OrdTrab.duracion(Time.at(0).to_f,@ttot) %></td></tr>
             <% end %>
           </table>
           <br/>
-        <% end %>
-
+        <%end%>
       </repeat>
-
 
       </section>
   </content:>
+  <page-scripts:>
+    jQuery(document).ready(function() {
+      jQuery("#datepicker").datepicker();
+      jQuery("#datepicker2").datepicker();
+      function runEffect() {
+
+          // run the effect
+          jQuery( "#efecto" ).slideToggle( 'slow', function(){
+          } );
+        };
+
+        // set effect from select menu value
+      jQuery( "#button" ).click(function() {
+          runEffect();
+          return false;
+        });
+
+
+    });
+  </page-scripts:>
  
 </page>
