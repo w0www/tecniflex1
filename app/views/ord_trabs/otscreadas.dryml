@@ -42,7 +42,7 @@
               <% orden ||= ''%>
               <% startdate ||= ''%>
               <% enddate ||= ''%>
-      			  			<%= link_to "Informe Excel", {:controller => "ord_trabs", :format => :csv, :action => "otscreadas", :cliente => "#{params[:cliente]}", :startdate => "#{params[:startdate]}", :enddate => "#{params[:enddate]}"}, :class => "button submit-button search-button" %>
+              <%= link_to "Informe Excel", {:controller => "ord_trabs", :format => :csv, :action => "otscreadas", :cliente => "#{params[:cliente]}", :startdate => "#{params[:startdate]}", :enddate => "#{params[:enddate]}"}, :class => "button submit-button search-button" %>
 
       <repeat with="&@otultsem.keys">
         <% unless Cliente.all(:conditions => ["id = ?", this]).blank? %>
@@ -71,6 +71,7 @@
               <tr><td colspan="6"/><td><%= OrdTrab.duracion(Time.at(0).to_f,@ttot) %></td></tr>
             <% end %>
           </table>
+          
           <br/>
         <%end%>
       </repeat>

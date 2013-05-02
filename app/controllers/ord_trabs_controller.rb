@@ -172,48 +172,64 @@ class OrdTrabsController < ApplicationController
   #####
         csv_string = CSV.generate(:col_sep => ";") do |csv|
           ##################
-          @otultsem = OrdTrab.all
+          @otsel = OrdTrab.all
           @proces = Proceso.all.*.nombre
-          if params[:cliente]
+          @tester = 1
+
+          if params[:cliente] != ""
             @clies = params[:cliente]
-            if (params[:startdate].blank? && params[:enddate].blank?)
-              @otultsem = OrdTrab.all(:conditions => ["cliente_id = ?", @clies])
-            elsif params[:startdate]
+            @tester = 3
+            if params[:enddate].blank? && params[:startdate].blank?
+              @otsel = OrdTrab.all(:conditions => ["cliente_id = ?", @clies])
+              @tester = 4
+            elsif params[:startdate] != ""
               @clies = params[:cliente]
               @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
+              @tester = 5
               if params[:enddate].blank?
-                @otultsem = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone)])
+                @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone)])
+                @tester = 6
               else 
+                @tester = 7
                 @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
-                @otultsem = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ? and created_at <= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
+                @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ? and created_at <= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
               end
-            elsif (params[:startdate].blank? && params[:enddate])
+            elsif (params[:startdate].blank? && params[:enddate] != "")
+              @tester = 8
               @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
-              @otultsem = OrdTrab.all(:conditions => ["cliente_id = ? and created_at <= ?", @clies, @fenal.to_datetime.in_time_zone(Time.zone)])
+              @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at <= ?", @clies, @fenal.to_datetime.in_time_zone(Time.zone)])
             end 
-          elsif params[:startdate]
+          elsif params[:startdate] != ""
+              @tester = 9
               @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
               if params[:enddate].blank?
-                @otultsem = OrdTrab.all(:conditions => ["created_at >= ?", @fechini.to_datetime.in_time_zone(Time.zone)])
+                @tester = 10
+                @otsel = OrdTrab.all(:conditions => ["created_at >= ?", @fechini.to_datetime.in_time_zone(Time.zone)])
               else 
+                @tester = 11
                 @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
-                @otultsem = OrdTrab.all(:conditions => ["created_at >= ? and created_at <= ?", @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
+                @otsel = OrdTrab.all(:conditions => ["created_at >= ? and created_at <= ?", @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
               end
-          elsif (params[:startdate].blank? && params[:enddate])
+          elsif (params[:startdate].blank? && params[:enddate] != "")
+            @tester = 12
             @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
-            @otultsem = OrdTrab.all(:conditions => ["created_at <= ?", @fenal.to_datetime.in_time_zone(Time.zone)])
+            @otsel = OrdTrab.all(:conditions => ["created_at <= ?", @fenal.to_datetime.in_time_zone(Time.zone)])
           end
+          
           ##################
           arre = ["Cliente", "O.T.", "Producto", "Codigo", "Fecha Inicio", "Fecha Termino","N.Fact", "Tiempo total", "cm2 tot."] + @proces
           csv << arre
-          # data rows
-            @elclie = Cliente.all(:conditions => ["id = ?",params[:cliente]]).first
-            @otultsem.each do |orden|
+          ## data rows
+            @otsel.each do |orden|
+              if orden.cliente
+                @elclie = orden.cliente
+              else
+                @elclie = ""
+              end
               @estot = orden.ciclos
               tpar = ((orden.updated_at - orden.created_at))
-              @tparh = Time.at(tpar).utc.strftime("%H:%M:%S")
-              atot = 0
-              atot = orden.areatot    
+              @tparh = OrdTrab.duracion(orden.created_at,orden.updated_at)
+              atot = orden.areatot || 0 
               if orden.numFact != nil
                 factur = orden.updated_at.strftime("%Y-%m-%d %l:%M:%S")
               else
@@ -227,9 +243,10 @@ class OrdTrabsController < ApplicationController
                   @listaciclos << ""
                 end
               end            
-            arri = [@elclie, orden.numOT, orden.nomprod, orden.armacod, orden.created_at.strftime("%Y-%m-%d %l:%M:%S"), factur, orden.numFact, @tparh, orden.areatot] + @listaciclos 
-            csv << arri
-            end
+              arri = [@elclie, orden.numOT, orden.nomprod, orden.armacod, orden.created_at.strftime("%Y-%m-%d %l:%M:%S"), factur, orden.numFact, @tparh, orden.areatot] + @listaciclos 
+              
+              csv << arri
+             end
           				
         # send it to da browsah
         end
