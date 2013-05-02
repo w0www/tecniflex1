@@ -217,7 +217,7 @@ class OrdTrabsController < ApplicationController
           end
           
           ##################
-          arre = ["Cliente", "O.T.", "Producto", "Codigo", "Fecha Inicio", "Fecha Termino","N.Fact", "Tiempo total", "cm2 tot."] + @proces
+          arre = ["Cliente", "O.T.", "Producto", "Codigo", "Fecha Inicio", "Fecha Termino","N.Fact", "Tiempo total", "cm2 tot.", "cm2 fact."] + @proces
           csv << arre
           ## data rows
             @otsel.each do |orden|
@@ -232,8 +232,10 @@ class OrdTrabsController < ApplicationController
               atot = orden.areatot || 0 
               if orden.numFact != nil
                 factur = orden.updated_at.strftime("%Y-%m-%d %l:%M:%S")
+                areafact = orden.areatot
               else
                 factur = ""
+                areafact = 0
               end
               @listaciclos = []
               @proces.each do |prociclo|
@@ -242,8 +244,9 @@ class OrdTrabsController < ApplicationController
                 else
                   @listaciclos << ""
                 end
-              end            
-              arri = [@elclie, orden.numOT, orden.nomprod, orden.armacod, orden.created_at.strftime("%Y-%m-%d %l:%M:%S"), factur, orden.numFact, @tparh, orden.areatot] + @listaciclos 
+              end  
+                        
+              arri = [@elclie, orden.numOT, orden.nomprod, orden.armacod, orden.created_at.strftime("%Y-%m-%d %l:%M:%S"), factur, orden.numFact, @tparh, orden.areatot, areafact] + @listaciclos 
               
               csv << arri
              end

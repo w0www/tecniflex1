@@ -121,7 +121,7 @@ default_scope :order => 'numOT DESC'
     self.separacions.each do |lasepa|
       atot += lasepa.areasep
     end
-    atot
+    atot.to_i
   end
   
   def ciclos
