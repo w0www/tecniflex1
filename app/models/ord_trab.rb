@@ -102,7 +102,7 @@ class OrdTrab < ActiveRecord::Base
   belongs_to :espesor
   belongs_to  :sustrato
 
-default_scope :order => 'numOT DESC'
+  default_scope :order => 'numOT DESC'
 
   def armacod
     armac = ""
@@ -127,17 +127,8 @@ default_scope :order => 'numOT DESC'
   def ciclos
     self.sortars.map { |tar| [tar.proceso.nombre, tar.ciclo]}
   end
-  
-  def self.duracion(ini,fin)
-    dura = ""
-    dife = fin - ini
-    horas = (dife/3600).to_i
-    minutos =  (dife/60 - horas * 60).to_i
-    segundos = (dife - (minutos*60 + horas*3600)).to_i
-    dura =  horas.to_s + ":" + minutos.to_s + ":" + segundos.to_s
-  end
     
-  
+    
   # Boolean para informar si estan asignadas todas las tareas cuyos procesos pertenecen a grupos de procesos asignables.
   def tarasigs
 		tarasi = true
@@ -312,7 +303,17 @@ default_scope :order => 'numOT DESC'
       end
     end
    end
-
+  
+  
+  def tnetot
+    timot = Time.at(0)
+    self.tareas.each do |latar|
+      timot += latar.tneto.to_i
+    end
+    timot
+  end
+    
+  
 
 	def sortarasigs
 		taras = self.tareas.find(:all, :conditions => ["proceso_id IN (?)", Proceso.asignables])

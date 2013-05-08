@@ -136,24 +136,24 @@ class OrdTrabsController < ApplicationController
   index_action :otscreadas do
     respond_to do |wants|
 			wants.html do
-          @otultsem = OrdTrab.all.group_by(&:cliente_id)
+          @otultsem = OrdTrab.paginate(:page => params[:page]).group_by(&:cliente_id)
           @proces = Proceso.all.*.nombre
           if params[:cliente]
             @clies = params[:cliente]
             if (params[:startdate].blank? && params[:enddate].blank?)
-              @otultsem = OrdTrab.all(:conditions => ["cliente_id = ?", @clies]).group_by(&:cliente_id)
+              @otultsem = OrdTrab.paginate(:conditions => ["cliente_id = ?", @clies],:page => params[:page]).group_by(&:cliente_id)
             elsif params[:startdate]
               @clies = params[:cliente]
               @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
               if params[:enddate].blank?
-                @otultsem = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
+                @otultsem = OrdTrab.paginate(:conditions => ["cliente_id = ? and created_at >= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone)],:page => params[:page]).group_by(&:cliente_id)
               else 
                 @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
-                @otultsem = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ? and created_at <= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
+                @otultsem = OrdTrab.paginate(:conditions => ["cliente_id = ? and created_at >= ? and created_at <= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)],:page => params[:page]).group_by(&:cliente_id)
               end
             elsif (params[:startdate].blank? && params[:enddate])
               @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
-              @otultsem = OrdTrab.all(:conditions => ["cliente_id = ? and created_at <= ?", @clies, @fenal.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
+              @otultsem = OrdTrab.paginate(:conditions => ["cliente_id = ? and created_at <= ?", @clies, @fenal.to_datetime.in_time_zone(Time.zone)],:page => params[:page]).group_by(&:cliente_id)
             end 
           elsif params[:startdate]
               @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
@@ -174,53 +174,51 @@ class OrdTrabsController < ApplicationController
           ##################
           @otsel = OrdTrab.all
           @proces = Proceso.all.*.nombre
-          @tester = 1
-
           if params[:cliente] != ""
             @clies = params[:cliente]
-            @tester = 3
             if params[:enddate].blank? && params[:startdate].blank?
               @otsel = OrdTrab.all(:conditions => ["cliente_id = ?", @clies])
-              @tester = 4
             elsif params[:startdate] != ""
               @clies = params[:cliente]
               @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
-              @tester = 5
               if params[:enddate].blank?
                 @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone)])
-                @tester = 6
               else 
-                @tester = 7
                 @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
                 @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ? and created_at <= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
               end
             elsif (params[:startdate].blank? && params[:enddate] != "")
-              @tester = 8
               @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
               @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at <= ?", @clies, @fenal.to_datetime.in_time_zone(Time.zone)])
             end 
           elsif params[:startdate] != ""
-              @tester = 9
               @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
               if params[:enddate].blank?
-                @tester = 10
                 @otsel = OrdTrab.all(:conditions => ["created_at >= ?", @fechini.to_datetime.in_time_zone(Time.zone)])
               else 
-                @tester = 11
                 @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
                 @otsel = OrdTrab.all(:conditions => ["created_at >= ? and created_at <= ?", @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
               end
           elsif (params[:startdate].blank? && params[:enddate] != "")
-            @tester = 12
             @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
             @otsel = OrdTrab.all(:conditions => ["created_at <= ?", @fenal.to_datetime.in_time_zone(Time.zone)])
           end
           
           ##################
-          arre = ["Cliente", "O.T.", "Producto", "Codigo", "Fecha Inicio", "Fecha Termino","N.Fact", "Tiempo total", "cm2 tot.", "cm2 fact."] + @proces
+          arre = ["Cliente", "O.T.", "Producto", "Codigo", "Fecha Inicio", "Fecha Termino","N.Fact", "Tiempo bruto", "Tiempo neto", "cm2 tot.", "cm2 fact.", "F. V.B.", "E. V.B.", "F. PTR", "E. PTR"] + @proces
           csv << arre
           ## data rows
             @otsel.each do |orden|
+              if orden.tareas
+                primpro = Proceso.prueba.first.id
+                secpro = Proceso.prueba.second.id
+                if primpro != nil
+                  @primpru = orden.tareas.all(:conditions => ["proceso_id = ?", primpro]).first
+                end
+                if secpro != nil
+                  @secpru = orden.tareas.all(:conditions => ["proceso_id = ?", secpro]).first
+                end
+              end
               if orden.cliente
                 @elclie = orden.cliente
               else
@@ -228,7 +226,7 @@ class OrdTrabsController < ApplicationController
               end
               @estot = orden.ciclos
               tpar = ((orden.updated_at - orden.created_at))
-              @tparh = OrdTrab.duracion(orden.created_at,orden.updated_at)
+              @tparh = Time.duracion(orden.created_at,orden.updated_at)
               atot = orden.areatot || 0 
               if orden.numFact != nil
                 factur = orden.updated_at.strftime("%Y-%m-%d %l:%M:%S")
@@ -236,6 +234,7 @@ class OrdTrabsController < ApplicationController
               else
                 factur = ""
                 areafact = 0
+                
               end
               @listaciclos = []
               @proces.each do |prociclo|
@@ -244,9 +243,40 @@ class OrdTrabsController < ApplicationController
                 else
                   @listaciclos << ""
                 end
-              end  
-                        
-              arri = [@elclie, orden.numOT, orden.nomprod, orden.armacod, orden.created_at.strftime("%Y-%m-%d %l:%M:%S"), factur, orden.numFact, @tparh, orden.areatot, areafact] + @listaciclos 
+              end 
+              if @primpru != nil
+                @estprimpru = @primpru.state
+                if @primpru.intervencions != []
+                  if @primpru.intervencions.last.termino != nil
+                    @ultintvb = @primpru.intervencions.last.termino.strftime("%Y-%m-%d %l:%M:%S")
+                  else
+                    @ultintvb = @primpru.intervencions.last.inicio.strftime("%Y-%m-%d %l:%M:%S")
+                  end
+                else
+                  @ultintvb = ""
+                end
+              else
+                @ultintvb = ""
+                @estprimpru = ""
+              end
+              if @secpru != nil
+                @estsecpru = @secpru.state
+                if @secpru.intervencions != []
+                  if @secpru.intervencions.last.termino != nil
+                    @ultintptr = @secpru.intervencions.last.termino.strftime("%Y-%m-%d %l:%M:%S")
+                  else
+                    @ultintptr = @secpru.intervencions.last.inicio.strftime("%Y-%m-%d %l:%M:%S")
+                  end
+                else
+                  @ultintptr = ""
+                end
+              else 
+                @ultintptr = ""
+                @estsecpru = ""
+              end
+              @tiempot = Time.duracion(Time.at(0),orden.tnetot)
+              @FVB = orden
+              arri = [@elclie, orden.numOT, orden.nomprod, orden.armacod, orden.created_at.strftime("%Y-%m-%d %l:%M:%S"), factur, orden.numFact, @tparh, @tiempot, orden.areatot, areafact, @ultintvb, @estprimpru, @ultintptr, @estsecpru] + @listaciclos 
               
               csv << arri
              end

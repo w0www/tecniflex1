@@ -28,7 +28,7 @@
                <% if params[:name] %>
                   <option selected="selected" value="<%= @codclie%> "><%= @codclie %></option>
                <%else%>
-                  <option selected="selected" value="">Cliente</option>
+                  <option selected="selected" value="">Cliente</option> 
                <%end%>
                <% Cliente.all.each do |x| %>
                  <option value="<%= x.id %>"><%=  x.name %></option>
@@ -44,7 +44,7 @@
               <% enddate ||= ''%>
               <%= link_to "Informe Excel", {:controller => "ord_trabs", :format => :csv, :action => "otscreadas", :cliente => "#{params[:cliente]}", :startdate => "#{params[:startdate]}", :enddate => "#{params[:enddate]}"}, :class => "button submit-button search-button" %>
 
-      <repeat with="&@otultsem.keys">
+      <repeat with="&@otultsem.keys">   
         <% unless Cliente.all(:conditions => ["id = ?", this]).blank? %>
           <h2>Cliente :<%= Cliente.find(this).name %></h2>
           <table class="informe">
@@ -59,7 +59,7 @@
               <%@estot = this.ciclos %>
               <% @tpar = ((this.updated_at - this.created_at)) %>
               <% @tparh = Time.at(@tpar).utc.strftime("%H:%M:%S") %>
-              <tr><th><%=this.numOT%></th><td><%=this.nomprod%></td><td><%=this.armacod%></td><td><view:created_at format="%d-%m-%y"/></td><td><view:updated_at if="numFact" format="%d-%m-%y"/></td><td><%= this.numFact %> </td><td><%= OrdTrab.duracion(this.created_at,this.updated_at)%></td><td><%=this.areatot%></td>
+              <tr><th><%=this.numOT%></th><td><%=this.nomprod%></td><td><%=this.armacod%></td><td><view:created_at format="%d-%m-%y"/></td><td><view:updated_at if="numFact" format="%d-%m-%y"/></td><td><%= this.numFact %> </td><td><%= Time.duracion(this.created_at,this.updated_at)%></td><td><%=this.areatot%></td>
                 <% @ttot += @tpar %>
                 <% @ttoth = Time.at(@ttot).utc.strftime("%H:%M:%S") %>
                 <repeat with="&@proces">
@@ -68,7 +68,7 @@
               </tr>
             </repeat>
             <% unless @ttot == 0 %>
-              <tr><td colspan="6"/><td><%= OrdTrab.duracion(Time.at(0).to_f,@ttot) %></td></tr>
+              <tr><td colspan="6"/><td><%= Time.duracion(Time.at(0).to_f,@ttot) %></td></tr>
             <% end %>
           </table>
           

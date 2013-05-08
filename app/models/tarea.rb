@@ -29,6 +29,7 @@ class Tarea < ActiveRecord::Base
   	self.ciclo ||= 1
 		self.save
 	end
+  
 
 	# Marcar las intervenciones pertenecientes a una tarea destruida, para que no aparezcan en la lista inicial.
 	#def before_destroy
@@ -87,7 +88,18 @@ class Tarea < ActiveRecord::Base
 		end
   end
 
-
+  def tneto 
+    tne = Time.at(0)
+    self.intervencions.each do |pega|
+      if pega.termino
+        dife = pega.termino - pega.inicio
+      else
+        dife = 0
+      end
+      tne += dife
+    end
+    tne
+  end
 
 	#named_scope :saevb, :conditions =>
 
