@@ -10,7 +10,7 @@
     </header>
     <section class="content-body">
     <ul>
-    	<li><h3><a to="&User" action="intervs">Intervenciones por Usuario</a></h3></li>
+    	<li><h3><a to="&User" action="opers">Intervenciones por Usuario</a></h3></li>
 	    <li><h3><a to="&OrdTrab" action="otscreadas">OTs creadas v/s OTs facturadas</a></h3></li>
 			<li><h3><a to="&OrdTrab" action="vbenvios">Envios de VB</a></h3></li>
 		</ul>
