@@ -60,7 +60,9 @@ class Tarea < ActiveRecord::Base
 	end
 
 	def after_update
-		ordtars = self.ord_trab.sortars
+    if self.ord_trab != ""
+      ordtars = self.ord_trab.sortars
+    
 		unless ordtars.*.state.index("creada") == nil
       if ["habilitada","iniciada"].include?(self.ord_trab.state)
 				if ordtars[ordtars.*.state.index("creada").to_i] == ordtars.first
@@ -76,6 +78,7 @@ class Tarea < ActiveRecord::Base
 				end
       end
 		end
+    end
 	end
 	
   def self.find_utiles(usuario)
@@ -99,6 +102,14 @@ class Tarea < ActiveRecord::Base
       tne += dife
     end
     tne
+  end
+  
+  def proctar
+    if self.proceso
+      self.proceso.nombre
+    else
+      "Sin proceso"
+    end
   end
 
 	#named_scope :saevb, :conditions =>

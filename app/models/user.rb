@@ -36,6 +36,13 @@
   def self.supervisores
 		User.rol_is("Supervisor")
 	end
+  
+  # Entrega un arreglo de arreglos de intervenciones por usuario, que incluyen el numero de tarea, el nombre del proceso, la fecha de inicio y la fecha de termino
+  def intertars
+    @estuser = self
+    self.intervencions.map { |latin| [@estuser.name, latin.estaot, latin.inteproc, latin.inicio, latin.termino]}
+    #   self.tareas(:order => :ord_trab_id)
+  end
 
   # --- Signup lifecycle --- #
 

@@ -110,8 +110,14 @@ class OrdTrab < ActiveRecord::Base
       if self.cliente.sigla != ""
         armac = self.cliente.sigla + "-" + self.codCliente
       else
-        armac = self.codCliente
+        if self.codCliente
+          armac = self.codCliente
+        else 
+          armac = "OT" + self.numOT.to_s
+        end
       end
+    else
+      armac = "OT" + self.numOT.to_s
     end
     armac
   end
@@ -124,6 +130,7 @@ class OrdTrab < ActiveRecord::Base
     atot.to_i
   end
   
+  # Crea un arreglo de arreglos de tipo [[Tarea1, ciclo1], [Tarea2, ciclo2]]
   def ciclos
     self.sortars.map { |tar| [tar.proceso.nombre, tar.ciclo]}
   end

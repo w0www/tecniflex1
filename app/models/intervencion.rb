@@ -28,7 +28,30 @@ class Intervencion < ActiveRecord::Base
     Intervencion.find(:all, :joins => :user, :conditions => ["name = ?", @cuser.name.to_s])
   end
 
-
+  def estaot
+    if self.tarea != nil
+      if self.tarea.ord_trab != nil
+        self.tarea.ord_trab.armacod
+      else
+        "Sin OT"
+      end
+    else 
+      "Sin Proceso"
+    end
+  end
+  
+  def inteproc
+    if self.tarea != nil
+      if self.tarea.proceso != nil
+        self.tarea.proceso.nombre
+      else
+        ""
+      end
+    else 
+      ""
+    end
+  end
+  
   # --- Permissions --- #
 
   def create_permitted?

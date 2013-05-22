@@ -1,0 +1,99 @@
+<page title="Operaciones">
+  <body: class="definir"/>
+  <content:>
+<header class="content-header">
+      <h1>
+        Intervenciones por Operador (falta habilitar filtro de fechas y exportacion a excel)
+      </h1>
+    </header>
+    <section class="content-body" with='&@ord_trabs'>
+      <style>
+        #button { padding: .5em 1em; text-decoration: none; }
+        #efecto { width: 850px; height: 78px; padding: 0.4em; position: relative; display:none}
+        #efecto h3 { margin: 0; padding: 0.4em; text-align: center; }
+      </style>
+        <div style="float:right;">
+          <form  method='get' action=''>
+          <hidden-fields for-query-string skip='page, search'/>
+            
+            <h3>Fecha Inicial: <input type='text' style='width:90px' id='datepicker' name='startdate' value="#{params[:startdate]}"/> 
+            Fecha Final: <input type='text' style='width:90px' id='datepicker2' name='enddate' value="#{params[:enddate]}"/> 
+            <submit class='search-button'  label='Ir'/></h3>
+          </form>
+        </div>
+        <div>
+          <form method='get' action=''>
+            <hidden-fields for-query-string skip='page, search'/>
+            <select name="operador">
+               <% if params[:operador] %>
+                  <option selected="selected" value="<%= @operador%> "><%= @operador %></option>
+               <%else%>
+                  <option selected="selected" value="">Operador</option> 
+               <%end%>
+               <% User.all.each do |x| %>
+                 <option value="<%= x.id %>"><%=  x.name %></option>
+               <% end %>
+            </select>
+            <submit class='search-button' label='Ir'/>
+          </form>
+        </div>
+              <% cliente ||= ''%>
+              <% codCliente ||= ''%>
+              <% orden ||= ''%>
+              <% startdate ||= ''%>
+              <% enddate ||= ''%>
+              <%= link_to "Informe Excel", {:controller => "ord_trabs", :format => :csv, :action => "otscreadas", :cliente => "#{params[:cliente]}", :startdate => "#{params[:startdate]}", :enddate => "#{params[:enddate]}"}, :class => "button submit-button search-button" %>
+      <table class="informe">
+        <tr><th>Operador</th><th>Orden</th><th width="200px">Proceso</th><th width="200px">Inicio</th><th width="200px">Termino</th><th width="200px">Duracion</th>
+
+        </tr>
+        <% @tarids = Tarea.all.*.id %>
+        <repeat with="&@intervs">
+          <% @estata = this %>
+          <% if @tarids.include?(this_key) %>
+            <% @lata= Tarea.find(this_key) %>
+                <% if @lata != nil %>
+                  <% elpro = @lata.proctar %>
+                  <% estor = @lata.ord_trab.armacod %>
+                <% else %>
+                  <% estor = "Sin OT" %>
+                <% end %>
+          <% else %>
+            <% elpro = "Sin Tarea" %>
+            <% estor = "Sin Tarea" %>
+          <% end %>
+          <repeat with="&@estata">
+            <% @estint = this %>
+            <% ini = @estint.inicio.strftime("%Y-%m-%d %l:%M:%S") %>
+            <% if @estint.termino != nil then ter = @estint.termino.strftime("%Y-%m-%d %l:%M:%S") else ter = "-" end%>
+            <% dura = Time.duracion(@estint.inicio,@estint.termino) %>
+            <tr><th><%= @ope %></th><th><%=  estor %></th><td><%= elpro %></td><td><%= ini %></td><td><%= ter %></td><td><%= dura %></td> </tr><!--Usar metodo intertars(tarea) de User, para armar las filas junto con <view with="&@estot.assoc(this)[1]" if="&@estot.assoc(this)" else="-"/ -->
+          </repeat>
+        </repeat>
+      </table>
+      
+
+      </section>
+  </content:>
+  <page-scripts:>
+    jQuery(document).ready(function() {
+      jQuery("#datepicker").datepicker();
+      jQuery("#datepicker2").datepicker();
+      function runEffect() {
+
+          // run the effect
+          jQuery( "#efecto" ).slideToggle( 'slow', function(){
+          } );
+        };
+
+        // set effect from select menu value
+      jQuery( "#button" ).click(function() {
+          runEffect();
+          return false;
+        });
+
+
+    });
+  </page-scripts:>
+ 
+</page>
