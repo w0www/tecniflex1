@@ -4,6 +4,7 @@
 <include src="taglibs/auto/rapid/pages"/>
 <include src="taglibs/auto/rapid/forms"/>
 <include src="hobo-jquery" plugin="hobo-jquery" />
+<include src="hobo-contrib-all" plugin="hobo-contrib"/>
 <set-theme name="clean"/>
 
 <def tag="app-name">Tecniflex</def>

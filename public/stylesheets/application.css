@@ -457,3 +457,20 @@ ul.hjq-input-many input {
 	font-size:0.9em;
 }
 
+/* Index de OTs */
+.index-page.ord-trab .nice-button{
+  float: right;
+  padding: .5em 1em;
+  text-decoration: none;
+}
+.index-page.ord-trab #filters{
+  padding: 20px;
+  margin: 10px 0;
+}
+fieldset.horizontal.informe .field {
+  height: 30px;
+  margin: 0;
+  width: 31%;
+  float: left;
+}
+

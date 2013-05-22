@@ -1,5 +1,7 @@
+<include src="filters"/>
+
 <page title="Tablero de Control">
-  <body: class="definir"/>
+  <body: class="definir index-page ord-trab"/>
   <content:>
     <header class="content-header">
 	</header>
@@ -17,44 +19,9 @@
       </ul>
       <div id="tabs-1">
           <div class='header' >
-          	<div class='ocultable'>
-          		<div id='efecto' class="ui-widget-content ui-corner-all">
-								<div style="float:right;">
-									<form  method='get' action=''>
-									<hidden-fields for-query-string skip='page, search'/>
-										<span>Filtrar por fecha</span>
-										<input type='text' style='width:90px' id='datepicker' name='startdate' value="#{params[:startdate] || 'Fecha Inicial'}"/>
-										<input type='text' style='width:90px' id='datepicker2' name='enddate' value="#{params[:enddate] || 'Fecha Final'}"/>
-										<submit class='search-button'  label='Ir'/>
-									</form>
-								</div>
-								<span>
-									<form method='get' action=''>
-										<hidden-fields for-query-string skip='page, search'/>
-										<select name="cliente">
-											 <% if params[:codclie] %>
-													<option selected="selected" value="<%= @codclie%> "><%= @codclie %></option>
-											 <%else%>
-													<option selected="selected">Cliente</option>
-											 <%end%>
-											 <% @clies.each do |x| %>
-												 <option value="<%= x.id %>"><%=  x.sigla %></option>
-											 <% end %>
-										</select>
-										<!-- <select-one options="Cliente.all.*.sigla"/> --> -  <input type='text' style='width:50px' id='codclie' name='codCliente' value="#{params[:codCliente] || 'Cod. Cliente'}"/>
-										<submit class='search-button' label='Ir'/>
-									</form>
-								</span>
-								<span>
-									<form method='get' action=''>
-										<hidden-fields for-query-string skip='page, search'/>
-										<input type='text' style='width:90px' id='orden' name='orden' value="#{params[:orden] || 'Buscar por O.T.'}"/>
-										<submit class='search-button'  label='Ir'/>
-									</form>
-								</span>
-							</div>
-            </div>
-            <a href="#" id="button" class="ui-state-default ui-corner-all">Filtrar</a>
+          	<filters action="/ord_trabs/tablero"/>
+          	<a href="#" id="filter-button" class="nice-button ui-state-default ui-corner-all">Filtrar</a>
+          	<br/>
           </div>
           <%= will_paginate @todas %>
           <table class="tablero" part="dashboard">
