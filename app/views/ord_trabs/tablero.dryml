@@ -1,3 +1,4 @@
+# Encoding: utf-8
 <include src="filters"/>
 
 <page title="Tablero de Control">
@@ -91,7 +92,7 @@
             <tbody>
               <% @usuarios=User.find(:all, :order => :name) %>
               <repeat with="&@usuarios">
-              <tr><th><%= this.name -%></th><td><%= this.rol -%></td><td><view:procesos/></td> <td><%= this.asignacions.habilitada.count + Tarea.find_utiles(this).count -%></td><td><%= this.intervencions.final.updated_after(Date.yesterday).count -%></td></tr>
+              <tr></tr>
               </repeat>
              </tbody>
            </table>

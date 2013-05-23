@@ -1,3 +1,4 @@
+# encoding: utf-8
 class OrdTrabsController < ApplicationController
 
   hobo_model_controller

@@ -1,11 +1,10 @@
-
 <def tag="filters" attrs="action">
   <filter-js/>
   <form method="get" action="#{action}" id="filters" class="ui-widget-content ui-corner-all"
     style="#{'display:none' unless params[:cliente]}"    >
     <fieldset class="feckless-fields horizontal informe">
       <select-field label="Cliente" name="cliente" options="&Cliente.all.map{|c| [c.name]}"/>
-      <input-field label="Cód. cliente" name="codigo_cliente"/>
+      <input-field label="Cod. cliente" name="codigo_cliente"/>
       <select-field label="Estado" name="estado" options="&OrdTrab::Lifecycle.states.keys.map{|s|[s.to_s]}"/>
       <input-field label="O.T." name="orden"/>
       <date-field label="Fecha" name="fecha"/>
