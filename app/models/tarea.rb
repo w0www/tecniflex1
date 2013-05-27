@@ -15,7 +15,7 @@ class Tarea < ActiveRecord::Base
   belongs_to :recurso
   belongs_to :asignado, :class_name => "User", :foreign_key => :asignada_a
   # Se elimina dependent => destroy, porque podría borrarse una tarea y perder el registro del trabajo de los operadores.
-  has_many :intervencions, :accessible => true
+  has_many :intervencions, :accessible => true, :dependent => :destroy
 
   has_many :users, :through => :intervencions 
   def name
@@ -24,7 +24,8 @@ class Tarea < ActiveRecord::Base
 
 	named_scope :activa, :conditions => ["state IN (?)", ["habilitada","iniciada","detenida","enviada","recibida"]]
   named_scope :disp, :conditions => ["state IN (?)", ["habilitada","detenida","enviada","recibida"]]
-
+  named_scope :detipo, lambda { |proce| { :joins => :procesos, :conditions => ["proceso.nombre = ?", proce] }}
+  
   def after_create
   	self.ciclo ||= 1
 		self.save

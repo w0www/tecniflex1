@@ -29,7 +29,7 @@ class Intervencion < ActiveRecord::Base
   end
 
   def estaot
-    if self.tarea != nil
+    if self.tarea
       if self.tarea.ord_trab != nil
         self.tarea.ord_trab.armacod
       else
@@ -50,6 +50,15 @@ class Intervencion < ActiveRecord::Base
     else 
       ""
     end
+  end
+  
+  def intertars
+    if self.user != nil
+      @estuser = self.user.name
+    else
+      @estuser = "Sin usuario"
+    end
+    self.map { |latin| [@estuser, latin.estaot, latin.inteproc, latin.inicio, latin.termino]}
   end
   
   # --- Permissions --- #

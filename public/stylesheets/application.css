@@ -458,12 +458,12 @@ ul.hjq-input-many input {
 }
 
 /* Index de OTs */
-.index-page.ord-trab .nice-button{
+.index-page .nice-button{
   float: right;
   padding: .5em 1em;
   text-decoration: none;
 }
-.index-page.ord-trab #filters{
+.index-page #filters{
   padding: 20px;
   margin: 10px 0;
 }

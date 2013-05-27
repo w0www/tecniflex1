@@ -35,6 +35,12 @@ class UsersController < ApplicationController
   #######################
   index_action :opers do
     respond_to do |wants|
+      inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
+      final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time if params[:fecha_fin] && !params[:fecha_fin].blank?
+      User.apply_scopes(
+      :user_is => params[:cliente],
+      :created_between => [inicial, final]
+      )
 			wants.html do
           #@otultsem = OrdTrab.paginate(:page => params[:page]).group_by(&:cliente_id)
           #@proces = Proceso.all.*.nombre

@@ -1,14 +1,12 @@
 <include src="filters"/>
 
 <index-page without-new-link>
-  <count:><this.total-entries/> Ordenes</count:>
+  <count:><this.total-entries/> Intervenciones</count:>
   <before-heading:>
     <a href="#" id="filter-button" class="nice-button ui-state-default ui-corner-all">Filtrar</a>
-    <a href="/ord_trabs/new" class="nice-button ui-state-default ui-corner-all">Nueva orden de trabajo</a>
   </before-heading:>
-
   <prepend-content-body:>
-    <filters action="/ord_trabs"/>
+    <filters action="/intervencions"/>
     <%= link_to "Informe Excel", {:controller => "ord_trabs", :format => :csv, :action => "otscreadas", :cliente => "#{params[:cliente]}", :startdate => "#{params[:startdate]}", :enddate => "#{params[:enddate]}"}, :class => "nice-button ui-state-default ui-corner-all" %>
     <br/>
   </prepend-content-body:>
