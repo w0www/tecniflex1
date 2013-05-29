@@ -7,7 +7,7 @@
   </before-heading:>
   <prepend-content-body:>
     <filters action="/intervencions"/>
-    <%= link_to "Informe Excel", {:controller => "intervencions", :format => :csv, :action => "index", :cliente => "#{params[:cliente]}", :startdate => "#{params[:startdate]}", :enddate => "#{params[:enddate]}"}, :class => "nice-button ui-state-default ui-corner-all" %>
+    <%= link_to "Informe Excel", {:controller => "intervencions", :format => :csv, :action => "index", :user => "#{params[:user]}", :fecha_ini => "#{params[:fecha_ini]}", :fecha_fin => "#{params[:fecha_fin]}"}, :class => "nice-button ui-state-default ui-corner-all" %>
     <br/>
   </prepend-content-body:>
 </index-page>
