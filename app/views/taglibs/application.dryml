@@ -106,7 +106,7 @@
     <header: param>
       <% @orig = this %>
   <!--    <h4 param="heading"><a><name/></a>&nbsp;-&nbsp;<view:state/><span style="float:right"><%= link_to 'Nueva version', new_ord_trab_path(:id => @orig.id)%>&nbsp;&nbsp;&nbsp;&nbsp;<a  action="edit">Editar</a></span></h4>  -->
-      <table width="100%"><tr class="#{scope.even_odd}"><td width="20%"><%= if this.user then this.user.name else "Sin Usuario" end%></td><td width="20%"><%= if this.tarea then (if this.tarea.proceso then this.tarea.proceso.nombre else "Sin Proceso" end) else "Sin Tarea" end %></td><td width="20%"><%= this.inicio.strftime("%d/%m/%y  %H:%M:%S")%></td><td width="25%"><%= if this.termino then this.termino.strftime("%d/%m/%y  %H:%M:%S") else "Pendiente" end %></td><td><%= Time.duracion(inicio,termino) %></td></tr></table>
+      <table width="100%"><tr class="#{scope.even_odd}"><td width="20%"><%= if this.user then this.user.name else "Sin Usuario" end%></td><td width="20%"><%= if this.tarea then (if this.tarea.proceso then this.tarea.proceso.nombre else "Sin Proceso" end) else "Sin Tarea" end %></td><td width="20%"><%= this.inicio.strftime("%d/%m/%y  %H:%M:%S")%></td><td width="25%"><%= if @orig.termino then @orig.termino.strftime("%d/%m/%y  %H:%M:%S") else "Pendiente" end %></td><td><%= if @orig.termino then Time.duracion(@orig.inicio,@orig.termino) else "" end%></td></tr></table>
     </header:>
   <body:>
   </body:>

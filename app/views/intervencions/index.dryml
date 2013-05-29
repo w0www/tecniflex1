@@ -1,4 +1,4 @@
-<include src="filters"/>
+<include src="filtros"/>
 
 <index-page without-new-link>
   <count:><this.total-entries/> Intervenciones</count:>
@@ -7,7 +7,7 @@
   </before-heading:>
   <prepend-content-body:>
     <filters action="/intervencions"/>
-    <%= link_to "Informe Excel", {:controller => "ord_trabs", :format => :csv, :action => "otscreadas", :cliente => "#{params[:cliente]}", :startdate => "#{params[:startdate]}", :enddate => "#{params[:enddate]}"}, :class => "nice-button ui-state-default ui-corner-all" %>
+    <%= link_to "Informe Excel", {:controller => "intervencions", :format => :csv, :action => "index", :cliente => "#{params[:cliente]}", :startdate => "#{params[:startdate]}", :enddate => "#{params[:enddate]}"}, :class => "nice-button ui-state-default ui-corner-all" %>
     <br/>
   </prepend-content-body:>
 </index-page>

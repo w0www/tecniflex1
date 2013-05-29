@@ -52,14 +52,14 @@ class Intervencion < ActiveRecord::Base
     end
   end
   
-  def intertars
-    if self.user != nil
-      @estuser = self.user.name
-    else
-      @estuser = "Sin usuario"
-    end
-    self.map { |latin| [@estuser, latin.estaot, latin.inteproc, latin.inicio, latin.termino]}
-  end
+  #def intertars
+    #if self.user != nil
+      #@estuser = self.user.name
+    #else
+      #@estuser = "Sin usuario"
+    #end
+    #self.map { |latin| [@estuser, latin.estaot, latin.inteproc, latin.inicio, latin.termino]}
+  #end
   
   # --- Permissions --- #
 
