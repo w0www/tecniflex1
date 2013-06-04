@@ -60,12 +60,17 @@ class IntervencionsController < ApplicationController
                   end
                   if interv.tarea.ord_trab != nil
                     laor = interv.tarea.ord_trab.armacod
+                    nuot = interv.tarea.ord_trab.numOT
                   else
                     laor = "Sin OT"
+                    nuot = "Sin OT"
                   end
+                  elciclo = interv.tarea.ciclo
                 else
                   laor = "Sin OT"
                   elpro = "Sin Proceso"
+                  nuot = "Sin OT"
+                  elciclo = "Sin OT"
                 end
               else
                 ooser = "Sin Usuario"
