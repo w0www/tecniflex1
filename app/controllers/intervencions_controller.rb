@@ -98,7 +98,7 @@ class IntervencionsController < ApplicationController
                 @tiempint = Time.duracion(interv.inicio,interv.termino)
               end
                             
-              arri = [ooser, laor, nuot, elpro, elciclo, interv.inicio.strftime("%Y-%m-%d %l:%M:%S"), final, @tiempint, Time.duracion(interv.inicio.created_at,interv.inicio.updated_at)]
+              arri = [ooser, laor, nuot, elpro, elciclo, interv.inicio.strftime("%Y-%m-%d %l:%M:%S"), final, @tiempint, Time.duracion(interv.created_at,interv.updated_at)]
               
               csv << arri
             end
