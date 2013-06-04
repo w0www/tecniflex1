@@ -46,7 +46,7 @@ class IntervencionsController < ApplicationController
           end
           
           ##################
-          arre = ["Usuario", "Orden", "Proceso", "Fecha Inicio", "Fecha Termino", "Duracion"]
+          arre = ["Usuario", "Orden", "N.OT.", "Proceso", "Ciclo", "Fecha Inicio", "Fecha Termino", "Duracion1", "Duracion2"]
           csv << arre
           ## data rows
             @intec.each do |interv|
@@ -77,12 +77,17 @@ class IntervencionsController < ApplicationController
                   end
                   if interv.tarea.ord_trab != nil
                     laor = interv.tarea.ord_trab.armacod
+                    nuot = interv.tarea.ord_trab.numOT
                   else
                     laor = "Sin OT"
+                    nuot = "Sin OT"
                   end
+                  elciclo = interv.tarea.ciclo
                 else
                   laor = "Sin OT"
                   elpro = "Sin Proceso"
+                  nuot = "Sin OT"
+                  elciclo = "Sin OT"
                 end
               end
               if interv.termino == nil
@@ -90,10 +95,10 @@ class IntervencionsController < ApplicationController
                 @tiempint = Time.duracion(interv.inicio,Time.now)
               else
                 final = interv.termino.strftime("%Y-%m-%d %l:%M:%S")
-                
+                @tiempint = Time.duracion(interv.inicio,interv.termino)
               end
                             
-              arri = [ooser, laor, elpro, interv.inicio.strftime("%Y-%m-%d %l:%M:%S"), final, @tiempint]
+              arri = [ooser, laor, nuot, elpro, elciclo, interv.inicio.strftime("%Y-%m-%d %l:%M:%S"), final, @tiempint, Time.duracion(interv.inicio.created_at,interv.inicio.updated_at)]
               
               csv << arri
             end
