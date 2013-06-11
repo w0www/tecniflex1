@@ -474,3 +474,14 @@ fieldset.horizontal.informe .field {
   float: left;
 }
 
+/* Notificación de emails pendientes */
+.page-header .main-nav a.notificacion-cola{
+  float:left;
+  background-color: #B94A48;
+  border-radius: 5px;
+  padding: 4px 6px;
+  margin-top:2px;
+  font-weight: bold;
+  font-size: 11px;
+  color: white;
+}

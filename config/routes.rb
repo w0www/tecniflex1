@@ -3,6 +3,10 @@ ActionController::Routing::Routes.draw do |map|
   map.site_search  'search', :controller => 'front', :action => 'search'
   map.root :controller => 'front', :action => 'index'
 
+  # Rutas para gestionar la cola de delayed_job
+  map.cola 'front/cola', :controller => 'front', :action => 'cola'
+  map.connect 'front/cola/eliminar/:id', :controller => 'front', :action => 'eliminar'
+
   Hobo.add_routes(map)
 
   # The priority is based upon order of creation: first created -> highest priority.

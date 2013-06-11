@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130311005139) do
+ActiveRecord::Schema.define(:version => 20130611053039) do
 
   create_table "aniloxes", :force => true do |t|
     t.integer  "lineatura"
@@ -30,14 +30,14 @@ ActiveRecord::Schema.define(:version => 20130311005139) do
   end
 
   create_table "cilindros", :force => true do |t|
-    t.string   "nombre"
     t.decimal  "distorsion"
+    t.decimal  "pctDistor"
     t.string   "duplo"
     t.decimal  "espesor"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "impresora_id"
-    t.decimal  "pctDistor"
+    t.string   "nombre"
   end
 
   add_index "cilindros", ["impresora_id"], :name => "index_cilindros_on_impresora_id"
@@ -83,13 +83,13 @@ ActiveRecord::Schema.define(:version => 20130311005139) do
   create_table "curvas", :force => true do |t|
     t.string   "nombre"
     t.text     "descripcion"
+    t.string   "impresion"
+    t.string   "lineatura"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "impresion"
     t.integer  "tipomat_id"
     t.integer  "espesor_id"
     t.integer  "sustrato_id"
-    t.string   "lineatura"
     t.integer  "impresora_id"
   end
 
@@ -98,8 +98,23 @@ ActiveRecord::Schema.define(:version => 20130311005139) do
   add_index "curvas", ["sustrato_id"], :name => "index_curvas_on_sustrato_id"
   add_index "curvas", ["tipomat_id"], :name => "index_curvas_on_tipomat_id"
 
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
   create_table "espesors", :force => true do |t|
-    t.decimal  "calibre"
+    t.decimal  "calibre",     :precision => 3, :scale => 2
     t.text     "descripcion"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -121,6 +136,7 @@ ActiveRecord::Schema.define(:version => 20130311005139) do
   end
 
   add_index "existencias", ["bodega_id"], :name => "index_existencias_on_bodega_id"
+  add_index "existencias", ["bodega_id"], :name => "index_stocks_on_bodega_id"
   add_index "existencias", ["polimero_id"], :name => "index_existencias_on_polimero_id"
   add_index "existencias", ["unidad_id"], :name => "index_existencias_on_unidad_id"
 
@@ -128,9 +144,6 @@ ActiveRecord::Schema.define(:version => 20130311005139) do
     t.integer  "position"
     t.string   "nombre"
     t.string   "abreviacion"
-    t.text     "descripcion"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.boolean  "tablero"
     t.boolean  "asignar"
     t.boolean  "saevb"
@@ -138,6 +151,9 @@ ActiveRecord::Schema.define(:version => 20130311005139) do
     t.boolean  "saemtje"
     t.boolean  "saeptr"
     t.boolean  "saepol"
+    t.text     "descripcion"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "impresoras", :force => true do |t|
@@ -210,7 +226,6 @@ ActiveRecord::Schema.define(:version => 20130311005139) do
     t.boolean  "mtz"
     t.boolean  "mtje"
     t.boolean  "ptr"
-    t.boolean  "vb"
     t.boolean  "mpFTP"
     t.integer  "mpFTPq"
     t.boolean  "mpFTPdev"
@@ -279,17 +294,18 @@ ActiveRecord::Schema.define(:version => 20130311005139) do
     t.string   "mcExcesoapy"
     t.string   "mcMarcasapy"
     t.string   "mcPimpapy"
+    t.integer  "version"
+    t.boolean  "vb"
+    t.boolean  "pol"
+    t.integer  "nCopias"
+    t.boolean  "urgente"
     t.string   "prioridad"
     t.decimal  "pctdistor"
-    t.integer  "nCopias"
     t.integer  "curva_id"
+    t.integer  "contacter_id"
     t.integer  "tipomat_id"
     t.integer  "espesor_id"
     t.integer  "sustrato_id"
-    t.integer  "version"
-    t.integer  "contacter_id"
-    t.boolean  "urgente"
-    t.boolean  "pol"
   end
 
   add_index "ord_trabs", ["cilindro_id"], :name => "index_ord_trabs_on_cilindro_id"
@@ -325,14 +341,14 @@ ActiveRecord::Schema.define(:version => 20130311005139) do
     t.datetime "updated_at"
     t.integer  "sucesor_id"
     t.integer  "position"
-    t.integer  "grupoproc_id"
     t.boolean  "prueba"
     t.boolean  "reinit"
-    t.boolean  "edmeds"
     t.boolean  "varev"
     t.boolean  "rev"
     t.boolean  "destderev"
+    t.boolean  "edmeds"
     t.boolean  "factura",      :default => false
+    t.integer  "grupoproc_id"
   end
 
   add_index "procesos", ["grupoproc_id"], :name => "index_procesos_on_grupoproc_id"
@@ -382,6 +398,8 @@ ActiveRecord::Schema.define(:version => 20130311005139) do
   end
 
   add_index "separacions", ["espesor_id"], :name => "index_separacions_on_espesor_id"
+  add_index "separacions", ["ord_trab_id"], :name => "index_color_assignments_on_ord_trab_id"
+  add_index "separacions", ["ord_trab_id"], :name => "index_color_assignments_on_producto_id"
   add_index "separacions", ["ord_trab_id"], :name => "index_separacions_on_ord_trab_id"
   add_index "separacions", ["tipomat_id"], :name => "index_separacions_on_tipomat_id"
 
@@ -402,8 +420,8 @@ ActiveRecord::Schema.define(:version => 20130311005139) do
     t.integer  "recurso_id"
     t.string   "state",         :default => "creada"
     t.datetime "key_timestamp"
-    t.integer  "asignada_a"
     t.integer  "ciclo"
+    t.integer  "asignada_a"
   end
 
   add_index "tareas", ["asignada_a"], :name => "index_tareas_on_asignada_a"
@@ -422,6 +440,7 @@ ActiveRecord::Schema.define(:version => 20130311005139) do
   end
 
   add_index "tintas", ["ord_trab_id"], :name => "index_tintas_on_ord_trab_id"
+  add_index "tintas", ["ord_trab_id"], :name => "index_tintas_on_producto_id"
 
   create_table "tipomats", :force => true do |t|
     t.string   "nombre"
@@ -440,9 +459,9 @@ ActiveRecord::Schema.define(:version => 20130311005139) do
   create_table "unidads", :force => true do |t|
     t.string   "nombre"
     t.text     "descripcion"
+    t.integer  "cantunimenor"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "cantunimenor"
     t.integer  "unimenor_id"
   end
 

@@ -20,5 +20,15 @@ class FrontController < ApplicationController
       site_search(params[:query])
     end
   end
+  
+  def cola
+    @cola = Delayed::Job.all
+  end
+  
+  def eliminar
+    tarea = Delayed::Job.find(params[:id])
+    tarea.delete
+    redirect_to(:back)
+  end
 
 end
