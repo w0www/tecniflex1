@@ -120,6 +120,7 @@ class IntervencionsController < ApplicationController
   def create
     hobo_create do
 				if params[:envio] == "terminar"
+          this.termino = Time.now
           this.tarea.lifecycle.terminar!(current_user)
 				elsif params[:envio] == "recibir"
 				  unless this.tarea.proceso.reinit
@@ -133,9 +134,11 @@ class IntervencionsController < ApplicationController
 					end
 			  elsif params[:envio] == "iniciar"
 			  	unless this.tarea.state == "habilitada"
+            this.inicio = Time.now
 						this.tarea.lifecycle.reiniciar!(current_user)
 					end
 				end
+      this.save
       hobo_ajax_response if request.xhr?
     end
   end
@@ -145,20 +148,31 @@ class IntervencionsController < ApplicationController
 				if params[:envio] == "terminar"
 					flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada'
           this.tarea.lifecycle.terminar!(current_user)
+          this.termino = Time.now
           this.final = true
           this.save
 				elsif params[:envio] == "detener"
           this.tarea.lifecycle.detener!(current_user)
+          this.termino = Time.now
+          this.save
 				elsif params[:envio] == "enviar"
 					this.tarea.lifecycle.enviar!(current_user)
+          this.termino = Time.now
+          this.save
 				elsif params[:envio] == "recibir"
 					this.tarea.lifecycle.recibir!(current_user)
+          this.termino = Time.now
+          this.save
 				elsif params[:envio] == "rechazar"
 					if this.tarea.proceso.varev
 						this.tarea.lifecycle.rechazar!(current_user)
+            this.termino = Time.now
+            this.save
 						this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user)
 					elsif this.tarea.proceso.rev
 						this.tarea.lifecycle.rechazar!(current_user)
+            this.termino = Time.now
+            this.save
 						this.tarea.ord_trab.volver_a(params[:procdest],current_user)
 					end
         end

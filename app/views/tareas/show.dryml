@@ -21,7 +21,7 @@
 
         <table class="tarea">
 
-        <tr><th>Color</th><th>Anilox</th><th>Lineatura</th><th>Material</th><th style="width:100px">Alto</th><th style="width:100px">Ancho</th><th>Area</th><th>Stock</th></tr>
+        <tr><th>Color</th><th>Anilox</th><th>Lineatura</th><th>Material</th><th style="width:100px">Ancho</th><th style="width:100px">Alto</th><th>Area</th><th>Stock</th></tr>
  <!--       </table>
         <table class="shower">-->
         <repeat with="&@sepas" part="sepas">
@@ -48,7 +48,9 @@
 
                       <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
                       <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{this.tarea.id}"/>
+<!--
                       <input class="hidden" type="text" name="intervencion[termino]" value="#{Time.now}"/>
+-->
                       Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
                       <%= hidden_field_tag 'envio', ''%>
                       <% if this.tarea.proceso.prueba %>
@@ -80,12 +82,14 @@
 										<after-submit uri="/tareas/#{@estatarea}" />
                     <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
                     <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{@estatarea}"/>
-                    <input class="hidden" type="text" name="intervencion[inicio]" value="#{Time.now}"/>
+                    <input class="hidden" type="text" name="term" value="1"/>
                     <!-- Observaciones <input:observaciones style="height:2em;width: 70%"/><br/> -->
                     <%= hidden_field_tag 'envio', ''%>
                     <% if Tarea.find(@estatarea).state == "enviada" %>
                     Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
-                      <input class="hidden" type="text" name="intervencion[termino]" value="#{Time.now}"/>
+<!--
+                      <input class="hidden" type="text" name="intervencion[termino]" value="#{Intervencion.ahora}"/>
+-->
                       <% if Tarea.find(@estatarea).proceso.reinit %><input type="checkbox" id="checker" name="vuelta" onchange="toggler()"/>Generar nuevo V.B.<% end %>
 											<%= submit_tag "recibir", :onclick =>"$('envio').value='recibir';", :id => "recibir", :class => "button submit-button" %>
 											<%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminax", :class => "button submit-button" %>
@@ -101,7 +105,9 @@
 								<after-submit uri="/tareas/#{params[:id]}" />
                 <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
                 <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{params[:id]}"/>
-                <input class="hidden" type="text" name="intervencion[inicio]" value="#{Time.now}"/>
+<!--
+          <input class="hidden" type="text" name="intervencion[inicio]" value="#{Time.now}"/>
+-->
                 <!-- Observaciones <input:observaciones style="height:2em;width: 70%"/><br/> -->
                 <submit label="Iniciar" id="iniciar"/>
           </form>

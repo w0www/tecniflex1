@@ -76,8 +76,8 @@ class OrdTrab < ActiveRecord::Base
     nBandas        :decimal
     nCopias        :integer
     colorUnion     :integer
-    supRev enum_string(:'Superficie', :'Reverso')
-    tipofotop enum_string(:'Digital', :'Convencional')
+    supRev enum_string(:' ', :'Superficie', :'Reverso')
+    tipofotop enum_string(:'CDI', :'CDI DIGIFLOW', :'DOLEV', :'THERMOFLEX')
     trapping       :decimal
     urgente				:boolean
     prioridad enum_string(:'Normal', :'Repeticion', :'Sin Costo*')

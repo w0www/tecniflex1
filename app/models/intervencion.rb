@@ -15,7 +15,7 @@ class Intervencion < ActiveRecord::Base
 
 	attr_accessor :vuelta
 
- #before_save :rellenar
+  before_create :rellenar
 
   after_create :actitar
 
@@ -27,7 +27,7 @@ class Intervencion < ActiveRecord::Base
     @cuser = cuser
     Intervencion.find(:all, :joins => :user, :conditions => ["name = ?", @cuser.name.to_s])
   end
-
+ 
   def estaot
     if self.tarea
       if self.tarea.ord_trab != nil
@@ -51,6 +51,7 @@ class Intervencion < ActiveRecord::Base
       ""
     end
   end
+  
   
   #def intertars
     #if self.user != nil
@@ -81,7 +82,7 @@ class Intervencion < ActiveRecord::Base
 
   private
     def rellenar
-      self.inicio = Time.now
+      self.inicio = Time.now unless self.inicio
     end
 
     def actitar
@@ -95,20 +96,22 @@ class Intervencion < ActiveRecord::Base
 
     def appendobs
     		if self.tarea
-    			otobs = self.tarea.ord_trab
-    			locobs = self.observaciones
-    			ahora = self.termino.strftime('%H:%M %d/%m/%y')
-    			if otobs.observaciones.length == 0
-    				nllocobs = self.user.iniciales + " " + ahora + ": " + locobs
-    			else
-    				nllocobs = "\n" + self.user.iniciales + " " + ahora + ": " + locobs
-    			end
-    			unless locobs.length == 0
-						unless otobs.observaciones.include?(ahora)
-							otobs.observaciones = otobs.observaciones << nllocobs
-							otobs.save
-						end
-					end
+          if self.tarea.ord_trab
+            otobs = self.tarea.ord_trab
+            locobs = self.observaciones || ""
+            ahora = self.updated_at.strftime('%H:%M %d/%m/%y') || "10:30 1/2/2013"
+            if otobs.observaciones.length == 0
+              nllocobs = self.user.iniciales + " " + ahora + ": " + locobs
+            else
+              nllocobs = "\n" + self.user.iniciales + " " + ahora + ": " + locobs
+            end
+            unless locobs.length == 0
+              unless otobs.observaciones.include?(ahora)
+                otobs.observaciones = otobs.observaciones << nllocobs
+                otobs.save
+              end
+            end
+          end
     		end
     end
 
