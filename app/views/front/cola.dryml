@@ -1,0 +1,29 @@
+<page>
+  <content:>
+    <div class="content-header">
+    <h2>Cola de correos electrónicos para enviar</h2>
+    </div>
+    
+    <div class="content-body">
+      <table-plus with="&@cola" fields="id,handler,created_at,last_error,locked_at">
+        <header: replace/>
+        <page-nav: replace/>
+        <empty-message:>No hay ninguna tarea en la cola</empty-message:>
+          <handler-heading:>Tarea</handler-heading:>
+          <handler-view:>
+            <% id = this.split(";").last %>
+            Email relacionado con la orden de trabajo
+            <a with="&OrdTrab.find(id)"/>
+          </handler-view:>
+          <created-at-heading:>Creado</created-at-heading:>
+          <created-at-view:><%= l this if this %></created-at-view:>
+          <last-error-heading:>Error</last-error-heading:>
+          <last-error-view:><%= this.first(100) if this %></last-error-view:>            
+          <locked-at-heading:>Acciones</locked-at-heading:>
+          <locked-at-view:><a href="/front/cola/eliminar/#{this_parent.id}">Eliminar</a></locked-at-view:>
+      </table-plus>
+      <br/>
+    </div>
+  </content:>
+</page>
+
