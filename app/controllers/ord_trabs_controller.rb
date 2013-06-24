@@ -8,23 +8,22 @@ class OrdTrabsController < ApplicationController
 
   def new
     if params[:id]
+      # @prima es la OT original
       @prima = OrdTrab.find(params[:id])
-      @prima.version ||= 1
-      @prima.version += 1
-      @prima.save
+      # @primat contiene los atributos de la OT original excepto 3
       @primat = @prima.attributes.except('numOT','numFact','numGuia')
+      # @sepas es un array con las separaciones de la OT
       @sepas = []
-      #@impre = @prima.impresora.attributes[:id]
-
       @prima.separacions.each do |sepa|
         @sepas << sepa.attributes.except(:ord_trab_id)
       end
-
+      # @sepash es un hash con las separación de la OT
       @sepash = {:separacions => @sepas}
-     # @impresh = {:impresora => @impre}
-      @mixest = @primat.merge(@sepash)
-   #   @mixed = @mixest.merge(@impresh)
-      hobo_new OrdTrab.new(@mixest) do
+      # @nueva_ot es una nueva OT con los atributos de la OT original + las separaciones
+      @nueva_ot = OrdTrab.new(@primat.merge(@sepash))
+      @nueva_ot.version ||= 1
+      @nueva_ot.version += 1
+      hobo_new (@nueva_ot) do
         this.attributes = params[:ord_trab] || {}
         hobo_ajax_response if request.xhr?
       end
