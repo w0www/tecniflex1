@@ -72,9 +72,7 @@
 <def tag="main-nav">
   <navigation class="main-nav" merge-attrs param="default">
     <nav-item href="#{base_url}/">Inicio</nav-item>
-    <% if current_user.facturador? || current_user.administrator? %>
     <nav-item href="#{base_url}/ord_trabs/tablero">Tablero</nav-item>
-    <% end %>
     <% if current_user.facturador? || current_user.administrator? %>
     <nav-item with="&OrdTrab"><ht key="ord_trabs.nav_item">Ordenes</ht></nav-item>
     <% end %>
