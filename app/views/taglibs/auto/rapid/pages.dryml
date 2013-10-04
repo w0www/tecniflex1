@@ -883,7 +883,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="descripcion, impresion, lineatura, espesor, impresora, sustrato, tipomat" param/>
+            <field-list fields="descripcion, impresion, lineatura, espesor, sustrato, tipomat" param/>
           </section>
     </content:>
 

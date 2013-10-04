@@ -5,6 +5,9 @@
 <include src="taglibs/auto/rapid/forms"/>
 <include src="hobo-jquery" plugin="hobo-jquery" />
 <include src="hobo-contrib-all" plugin="hobo-contrib"/>
+
+<include src="ord_trab_form"/>
+
 <set-theme name="clean"/>
 
 <def tag="app-name">Tecniflex</def>
@@ -151,119 +154,6 @@
   </form>
 </def>
 
-<def tag="form" for="OrdTrab">
-  <form merge param="default">
-    <!--<after-submit go-back/>-->
-      <error-messages param/>
-        <table class="shower">
-        <tr><th colspan="2">Cliente</th><td colspan="3"><input:cliente/></td><th>Prioridad</th><td colspan="2"><input:prioridad style="width:70px"/></td><td>Urg.<input:urgente/></td><th>Fecha:&nbsp;<input:fecha style="width:7em;"/></th><th>O.T.</th><td></td></tr>
-        <tr><th colspan="2">Producto</th><td colspan="6"><input:nomprod style="width:95%;"/></td><th style="text-align: right">N.Fact.:&nbsp;</th><td><input:numFact style="width:100px;"/></td><th style="text-align: right">N.Guia:&nbsp;</th><td><input:numGuia style="width:100px;"/></td></tr>
-        <tr><th colspan="2">Cliente Final</th><td colspan="7"><input:cfinal style="width:95%;"/></td><th colspan="3">
-        		Contacto
-						<do part="contac">
-								<select  class="contacter ord-trab-contacter input belongs_to ord_trab_contacter" name="ord_trab[contacter_id]">
-									 <% if @ord_trab.contacter_id != 0%>
-										<option selected="selected" value="<%= @ord_trab.contacter_id%> "><% if  @ord_trab.contacter != nil %><%= @ord_trab.contacter.name %><% end %></option>
-									 <%else%>
-										<% if @ord_trab.cliente%>
-											<%if @ord_trab.cliente.contactos != [] %>
-												<%if @ord_trab.cliente.contactos.count == 1%>
-													<option selected="selected"  value="<%= @ord_trab.cliente.contactos.first.id %>"><%= @ord_trab.cliente.contactos.first.name %></option>
-												<%else %>
-													<option selected="selected">Ninguno</option>
-													<repeat with="&@ord_trab.cliente.contactos" >
-														 <option value="<%= this.id %>"><%=  this.name %></option>
-													 </repeat>
-												<%end%>
-											<% end%>
-										<% end %>
-
-									 <%end%>
-
-							 </select>
-             </do>
-             </th>
-          </tr>
-        <tr><td colspan="12" style="background-color:transparent"></td></tr>
-        <tr><th colspan="3" style="display:disabled">Cod. Cliente</th><td colspan ="2"><input:codTflex/></td><th class="centrada" colspan="3">Codigo de Producto</th><th>Version</th><th colspan="3" class="centrada">Impresora: &nbsp;
-          <do part="primter">
-            <if test="&@ord_trab.cliente">
-             <!-- <select-one options="&@ord_trab.cliente.impresoras" class="impresora ord-trab-impresora input belongs_to ord_trab_impresora"/> -->
-             <select  class="contacto ord-trab-impresora input belongs_to ord_trab_impresora" name="ord_trab[impresora_id]">
-               <% if @ord_trab.impresora %>
-                <option selected="selected" value="<%= @ord_trab.impresora_id%> "><%= @ord_trab.impresora.name %></option>
-               <%else%>
-                <option selected="selected">Ninguno</option>
-               <%end%>
-               <% if @ord_trab.cliente %>
-               <% if @ord_trab.cliente.impresoras != [] %>
-								 <repeat with="&@ord_trab.cliente.impresoras">
-									 <option value="<%= this.id %>"><%=  this.name %></option>
-								 </repeat>
-							  <% else %>
-							    <option value="0">Sin Impresora</option>
-							  <%end%>
-							 <% end%>
-             </select>
-
-            </if>
-            <else>
-              <select disabled><option>Debe elegir cliente</option></select>
-            </else>
-          </do>
-        </th></tr>
-        <tr><th class="centrada" colspan="5">Solicitud a Ejecutar</th>
-        <td class="centrada" part="siglac" colspan="3"><if test="&@ord_trab.cliente"><view:cliente.sigla/>&nbsp;-&nbsp;<input:codCliente value="#{ this.codCliente || OrdTrab.dacod(@ord_trab.cliente)}" style="width:4em"/></if></td><td><input:version value="#{ this.version || 1 }" style="width:3em"/></td><th colspan="3" class="centrada">Disposici&oacute;n Clisse</th></tr>
-        <tr><td colspan="5" style="font-size:80%"><input:vb/>&nbsp;VB&nbsp;&nbsp;<input:ptr/>&nbsp;PTR&nbsp;&nbsp;<input:mtz/>&nbsp;MTZ&nbsp;&nbsp;<input:mtje/>&nbsp;MTJE&nbsp;&nbsp;<input:pol/>&nbsp;POL</td><th colspan="4" class="centrada">Medidas de Impresion</th><td style="width:155px;">
-           <do part="cyl">
-            <if test="&@ord_trab.impresora">
-                <select  class="cilindro ord-trab-cilindro input belongs_to ord_trab_cilindro" name="ord_trab[cilindro_id]">
-                  <% if @ord_trab.cilindro %>
-                    <option selected="selected" value="<%= @ord_trab.cilindro_id %> "><%= @ord_trab.cilindro.name %></option>
-                  <%  else %>
-                    <option selected="selected">Ninguno</option>
-                  <%  end %>
-                    <repeat with="&@ord_trab.impresora.cilindros">
-                    <option value="<%= this.id %>"><%=  this.name %></option>
-                  </repeat>
-                </select>
-            </if>
-            <else>
-              <select disabled><option>Cilindro</option></select>
-            </else>
-          </do>
-        </td><td colspan="2">Ancho&nbsp;<input:distorAncho style="width:4em"/></td></tr>
-        <tr><th colspan="3">Mat. Proporcionado</th><th>Cantidad</th><th>Dev.</th><td>Desarrollo</td><td><input:mdi_desarrollo style="width:3em"/></td><td><input:mdi_ancho style="width:3em"/></td><td>Ancho</td><td style="font-size:90%" >Distorsion Cil.&nbsp;<view:cilindro.distorsion part="distor" style="font-weight: bold"/></td><td colspan="2" style="font-size:90%;">% Distorsion&nbsp;<span part="pctdistor"><%= if this.cilindro then number_to_percentage(this.cilindro.pctDistor) end -%></span></td></tr>
-        <tr><td style="width:10px !important"><input:mpFTP style="font-size:70%"/></td><td colspan="2">Bajar de FTP</td><td><input:mpFTPq style="width:40px"/></td><td><input:mpFTPdev style="font-size:60%"/></td><th colspan="3">Codigo de Barras</th><th colspan="2" class="centrada">Color</th><th colspan="2" class="centrada">Disposicion de bandas</th></tr>
-        <tr><td style="width:10px !important"><input:mpPel style="font-size:70%"/></td><td colspan="2">Peliculas</td><td><input:mpPelq style="width:40px"/></td><td><input:mpPeldev style="font-size:60%"/></td><td colspan="3">N.&deg;&nbsp;<input:barcode style="width:80%"/></td><td colspan="2"><input:colorBarcode style="width:40px"/></td><td colspan="2" rowspan="5" style="text-align: center"><select name="ord_trab[dispBandas]"><option selected="selected">Ninguna</option><option value="0">Bandas Alineadas</option><option value="1">Bandas Desplazadas</option></select></td></tr>
-        <tr><td style="width:10px !important"><input:mpImp style="font-size:70%"/></td><td colspan="2">Muestra Imp.</td><td><input:mpImpq style="width:40px"/></td><td><input:mpImpdev style="font-size:60%"/></td><th colspan="3">Marcas en los Clisse</th><th>Color</th><th>Apoyo</th></tr>
-        <tr><td style="width:10px !important"><input:mpMgr style="font-size:70%"/></td><td colspan="2">Mat. Gr&aacute;fico</td><td><input:mpMgrq style="width:40px"/></td><td><input:mpMgrdev style="font-size:60%"/></td><td colspan="3"><input:mcGuia style="font-size:60%"/>&nbsp;Guia de corte</td><td><input:mcGuiacol style="width:40px"/></td><td><input:mcGuiaapy style="width:40px"/></td></tr>
-        <tr><td style="width:10px !important"><input:mpOpt style="font-size:70%"/></td><td colspan="2">Mail/DVD/CD</td><td><input:mpOptq style="width:40px"/></td><td><input:mpOptdev style="font-size:60%"/></td><td colspan="3"><input:mcMPunto style="font-size:60%"/>&nbsp;Micropunto x modulo</td><td><input:mcMPuntocol style="width:40px"/></td><td><input:mcMPuntoapy style="width:40px"/></td></tr>
-        <tr><td style="width:10px !important"><input:mpPtr style="font-size:70%"/></td><td colspan="2">Printer</td><td><input:mpPtrq style="width:40px"/></td><td><input:mpPtrdev style="font-size:60%"/></td><td colspan="3"><input:mcCruces style="font-size:60%"/>&nbsp;Cruces</td><td><input:mcCrucescol style="width:40px"/></td><td><input:mcCrucesapy style="width:40px"/></td></tr>
-        <tr><th colspan="5" class="centrada">Sustrato a imprimir</th><td colspan="3"><input:mcTacas style="font-size:60%"/>&nbsp;Tacas&nbsp;<input:mcTacasH style="width:30px"/>x<input:mcTacasV style="width:30px"/></td><td><input:mcTacascol style="width:40px"/></td><td><input:mcTacasapy style="width:40px"/></td></tr>
-        <tr><td colspan="5"><input:sustrato/></td><td colspan="3"><input:mcTiras style="font-size:60%"/>&nbsp;Tiras de control</td><td><input:mcTirascol style="width:40px"/></td><td><input:mcTirasapy style="width:40px"/></td><td colspan="2" class="centrada">N. de Pasos:&nbsp;<input:nPasos/></td></tr>
-        <tr><th colspan="5" class="centrada">Fotopolimero</th><td colspan="3"><input:mcExceso style="font-size:60%"/>&nbsp;Exceso&nbsp;<input:mcExcesoq/></td><td><input:mcExcesocol style="width:40px"/></td><td><input:mcExcesocol style="width:40px"/></td><td colspan="2" class="centrada">N. de Bandas&nbsp;<input:nBandas/></td></tr>
-        <tr><td colspan="2" class="centrada"><input:espesor/></td><td colspan="3" class="centrada">Categoria:<input:tipofotop/></td><td colspan="3"><input:mcMarcas style="font-size:60%"/>&nbsp;Marcas de calce</td><td/><td/><td colspan="2" rowspan="2">N. de Copias&nbsp;<input:nCopias/></td></tr>
-        <tr><td colspan="5" class="centrada">Lado: <input:supRev sort="DESC"/></td><td colspan="3"><input:mcPimp style="font-size:60%"/>&nbsp;Pie de Imprenta</td><td><input:mcPimpcol style="width:40px"/></td><td><input:mcPimpapy style="width:40px"/></td></tr>
-        <tr><th colspan="9" class="centrada">Observaciones</th><th colspan="3">Entrega: <input:fechaEntrega style="width:7em"/></th></tr>
-    <tr><td rowspan="4" colspan="9" class="centrada"><input:observaciones rows="5"/></td><th colspan="1" class="centrada" style="width:30px">Trapping</th><th class="centrada" style="width:30px" colspan="2">Curva</th></tr>
-	  <tr><td colspan="1" class="centrada"><input:trapping  style="width:30px"/></td><td class="centrada" colspan="2"><input:curva style="width:100px"/></td></tr>
-        <tr><th colspan="2">Encargado:</th></tr>
-        <tr><td colspan="2"><input:encargado/></td></tr>
-      </table>
-      <hjq-input-many:separacions>
-        <empty-message:>No hay colores definidos</empty-message:>
-        <item:>
-        <div>Color:<input:color style="width:13%"/> Anilox:<input:anilox style="width:5%"/> Lpi:<input:lpi style="width:5%"/> Mat:<input:tipomat style="width:15%" blank-message="Sel. material"/> Espesor:<input:espesor blank-message="0.00"/>&nbsp;&nbsp; Al:<input:alto style="width:5%"/> x An:<input:ancho  style="width:5%"/><hidden-id-field/></div>
-        </item:>
-        <add-item:>+ color</add-item:>
-      </hjq-input-many:separacions>
-         <div param="actions">
-            <submit label="#{ht 'ord_trabs.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
-         </div>
-   </form>
-
-</def>
 
 <def tag="ech">
   <td style="width:20px"/>

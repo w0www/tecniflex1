@@ -13,7 +13,7 @@ class Curva < ActiveRecord::Base
   belongs_to :tipomat
   belongs_to :espesor
   belongs_to :sustrato
-  belongs_to :impresora
+  has_one :impresora
   has_many :ord_trabs
   has_many :curva_clientes
   has_many :clientes, :through => :curva_clientes, :accessible => true

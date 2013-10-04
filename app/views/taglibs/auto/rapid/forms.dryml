@@ -63,7 +63,7 @@
 <def tag="form" for="Curva">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="nombre, descripcion, impresion, lineatura, clientes, espesor, impresora, sustrato, tipomat" param/>
+    <field-list fields="nombre, descripcion, impresion, lineatura, clientes, espesor, sustrato, tipomat" param/>
     <div param="actions">
       <submit label="#{ht 'curvas.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
