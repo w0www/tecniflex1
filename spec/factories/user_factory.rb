@@ -9,6 +9,8 @@ FactoryGirl.define do
     rol                "Operador"
   end
 
+  # Es el único que tiene permiso para crear tareas
+  # Por tanto, es el que se encarga de crear y asignar OTs
   factory :supervisor, :class => User do
     name               "Supervisor"
     email_address      "supervisor@test.com"

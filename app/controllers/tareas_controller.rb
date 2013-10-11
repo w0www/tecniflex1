@@ -8,16 +8,23 @@ class TareasController < ApplicationController
 
   def update
 		hobo_update do
-				if request.xhr?          
-					if this.state == "terminada"
-						render :json => {
-							:location => url_for(:controller => 'front', :action => 'index')
-						}
-					else
-						hobo_ajax_response
-					end
+      if this.ord_trab && this.ord_trab.tarasigs
+        # Si todas las tareas están asignadas, automáticamente habilitamos la OT
+        this.ord_trab.lifecycle.habilitar!(current_user)
+        unless this.ord_trab.errors.blank?
+          flash[:error] = "Aunque todas las tareas de la OT #{this.ord_trab.numOT} ya están asignadas, no se ha podido habilitar automáticamente la OT debido a los siguientes errores: #{this.ord_trab.errors.full_messages}"
+        end
+      end
+			if request.xhr?          
+				if this.state == "terminada"
+					render :json => {
+						:location => url_for(:controller => 'front', :action => 'index')
+					}
+				else
+					hobo_ajax_response
 				end
 			end
+		end
   end
 
   def show

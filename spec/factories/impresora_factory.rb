@@ -6,4 +6,12 @@ FactoryGirl.define do
     association :cliente
     association :curva
   end
+
+  factory :cilindro, :class => Cilindro do
+    nombre "1.5"
+    distorsion 1
+    duplo "A"
+    espesor 1
+    association :impresora
+  end
 end
