@@ -48,12 +48,14 @@ class OrdTrabsController < ApplicationController
 		@ord_trab = OrdTrab.find(params[:id])
 	end
 
-  # def update
-#     hobo_update do
-#       hobo_ajax_response if request.xhr?
-#    end
-#   end
-
+  def update
+    # Parseamos el valor del datepicker
+    fecha_entrega = Date.strptime params[:ord_trab]["fechaEntrega"], "%d/%m/%Y"
+    params[:ord_trab]["fechaEntrega(1i)"] = fecha_entrega.year.to_s
+    params[:ord_trab]["fechaEntrega(2i)"] = fecha_entrega.month.to_s
+    params[:ord_trab]["fechaEntrega(3i)"] = fecha_entrega.day.to_s
+    hobo_update
+  end
 
 	def index
     inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?

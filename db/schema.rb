@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131002123920) do
+ActiveRecord::Schema.define(:version => 20131015114932) do
 
   create_table "aniloxes", :force => true do |t|
     t.integer  "lineatura"
@@ -215,7 +215,7 @@ ActiveRecord::Schema.define(:version => 20131002123920) do
     t.integer  "numFact"
     t.date     "fecha"
     t.integer  "clase"
-    t.date     "fechaEntrega"
+    t.datetime "fechaEntrega"
     t.text     "observaciones"
     t.datetime "created_at"
     t.datetime "updated_at"

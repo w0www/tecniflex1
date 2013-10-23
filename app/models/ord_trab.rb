@@ -8,7 +8,7 @@ class OrdTrab < ActiveRecord::Base
     numGuia       :integer
     fecha         :date
     clase         :integer
-    fechaEntrega  :date
+    fechaEntrega  :datetime
     observaciones :text
     cfinal        :string
 		vb        		:boolean

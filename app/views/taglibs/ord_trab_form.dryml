@@ -433,7 +433,8 @@
     <th colspan="9" class="centrada">Observaciones</th>
     <th colspan="3">
       Entrega:
-      <input:fechaEntrega style="width:7em"/>
+      <hjq-datepicker:fechaEntrega name="ord_trab[fechaEntrega]" value="&l(this.fechaEntrega.to_date) if this.fechaEntrega" style="width:7em"/>
+      <%= time_select("ord_trab", "fechaEntrega", {:minute_step => 15}) %>
     </th>
   </tr>
   <tr>
