@@ -542,7 +542,7 @@
             </a>
           </header>
 
-          <section param="content-body">
+          <section param="content-body" with-flash-messages>
             <field-list fields="razsocial, sigla, rut, correo, direccion, telefono, fpago, tarifa, plazopago, descuento" param/>
             <section param="collection-section">
               <h3 param="collection-heading">
@@ -1401,8 +1401,8 @@
             </a>
           </header>
 
-          <section param="content-body">
-            <field-list fields="trapdefault, bumpcurve, curva, cliente, curva" param/>
+          <section param="content-body" with-flash-messages>
+            <field-list fields="trapdefault, bumpcurve, cliente, curva" param/>
             <section param="collection-section">
               <h3 param="collection-heading">
                 <ht key="impresoras.collection.heading.other" >
@@ -2455,7 +2455,7 @@
               </ht>
             </h2>
 
-            <record-flags fields="prueba, reinit, edmeds, varev, rev, destderev, factura" param/>
+            <record-flags fields="prueba, reinit, varev, rev, destderev, edmeds, factura" param/>
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="procesos.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">

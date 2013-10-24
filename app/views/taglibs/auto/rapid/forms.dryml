@@ -111,7 +111,7 @@
 <def tag="form" for="Impresora">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="name, trapdefault, bumpcurve, curva, aniloxes, cilindros, cliente, curva" param/>
+    <field-list fields="name, trapdefault, bumpcurve, aniloxes, cilindros, cliente, curva" param/>
     <div param="actions">
       <submit label="#{ht 'impresoras.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
