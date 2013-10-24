@@ -7,3 +7,4 @@ db/migrate/*
 .bzr/**
 .bzrignore
 .rvmrc
+app/views/taglibs/auto/*
