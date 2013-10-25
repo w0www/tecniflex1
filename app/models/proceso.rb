@@ -13,6 +13,7 @@ class Proceso < ActiveRecord::Base
     rev					:boolean #revision
     destderev		:boolean #destino de revision
     edmeds			:boolean #Edicion de medidas
+    minutos_minimo :integer
     factura     :boolean, :default => false #Facturacion
     timestamps
   end
