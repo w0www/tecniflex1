@@ -2465,7 +2465,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="position, descripcion, grupoproc, sucesor" param/>
+            <field-list fields="position, descripcion, minutos_minimo, grupoproc, sucesor" param/>
           </section>
     </content:>
 

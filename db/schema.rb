@@ -9,11 +9,11 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131015114932) do
+ActiveRecord::Schema.define(:version => 20131025090932) do
 
   create_table "aniloxes", :force => true do |t|
     t.integer  "lineatura"
-    t.decimal  "bcm"
+    t.decimal  "bcm",          :precision => 5, :scale => 2
     t.string   "marca"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -30,10 +30,10 @@ ActiveRecord::Schema.define(:version => 20131015114932) do
   end
 
   create_table "cilindros", :force => true do |t|
-    t.decimal  "distorsion"
-    t.decimal  "pctDistor"
+    t.integer  "distorsion",   :limit => 10, :precision => 10, :scale => 0
+    t.decimal  "pctDistor",                  :precision => 5,  :scale => 3
     t.string   "duplo"
-    t.decimal  "espesor"
+    t.decimal  "espesor",                    :precision => 3,  :scale => 2
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "impresora_id"
@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(:version => 20131015114932) do
     t.string   "descuento"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.decimal  "tarifa"
+    t.integer  "tarifa",     :limit => 10, :precision => 10, :scale => 0
     t.string   "sigla"
     t.string   "correo"
   end
@@ -123,8 +123,8 @@ ActiveRecord::Schema.define(:version => 20131015114932) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "bodega_id"
-    t.decimal  "existalto"
-    t.decimal  "existancho"
+    t.integer  "existalto",   :limit => 10, :precision => 10, :scale => 0
+    t.integer  "existancho",  :limit => 10, :precision => 10, :scale => 0
     t.integer  "polimero_id"
     t.string   "codigo"
     t.integer  "numfact"
@@ -156,7 +156,7 @@ ActiveRecord::Schema.define(:version => 20131015114932) do
 
   create_table "impresoras", :force => true do |t|
     t.string   "name"
-    t.decimal  "trapdefault"
+    t.integer  "trapdefault", :limit => 10, :precision => 10, :scale => 0
     t.string   "bumpcurve"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -248,13 +248,13 @@ ActiveRecord::Schema.define(:version => 20131015114932) do
     t.boolean  "mcCruces"
     t.string   "mcCrucescol"
     t.boolean  "mcTacas"
-    t.decimal  "mcTacasH"
-    t.decimal  "mcTacasV"
+    t.decimal  "mcTacasH",                     :precision => 5,  :scale => 3
+    t.decimal  "mcTacasV",                     :precision => 5,  :scale => 3
     t.string   "mcTacascol"
     t.boolean  "mcTiras"
     t.string   "mcTirascol"
     t.boolean  "mcExceso"
-    t.decimal  "mcExcesoq"
+    t.decimal  "mcExcesoq",                    :precision => 5,  :scale => 3
     t.string   "mcExcesocol"
     t.boolean  "mcMarcas"
     t.string   "mcMarcascol"
@@ -263,24 +263,24 @@ ActiveRecord::Schema.define(:version => 20131015114932) do
     t.string   "nomprod"
     t.string   "codTflex"
     t.string   "codCliente"
-    t.decimal  "mdi_desarrollo"
-    t.decimal  "mdi_ancho"
+    t.integer  "mdi_desarrollo", :limit => 10, :precision => 10, :scale => 0
+    t.integer  "mdi_ancho",      :limit => 10, :precision => 10, :scale => 0
     t.string   "barcode"
     t.string   "colorBarcode"
     t.integer  "dispBandas"
-    t.decimal  "distTotalPerim"
-    t.decimal  "distorAncho"
-    t.decimal  "nPasos"
-    t.decimal  "nBandas"
+    t.integer  "distTotalPerim", :limit => 10, :precision => 10, :scale => 0
+    t.integer  "distorAncho",    :limit => 10, :precision => 10, :scale => 0
+    t.integer  "nPasos",         :limit => 10, :precision => 10, :scale => 0
+    t.integer  "nBandas",        :limit => 10, :precision => 10, :scale => 0
     t.integer  "colorUnion"
     t.string   "supRev"
     t.integer  "cliente_id"
     t.integer  "impresora_id"
     t.integer  "cilindro_id"
     t.string   "tipofotop"
-    t.decimal  "trapping"
+    t.integer  "trapping",       :limit => 10, :precision => 10, :scale => 0
     t.integer  "encargado_id"
-    t.string   "state",          :default => "creada"
+    t.string   "state",                                                       :default => "creada"
     t.datetime "key_timestamp"
     t.string   "cfinal"
     t.string   "mcGuiaapy"
@@ -297,7 +297,7 @@ ActiveRecord::Schema.define(:version => 20131015114932) do
     t.integer  "nCopias"
     t.boolean  "urgente"
     t.string   "prioridad"
-    t.decimal  "pctdistor"
+    t.integer  "pctdistor",      :limit => 10, :precision => 10, :scale => 0
     t.integer  "curva_id"
     t.integer  "contacter_id"
     t.integer  "tipomat_id"
@@ -344,8 +344,9 @@ ActiveRecord::Schema.define(:version => 20131015114932) do
     t.boolean  "rev"
     t.boolean  "destderev"
     t.boolean  "edmeds"
-    t.boolean  "factura",      :default => false
+    t.boolean  "factura",        :default => false
     t.integer  "grupoproc_id"
+    t.integer  "minutos_minimo"
   end
 
   add_index "procesos", ["grupoproc_id"], :name => "index_procesos_on_grupoproc_id"
@@ -387,9 +388,9 @@ ActiveRecord::Schema.define(:version => 20131015114932) do
     t.datetime "updated_at"
     t.integer  "ord_trab_id"
     t.string   "color"
-    t.decimal  "area"
-    t.decimal  "alto"
-    t.decimal  "ancho"
+    t.integer  "area",        :limit => 10, :precision => 10, :scale => 0
+    t.integer  "alto",        :limit => 10, :precision => 10, :scale => 0
+    t.integer  "ancho",       :limit => 10, :precision => 10, :scale => 0
     t.integer  "tipomat_id"
     t.integer  "espesor_id"
   end

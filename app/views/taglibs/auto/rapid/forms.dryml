@@ -281,7 +281,7 @@
 <def tag="form" for="Proceso">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="position, nombre, descripcion, prueba, reinit, varev, rev, destderev, edmeds, factura, grupoproc, sucesor" param/>
+    <field-list fields="position, nombre, descripcion, prueba, reinit, varev, rev, destderev, edmeds, minutos_minimo, factura, grupoproc, sucesor" param/>
     <div param="actions">
       <submit label="#{ht 'procesos.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
