@@ -72,6 +72,7 @@
                      </td>
                    <% end %>
                    <% fecha_entrega = @tod.fechaEntrega ? @tod.fechaEntrega : Date.tomorrow.to_time %>
+                <% logger.info "esto es fecha entrega #{fecha_entrega}" %>
                 <% 
                   if fecha_entrega - 1.hour <= @hora_actual + tiempo_total.minute &&
                      fecha_entrega > @hora_actual + tiempo_total.minute
