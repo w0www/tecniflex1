@@ -1,5 +1,0 @@
-class Ord_trabObserver < ActiveRecord::Observer
-  def after_update(model)
-  end
-end
-
