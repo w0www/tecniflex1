@@ -115,7 +115,7 @@
         <td colspan="3">N.&nbsp;<view:barcode/></td>
         <td colspan="2"><view:colorBarcode/></td>
         <td colspan="2" rowspan="5" style="text-align: center">
-          <if test="&this.dispBandas"><%= if this.dispBandas == 0 then "Bandas Alineadas" else "Bandas Desplazadas" end %> </if>
+          <if test="&this.dispBandas"><%= if this.dispBandas == 0 then "Bandas Alineadas" elsif this.dispBandas == 1 then "Bandas Desplazadas" elsif this.dispBandas == -1 then "Ninguna banda seleccionada" end %> </if>
         </td>
       </tr>
       <tr>
