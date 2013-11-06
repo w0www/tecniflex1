@@ -144,6 +144,7 @@ class IntervencionsController < ApplicationController
   end
 
   def update
+    params[:intervencion][:colores] = "#{params[:intervencion][:colores].join(",")}" if params[:intervencion][:colores]
     hobo_update do
 				if params[:envio] == "terminar"
 					flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada'

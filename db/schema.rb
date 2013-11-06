@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131025090932) do
+ActiveRecord::Schema.define(:version => 20131106153416) do
 
   create_table "aniloxes", :force => true do |t|
     t.integer  "lineatura"
@@ -176,6 +176,18 @@ ActiveRecord::Schema.define(:version => 20131025090932) do
     t.integer  "tarea_id"
     t.integer  "user_id"
     t.boolean  "final"
+    t.boolean  "observaciones_matriceria"
+    t.boolean  "observaciones_analisis"
+    t.boolean  "ot_incompleta"
+    t.boolean  "observaciones_micropunto"
+    t.boolean  "ripeo"
+    t.boolean  "distorsion"
+    t.boolean  "texto"
+    t.boolean  "foto"
+    t.boolean  "observaciones_vb"
+    t.string   "colores"
+    t.integer  "responsable"
+    t.text     "observaciones_rechazo"
   end
 
   add_index "intervencions", ["tarea_id"], :name => "index_intervencions_on_tarea_id"

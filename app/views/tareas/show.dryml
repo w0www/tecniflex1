@@ -1,4 +1,7 @@
 <show-page for="Tarea">
+  <append-scripts:>
+    <ocultar-campos/>
+  </append-scripts:>
   <heading:>
     <view:ord_trab/>&nbsp;>&nbsp;<view:ord_trab.nomprod/>&nbsp;>&nbsp;<view:proceso/>
   </heading:>
@@ -85,7 +88,23 @@
                     <option value="#{proce.id}"><%= proce.nombre -%></option>
                   <%end%>
                 </select>
-                <%= submit_tag "rechazar", :onclick =>"$('envio').value='rechazar';", :id => "rechazar", :class => "button submit-button" %>
+                <div id="campos-rechazo" style="width:280px;margin-left:67%">
+                  Observaciones matriceria<input:observaciones-matriceria/><br/>
+                  Observaciones analisis<input:observaciones-analisis/><br/>
+                  OT incompleta<input:ot-incompleta/><br/>
+                  Observaciones micropunto<input:observaciones-micropunto/><br/>
+                  RIPeo<input:ripeo/><br/>
+                  Distorsion<input:distorsion/><br/>
+                  Texto<input:texto/><br/>
+                  Foto<input:foto/><br/>
+                  Observaciones V/B<input:observaciones-vb/><br/>
+                  Colores<%= select_tag "intervencion[colores]", options_from_collection_for_select(Separacion.all, 'id', 'color'), :multiple => true %><br/>
+                  Responsable<select-menu first-option="Selecciona usuario" options="&User.all.*.name" name="intervencion[responsable]"/><br/>
+                  Observaciones rechazo<input:observaciones-rechazo/><br/>
+                  <%= submit_tag "rechazar", :onclick =>"$('envio').value='rechazar';", :id => "rechazar", :class => "button submit-button" %>
+                  <a href="#" id="ocultar-rechazo" class="button submit-button">cancelar</a>
+                </div>
+                <a href="#" id="mostrar-rechazo" class="button submit-button">rechazar</a>
               <% else %>
                 <%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
                 <%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminar", :class => "button submit-button" %>
@@ -141,4 +160,32 @@
   </content-body:>
 
 </show-page>
+
+
+<def tag="ocultar-campos">
+   <script type="text/javascript">
+    jQuery(document).ready(function(){
+      // Ocultamos todos los campos nuevos
+      jQuery('#campos-rechazo').hide();
+      jQuery('#mostrar-rechazo').show();
+      jQuery('#ocultar-rechazo').hide();
+      // Si pinchamos en el botón mágico de rechazar
+      jQuery('#mostrar-rechazo').click(function(){
+        // Mostramos los campos, el botón de rechazar bueno y un botón de cancelar
+          jQuery('#campos-rechazo').show();
+          jQuery('#mostrar-rechazo').hide();
+          jQuery('#ocultar-rechazo').show();
+        
+      });
+      // Si pinchamos en el botón mágico de cancelar
+      jQuery('#ocultar-rechazo').click(function(){
+        // Ocultamos los campos y mostramos el botón mágico de rechazar
+          jQuery('#mostrar-rechazo').show();
+          jQuery('#campos-rechazo').hide();
+          jQuery('#ocultar-rechazo').hide();
+      });
+    });
+   </script>
+</def>
+
 

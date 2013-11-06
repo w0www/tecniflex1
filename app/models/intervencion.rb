@@ -7,6 +7,19 @@ class Intervencion < ActiveRecord::Base
     termino       :datetime
     final         :boolean
     observaciones :text
+    # Campos a rellenar si se rechaza una revisionMM
+    observaciones_matriceria  :boolean
+    observaciones_analisis    :boolean
+    ot_incompleta             :boolean
+    observaciones_micropunto  :boolean
+    ripeo                     :boolean
+    distorsion                :boolean
+    texto                     :boolean
+    foto                      :boolean
+    observaciones_vb          :boolean
+    colores                   :array
+    responsable               :integer
+    observaciones_rechazo     :text
     timestamps
   end
 
