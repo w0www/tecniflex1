@@ -7,3 +7,4 @@ db/*.sqlite3
 .bzrignore
 .rvmrc
 app/views/taglibs/auto/*
+db/schema.rb
