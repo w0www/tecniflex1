@@ -10,7 +10,6 @@
 # It's strongly recommended to check this file into your version control system.
 
 ActiveRecord::Schema.define(:version => 20131106153416) do
-
   create_table "aniloxes", :force => true do |t|
     t.integer  "lineatura"
     t.decimal  "bcm",          :precision => 5, :scale => 2
