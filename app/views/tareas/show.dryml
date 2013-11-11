@@ -99,7 +99,7 @@
                   Foto<input:foto/><br/>
                   Observaciones V/B<input:observaciones-vb/><br/>
                   Colores<%= select_tag "intervencion[colores]", options_from_collection_for_select(Separacion.all, 'id', 'color'), :multiple => true %><br/>
-                  Responsable<select-menu first-option="Selecciona usuario" options="&User.all.*.name" name="intervencion[responsable]"/><br/>
+                  Responsable<select-menu first-option="Selecciona usuario" options="&User.all.map{|u| [u.name, u.id]}" name="intervencion[responsable]"/><br/>
                   Observaciones rechazo<input:observaciones-rechazo/><br/>
                   <%= submit_tag "rechazar", :onclick =>"$('envio').value='rechazar';", :id => "rechazar", :class => "button submit-button" %>
                   <a href="#" id="ocultar-rechazo" class="button submit-button">cancelar</a>
