@@ -17,7 +17,7 @@ class Intervencion < ActiveRecord::Base
     texto                     :boolean
     foto                      :boolean
     observaciones_vb          :boolean
-    colores                   :array
+    colores                   :string
     responsable               :integer
     observaciones_rechazo     :text
     timestamps
