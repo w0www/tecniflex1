@@ -1,0 +1,164 @@
+<page title="pantalla" without-header>
+  <head:>
+    <param-content/>
+    <meta http-equiv="refresh" content="30"/>
+  </head:>
+  <content:>
+    <div class="content-header">
+      <h2>Pantalla resumen</h2>
+    </div>
+
+    <div class="content-body">
+      <div class="parte-derecha" style="width:30%;float:right;">
+        <tabla-procesos-terminados/><br/>
+        <tabla-procesos-iniciados/><br/>
+        <tabla-procesos-errores/>
+      </div>
+      <div class="parte-izquierda" style="width:70%">
+        <tabla-tablero/>
+      </div>
+    </div>
+  </content:>
+</page>
+
+
+<def tag="tabla-procesos-terminados">
+  <label>Procesos terminados por usuario</label>
+  <table style="border:1px solid;width:100%;">
+    <tbody>
+      <tr>
+        <th>Usuarios</th>
+        <th>Por día</th>
+        <th>Por mes</th>
+        <th>Por año</th>
+      </tr>
+      <% for u in User.all %>
+      <tr>
+        <th><%= u.name %></th>
+        <td><%= u.intervencions_dia("termino","false") %></td>
+        <td><%= u.intervencions_mes("termino","false") %></td>
+        <td><%= u.intervencions_ano("termino","false") %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</def>
+
+<def tag="tabla-procesos-iniciados">
+  <label>Procesos empezados por usuario</label>
+  <table style="border:1px solid;width:100%;">
+    <tbody>
+      <tr>
+        <th>Usuarios</th>
+        <th>Por día</th>
+        <th>Por mes</th>
+        <th>Por año</th>
+      </tr>
+      <% for u in User.all %>
+      <tr>
+        <th><%= u.name %></th>
+        <td><%= u.intervencions_dia("inicio","false") %></td>
+        <td><%= u.intervencions_mes("inicio","false") %></td>
+        <td><%= u.intervencions_ano("inicio","false") %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</def>
+
+<def tag="tabla-procesos-errores">
+  <label>Procesos fallidos por usuario</label>
+  <table style="border:1px solid;width:100%;">
+    <tbody>
+      <tr>
+        <th>Usuarios</th>
+        <th>Por día</th>
+        <th>Por mes</th>
+        <th>Por año</th>
+      </tr>
+      <% for u in User.all %>
+      <tr>
+        <th><%= u.name %></th>
+        <td><%= u.intervencions_dia("inicio","true") %></td>
+        <td><%= u.intervencions_mes("inicio","true") %></td>
+        <td><%= u.intervencions_ano("inicio","true") %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</def>
+
+<def tag="tabla-tablero">
+  <label>Tablero</label>
+  <table style="width:98%;border:1px solid;">
+    <thead>
+      <tr>
+        <th>OT</th>
+        <th>Nombre</th>
+        <repeat with="&@grupro" >
+          <th><view:nombre/> </th>
+        </repeat>
+        <th class="colest">Prioridad</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @todas.each do |tod| %>
+      <% @tod = tod %>
+      <% tiempo_total = 0 %>
+      <tr class="st#{tod.state}">
+        <th class="#{@tod.prioridad}" rowspan="2">
+          <a with="&tod"><%=  tod.numOT -%></a><br/>
+          <span style="font-weight:normal">
+            <%= if tod.cliente then tod.cliente.sigla else "" end -%>-
+            <%= tod.codCliente %>- v.<%= tod.version || 1 %>
+          </span>
+        </th>
+        <th rowspan="2" class="#{@tod.state}">
+          <%= tod.nomprod -%>
+        </th>
+        <% @grupro.each do |proce|%>
+          <% tiempo_total += proce.procesos.first.minutos_minimo if proce.procesos.first.minutos_minimo %>
+          <td class="#{tod.estgrupro(proce.abreviacion)[1]}" rowspan="2">
+            <% if @tod.tareas.proceso_is(proce.procesos.first) != [] %>
+              <% if @tod.tareas.proceso_is(proce.procesos.first).first.proceso %>
+                <% if @tod.tareas.proceso_is(proce.procesos.first).first.ciclo.to_i >= 3 %>
+                  <div class="ciclo red">
+                    <%= @tod.tareas.proceso_is(proce.procesos.first).first.ciclo %>
+                  </div>
+                <% elsif (@tod.tareas.proceso_is(proce.procesos.first).first.ciclo.to_i > 1) && (@tod.tareas.proceso_is(proce.procesos.first).first.ciclo.to_i < 3) %>
+                  <div class="ciclo yel">
+                    <%= @tod.tareas.proceso_is(proce.procesos.first).first.ciclo %>
+                  </div>
+                <% else %>
+                  <div class="ciclo ver">
+                    <%= @tod.tareas.proceso_is(proce.procesos.first).first.ciclo %>
+                  </div>
+                <% end %>
+              <% end %>
+            <% end %>
+            <% if proce.procesos.count > 1 %>
+              <%= @tod.estgrupro(proce.abreviacion)[0] -%> <br/>
+            <% else %>
+              <%= @tod.estgrupro(proce.abreviacion)[1] -%> <br/>
+            <% end %>
+            <p class="iniciales">
+              <%= @tod.usersgp(proce.abreviacion) -%>
+            </p>
+          </td>
+        <% end %>
+        <% fecha_entrega = @tod.fechaEntrega ? @tod.fechaEntrega : Date.tomorrow.to_time %>
+        <% if fecha_entrega - 1.hour <= @hora_actual + tiempo_total.minute && fecha_entrega > @hora_actual + tiempo_total.minute
+            color = 'lightyellow'
+          elsif fecha_entrega > @hora_actual + tiempo_total.minute
+            color = 'lightgreen'
+          elsif fecha_entrega <= @hora_actual + tiempo_total.minute
+            color = 'red'
+          end
+        %>
+        <td rowspan="2" style="background-color:#{color if color}"/>
+      </tr>
+      <tr/>
+      <%end%>
+    </tbody>
+  </table>
+</def>

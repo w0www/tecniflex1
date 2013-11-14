@@ -24,6 +24,17 @@
   #named_scope :administrators, lambda {|acting_user| {:conditions => {acting_user.administrator?} }}
 
 
+  def intervencions_dia(estado,rechazada)
+      rechazada == "true" ? self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada IS NOT NULL", Date.today.day, Date.today.month, Date.today.year]).count : self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada IS NULL", Date.today.day, Date.today.month, Date.today.year]).count
+  end
+  def intervencions_mes(estado,rechazada)
+      rechazada == "true" ? self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada IS NOT NULL", Date.today.month]).count : self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada IS NULL", Date.today.month]).count
+  end
+
+  def intervencions_ano(estado,rechazada)
+      rechazada == "true" ? self.intervencions.find(:all, :conditions => ["YEAR(#{estado}) = ? AND rechazada IS NOT NULL", Date.today.year]).count : self.intervencions.find(:all, :conditions => ["YEAR(#{estado}) = ? AND rechazada IS NULL", Date.today.year]).count
+  end
+
 	def facturador?
 		self.rol == "Facturador"
 	end
