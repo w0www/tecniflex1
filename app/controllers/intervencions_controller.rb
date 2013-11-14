@@ -10,10 +10,17 @@ class IntervencionsController < ApplicationController
   def index
     inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
     final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time if params[:fecha_fin] && !params[:fecha_fin].blank?
-    hobo_index Intervencion.apply_scopes(
-      :user_is => params[:user],
-      :created_between => [inicial, final]
-    )
+    if params[:state] && params[:state] == "rechazada"
+      hobo_index Intervencion.rechazada.apply_scopes(
+        :user_is => params[:user],
+        :created_between => [inicial, final]
+      )
+    else
+      hobo_index Intervencion.apply_scopes(
+        :user_is => params[:user],
+        :created_between => [inicial, final]
+      )
+    end
     respond_to do |wants|
 			wants.html 
       wants.csv do
@@ -144,7 +151,6 @@ class IntervencionsController < ApplicationController
   end
 
   def update
-    params[:intervencion][:colores] = "#{params[:intervencion][:colores].join(",")}" if params[:intervencion][:colores]
     hobo_update do
 				if params[:envio] == "terminar"
 					flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada'
@@ -165,6 +171,8 @@ class IntervencionsController < ApplicationController
           this.termino = Time.now
           this.save
 				elsif params[:envio] == "rechazar"
+          this.colores = "#{params[:intervencion][:colores].join(",")}" if params[:intervencion][:colores]
+          this.rechazada = true
 					if this.tarea.proceso.varev
 						this.tarea.lifecycle.rechazar!(current_user)
             this.termino = Time.now

@@ -20,6 +20,7 @@ class Intervencion < ActiveRecord::Base
     colores                   :string
     responsable               :integer
     observaciones_rechazo     :text
+    rechazada                 :boolean
     timestamps
   end
 

@@ -228,7 +228,11 @@
   </old-form>
 </extend>
 
-
+<extend tag="form" for="Tarea">
+  <old-form merge>
+    <field-list: fields="instrucciones, fechatope, ciclo, asignada_a, state, asignado, ord_trab, proceso, recurso"/>
+  </old-form>
+</extend>
 
 <extend tag="edit-page" for="User">
   <old-edit-page merge>
