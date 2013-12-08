@@ -64,6 +64,8 @@ class OrdTrabsController < ApplicationController
       :cliente_is => params[:cliente],
       :codCliente_contains => params[:codigo_cliente],
       :numOT_contains => params[:orden],
+      :espesor_id_is => params[:espesor],
+      :tipomat_id_is => params[:tipomat],
       :state_is => params[:estado],
       :created_between => [inicial, final]
     )

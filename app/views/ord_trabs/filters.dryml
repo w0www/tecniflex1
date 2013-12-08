@@ -8,6 +8,8 @@
       <select-field label="Estado" name="estado" options="&OrdTrab::Lifecycle.states.keys.map{|s|[s.to_s]}"/>
       <input-field label="O.T." name="orden"/>
       <date-field label="Fecha" name="fecha"/>
+      <select-field label="Tipo Mat" name="tipomat" options="&Tipomat.all.map{|t| [t.nombre, t.id]}.uniq"/>
+      <select-field label="Espesor" name="espesor" options="&Espesor.all.map{|e| [e.calibre, e.id]}.uniq"/>
       <placeholder-field/>
       <submit-field/>
   </fieldset>
@@ -21,6 +23,20 @@
               first-option="Filtrar por #{label}"
               selected="&params[name.to_sym]"
               options="&options" />
+  </div>
+</def>
+
+<def tag="tipomat-field" attrs="label, name">
+  <div class="field num_siniestro-field  ">
+    <label><%= label %></label>
+    <input type="text" name="#{name}" value="&params[name.to_sym]"/>
+  </div>
+</def>
+
+<def tag="espesor-field" attrs="label, name">
+  <div class="field num_siniestro-field  ">
+    <label><%= label %></label>
+    <input type="text" name="#{name}" value="&params[name.to_sym]"/>
   </div>
 </def>
 

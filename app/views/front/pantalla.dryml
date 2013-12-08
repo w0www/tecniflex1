@@ -1,4 +1,4 @@
-<page title="pantalla" without-header>
+<page title="pantalla" without-header class="pantalla">
   <head:>
     <param-content/>
     <meta http-equiv="refresh" content="30"/>
@@ -9,12 +9,11 @@
     </div>
 
     <div class="content-body">
-      <div class="parte-derecha" style="width:30%;float:right;">
-        <tabla-procesos-terminados/><br/>
-        <tabla-procesos-iniciados/><br/>
-        <tabla-procesos-errores/>
+      <div class="parte-derecha" style="width:40%;float:right;">
+        <tabla-tiempos/><br/>
+        <tabla-actividad/><br/>
       </div>
-      <div class="parte-izquierda" style="width:70%">
+      <div class="parte-izquierda" style="width:60%">
         <tabla-tablero/>
       </div>
     </div>
@@ -22,66 +21,63 @@
 </page>
 
 
-<def tag="tabla-procesos-terminados">
-  <label>Procesos terminados por usuario</label>
+<def tag="tabla-tiempos">
+  <label>Tiempos por O.T.</label>
   <table style="border:1px solid;width:100%;">
     <tbody>
       <tr>
-        <th>Usuarios</th>
-        <th>Por día</th>
-        <th>Por mes</th>
-        <th>Por año</th>
+        <th>O.T</th>
+        <th>Visto Bueno</th>
+        <th>Printer</th>
+        <th>Matriceria</th>
+        <th>Montaje</th>
+        <th>Revision</th>
+        <th>Polimero</th>
+        <th>Despacho</th>
       </tr>
-      <% for u in User.all %>
+      <% for ot in @todas %>
       <tr>
-        <th><%= u.name %></th>
-        <td><%= u.intervencions_dia("termino","false") %></td>
-        <td><%= u.intervencions_mes("termino","false") %></td>
-        <td><%= u.intervencions_ano("termino","false") %></td>
+        <th><%= ot.numOT %> </th>
+        <% if ot.procesos.find(:all, :conditions => ["nombre = 'VistoBueno'"]).size > 0 %>
+          <th><%= ot.procesos.find(:all, :conditions => ["nombre = 'VistoBueno'"]).first.minutos_minimo  %> </th>
+        <% end %>
+        <% if ot.procesos.find(:all, :conditions => ["nombre = 'Printer'"]).size > 0 %>
+          <th><%= ot.procesos.find(:all, :conditions => ["nombre = 'Printer'"]).first.minutos_minimo  %> </th>
+        <% end %>
+        <% if ot.procesos.find(:all, :conditions => ["nombre = 'Montaje'"]).size > 0 %>
+          <th><%= ot.procesos.find(:all, :conditions => ["nombre = 'Montaje'"]).first.minutos_minimo  %> </th>
+        <% end %>
+        <% if ot.procesos.find(:all, :conditions => ["nombre = 'RevisionMM'"]).size > 0 %>
+          <th><%= ot.procesos.find(:all, :conditions => ["nombre = 'RevisionMM'"]).first.minutos_minimo  %> </th>
+        <% end %>
+        <% if ot.procesos.find(:all, :conditions => ["nombre = 'Polimero'"]).size > 0 %>
+          <th><%= ot.procesos.find(:all, :conditions => ["nombre = 'Polimero'"]).first.minutos_minimo  %> </th>
+        <% end %>
+        <% if ot.procesos.find(:all, :conditions => ["nombre = 'Facturacion'"]).size > 0 %>
+          <th><%= ot.procesos.find(:all, :conditions => ["nombre = 'Facturacion'"]).first.minutos_minimo  %> </th>
+        <% end %>
       </tr>
       <% end %>
     </tbody>
   </table>
 </def>
 
-<def tag="tabla-procesos-iniciados">
-  <label>Procesos empezados por usuario</label>
+<def tag="tabla-actividad">
+  <label>Actividad por usuario</label>
   <table style="border:1px solid;width:100%;">
     <tbody>
       <tr>
         <th>Usuarios</th>
-        <th>Por día</th>
-        <th>Por mes</th>
-        <th>Por año</th>
+        <th>Intervenciones terminadas</th>
+        <th>Errores</th>
+        <th>Horas registradas</th>
       </tr>
-      <% for u in User.all %>
+      <% for u in @users %>
       <tr>
         <th><%= u.name %></th>
-        <td><%= u.intervencions_dia("inicio","false") %></td>
-        <td><%= u.intervencions_mes("inicio","false") %></td>
-        <td><%= u.intervencions_ano("inicio","false") %></td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
-</def>
-
-<def tag="tabla-procesos-errores">
-  <label>Procesos fallidos por usuario</label>
-  <table style="border:1px solid;width:100%;">
-    <tbody>
-      <tr>
-        <th>Usuarios</th>
-        <th>Por día</th>
-        <th>Por mes</th>
-        <th>Por año</th>
-      </tr>
-      <% for u in User.all %>
-      <tr>
-        <th><%= u.name %></th>
-        <td><%= u.intervencions_dia("inicio","true") %></td>
-        <td><%= u.intervencions_mes("inicio","true") %></td>
-        <td><%= u.intervencions_ano("inicio","true") %></td>
+        <td><%= u.intervencions_totales("termino","false") %></td>
+        <td><%= u.intervencions_totales("termino","true") %></td>
+        <td><%= u.intervencions_tiempo_total("termino","false") %></td>
       </tr>
       <% end %>
     </tbody>

@@ -23,16 +23,35 @@
 
   #named_scope :administrators, lambda {|acting_user| {:conditions => {acting_user.administrator?} }}
 
-
-  def intervencions_dia(estado,rechazada)
-      rechazada == "true" ? self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada IS NOT NULL", Date.today.day, Date.today.month, Date.today.year]).count : self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada IS NULL", Date.today.day, Date.today.month, Date.today.year]).count
+  def intervencions_tiempo_total(estado,rechazada)
+    tiempo = 0
+    for i in self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada IS NULL", Date.today.day, Date.today.month, Date.today.year])
+       tiempo  += i.termino - i.inicio
+    end
+    dia = tiempo / 60
+    for i in self.intervencions.find(:all, :conditions => ["WEEK(#{estado}) = ? AND rechazada IS NULL", Date.today.strftime("%U")])
+       tiempo  += i.termino - i.inicio
+    end
+    semana = tiempo / 60
+    for i in self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada IS NULL", Date.today.month])
+       tiempo  += i.termino - i.inicio
+    end
+    mes = tiempo / 60
+    return "#{dia} / #{semana} / #{mes}"
   end
-  def intervencions_mes(estado,rechazada)
-      rechazada == "true" ? self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada IS NOT NULL", Date.today.month]).count : self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada IS NULL", Date.today.month]).count
-  end
 
-  def intervencions_ano(estado,rechazada)
-      rechazada == "true" ? self.intervencions.find(:all, :conditions => ["YEAR(#{estado}) = ? AND rechazada IS NOT NULL", Date.today.year]).count : self.intervencions.find(:all, :conditions => ["YEAR(#{estado}) = ? AND rechazada IS NULL", Date.today.year]).count
+
+  def intervencions_totales(estado,rechazada)
+    if rechazada == "false"
+      dia = self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada IS NULL", Date.today.day, Date.today.month, Date.today.year]).count
+      semana = self.intervencions.find(:all, :conditions => ["WEEK(#{estado}) = ? AND rechazada IS NULL", Date.today.strftime("%U")]).count
+      mes = self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada IS NULL", Date.today.month]).count
+    elsif rechazada == "true"
+      dia = self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada IS NOT NULL", Date.today.day, Date.today.month, Date.today.year]).count
+      semana = self.intervencions.find(:all, :conditions => ["WEEK(#{estado}) = ? AND rechazada IS NOT NULL", Date.today.year]).count
+      mes = self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada IS NOT NULL", Date.today.month]).count
+    end
+    return "#{dia} / #{semana} / #{mes}"
   end
 
 	def facturador?
