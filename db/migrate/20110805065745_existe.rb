@@ -1,7 +1,5 @@
 class Existe < ActiveRecord::Migration
   def self.up
-    rename_table :stocks, :existencias
-
     rename_column :polimeros, :stock_id, :existencia_id
 
     remove_index :existencias, :name => :index_stocks_on_bodega_id rescue ActiveRecord::StatementInvalid
@@ -13,8 +11,6 @@ class Existe < ActiveRecord::Migration
 
   def self.down
     rename_column :polimeros, :existencia_id, :stock_id
-
-    rename_table :existencias, :stocks
 
     remove_index :stocks, :name => :index_existencias_on_bodega_id rescue ActiveRecord::StatementInvalid
     add_index :stocks, [:bodega_id]
