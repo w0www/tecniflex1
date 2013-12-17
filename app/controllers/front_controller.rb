@@ -29,7 +29,7 @@ class FrontController < ApplicationController
     @hora_actual = DateTime.now
     @grupro = Grupoproc.tablero.order_by(:position)
     @clies = Cliente.all
-    @todas = OrdTrab.all
+    @todas = OrdTrab.find(:all, :order => "fechaEntrega desc", :limit => 20)
     @users = User.find(:all, :conditions => ["tablero = true"])
   end
   

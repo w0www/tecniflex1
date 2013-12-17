@@ -29,15 +29,17 @@
     for i in self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada IS NULL", Date.today.day, Date.today.month, Date.today.year])
        tiempo  += i.termino - i.inicio
     end
-    dia = tiempo / 60
+    dia = (tiempo / 60).round
+    tiempo = 0
     for i in self.intervencions.find(:all, :conditions => ["WEEK(#{estado}) = ? AND rechazada IS NULL", Date.today.strftime("%U")])
        tiempo  += i.termino - i.inicio
     end
-    semana = tiempo / 60
+    semana = (tiempo / 60).round
+    tiempo = 0
     for i in self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada IS NULL", Date.today.month])
        tiempo  += i.termino - i.inicio
     end
-    mes = tiempo / 60
+    mes = (tiempo / 60).round
     return "#{dia} / #{semana} / #{mes}"
   end
 

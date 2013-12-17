@@ -9,17 +9,20 @@
     </div>
 
     <div class="content-body">
-      <div class="parte-derecha" style="width:40%;float:right;">
-        <tabla-tiempos/><br/>
-        <tabla-actividad/><br/>
-      </div>
-      <div class="parte-izquierda" style="width:60%">
+      <div class="parte-superior">
         <tabla-tablero/>
+      </div>
+      <div class="parte-inferior" style="margin-top:10px;">
+        <div class="parte-derecha" style="width:50%;float:right;">
+          <tabla-tiempos/><br/>
+        </div>
+        <div class="parte-izquierda" style="width:47%">
+          <tabla-actividad/><br/>
+        </div>
       </div>
     </div>
   </content:>
 </page>
-
 
 <def tag="tabla-tiempos">
   <label>Tiempos por O.T.</label>
@@ -63,38 +66,40 @@
 </def>
 
 <def tag="tabla-actividad">
-  <label>Actividad por usuario</label>
-  <table style="border:1px solid;width:100%;">
-    <tbody>
-      <tr>
-        <th>Usuarios</th>
-        <th>Intervenciones terminadas</th>
-        <th>Errores</th>
-        <th>Horas registradas</th>
-      </tr>
-      <% for u in @users %>
-      <tr>
-        <th><%= u.name %></th>
-        <td><%= u.intervencions_totales("termino","false") %></td>
-        <td><%= u.intervencions_totales("termino","true") %></td>
-        <td><%= u.intervencions_tiempo_total("termino","false") %></td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <if test="&!@users.blank?">
+    <label>Actividad por usuario</label>
+    <table style="border:1px solid;width:100%;">
+      <tbody>
+        <tr>
+          <th>Usuarios</th>
+          <th>Intervenciones terminadas</th>
+          <th>Errores</th>
+          <th>Horas registradas</th>
+        </tr>
+        <% for u in @users %>
+          <tr>
+            <th><%= u.name.first(10) %></th>
+            <td><%= u.intervencions_totales("termino","false") %></td>
+            <td><%= u.intervencions_totales("termino","true") %></td>
+            <td><%= u.intervencions_tiempo_total("termino","false") %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </if>
 </def>
 
 <def tag="tabla-tablero">
   <label>Tablero</label>
-  <table style="width:98%;border:1px solid;">
+  <table style="border:1px solid;" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
     <thead>
       <tr>
-        <th>OT</th>
-        <th>Nombre</th>
+        <th width="11%">OT</th>
+        <th width="20%">Nombre</th>
         <repeat with="&@grupro" >
-          <th><view:nombre/> </th>
+          <th width="6%"><view:nombre/> </th>
         </repeat>
-        <th class="colest">Prioridad</th>
+        <th class="colest" width="1%">Prioridad</th>
       </tr>
     </thead>
     <tbody>
