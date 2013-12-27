@@ -88,7 +88,8 @@
                     <option value="#{proce.id}"><%= proce.nombre -%></option>
                   <%end%>
                 </select>
-                <div id="campos-rechazo" style="width:280px;margin-left:67%">
+				<% buttons = [ ["cancel", "jQuery(this).dialog('close')"] ] %>
+                <hjq-dialog id="campos-rechazo" style="width:280px;margin-left:67%" buttons="&buttons">
                   Observaciones matriceria<input:observaciones-matriceria/><br/>
                   Observaciones analisis<input:observaciones-analisis/><br/>
                   OT incompleta<input:ot-incompleta/><br/>
@@ -103,7 +104,7 @@
                   Observaciones rechazo<input:observaciones-rechazo/><br/>
                   <%= submit_tag "rechazar", :onclick =>"$('envio').value='rechazar';", :id => "rechazar", :class => "button submit-button" %>
                   <a href="#" id="ocultar-rechazo" class="button submit-button">cancelar</a>
-                </div>
+                </hjq-dialog>
                 <a href="#" id="mostrar-rechazo" class="button submit-button">rechazar</a>
               <% else %>
                 <%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
@@ -172,7 +173,7 @@
       // Si pinchamos en el botón mágico de rechazar
       jQuery('#mostrar-rechazo').click(function(){
         // Mostramos los campos, el botón de rechazar bueno y un botón de cancelar
-          jQuery('#campos-rechazo').show();
+          jQuery('#campos-rechazo').hjq_dialog('open');
           jQuery('#mostrar-rechazo').hide();
           jQuery('#ocultar-rechazo').show();
         
@@ -181,7 +182,7 @@
       jQuery('#ocultar-rechazo').click(function(){
         // Ocultamos los campos y mostramos el botón mágico de rechazar
           jQuery('#mostrar-rechazo').show();
-          jQuery('#campos-rechazo').hide();
+          jQuery('#campos-rechazo').hjq_dialog('close');
           jQuery('#ocultar-rechazo').hide();
       });
     });

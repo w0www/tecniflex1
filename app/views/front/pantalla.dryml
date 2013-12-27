@@ -1,23 +1,23 @@
-<page title="pantalla" without-header class="pantalla">
+<page title="pantalla" without-header class="pantalla" style="background-color:black !important">
   <head:>
-    <param-content/>
+    <param-content />
     <meta http-equiv="refresh" content="30"/>
   </head:>
-  <content:>
-    <div class="content-header">
-      <h2>Pantalla resumen</h2>
+  <content: replace>
+    <div>
+      <h1 style="color:#ccc; font-weight:bold; font-size:300%; text-align:center;">Pantalla resumen</h1>
     </div>
 
     <div class="content-body">
-      <div class="parte-superior">
+      <div class="parte-izquierda" style="width:60%;float:left;">
         <tabla-tablero/>
       </div>
-      <div class="parte-inferior" style="margin-top:10px;">
-        <div class="parte-derecha" style="width:50%;float:right;">
+      <div class="parte-derecha" >
+        <div class="derecha-superior" style="width:35%;float:right;">
           <tabla-tiempos/><br/>
         </div>
-        <div class="parte-izquierda" style="width:47%">
-          <tabla-actividad/><br/>
+        <div class="derecha-inferior" style="width:35%;float:right;">
+          <tabla-tiempos/><br/>
         </div>
       </div>
     </div>
@@ -25,18 +25,14 @@
 </page>
 
 <def tag="tabla-tiempos">
-  <label>Tiempos por O.T.</label>
-  <table style="border:1px solid;width:100%;">
+  <label style="color:#ccc;">Tiempos por O.T.</label>
+  <table class="tablero">
     <tbody>
       <tr>
-        <th>O.T</th>
-        <th>Visto Bueno</th>
-        <th>Printer</th>
-        <th>Matriceria</th>
-        <th>Montaje</th>
-        <th>Revision</th>
-        <th>Polimero</th>
-        <th>Despacho</th>
+		<th>O.T.</th>
+        <repeat with="&@grupro" >
+          <th width="5%" style="text-align:center;"><view:nombre/> </th>
+        </repeat>
       </tr>
       <% for ot in @todas %>
       <tr>
@@ -67,7 +63,7 @@
 
 <def tag="tabla-actividad">
   <if test="&!@users.blank?">
-    <label>Actividad por usuario</label>
+    <label style="color:#ccc;">Actividad por usuario</label>
     <table style="border:1px solid;width:100%;">
       <tbody>
         <tr>
@@ -90,24 +86,32 @@
 </def>
 
 <def tag="tabla-tablero">
-  <label>Tablero</label>
-  <table style="border:1px solid;" class="ui-tabs-panel ui-widget-content ui-corner-bottom">
+  <label style="color:#ccc;">Tablero</label>
+  <table style="border:1px solid;" class="tablero">
     <thead>
       <tr>
-        <th width="11%">OT</th>
+        <th width="8%">O.T.</th>
         <th width="20%">Nombre</th>
         <repeat with="&@grupro" >
-          <th width="6%"><view:nombre/> </th>
+          <th width="5%" style="text-align:center;"><view:nombre/> </th>
         </repeat>
-        <th class="colest" width="1%">Prioridad</th>
       </tr>
     </thead>
     <tbody>
       <% @todas.each do |tod| %>
       <% @tod = tod %>
       <% tiempo_total = 0 %>
-      <tr class="st#{tod.state}">
-        <th class="#{@tod.prioridad}" rowspan="2">
+      <% fecha_entrega = @tod.fechaEntrega ? @tod.fechaEntrega : Date.tomorrow.to_time %>
+	  <% if fecha_entrega - 1.hour <= @hora_actual + tiempo_total.minute && fecha_entrega > @hora_actual + tiempo_total.minute
+			color = 'lightyellow'
+		  elsif fecha_entrega > @hora_actual + tiempo_total.minute
+			color = 'lightgreen'
+		  elsif fecha_entrega <= @hora_actual + tiempo_total.minute
+			color = 'red'
+          end
+        %>
+      <tr >
+        <th style="background-color:#{color if color}" rowspan="2">
           <a with="&tod"><%=  tod.numOT -%></a><br/>
           <span style="font-weight:normal">
             <%= if tod.cliente then tod.cliente.sigla else "" end -%>-
@@ -147,16 +151,7 @@
             </p>
           </td>
         <% end %>
-        <% fecha_entrega = @tod.fechaEntrega ? @tod.fechaEntrega : Date.tomorrow.to_time %>
-        <% if fecha_entrega - 1.hour <= @hora_actual + tiempo_total.minute && fecha_entrega > @hora_actual + tiempo_total.minute
-            color = 'lightyellow'
-          elsif fecha_entrega > @hora_actual + tiempo_total.minute
-            color = 'lightgreen'
-          elsif fecha_entrega <= @hora_actual + tiempo_total.minute
-            color = 'red'
-          end
-        %>
-        <td rowspan="2" style="background-color:#{color if color}"/>
+        
       </tr>
       <tr/>
       <%end%>

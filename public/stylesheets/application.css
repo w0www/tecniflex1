@@ -42,6 +42,7 @@ h2 {
 
 td {
     border-collapse:collapse;
+    background-color: #eee;
 
 }
 
@@ -388,6 +389,10 @@ ul.hjq-input-many div.buttons {
 .rechazada{
 		background-color: plum !important;
 		color:black;
+}
+
+.desconocido{
+	background-color: #eee !important;
 }
 
 #stock td,#stock th {

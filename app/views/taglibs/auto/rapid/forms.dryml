@@ -123,7 +123,7 @@
 <def tag="form" for="Intervencion">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="inicio, termino, final, observaciones, observaciones_matriceria, observaciones_analisis, ot_incompleta, observaciones_micropunto, ripeo, distorsion, texto, foto, observaciones_vb, colores, responsable, observaciones_rechazo, rechazada, tarea, user" param/>
+    <field-list fields="inicio, termino, final, observaciones, tarea, user" param/>
     <div param="actions">
       <submit label="#{ht 'intervencions.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -598,7 +598,7 @@
 <def tag="form" for="User">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="name, rol, email_address, administrator, iniciales, state, procesos" param/>
+    <field-list fields="name, rol, email_address, administrator, iniciales, tablero, state, procesos" param/>
     <div param="actions">
       <submit label="#{ht 'users.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

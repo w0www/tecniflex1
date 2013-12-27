@@ -19,6 +19,7 @@
   <old-page merge without-live-search>
      <append-head:>
        <javascript name="jquery.ui.datepicker-es" />
+       <javascript name="jquery.ui.dialog-box" />
      </append-head:>
     <custom-scripts:>
       <hjq-assets/>
@@ -430,7 +431,7 @@
 
 <extend tag="form" for="User">
 	<old-form merge>
-    <field-list: fields="name, rol, email_address, administrator, iniciales, state, procesos">
+    <field-list: fields="name, rol, email_address, administrator, iniciales, state, tablero, procesos">
     	<procesos-view:>
     		<check-many/>
     	</procesos-view:>

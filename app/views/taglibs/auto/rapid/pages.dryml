@@ -1614,7 +1614,7 @@
               </ht>
             </h2>
 
-            <record-flags fields="final, observaciones_matriceria, observaciones_analisis, ot_incompleta, observaciones_micropunto, ripeo, distorsion, texto, foto, observaciones_vb, rechazada" param/>
+            <record-flags fields="final" param/>
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="intervencions.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
@@ -1624,7 +1624,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="inicio, termino, observaciones, colores, responsable, observaciones_rechazo, tarea, user" param/>
+            <field-list fields="inicio, termino, observaciones, tarea, user" param/>
           </section>
     </content:>
 
@@ -2455,7 +2455,7 @@
               </ht>
             </h2>
 
-            <record-flags fields="prueba, reinit, varev, rev, destderev, edmeds, factura" param/>
+            <record-flags fields="prueba, reinit, edmeds, varev, rev, destderev, factura" param/>
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="procesos.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
@@ -4004,7 +4004,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="rol, email_address, administrator, iniciales, state" param/>
+            <field-list fields="rol, email_address, administrator, iniciales, tablero, state" param/>
           </section>
     </content:>
 
