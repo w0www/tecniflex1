@@ -9,6 +9,7 @@
     </div>
 
     <div class="content-body">
+<<<<<<< HEAD
       <div class="parte-izquierda" style="width:60%;float:left;">
         <tabla-tablero/>
       </div>
@@ -17,6 +18,14 @@
           <tabla-tiempos/><br/>
         </div>
         <div class="derecha-inferior" style="width:35%;float:right;">
+=======
+      <div style="margin-top:10px;">
+        <div class="parte-izquierda" style="width:47%;float:right;">
+          <tabla-tablero/>
+        </div>
+        <div class="parte-derecha" style="width:50%">
+          <tabla-tiempos/><br/>
+>>>>>>> reordenar pantalla
           <tabla-actividad/><br/>
         </div>
       </div>
