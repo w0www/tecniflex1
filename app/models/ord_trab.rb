@@ -315,7 +315,7 @@ class OrdTrab < ActiveRecord::Base
   def tnetot
     timot = Time.at(0)
     self.tareas.each do |latar|
-      timot += latar.tneto.to_i
+      timot += latar.tneto
     end
     timot
   end

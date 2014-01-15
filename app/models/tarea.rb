@@ -52,7 +52,7 @@ class Tarea < ActiveRecord::Base
     ['habilitada','iniciada','detenida','recibida','enviada'].include?(self.state)
   end
 
-	def activa_poli?
+  def activa_poli?
     ['habilitada','iniciada','detenida','recibida','enviada'].include?(self.state)
   end
 
@@ -93,8 +93,8 @@ class Tarea < ActiveRecord::Base
   end
 
   def tneto 
-    tne = Time.at(0)
-    self.intervencions.each do |pega|
+    tne = 0
+    for pega in self.intervencions.each 
       if pega.termino
         dife = pega.termino - pega.inicio
       else
@@ -102,7 +102,7 @@ class Tarea < ActiveRecord::Base
       end
       tne += dife
     end
-    tne
+    tne.to_i
   end
   
   def proctar

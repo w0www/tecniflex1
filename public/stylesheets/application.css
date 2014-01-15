@@ -40,7 +40,7 @@ h2 {
     width: 350px;
 }
 
-td {
+.tablero td {
     border-collapse:collapse;
     background-color: #eee;
 

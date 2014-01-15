@@ -37,24 +37,14 @@
       <% for ot in @todas %>
       <tr>
         <th><%= ot.numOT %> </th>
-        <% if ot.procesos.find(:all, :conditions => ["nombre = 'VistoBueno'"]).size > 0 %>
-          <th><%= ot.procesos.find(:all, :conditions => ["nombre = 'VistoBueno'"]).first.minutos_minimo  %> </th>
-        <% end %>
-        <% if ot.procesos.find(:all, :conditions => ["nombre = 'Printer'"]).size > 0 %>
-          <th><%= ot.procesos.find(:all, :conditions => ["nombre = 'Printer'"]).first.minutos_minimo  %> </th>
-        <% end %>
-        <% if ot.procesos.find(:all, :conditions => ["nombre = 'Montaje'"]).size > 0 %>
-          <th><%= ot.procesos.find(:all, :conditions => ["nombre = 'Montaje'"]).first.minutos_minimo  %> </th>
-        <% end %>
-        <% if ot.procesos.find(:all, :conditions => ["nombre = 'RevisionMM'"]).size > 0 %>
-          <th><%= ot.procesos.find(:all, :conditions => ["nombre = 'RevisionMM'"]).first.minutos_minimo  %> </th>
-        <% end %>
-        <% if ot.procesos.find(:all, :conditions => ["nombre = 'Polimero'"]).size > 0 %>
-          <th><%= ot.procesos.find(:all, :conditions => ["nombre = 'Polimero'"]).first.minutos_minimo  %> </th>
-        <% end %>
-        <% if ot.procesos.find(:all, :conditions => ["nombre = 'Facturacion'"]).size > 0 %>
-          <th><%= ot.procesos.find(:all, :conditions => ["nombre = 'Facturacion'"]).first.minutos_minimo  %> </th>
-        <% end %>
+        <repeat with="&@grupro">
+			<% proces = [] %>
+			<% ottars = [] %>
+			<% proces = this.procesos.*.id %>
+			<% ottars = ot.tareas.all :conditions => {:proceso_id => proces} %>
+			<% ttotal = ottars.*.tneto.reduce(:+) || "-" %>
+			<td><%= ttotal %> </td>
+        </repeat>
       </tr>
       <% end %>
     </tbody>
