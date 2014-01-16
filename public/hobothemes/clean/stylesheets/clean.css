@@ -4,16 +4,17 @@ color: #193440;
 }
 
 .page-header {
-color: white; 
-/* background: url(../images/101-3B5F87-ACD3E6.png) repeat-x #3F606E; */
+color: transparent; 
+background: url(../images/LogoTF_960x82.jpg) no-repeat #3F606E;
 }
 
 .page-header .navigation.main-nav a {
   background: url(../images/30-3E547A-242E42.png) repeat-x #242E42;
 }
 .page-header .navigation.main-nav li.current a {
-  color: #222;
+  color: #242E42;
   /* background: url(../images/30-DBE1E5-FCFEF5.png) repeat-x #FCFEF5; */
+  background-color: #DCDCDC;
   border-top: 1px solid white;
   border-left: 1px solid white;
   border-right: 1px solid white;
@@ -128,10 +129,14 @@ form .actions input { margin: 0; }
 .content-body {padding: 15px 0;}
 .content-footer {padding-bottom: 20px;}
 
-.page-header {margin-top: 25px; padding: 0 0 0;}
+.page-header {margin-top: 0px; padding: 0 0 0;}
 .page-header h1 {
-	margin: 0; padding: 20px 30px 30px; 
-	font-family: "Arial Black", Tahoma, Arial, sans-serif; font-size: 36px; letter-spacing: -1.5pt;
+	margin-left: -5000px; 
+	padding: 20px 30px 30px; 
+	font-family: "Arial Black", Tahoma, Arial, sans-serif;
+	font-size: 36px; 
+	letter-spacing: -1.5pt;
+	
 }
 .page-header ul {zoom: 1; overflow: hidden;}
 .page-header li {float: left; margin-left: 0; list-style: none;}
@@ -140,7 +145,7 @@ form .actions input { margin: 0; }
 .page-header .navigation a:hover,
 .page-header h1 a, 
 .page-header h1 a:hover
- {border: none; color: white; background: none;}
+ {border: none; background: none;}
 
 .page-header div.search {
  	float: right;
@@ -172,7 +177,7 @@ form .actions input { margin: 0; }
 
 .account-nav {
     float:right;
-    margin: -22px 5px 0 0;
+    margin: 0px 5px 0 0;
 	font-size: 11px;
 }
 .account-nav li {

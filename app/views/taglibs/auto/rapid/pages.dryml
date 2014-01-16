@@ -626,7 +626,7 @@
 
       <section param="content-body">
         <a action="new" to="&model" param="new-link">
-          <ht key="contactos.actions.new">New Contacto</ht>
+          <ht key="contactos.actions.new">New Contactos</ht>
         </a>
 
         <page-nav param="top-page-nav"/>
@@ -643,21 +643,21 @@
 
 
 <def tag="new-page" for="Contacto">
-  <page merge title="#{ht 'contactos.new.title', :default=>[' New Contacto'] }">
+  <page merge title="#{ht 'contactos.new.title', :default=>[' New Contactos'] }">
     <body: class="new-page contacto" param/>
 
     <content: param>
       <section param="content-header">
         <h2 param="heading">
           <ht key="contactos.new.heading">
-            New Contacto
+            New Contactos
           </ht>
         </h2>
       </section>
 
       <section param="content-body">
         <form param>
-          <submit: label="#{ht 'contactos.actions.create', :default=>['Create Contacto']}"/>
+          <submit: label="#{ht 'contactos.actions.create', :default=>['Create Contactos']}"/>
         </form>
       </section>
     </content:>
@@ -666,13 +666,12 @@
 
 
 <def tag="show-page" for="Contacto">
-  <page merge title="#{ht 'contactos.show.title', :default=>['Contacto'] }">
+  <page merge title="#{ht 'contactos.show.title', :default=>['Contactos'] }">
 
     <body: class="show-page contacto" param/>
 
     <content: param>
           <header param="content-header">
-            <a:cliente param="parent-link">&laquo; <ht key="contactos.actions.back" to="cliente"><name/></ht></a:cliente>
             <h2 param="heading">
               <ht key="contactos.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
                 <name/>
@@ -683,13 +682,13 @@
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="contactos.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
-                Edit Contacto
+                Edit Contactos
               </ht>
             </a>
           </header>
 
           <section param="content-body">
-            <field-list fields="cargo, telefono, email" param/>
+            <field-list fields="cargo, telefono, email, cliente" param/>
           </section>
     </content:>
 
@@ -698,7 +697,7 @@
 
 
 <def tag="edit-page" for="Contacto">
-  <page merge title="#{ht 'contactos.edit.title', :default=>['Edit Contacto'] }">
+  <page merge title="#{ht 'contactos.edit.title', :default=>['Edit Contactos'] }">
 
     <body: class="edit-page contacto" param/>
 
@@ -709,7 +708,7 @@
             Edit <type-name/>
           </ht>
         </h2>
-        <delete-button label="#{ht 'contactos.actions.delete', :default=>['Remove This Contacto']}" param/>
+        <delete-button label="#{ht 'contactos.actions.delete', :default=>['Remove This Contactos']}" param/>
       </section>
 
       <section param="content-body">
@@ -749,7 +748,7 @@
 
       <section param="content-body">
         <a action="new" to="&model" param="new-link">
-          <ht key="contactos.actions.new" >New Contacto</ht>
+          <ht key="contactos.actions.new" >New Contactos</ht>
         </a>
 
 
@@ -766,7 +765,7 @@
 
 <def tag="new-for-cliente-page" polymorphic/>
 <def tag="new-for-cliente-page" for="Contacto">
-  <page merge title="#{ht 'contactos.new_for_owner.title', :default=>['New Contacto for']} #{name :with => @cliente}">
+  <page merge title="#{ht 'contactos.new_for_owner.title', :default=>['New Contactos for']} #{name :with => @cliente}">
     <body: class="new-for-owner-page  contacto" param/>
 
     <content: param>
@@ -787,7 +786,7 @@
       <section param="content-body">
         <form owner="cliente" method="post" param>
           <field-list: skip="cliente"/>
-          <submit: label="#{ht 'contactos.actions.create', :default=>['Create Contacto']}"/>
+          <submit: label="#{ht 'contactos.actions.create', :default=>['Create Contactos']}"/>
         </form>
       </section>
     </content:>
@@ -1959,14 +1958,14 @@
 <!-- ====== OrdTrab Pages ====== -->
 
 <def tag="index-page" for="OrdTrab">
-  <page merge title="#{ht 'ord_trabs.index.title', :default=>['O.T.s'] }">
+  <page merge title="#{ht 'ord_trabs.index.title', :default=>['Ordenes'] }">
     <body: class="index-page ord-trab" param/>
 
     <content: param>
       <header param="content-header">
         <h2 param="heading">
           <ht key="ord_trabs.index.heading">
-            O.T.s
+            Ordenes
           </ht>
         </h2>
 
@@ -1979,7 +1978,7 @@
 
       <section param="content-body">
         <a action="new" to="&model" param="new-link">
-          <ht key="ord_trabs.actions.new">New O.T.</ht>
+          <ht key="ord_trabs.actions.new">New Ordenes</ht>
         </a>
 
         <page-nav param="top-page-nav"/>
@@ -1996,21 +1995,21 @@
 
 
 <def tag="new-page" for="OrdTrab">
-  <page merge title="#{ht 'ord_trabs.new.title', :default=>[' New O.T.'] }">
+  <page merge title="#{ht 'ord_trabs.new.title', :default=>[' New Ordenes'] }">
     <body: class="new-page ord-trab" param/>
 
     <content: param>
       <section param="content-header">
         <h2 param="heading">
           <ht key="ord_trabs.new.heading">
-            New O.T.
+            New Ordenes
           </ht>
         </h2>
       </section>
 
       <section param="content-body">
         <form param>
-          <submit: label="#{ht 'ord_trabs.actions.create', :default=>['Create O.T.']}"/>
+          <submit: label="#{ht 'ord_trabs.actions.create', :default=>['Create Ordenes']}"/>
         </form>
       </section>
     </content:>
@@ -2019,7 +2018,7 @@
 
 
 <def tag="show-page" for="OrdTrab">
-  <page merge title="#{ht 'ord_trabs.show.title', :default=>['O.T.'] }">
+  <page merge title="#{ht 'ord_trabs.show.title', :default=>['Ordenes'] }">
 
     <body: class="show-page ord-trab" param/>
 
@@ -2035,7 +2034,7 @@
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="ord_trabs.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
-                Edit O.T.
+                Edit Ordenes
               </ht>
             </a>
           </header>
@@ -2050,7 +2049,7 @@
 
 
 <def tag="edit-page" for="OrdTrab">
-  <page merge title="#{ht 'ord_trabs.edit.title', :default=>['Edit O.T.'] }">
+  <page merge title="#{ht 'ord_trabs.edit.title', :default=>['Edit Ordenes'] }">
 
     <body: class="edit-page ord-trab" param/>
 
@@ -2061,7 +2060,7 @@
             Edit <type-name/>
           </ht>
         </h2>
-        <delete-button label="#{ht 'ord_trabs.actions.delete', :default=>['Remove This O.T.']}" param/>
+        <delete-button label="#{ht 'ord_trabs.actions.delete', :default=>['Remove This Ordenes']}" param/>
       </section>
 
       <section param="content-body">
@@ -3922,14 +3921,14 @@
 <!-- ====== User Pages ====== -->
 
 <def tag="index-page" for="User">
-  <page merge title="#{ht 'users.index.title', :default=>['Users'] }">
+  <page merge title="#{ht 'users.index.title', :default=>['Usuarios'] }">
     <body: class="index-page user" param/>
 
     <content: param>
       <header param="content-header">
         <h2 param="heading">
           <ht key="users.index.heading">
-            Users
+            Usuarios
           </ht>
         </h2>
 
@@ -3942,7 +3941,7 @@
 
       <section param="content-body">
         <a action="new" to="&model" param="new-link">
-          <ht key="users.actions.new">New User</ht>
+          <ht key="users.actions.new">New Usuarios</ht>
         </a>
 
         <page-nav param="top-page-nav"/>
@@ -3959,21 +3958,21 @@
 
 
 <def tag="new-page" for="User">
-  <page merge title="#{ht 'users.new.title', :default=>[' New User'] }">
+  <page merge title="#{ht 'users.new.title', :default=>[' New Usuarios'] }">
     <body: class="new-page user" param/>
 
     <content: param>
       <section param="content-header">
         <h2 param="heading">
           <ht key="users.new.heading">
-            New User
+            New Usuarios
           </ht>
         </h2>
       </section>
 
       <section param="content-body">
         <form param>
-          <submit: label="#{ht 'users.actions.create', :default=>['Create User']}"/>
+          <submit: label="#{ht 'users.actions.create', :default=>['Create Usuarios']}"/>
         </form>
       </section>
     </content:>
@@ -3982,7 +3981,7 @@
 
 
 <def tag="show-page" for="User">
-  <page merge title="#{ht 'users.show.title', :default=>['User'] }">
+  <page merge title="#{ht 'users.show.title', :default=>['Usuarios'] }">
 
     <body: class="show-page user" param/>
 
@@ -3998,7 +3997,7 @@
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="users.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
-                Edit User
+                Edit Usuarios
               </ht>
             </a>
           </header>
@@ -4013,7 +4012,7 @@
 
 
 <def tag="edit-page" for="User">
-  <page merge title="#{ht 'users.edit.title', :default=>['Edit User'] }">
+  <page merge title="#{ht 'users.edit.title', :default=>['Edit Usuarios'] }">
 
     <body: class="edit-page user" param/>
 
@@ -4024,7 +4023,7 @@
             Edit <type-name/>
           </ht>
         </h2>
-        <delete-button label="#{ht 'users.actions.delete', :default=>['Remove This User']}" param/>
+        <delete-button label="#{ht 'users.actions.delete', :default=>['Remove This Usuarios']}" param/>
       </section>
 
       <section param="content-body">

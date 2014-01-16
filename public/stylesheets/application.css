@@ -1,4 +1,4 @@
-html, body {background-color: #005; }
+html, body {background-color: darkgray; }
 
 .pantalla body{
 width:100%;
@@ -420,8 +420,26 @@ ul.hjq-input-many div.buttons {
 }
 
 ul.navigation {
-    background-color: #003;
+    background-color: white;
 }
+
+
+.page-header .navigation.main-nav a {
+    background: url("../images/30-3E547A-242E42.png") repeat-x scroll 0 0 #242E42;
+    color: white;
+}
+
+.page-header .navigation.main-nav {
+		margin-top: 30px;
+}
+
+.page-header h1 {
+		margin-top: 0px;
+}
+
+.user-link {color: black;}
+
+.nav-item {color: black;}
 
 .verde {
     background-color: green !important;
