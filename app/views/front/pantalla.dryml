@@ -4,8 +4,8 @@
     <meta http-equiv="refresh" content="30"/>
   </head:>
   <content: replace>
-    <div>
-      <h1 style="color:#ccc; font-weight:bold; font-size:300%; text-align:center;">Pantalla resumen</h1>
+    <div class="page-header" id="pantalla">
+      .
     </div>
 
     <div class="content-body">
@@ -17,7 +17,7 @@
           <tabla-tiempos/><br/>
         </div>
         <div class="derecha-inferior" style="width:35%;float:right;">
-          <tabla-tiempos/><br/>
+          <tabla-actividad/><br/>
         </div>
       </div>
     </div>
@@ -25,7 +25,7 @@
 </page>
 
 <def tag="tabla-tiempos">
-  <label style="color:#ccc;">Tiempos por O.T.</label>
+  <label style="color:#fff; font-size:20px;">Tiempos por O.T.</label>
   <table class="tablero">
     <tbody>
       <tr>
@@ -53,8 +53,8 @@
 
 <def tag="tabla-actividad">
   <if test="&!@users.blank?">
-    <label style="color:#ccc;">Actividad por usuario</label>
-    <table style="border:1px solid;width:100%;">
+    <label style="color:#fff; font-size:20px;">Actividad por usuario</label>
+    <table class="tablero">
       <tbody>
         <tr>
           <th>Usuarios</th>
@@ -76,7 +76,7 @@
 </def>
 
 <def tag="tabla-tablero">
-  <label style="color:#ccc;">Tablero</label>
+  <label style="color:#fff; font-size:20px; padding-top:15px;">Tablero</label>
   <table style="border:1px solid;" class="tablero">
     <thead>
       <tr>

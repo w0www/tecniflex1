@@ -1,9 +1,16 @@
 html, body {background-color: darkgray; }
 
 .pantalla body{
-width:100%;
-
+	width:100%;
+	background: black;
 }
+
+#pantalla {
+	background-color: white;
+	background-position: left center;
+	height: 90px;
+}
+	
 
 .section.content {background: gainsboro;padding-bottom: 100px;}
 
@@ -512,4 +519,12 @@ fieldset.horizontal.informe .field {
   font-weight: bold;
   font-size: 11px;
   color: white;
+}
+
+.parte-izquierda {
+	padding-top: 20px;
+}
+
+.parte-derecha {
+	padding-top: 20px;
 }

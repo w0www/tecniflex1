@@ -672,6 +672,7 @@
 
     <content: param>
           <header param="content-header">
+            <a:cliente param="parent-link">&laquo; <ht key="contactos.actions.back" to="cliente"><name/></ht></a:cliente>
             <h2 param="heading">
               <ht key="contactos.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
                 <name/>
@@ -688,7 +689,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="cargo, telefono, email, cliente" param/>
+            <field-list fields="cargo, telefono, email" param/>
           </section>
     </content:>
 
