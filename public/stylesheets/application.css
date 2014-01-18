@@ -10,6 +10,10 @@ html, body {background-color: darkgray; }
 	background-position: left center;
 	height: 90px;
 }
+
+#tactividad th {
+	min-width: 45px;
+}
 	
 
 .section.content {background: gainsboro;padding-bottom: 100px;}
