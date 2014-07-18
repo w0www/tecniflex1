@@ -412,8 +412,8 @@
   </tr>
   <tr>
     <td colspan="5" class="centrada">
-      Lado:
-      <input:supRev sort="DESC"/>
+      Mat: <input:tipomat style="width:50%" blank-message="Sel. material"/>
+      Lado: <input:supRev sort="DESC"/>
     </td>
     <td colspan="3">
       <input:mcPimp style="font-size:60%"/>
@@ -484,10 +484,6 @@
         <input:anilox style="width:5%"/>
         Lpi:
         <input:lpi style="width:5%"/>
-        Mat:
-        <input:tipomat style="width:15%" blank-message="Sel. material"/>
-        Espesor:
-        <input:espesor blank-message="0.00"/>
         &nbsp;&nbsp; Al:
         <input:alto style="width:5%"/>
         x An:
