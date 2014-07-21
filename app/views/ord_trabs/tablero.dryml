@@ -3,8 +3,7 @@
 <page title="Tablero de Control">
   <body: class="definir index-page ord-trab"/>
   <content:>
-    <header class="content-header">
-  </header>
+    <header class="content-header"/>
     <section class="content-body" with='&@ord_trabs'>
     <style>
       #button { padding: .5em 1em; text-decoration: none; }
@@ -43,6 +42,7 @@
                 <% tiempo_total = 0 %>
                 <tr class="st#{tod.state}">
                   <th style="width:70px;" class="#{@tod.prioridad}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a><br/><span style="font-weight:normal"><%= if tod.cliente then tod.cliente.sigla else "" end-%>-<%= tod.codCliente %>- v.<%= tod.version || 1 %></span></th><th rowspan="2" style="width: 12em;" class="#{@tod.state}"><%=  tod.nomprod -%></th>
+                    <!-- SUYCCOM HACK: revisar con Jaime estas lineas para intentar optimizar-->
                     <% @grupro.each do |proce|%>
                       <% tiempo_total += proce.procesos.first.minutos_minimo if proce.procesos.first.minutos_minimo %>
                       <td class="#{tod.estgrupro(proce.abreviacion)[1]}" rowspan="2">

@@ -88,7 +88,7 @@ class OrdTrabsController < ApplicationController
   
   
   index_action :tablero do
-    @hora_actual = DateTime.now
+    @hora_actual = DateTime.now.in_time_zone
     @grupro = Grupoproc.tablero.order_by(:position)
     @clies = Cliente.all
     inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
