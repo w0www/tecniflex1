@@ -5,16 +5,16 @@ class Proceso < ActiveRecord::Base
   acts_as_list
 
   fields do
-    nombre      :string, :name => :true
-    descripcion :text
-    prueba			:boolean
-    reinit			:boolean #reiniciar procesos
-    varev				:boolean #volver a revision                    
-    rev					:boolean #revision
-    destderev		:boolean #destino de revision
-    edmeds			:boolean #Edicion de medidas
-    minutos_minimo :integer
-    factura     :boolean, :default => false #Facturacion
+    nombre          :string, :name => :true
+    descripcion     :text
+    prueba	    :boolean
+    reinit	    :boolean # Reiniciar procesos
+    varev	    :boolean # Volver a revision                    
+    rev		    :boolean # Revision
+    destderev	    :boolean # Destino de revision
+    edmeds	    :boolean # Edicion de medidas
+    minutos_minimo  :integer
+    factura         :boolean, :default => false # Facturacion
     timestamps
   end
 
@@ -26,19 +26,18 @@ class Proceso < ActiveRecord::Base
   belongs_to :sucesor, :class_name => "Proceso"
   belongs_to :grupoproc
 
-	default_scope :order => 'position'
+  default_scope :order => 'position'
 
-	def self.asignables
-		@gasig = Grupoproc.asignar
-		Proceso.find(:all, :conditions => ["grupoproc_id IN (?)", @gasig])
-	end
+  def self.asignables
+    @gasig = Grupoproc.asignar
+    Proceso.find(:all, :conditions => ["grupoproc_id IN (?)", @gasig])
+  end
 
-	def self.checkproc(ticket)
-  	gpro = Proceso.all(:joins => [:grupoproc], :conditions => {"grupoprocs.#{ticket}" => true})
-	end
+  def self.checkproc(ticket)
+    gpro = Proceso.all(:joins => [:grupoproc], :conditions => {"grupoprocs.#{ticket}" => true})
+  end
 
   # --- Permissions --- #
-
   def create_permitted?
     acting_user.administrator?
   end
