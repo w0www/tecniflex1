@@ -3,8 +3,10 @@ log/*.log
 tmp/**/*
 config/database.yml
 db/*.sqlite3
+doc/*.sql
 .bzr/**
 .bzrignore
 .rvmrc
+.ruby-version
 app/views/taglibs/auto/*
 db/schema.rb
