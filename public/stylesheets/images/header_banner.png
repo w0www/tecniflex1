@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta charset="utf-8">
+  <title>
+  parluciaga / Tecniflex1 
+  / origen  / public / stylesheets / images / header_banner.png
+ &mdash; Bitbucket
+</title>
+  <link rel="icon" type="image/png" href="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/img/favicon.png">
+  <meta id="bb-canon-url" name="bb-canon-url" content="https://bitbucket.org">
+  
+  
+    
+<link rel="stylesheet" href="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/compressed/css/ac9d4fa8b780.css" type="text/css" />
+<link rel="stylesheet" href="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/compressed/css/1b3bf9768ee8.css" type="text/css" />
+
+  
+  <!--[if lt IE 9]><link rel="stylesheet" href="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/lib/aui/css/aui-ie.css" media="all"><![endif]-->
+  <!--[if lte IE 9]><link rel="stylesheet" href="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/bower_components/fd-slider/css/fd-slider.css" media="all"><![endif]-->
+  <!--[if IE 9]><link rel="stylesheet" href="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/lib/aui/css/aui-ie9.css" media="all"><![endif]-->
+  <!--[if IE]><link rel="stylesheet" href="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/css/aui-overrides-ie.css" media="all"><![endif]-->
+  <meta name="description" content=""/>
+  <link rel="search" type="application/opensearchdescription+xml" href="/opensearch.xml" title="Bitbucket" />
+  
+  
+    <link href="/parluciaga/tecniflex1/rss?token=0a6555d85e6c634b8496f91e10bbdf48" rel="alternate nofollow" type="application/rss+xml" title="RSS feed for Tecniflex1" />
+  
+
+<script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"VwMGVVZSGwIIUFBQDwU="};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o?o:e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({1:[function(t,e){function n(t,e,n){n||(n={});for(var r=o[t],a=r&&r.length||0,s=n[i]||(n[i]={}),u=0;a>u;u++)r[u].apply(s,e);return s}function r(t,e){var n=o[t]||(o[t]=[]);n.push(e)}var o={},i="nr@context";e.exports={on:r,emit:n}},{}],2:[function(t){function e(t,e,n,i,s){return u?u-=1:r("err",[s||new UncaughtException(t,e,n)]),"function"==typeof a?a.apply(this,o(arguments)):!1}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function n(t){r("err",[t,(new Date).getTime()])}var r=t("handle"),o=t(6),i=t(5),a=window.onerror,s=!1,u=0;t("loader").features.push("err"),window.onerror=e,NREUM.noticeError=n;try{throw new Error}catch(d){"stack"in d&&(t(1),t(2),"addEventListener"in window&&t(3),window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&t(4),s=!0)}i.on("fn-start",function(){s&&(u+=1)}),i.on("fn-err",function(t,e,r){s&&(this.thrown=!0,n(r))}),i.on("fn-end",function(){s&&!this.thrown&&u>0&&(u-=1)}),i.on("internal-error",function(t){r("ierr",[t,(new Date).getTime(),!0])})},{1:5,2:4,3:3,4:6,5:1,6:14,handle:"D5DuLP",loader:"G9z0Bl"}],3:[function(t){function e(t){r.inPlace(t,["addEventListener","removeEventListener"],"-",n)}function n(t){return t[1]}var r=t(1),o=(t(3),t(2));if(e(window),"getPrototypeOf"in Object){for(var i=document;i&&!i.hasOwnProperty("addEventListener");)i=Object.getPrototypeOf(i);i&&e(i);for(var a=XMLHttpRequest.prototype;a&&!a.hasOwnProperty("addEventListener");)a=Object.getPrototypeOf(a);a&&e(a)}else XMLHttpRequest.prototype.hasOwnProperty("addEventListener")&&e(XMLHttpRequest.prototype);o.on("addEventListener-start",function(t){if(t[1]){var e=t[1];"function"==typeof e?this.wrapped=e["nr@wrapped"]?t[1]=e["nr@wrapped"]:e["nr@wrapped"]=t[1]=r(e,"fn-"):"function"==typeof e.handleEvent&&r.inPlace(e,["handleEvent"],"fn-")}}),o.on("removeEventListener-start",function(t){var e=this.wrapped;e&&(t[1]=e)})},{1:15,2:1,3:14}],4:[function(t){var e=(t(3),t(1)),n=t(2);e.inPlace(window,["requestAnimationFrame","mozRequestAnimationFrame","webkitRequestAnimationFrame","msRequestAnimationFrame"],"raf-"),n.on("raf-start",function(t){t[0]=e(t[0],"fn-")})},{1:15,2:1,3:14}],5:[function(t){function e(t){var e=t[0];"string"==typeof e&&(e=new Function(e)),t[0]=n(e,"fn-")}var n=(t(3),t(1)),r=t(2);n.inPlace(window,["setTimeout","setInterval","setImmediate"],"setTimer-"),r.on("setTimer-start",e)},{1:15,2:1,3:14}],6:[function(t){function e(){o.inPlace(this,s,"fn-")}function n(t,e){o.inPlace(e,["onreadystatechange"],"fn-")}function r(t,e){return e}var o=t(1),i=t(2),a=window.XMLHttpRequest,s=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"];window.XMLHttpRequest=function(t){var n=new a(t);try{i.emit("new-xhr",[],n),o.inPlace(n,["addEventListener","removeEventListener"],"-",function(t,e){return e}),n.addEventListener("readystatechange",e,!1)}catch(r){try{i.emit("internal-error",r)}catch(s){}}return n},window.XMLHttpRequest.prototype=a.prototype,o.inPlace(XMLHttpRequest.prototype,["open","send"],"-xhr-",r),i.on("send-xhr-start",n),i.on("open-xhr-start",n)},{1:15,2:1}],7:[function(t){function e(){function e(t){if("string"==typeof t&&t.length)return t.length;if("object"!=typeof t)return void 0;if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if("undefined"!=typeof FormData&&t instanceof FormData)return void 0;try{return JSON.stringify(t).length}catch(e){return void 0}}function n(t){var n=this.params,r=this.metrics;if(!this.ended){this.ended=!0;for(var i=0;u>i;i++)t.removeEventListener(s[i],this.listener,!1);if(!n.aborted){if(r.duration=(new Date).getTime()-this.startTime,4===t.readyState){n.status=t.status;var a=t.responseType,d="arraybuffer"===a||"blob"===a||"json"===a?t.response:t.responseText,f=e(d);if(f&&(r.rxSize=f),this.sameOrigin){var c=t.getResponseHeader("X-NewRelic-App-Data");c&&(n.cat=c.split(", ").pop())}}else n.status=0;r.cbTime=this.cbTime,o("xhr",[n,r])}}}function r(t,e){var n=i(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.sameOrigin=n.sameOrigin}t("loader").features.push("xhr");var o=t("handle"),i=t(1),a=t(5),s=["load","error","abort","timeout"],u=s.length,d=t(2);t(3),t(4),a.on("new-xhr",function(){this.totalCbs=0,this.called=0,this.cbTime=0,this.end=n,this.ended=!1,this.xhrGuids={}}),a.on("open-xhr-start",function(t){this.params={method:t[0]},r(this,t[1]),this.metrics={}}),a.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid)}),a.on("send-xhr-start",function(t,n){var r=this.metrics,o=t[0],i=this;if(r&&o){var d=e(o);d&&(r.txSize=d)}this.startTime=(new Date).getTime(),this.listener=function(t){try{"abort"===t.type&&(i.params.aborted=!0),("load"!==t.type||i.called===i.totalCbs&&(i.onloadCalled||"function"!=typeof n.onload))&&i.end(n)}catch(e){try{a.emit("internal-error",e)}catch(r){}}};for(var f=0;u>f;f++)n.addEventListener(s[f],this.listener,!1)}),a.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),a.on("xhr-load-added",function(t,e){var n=""+d(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),a.on("xhr-load-removed",function(t,e){var n=""+d(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),a.on("addEventListener-end",function(t,e){e instanceof XMLHttpRequest&&"load"===t[0]&&a.emit("xhr-load-added",[t[1],t[2]],e)}),a.on("removeEventListener-end",function(t,e){e instanceof XMLHttpRequest&&"load"===t[0]&&a.emit("xhr-load-removed",[t[1],t[2]],e)}),a.on("fn-start",function(t,e,n){e instanceof XMLHttpRequest&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=(new Date).getTime()))}),a.on("fn-end",function(t,e){this.xhrCbStart&&a.emit("xhr-cb-time",[(new Date).getTime()-this.xhrCbStart,this.onload,e],e)})}window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&!/CriOS/.test(navigator.userAgent)&&e()},{1:8,2:11,3:3,4:6,5:1,handle:"D5DuLP",loader:"G9z0Bl"}],8:[function(t,e){e.exports=function(t){var e=document.createElement("a"),n=window.location,r={};e.href=t,r.port=e.port;var o=e.href.split("://");return!r.port&&o[1]&&(r.port=o[1].split("/")[0].split(":")[1]),r.port&&"0"!==r.port||(r.port="https"===o[0]?"443":"80"),r.hostname=e.hostname||n.hostname,r.pathname=e.pathname,"/"!==r.pathname.charAt(0)&&(r.pathname="/"+r.pathname),r.sameOrigin=!e.hostname||e.hostname===document.domain&&e.port===n.port&&e.protocol===n.protocol,r}},{}],handle:[function(t,e){e.exports=t("D5DuLP")},{}],D5DuLP:[function(t,e){function n(t,e){var n=r[t];return n?n.apply(this,e):(o[t]||(o[t]=[]),void o[t].push(e))}var r={},o={};e.exports=n,n.queues=o,n.handlers=r},{}],11:[function(t,e){function n(t){if(!t||"object"!=typeof t&&"function"!=typeof t)return-1;if(t===window)return 0;if(o.call(t,"__nr"))return t.__nr;try{return Object.defineProperty(t,"__nr",{value:r,writable:!0,enumerable:!1}),r}catch(e){return t.__nr=r,r}finally{r+=1}}var r=1,o=Object.prototype.hasOwnProperty;e.exports=n},{}],loader:[function(t,e){e.exports=t("G9z0Bl")},{}],G9z0Bl:[function(t,e){function n(){var t=p.info=NREUM.info;if(t&&t.agent&&t.licenseKey&&t.applicationID&&u&&u.body){p.proto="https"===c.split(":")[0]||t.sslForHttp?"https://":"http://",a("mark",["onload",i()]);var e=u.createElement("script");e.src=p.proto+t.agent,u.body.appendChild(e)}}function r(){"complete"===u.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=t("handle"),s=window,u=s.document,d="addEventListener",f="attachEvent",c=(""+location).split("?")[0],p=e.exports={offset:i(),origin:c,features:[]};u[d]?(u[d]("DOMContentLoaded",o,!1),s[d]("load",n,!1)):(u[f]("onreadystatechange",r),s[f]("onload",n)),a("mark",["firstbyte",i()])},{handle:"D5DuLP"}],14:[function(t,e){function n(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(0>o?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=n},{}],15:[function(t,e){function n(t,e,r,s){function nrWrapper(){try{var n,a=u(arguments),d=this,f=r&&r(a,d)||{}}catch(c){i([c,"",[a,d,s],f])}o(e+"start",[a,d,s],f);try{return n=t.apply(d,a)}catch(p){throw o(e+"err",[a,d,p],f),p}finally{o(e+"end",[a,d,n],f)}}return a(t)?t:(e||(e=""),nrWrapper[n.flag]=!0,nrWrapper)}function r(t,e,r,o){r||(r="");var i,s,u,d="-"===r.charAt(0);for(u=0;u<e.length;u++)s=e[u],i=t[s],a(i)||(t[s]=n(i,d?s+r:r,o,s,t))}function o(t,e,n){try{s.emit(t,e,n)}catch(r){i([r,t,e,n])}}function i(t){try{s.emit("internal-error",t)}catch(e){}}function a(t){return!(t&&"function"==typeof t&&t.apply&&!t[n.flag])}var s=t(1),u=t(2);e.exports=n,n.inPlace=r,n.flag="nr@wrapper"},{1:1,2:14}]},{},["G9z0Bl",2,7]);</script></head>
+<body class="production aui-page-sidebar aui-sidebar-collapsed"
+      data-base-url="https://bitbucket.org"
+      data-no-avatar-image="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/img/default_avatar/16/user_blue.png"
+      data-current-user="{&quot;username&quot;: &quot;txapelgorri&quot;, &quot;displayName&quot;: &quot;Ibon Castilla&quot;, &quot;firstName&quot;: &quot;Ibon&quot;, &quot;avatarUrl&quot;: &quot;https://secure.gravatar.com/avatar/8eb4e660cc5a8b67b3592740b90cd1cc?d=https%3A%2F%2Fd3oaxc4q5k2d6q.cloudfront.net%2Fm%2F8cbb38b7bdad%2Fimg%2Fdefault_avatar%2F32%2Fuser_blue.png&amp;s=32&quot;, &quot;lastName&quot;: &quot;Castilla&quot;, &quot;isTeam&quot;: false, &quot;isSshEnabled&quot;: true, &quot;isKbdShortcutsEnabled&quot;: true, &quot;id&quot;: 937577, &quot;isAuthenticated&quot;: true}"
+      data-atlassian-id="{&quot;loginStatusUrl&quot;: &quot;https://id.atlassian.com/profile/rest/profile&quot;}"
+      
+      data-flag-upload-image="true"
+       data-current-repo="{&quot;scm&quot;: &quot;git&quot;, &quot;readOnly&quot;: false, &quot;mainbranch&quot;: {&quot;name&quot;: &quot;master&quot;}, &quot;language&quot;: &quot;ruby&quot;, &quot;owner&quot;: {&quot;username&quot;: &quot;parluciaga&quot;, &quot;isTeam&quot;: false}, &quot;fullslug&quot;: &quot;parluciaga/tecniflex1&quot;, &quot;slug&quot;: &quot;tecniflex1&quot;, &quot;id&quot;: 710103, &quot;pygmentsLanguage&quot;: &quot;ruby&quot;}"
+       data-current-cset="abcc13a8d2cf181c0e2bcacc4793866df001d54e"
+      
+      
+      
+      >
+<script type="text/javascript" src="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/compressed/js/9f0feb819aab.js"></script>
+
+<div id="page">
+  <div id="wrapper">
+    
+  
+
+
+    <header id="header" role="banner">
+      
+  
+    
+  
+
+      <nav class="aui-header aui-dropdown2-trigger-group" role="navigation">
+        <div class="aui-header-inner">
+          <div class="aui-header-primary">
+            
+  
+    <div class="aui-header-before">
+      <a class="aui-dropdown2-trigger app-switcher-trigger" aria-owns="app-switcher" aria-haspopup="true" tabindex="0" aria-controls="app-switcher">
+        <span class="aui-icon aui-icon-small aui-iconfont-appswitcher">Aplicaciones asociadas</span>
+      </a>
+      
+        <nav id="app-switcher" class="aui-dropdown2 aui-style-default aui-dropdown2-disable-active-class">
+          <div class="aui-dropdown2-section blank-slate">
+            <h2>Conecta Bitbucket con otros buenos productos de Atlassian:</h2>
+            <dl>
+              <dt class="jira">JIRA</dt>
+              <dd>Seguimiento de proyecto e incidencia</dd>
+              <dt class="confluence">Confluence</dt>
+              <dd>Colaboración e intercambio de contenidos</dd>
+              <dt class="bamboo">Bamboo</dt>
+              <dd>Integración continua</dd>
+            </dl>
+            <a href="https://www.atlassian.com/ondemand/signup/?product=jira.ondemand,bitbucket.ondemand&amp;utm_source=bitbucket&amp;utm_medium=button&amp;utm_campaign=app_switcher&amp;utm_content=trial_button"
+               class="aui-button aui-button-primary aui-style" target="_blank" id="ondemand-trial">Prueba Gratuíta</a>
+            <a href="https://www.atlassian.com/software/ondemand/overview?utm_source=bitbucket&amp;utm_medium=button&amp;utm_campaign=app_switcher&amp;utm_content=learn_more_button"
+               class="aui-button aui-style" target="_blank" id="ondemand-learn-more">Saber más</a>
+          </div>
+        </nav>
+      
+    </div>
+  
+
+            
+              <h1 class="aui-header-logo aui-header-logo-bitbucket " id="logo">
+                <a href="/">
+                  <span class="aui-header-logo-device">Bitbucket</span>
+                </a>
+              </h1>
+            
+            
+  <script id="repo-dropdown-template" type="text/html">
+  
+
+[[#hasViewed]]
+  <div class="aui-dropdown2-section">
+    <strong class="viewed">Visto recientemente</strong>
+    <ul class="aui-list-truncate">
+      [[#viewed]]
+        <li class="[[#is_private]]private[[/is_private]][[^is_private]]public[[/is_private]] repository">
+          <a href="[[url]]" title="[[owner]]/[[name]]" class="aui-icon-container recently-viewed repo-link">
+            <img class="repo-avatar size16" src="[[{avatar}]]" alt="[[owner]]/[[name]] avatar"/>
+            [[owner]] / [[name]]
+          </a>
+        </li>
+      [[/viewed]]
+    </ul>
+  </div>
+[[/hasViewed]]
+[[#hasUpdated]]
+<div class="aui-dropdown2-section">
+  <strong class="updated">Actualizado recientemente</strong>
+  <ul class="aui-list-truncate">
+    [[#updated]]
+    <li class="[[#is_private]]private[[/is_private]][[^is_private]]public[[/is_private]] repository">
+      <a href="[[url]]" title="[[owner]]/[[name]]" class="aui-icon-container recently-updated repo-link">
+        <img class="repo-avatar size16" src="[[{avatar}]]" alt="[[owner]]/[[name]] avatar"/>
+        [[owner]] / [[name]]
+      </a>
+    </li>
+    [[/updated]]
+  </ul>
+</div>
+[[/hasUpdated]]
+
+</script>
+  <ul class="aui-nav">
+    
+      <li>
+        <a class="aui-dropdown2-trigger"
+           aria-owns="dashboard-dropdown" aria-haspopup="true" href="/dashboard/overview " id="dashboard-dropdown-trigger">
+          Dashboard
+          <span class="aui-icon-dropdown"></span>
+        </a>
+        <nav id="dashboard-dropdown" class="aui-dropdown2 aui-style-default">
+          <div class="aui-dropdown2-section">
+            <ul>
+              <li>
+                <a href="/dashboard/overview" id="dashboard-overview-link">
+                  Resumen
+                </a>
+              </li>
+              <li>
+                <a href="/dashboard/pullrequests" id="dashboard-prs-link">
+                  Peticiones <em>pull</em>
+                </a>
+              </li>
+              <li>
+                <a href="/dashboard/issues" id="dashboard-issues-link">
+                  Incidencias
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </li>
+      
+        
+          <script id="team-dropdown-template" type="text/html">
+  
+
+<div class="aui-dropdown2-section primary">
+  <ul class="aui-list-truncate">
+    [[#teams]]
+      <li>
+        <a href="/[[username]]" class="aui-icon-container team-link">
+          <img class="avatar avatar16" src="[[avatar]]" alt="" width="16" height="16" />[[display_name]]
+        </a>
+      </li>
+    [[/teams]]
+  </ul>
+</div>
+
+<div class="aui-dropdown2-section">
+  <ul>
+    <li>
+      <a href="/account/create-team/?team_source=header"
+          data-modules="registration/create-team-link"
+          id="create-team-link">Crear equipo</a>
+    </li>
+  </ul>
+</div>
+
+</script>
+          <li>
+            <a class="aui-dropdown2-trigger" href="#" id="teams-dropdown-trigger"
+              aria-owns="teams-dropdown" aria-haspopup="true">
+              Equipos
+              <span class="aui-icon-dropdown"></span>
+            </a>
+            <div id="teams-dropdown" class="aui-dropdown2 aui-style-default">
+              <div class="aui-dropdown2-section blank-slate">
+                <p>Organize your team's work and supercharge repository administration.</p>
+                <a class="aui-button aui-button-primary" id="create-team-blank-slate"
+                  href="/account/create-team/?team_source=menu_blank">
+                  Crear equipo
+                </a>
+              </div>
+            </div>
+          </li>
+        
+      
+      <li>
+        <a class="aui-dropdown2-trigger selected"
+           aria-owns="repo-dropdown" aria-haspopup="true" href="/repo/mine " id="repositories-dropdown-trigger">
+          Repositorios
+          <span class="aui-icon-dropdown"></span>
+        </a>
+        <nav id="repo-dropdown" class="aui-dropdown2 aui-style-default">
+          <div id="repo-dropdown-recent"></div>
+          <div class="aui-dropdown2-section">
+            <ul>
+              <li>
+                <a href="/repo/create" class="new-repository" id="create-repo-link">
+                  Crear repositorio
+                </a>
+              </li>
+              <li>
+                <a href="/repo/import" class="import-repository" id="import-repo-link">
+                  Importar repositorio
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </li>
+      
+      <li>
+        
+          <a class="aui-button aui-button-primary aui-style"
+             href="/repo/create" id="repo-create-cta"
+             title="Crear repositorio">
+            Crear
+          </a>
+        
+      </li>
+    
+  </ul>
+
+          </div>
+          <div class="aui-header-secondary">
+            
+  <ul role="menu" class="aui-nav">
+    
+    <li>
+      <form action="/repo/all" method="get" class="aui-quicksearch">
+        <label for="search-query" class="assistive">owner/repository</label>
+        <input id="search-query" class="bb-repo-typeahead" type="text"
+               placeholder="owner/repository" name="name" autocomplete="off"
+               data-bb-typeahead-focus="false">
+      </form>
+    </li>
+    <li>
+      <a class="aui-dropdown2-trigger" id="help-dropdown-trigger"
+         aria-controls="header-help-dropdown" aria-owns="header-help-dropdown"
+         aria-haspopup="true" data-container="#header .aui-header-inner" href="#header-help-dropdown">
+        <span class="aui-icon aui-icon-small aui-iconfont-help">Ayuda</span><span class="aui-icon-dropdown"></span>
+      </a>
+      <nav id="header-help-dropdown" class="aui-dropdown2 aui-style-default aui-dropdown2-in-header" aria-hidden="true">
+        <div class="aui-dropdown2-section">
+          <ul>
+            <li>
+              <a href="/whats-new" id="features-link">
+                Últimas funcionalidades
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="aui-dropdown2-section">
+          <ul>
+            <li>
+              <a class="support-ga"
+                 data-support-gaq-page="DocumentationHome"
+                 href="https://confluence.atlassian.com/x/bgozDQ"
+                 target="_blank">
+                Documentación
+              </a>
+            </li>
+            <li>
+              <a class="support-ga"
+                 data-support-gaq-page="Documentation101"
+                 href="https://confluence.atlassian.com/x/cgozDQ"
+                 target="_blank">
+                Bitbucket 101
+              </a>
+            </li>
+            <li>
+              <a class="support-ga"
+                 data-support-gaq-page="GitTutorials"
+                 href="https://www.atlassian.com/git?utm_source=bitbucket&amp;utm_medium=link&amp;utm_campaign=help_dropdown&amp;utm_content=learn_git"
+                 target="_blank">
+                Learn Git
+              </a>
+            </li>
+            <li>
+              <a class="support-ga"
+                 data-support-gaq-page="DocumentationKB"
+                 href="https://confluence.atlassian.com/x/2w4zDQ"
+                 target="_blank">
+                Base de conocimientos
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="aui-dropdown2-section">
+          <ul>
+            <li>
+              <a class="support-ga"
+                 data-support-gaq-page="Answers"
+                 href="https://answers.atlassian.com/tags/bitbucket/"
+                 target="_blank">
+                Bitbucket en Atlassian Respuestas
+              </a>
+            </li>
+            <li>
+              <a class="support-ga"
+                 data-support-gaq-page="Home"
+                 href="/support">
+              Soporte
+            </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </li>
+      
+        
+      
+    
+      <li>
+        <a class="aui-dropdown2-trigger"
+           aria-owns="user-dropdown" aria-haspopup="true" data-container="#header .aui-header-inner"
+           href="/txapelgorri" title="txapelgorri" id="user-dropdown-trigger">
+          <div class="aui-avatar aui-avatar-small">
+              <div class="aui-avatar-inner">
+                  <img src="https://secure.gravatar.com/avatar/8eb4e660cc5a8b67b3592740b90cd1cc?d=https%3A%2F%2Fd3oaxc4q5k2d6q.cloudfront.net%2Fm%2F8cbb38b7bdad%2Fimg%2Fdefault_avatar%2F32%2Fuser_blue.png&amp;s=32" alt="Logged in as txapelgorri" height="24" width="24" />
+              </div>
+          </div>
+        </a>
+        <nav id="user-dropdown" class="aui-dropdown2 aui-style-default" aria-hidden="true">
+          <div class="aui-dropdown2-section">
+            <ul>
+              <li>
+                <a href="/txapelgorri" id="profile-link">Ver perfil</a>
+              </li>
+              <li>
+                <a href="/account/user/txapelgorri/" id="account-link">Administrar cuenta</a>
+              </li>
+              <li>
+                  <a href="/account/notifications/" id="inbox-link">Bandeja de entrada <span id="inbox-unread-count"></span></a>
+              </li>
+              <li>
+                <a href="#general-invite" class="general-invite-link" id="general-invite-dropdown">Invitar a un amigo</a>
+                <script id="general-invite-template" type="text/html">
+  
+<div id="general-invite">
+  <form class="aui invitation-form" id="general-invite-form" method="post" novalidate>
+    <div class="error aui-message hidden">
+      <span class="aui-icon icon-error"></span>
+      <div class="message"></div>
+    </div>
+    <div class="field-group">
+      <label for="id_general_email_address">Correo electrónico</label>
+      <input type="email" id="id_general_email_address" name="email-address" class="text long-field">
+    </div>
+  </form>
+</div>
+
+</script>
+              </li>
+            </ul>
+          </div>
+          <div class="aui-dropdown2-section">
+            <ul>
+              <li>
+                
+                  <a href="/account/signout/">Cerrar sesión.</a>
+                
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </li>
+    
+  </ul>
+
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    
+  <header id="account-warning" role="banner" class="aui-message-banner warning
+    ">
+    <div class="aui-message-banner-inner">
+      <span class="aui-icon aui-icon-warning"></span>
+      <span class="message">
+        
+      </span>
+    </div>
+  </header>
+
+    
+    
+      <header id="aui-message-bar">
+        
+      </header>
+    
+
+
+    <div id="content" role="main">
+      
+  
+
+<div class="aui-sidebar repo-sidebar" data-modules="components/repo-sidebar"
+     
+      aria-expanded="false">
+  <div class="aui-sidebar-wrapper">
+    <div class="aui-sidebar-body">
+      <header class="aui-page-header">
+        <div class="aui-page-header-inner">
+          <div class="aui-page-header-image">
+            <a href="/parluciaga/tecniflex1" id="repo-avatar-link" class="repo-link">
+              <span class="aui-avatar aui-avatar-large aui-avatar-project">
+                <span class="aui-avatar-inner">
+                    <img src="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/img/language-avatars/ruby_64.png" alt="">
+                </span>
+              </span>
+            </a>
+          </div>
+          <div class="aui-page-header-main">
+            <ol class="aui-nav aui-nav-breadcrumbs">
+              <li>
+                <a href="/parluciaga" id="repo-owner-link">parluciaga</a>
+              </li>
+            </ol>
+            <h1>
+              
+                <span class="aui-icon aui-icon-small aui-iconfont-locked"></span>
+              
+              <a href="/parluciaga/tecniflex1" title="Tecniflex1" class="entity-name">Tecniflex1</a>
+            </h1>
+          </div>
+        </div>
+      </header>
+      <nav class="aui-navgroup aui-navgroup-vertical">
+        <div class="aui-navgroup-inner">
+          
+            
+              <div class="aui-sidebar-group aui-sidebar-group-actions repository-actions forks-enabled can-create">
+                <div class="aui-nav-heading">
+                  <strong>Acciones</strong>
+                </div>
+                  <ul id="repo-actions" class="aui-nav">
+                    <li>
+                      <a href="#clone" id="repo-clone-button" class="aui-nav-item">
+                        <span class="aui-icon icon-clone"></span>
+                        <span class="aui-nav-item-label">Clonar</span>
+                      </a>
+                    </li>
+                    
+                      <li>
+                        <a href="/parluciaga/tecniflex1/branch"
+                           id="repo-create-branch-link" class="create-branch-button aui-nav-item"
+                           data-modules="repo/create-branch">
+                          <span class="aui-icon icon-create-branch"></span>
+                          <span class="aui-nav-item-label">Crear branch</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="/parluciaga/tecniflex1/pull-request/new"
+                           id="repo-create-pull-request-link" class="aui-nav-item">
+                          <span class="aui-icon icon-create-pull-request"></span>
+                          <span class="aui-nav-item-label">Crear solicitud de integración</span>
+                        </a>
+                      </li>
+                    
+                    <li>
+                      <a href="/parluciaga/tecniflex1/branches/compare"
+                         id="repo-compare-link" class="aui-nav-item">
+                        <span class="aui-icon aui-icon-small aui-iconfont-devtools-compare"></span>
+                        <span class="aui-nav-item-label">Comparar</span>
+                      </a>
+                    </li>
+                    
+                      <li>
+                        <a href="/parluciaga/tecniflex1/fork"
+                           id="repo-fork-link" class="aui-nav-item">
+                          <span class="aui-icon icon-fork"></span>
+                          <span class="aui-nav-item-label">División</span>
+                        </a>
+                      </li>
+                    
+                  </ul>
+              </div>
+            
+          
+          <div class="aui-sidebar-group aui-sidebar-group-tier-one repository-sections">
+            <div class="aui-nav-heading">
+              <strong>Navigation</strong>
+            </div>
+            <ul class="aui-nav">
+              
+                <li>
+                  <a href="/parluciaga/tecniflex1/overview" id="repo-overview-link" class="aui-nav-item">
+                    <span class="aui-icon icon-overview"></span>
+                    <span class="aui-nav-item-label">Resumen</span>
+                  </a>
+                </li>
+              
+              
+                <li class="aui-nav-selected">
+                  <a href="/parluciaga/tecniflex1/src" id="repo-source-link" class="aui-nav-item">
+                    <span class="aui-icon icon-source"></span>
+                    <span class="aui-nav-item-label">Fuente</span>
+                  </a>
+                </li>
+              
+              
+                <li>
+                  <a href="/parluciaga/tecniflex1/commits" id="repo-commits-link" class="aui-nav-item">
+                    <span class="aui-icon icon-commits"></span>
+                    <span class="aui-nav-item-label">Confirmaciones</span>
+                  </a>
+                </li>
+              
+              
+                <li>
+                  <a href="/parluciaga/tecniflex1/branches" id="repo-branches-link" class="aui-nav-item">
+                    <span class="aui-icon icon-branches"></span>
+                    <span class="aui-nav-item-label">Ramas</span>
+                  </a>
+                </li>
+              
+              
+                <li>
+                  <a href="/parluciaga/tecniflex1/pull-requests" id="repo-pullrequests-link" class="aui-nav-item">
+                    
+                      
+                        <span class="aui-badge" title="1 solicitud de integración abierta" id="pullrequest-count">1</span>
+                      
+                    
+                    <span class="aui-icon icon-pull-requests"></span>
+                    <span class="aui-nav-item-label">Peticiones <em>pull</em></span>
+                  </a>
+                </li>
+              
+              
+                
+              
+                <li id="issues-tab" class="
+                  
+                ">
+                  <a href="/parluciaga/tecniflex1/issues?status=new&amp;status=open" id="repo-issues-link" class="aui-nav-item">
+                    
+                      
+                      <span class="aui-badge" title="29 active issues " id="issue-count">29</span>
+                      
+                    
+                    <span class="aui-icon icon-issues"></span>
+                    <span class="aui-nav-item-label">Incidencias</span>
+                  </a>
+                </li>
+                <li id="wiki-tab" class="
+                    
+                  ">
+                  <a href="/parluciaga/tecniflex1/wiki" id="repo-wiki-link" class="aui-nav-item">
+                    <span class="aui-icon icon-wiki"></span>
+                    <span class="aui-nav-item-label">Wiki</span>
+                  </a>
+                </li>
+              
+                <li>
+                <a href="/parluciaga/tecniflex1/downloads" id="repo-downloads-link" class="aui-nav-item">
+                  
+                    
+                      <span class="aui-badge" id="downloads-count">1</span>
+                    
+                  
+                  <span class="aui-icon icon-downloads"></span>
+                  <span class="aui-nav-item-label">Descargas</span>
+                </a>
+                </li>
+              
+            </ul>
+          </div>
+          
+          
+            
+              <div class="hidden kb-shortcut-actions">
+                <a id="repo-create-issue" href="/parluciaga/tecniflex1/issues/new"></a>
+              </div>
+            
+          
+        </div>
+      </nav>
+    </div>
+    <div class="aui-sidebar-footer">
+      <a class="aui-sidebar-toggle aui-sidebar-footer-tipsy aui-button aui-button-subtle"><span class="aui-icon"></span></a>
+    </div>
+  </div>
+  
+    <script id="share-repo-template" type="text/html">
+  
+
+<div class="clearfix">
+   <span class="repo-avatar-container size32" title="parluciaga/Tecniflex1">
+  <img alt="parluciaga/Tecniflex1" src="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/img/language-avatars/ruby_32.png">
+</span>
+
+  <span class="repo-name-container">
+    parluciaga / Tecniflex1
+  </span>
+</div>
+<p class="helptext">
+  
+    Existing users are granted access to this repository immediately.
+    New users will be sent an invitation.
+  
+</p>
+<div class="manage-repo-link"
+  data-manage-link="/parluciaga/tecniflex1/admin/access"></div>
+<div class="share-form"></div>
+
+</script>
+    <script id="share-dialog-template" type="text/html">
+  <div class="aui-tabs horizontal-tabs">
+  <ul class="tabs-menu">
+    [[#panels]]
+      <li class="menu-item">
+        <a href="#[[tabId]]"><strong>[[display]]</strong></a>
+      </li>
+    [[/panels]]
+  </ul>
+  [[#panels]]
+    <div class="tabs-pane" id="[[tabId]]"></div>
+  [[/panels]]
+</div>
+
+</script>
+  
+  
+
+<div id="repo-clone-dialog" class="clone-dialog hidden">
+  
+<div class="clone-url">
+  <div class="aui-buttons">
+    <a href="https://txapelgorri@bitbucket.org/parluciaga/tecniflex1.git"
+       class="aui-button aui-style aui-dropdown2-trigger" aria-haspopup="true"
+       aria-owns="clone-url-dropdown-header">
+      <span class="dropdown-text">HTTPS</span>
+    </a>
+    <div id="clone-url-dropdown-header" class="aui-dropdown2 aui-style-default">
+      <ul class="aui-list-truncate">
+        <li>
+          <a href="https://txapelgorri@bitbucket.org/parluciaga/tecniflex1.git"
+            
+              data-command="git clone https://txapelgorri@bitbucket.org/parluciaga/tecniflex1.git"
+            
+            class="item-link https">HTTPS
+          </a>
+        </li>
+        <li>
+          <a href="ssh://git@bitbucket.org/parluciaga/tecniflex1.git"
+            
+              data-command="git clone git@bitbucket.org:parluciaga/tecniflex1.git"
+            
+            class="item-link ssh">SSH
+          </a>
+        </li>
+      </ul>
+    </div>
+    <input type="text" readonly="readonly" class="clone-url-input"
+           value="git clone https://txapelgorri@bitbucket.org/parluciaga/tecniflex1.git">
+  </div>
+  
+  <p>¿Necesitas ayuda para clonar? Visita
+     <a href="https://confluence.atlassian.com/x/cgozDQ" target="_blank">Bitbucket 101</a>.</p>
+  
+</div>
+
+  
+
+<div class="sourcetree-callout clone-in-sourcetree"
+  data-https-url="https://txapelgorri@bitbucket.org/parluciaga/tecniflex1.git"
+  data-ssh-url="ssh://git@bitbucket.org/parluciaga/tecniflex1.git">
+
+  <div>
+    <button class="aui-button aui-style aui-button-primary">
+      
+        Clonar en SourceTree
+      
+    </button>
+  </div>
+
+  <p class="windows-text">
+      
+<a href="http://www.sourcetreeapp.com/?utm_source=internal&amp;utm_medium=link&amp;utm_campaign=clone_repo_win" target="_blank">Atlassian SourceTree</a> es un cliente gratuito de Git y Mercurial para Windows.
+  </p>
+  <p class="mac-text">
+      
+<a href="http://www.sourcetreeapp.com/?utm_source=internal&amp;utm_medium=link&amp;utm_campaign=clone_repo_mac" target="_blank">Atlassian SourceTree</a>
+es un cliente gratuito de Git y Mercurial para MAC.
+  </p>
+</div>
+
+</div>
+
+</div>
+
+
+      
+  <div class="aui-page-panel">
+    
+
+
+
+    <script id="sidebar-feature-dialog-template" type="text/html">
+  
+
+<div id="sidebar-feature-content">
+  <div class="content">
+    <h2>New sidebar navigation</h2>
+    <ul>
+      <li>Actions and navigation in one place</li>
+      <li>Always visible for faster access</li>
+      <li>
+        
+          Expand or collapse using the <code>[</code> key to see more actions or more space
+        
+      </li>
+    </ul>
+  </div>
+
+  <div class="buttons-container">
+    <button class="aui-button" id="confirm-sidebar">Got it</button>
+    <a href="http://blog.bitbucket.org/2014/05/20/introducing-the-new-fluid-width-bitbucket/">Saber más</a>
+  </div>
+</div>
+
+</script>
+    <div class="aui-page-panel-inner">
+      <div id="repo-content" class="aui-page-panel-content">
+        <div class="aui-group">
+          <div class="aui-item section-title">
+            <h1>Fuente</h1>
+          </div>
+          <div class="aui-item page-actions">
+            
+          </div>
+        </div>
+        
+  <div id="source-container" class="maskable" data-modules="repo/source/index">
+    
+
+
+
+<header id="source-path">
+  <div class="labels labels-csv">
+    
+      <div class="aui-buttons">
+        <button data-branches-tags-url="/api/1.0/repositories/parluciaga/tecniflex1/branches-tags"
+                data-modules="components/branch-dialog"
+                class="aui-button branch-dialog-trigger" title="unoycero">
+          
+            
+              <span class="aui-icon aui-icon-small aui-iconfont-devtools-branch">Ramas</span>
+            
+            <span class="name">unoycero</span>
+          
+          <span class="aui-icon-dropdown"></span>
+        </button>
+        <button class="aui-button" id="checkout-branch-button"
+                title="Revisa esta rama">
+          <span class="aui-icon aui-icon-small aui-iconfont-devtools-clone">Revisa esta rama</span>
+          <span class="aui-icon-dropdown"></span>
+        </button>
+      </div>
+      <script id="branch-checkout-template" type="text/html">
+  
+
+<div id="checkout-branch-contents">
+  <div class="command-line">
+    <p>
+      Compruebe la rama en su equipo local para poder trabajar en él.
+    </p>
+    <input type="text" class="checkout-command" readonly="readonly"
+        
+           value="git fetch && git checkout [[branchName]]"
+        
+        >
+  </div>
+  
+    
+
+<div class="sourcetree-callout clone-in-sourcetree"
+  data-https-url="https://txapelgorri@bitbucket.org/parluciaga/tecniflex1.git"
+  data-ssh-url="ssh://git@bitbucket.org/parluciaga/tecniflex1.git">
+
+  <div>
+    <button class="aui-button aui-style aui-button-primary">
+      
+        Inspecciona el SourceTree
+      
+    </button>
+  </div>
+
+  <p class="windows-text">
+      
+<a href="http://www.sourcetreeapp.com/?utm_source=internal&amp;utm_medium=link&amp;utm_campaign=clone_repo_win" target="_blank">Atlassian SourceTree</a> es un cliente gratuito de Git y Mercurial para Windows.
+  </p>
+  <p class="mac-text">
+      
+<a href="http://www.sourcetreeapp.com/?utm_source=internal&amp;utm_medium=link&amp;utm_campaign=clone_repo_mac" target="_blank">Atlassian SourceTree</a>
+es un cliente gratuito de Git y Mercurial para MAC.
+  </p>
+</div>
+
+  
+</div>
+</script>
+    
+  </div>
+  <div class="secondary-actions">
+    <div class="aui-buttons">
+      
+        <a href="/parluciaga/tecniflex1/src/abcc13a8d2cf/public/stylesheets/images/header_banner.png?at=unoycero"
+           class="aui-button aui-style pjax-trigger" aria-pressed="true">
+          Fuente
+        </a>
+        <a href="/parluciaga/tecniflex1/diff/public/stylesheets/images/header_banner.png?diff2=abcc13a8d2cf&at=unoycero"
+           class="aui-button aui-style pjax-trigger"
+           title="Diferencias con el cambio anterior">
+          Diferencias
+        </a>
+        <a href="/parluciaga/tecniflex1/history-node/abcc13a8d2cf/public/stylesheets/images/header_banner.png?at=unoycero"
+           class="aui-button aui-style pjax-trigger">
+          Historial
+        </a>
+      
+    </div>
+  </div>
+  <h1>
+    
+      
+        <a href="/parluciaga/tecniflex1/src/abcc13a8d2cf?at=unoycero"
+          class="pjax-trigger root" title="parluciaga/tecniflex1 en abcc13a8d2cf">Tecniflex1</a> /
+      
+      
+        
+          
+            
+              <a href="/parluciaga/tecniflex1/src/abcc13a8d2cf/public/?at=unoycero"
+                class="pjax-trigger directory-name">public</a> /
+            
+          
+        
+      
+        
+          
+            
+              <a href="/parluciaga/tecniflex1/src/abcc13a8d2cf/public/stylesheets/?at=unoycero"
+                class="pjax-trigger directory-name">stylesheets</a> /
+            
+          
+        
+      
+        
+          
+            
+              <a href="/parluciaga/tecniflex1/src/abcc13a8d2cf/public/stylesheets/images/?at=unoycero"
+                class="pjax-trigger directory-name">images</a> /
+            
+          
+        
+      
+        
+          
+            
+              <span class="file-name">header_banner.png</span>
+            
+          
+        
+      
+    
+  </h1>
+  
+    
+    
+  
+  <div class="clearfix"></div>
+</header>
+
+
+    
+      
+    
+
+    <div id="editor-container" class="maskable"
+         data-modules="repo/source/editor"
+         data-owner="parluciaga"
+         data-slug="tecniflex1"
+         data-is-writer="true"
+         data-has-push-access="true"
+         data-hash="abcc13a8d2cf181c0e2bcacc4793866df001d54e"
+         data-branch="unoycero"
+         data-path="public/stylesheets/images/header_banner.png"
+         data-source-url="/api/1.0/repositories/parluciaga/tecniflex1/src/abcc13a8d2cf181c0e2bcacc4793866df001d54e/public/stylesheets/images/header_banner.png">
+      <div id="source-view" class="file-source-container"
+           data-modules="repo/source/view-file">
+        <div class="toolbar">
+          <div class="primary">
+            <div class="aui-buttons">
+              
+                <button id="file-history-trigger" class="aui-button aui-style changeset-info"
+                        data-changeset="8dfc5355ee3713eb66c13b21a1293b7c4749fce5"
+                        data-path="public/stylesheets/images/header_banner.png"
+                        data-current="abcc13a8d2cf181c0e2bcacc4793866df001d54e">
+                  
+                     
+
+<img class="avatar avatar16" src="https://secure.gravatar.com/avatar/c39db484720c1eacbeee216cfd14a740?d=https%3A%2F%2Fd3oaxc4q5k2d6q.cloudfront.net%2Fm%2F8cbb38b7bdad%2Fimg%2Fdefault_avatar%2F16%2Fuser_blue.png&amp;s=16" alt="Imanol Alvarez avatar" />
+<span class="changeset-hash">abcc13a</span>
+<time datetime="2014-01-08T10:03:11+00:00" class="timestamp"></time>
+<span class="aui-icon-dropdown"></span>
+
+                  
+                </button>
+              
+            </div>
+          <a href="/parluciaga/tecniflex1/full-commit/abcc13a8d2cf/public/stylesheets/images/header_banner.png" id="full-commit-link"
+              title="Ver confirmación abcc13a completa">Ver todas las confirmaciones</a>
+          </div>
+            <div class="secondary">
+              <div class="aui-buttons">
+                
+                
+                <a href="https://bytebucket.org/parluciaga/tecniflex1/raw/abcc13a8d2cf181c0e2bcacc4793866df001d54e/public/stylesheets/images/header_banner.png?token=cbf069e7a04d18ea9945ff044b58a7ee49770424"
+                  class="aui-button aui-style">Original</a>
+              </div>
+              
+            </div>
+          <div class="clearfix"></div>
+        </div>
+
+        
+          <div id="inline-image">
+            <img src="https://bytebucket.org/parluciaga/tecniflex1/raw/abcc13a8d2cf181c0e2bcacc4793866df001d54e/public/stylesheets/images/header_banner.png?token=cbf069e7a04d18ea9945ff044b58a7ee49770424" alt="">
+          </div>
+        
+      </div>
+    </div>
+
+
+
+
+  
+  
+    <script id="branch-dialog-template" type="text/html">
+  
+
+<div class="tabbed-filter-widget branch-dialog">
+  <div class="tabbed-filter">
+    <input placeholder="Filtrar ramas" class="filter-box" autosave="branch-dropdown-710103" type="text">
+    [[^ignoreTags]]
+      <div class="aui-tabs horizontal-tabs aui-tabs-disabled filter-tabs">
+        <ul class="tabs-menu">
+          <li class="menu-item active-tab"><a href="#branches">Ramas</a></li>
+          <li class="menu-item"><a href="#tags">Etiquetas</a></li>
+        </ul>
+      </div>
+    [[/ignoreTags]]
+  </div>
+  
+    <div class="tab-pane active-pane" id="branches" data-filter-placeholder="Filtrar ramas">
+      <ol class="filter-list">
+        <li class="empty-msg">No hay ramas coincidentes</li>
+        [[#branches]]
+          
+            [[#hasMultipleHeads]]
+              [[#heads]]
+                <li class="comprev filter-item">
+                  <a class="pjax-trigger" href="/parluciaga/tecniflex1/src/[[changeset]]/public/stylesheets/images/header_banner.png?at=[[safeName]]"
+                     title="[[name]]">
+                    [[name]] ([[shortChangeset]])
+                  </a>
+                </li>
+              [[/heads]]
+            [[/hasMultipleHeads]]
+            [[^hasMultipleHeads]]
+              <li class="comprev filter-item">
+                <a class="pjax-trigger" href="/parluciaga/tecniflex1/src/[[changeset]]/public/stylesheets/images/header_banner.png?at=[[safeName]]" title="[[name]]">
+                  [[name]]
+                </a>
+              </li>
+            [[/hasMultipleHeads]]
+          
+        [[/branches]]
+      </ol>
+    </div>
+    <div class="tab-pane" id="tags" data-filter-placeholder="Filtrar etiquetas">
+      <ol class="filter-list">
+        <li class="empty-msg">No hay etiquetas coincidentes</li>
+        [[#tags]]
+          <li class="comprev filter-item">
+            <a class="pjax-trigger" href="/parluciaga/tecniflex1/src/[[changeset]]/public/stylesheets/images/header_banner.png?at=[[safeName]]" title="[[name]]">
+              [[name]]
+            </a>
+          </li>
+        [[/tags]]
+      </ol>
+    </div>
+  
+</div>
+
+</script>
+  
+
+
+
+  </div>
+
+        
+
+<form id="file-search-form" action="#"
+  
+  data-revision="abcc13a8d2cf181c0e2bcacc4793866df001d54e"
+  data-branch="unoycero">
+  <input type="text" id="file-search-query" class="loading">
+  <div id="filtered-files"></div>
+  <div class="tip"><em>Consejo</em> Filtrar por ruta de directorio p.e. <strong>/media/app.js</strong> para buscar por <strong>/media/app.js</strong> público.</div>
+  <div class="tip"><em>Consejo:</em> Usar camelCasing ejem. <strong>ProjME</strong> para buscar <strong>ProjectModifiedE</strong>vent.java</div>
+  <div class="tip"><em>Consejo:</em> Filtrar por extensión de archivo ejem. <strong>/repo .js</strong> para buscar todos los archivos <strong>.js</strong> en el directorio <strong>/repo</strong></div>
+  <div class="tip"><em>Consejo:</em> Separa tu búsqueda con espacios ejem. <strong>/ssh pom.xml</strong> para buscar src<strong>/ssh/pom.xml</strong></div>
+  <div class="tip"><em>Tip:</em> Usa las flechas ↑ y ↓ para navegar y <strong>enter</strong> para ver el archivo.</div>
+  <div class="tip mod-osx"><em>Consejo:</em> También puedes navegar por los archivos con <strong>Ctrl+j</strong> <em>(siguiente)</em> y <strong>Ctrl+k</strong> <em>(anterior)</em> y ver el archivo con  <strong>Ctrl+o</strong>.</div>
+  <div class="tip mod-win"><em>Consejo:</em> También puedes navegar por los archivos con <strong>Alt+j</strong> <em>(siguiente)</em> y <strong>Alt+k</strong> <em>(anterior)</em> y ver el archivo con  <strong>Alt+o</strong>.</div>
+  <script id="filtered-files-template" type="text/html">
+  
+
+<table class="aui aui-table-interactive bb-list">
+  <thead>
+    <tr class="assistive">
+      <th class="name">Nombre del archivo</th>
+    </tr>
+  </thead>
+  <tbody>
+    [[#files]]
+    <tr class="iterable-item">
+      <td class="name [[#isDirectory]]directory[[/isDirectory]]">
+        <span class="aui-icon aui-icon-small[[#isDirectory]] aui-iconfont-devtools-folder-closed[[/isDirectory]][[^isDirectory]] aui-iconfont-devtools-file[[/isDirectory]]"></span>
+        <a href="/parluciaga/tecniflex1/src/[[node]]/[[name]][[#branch]][[#isDirectory]]/[[/isDirectory]]?at=[[branch]][[/branch]]"
+           title="[[name]]" class="execute" tabindex="-1">
+          [[&highlightedName]]
+        </a>
+      </td>
+    </tr>
+    [[/files]]
+  </tbody>
+</table>
+
+</script>
+</form>
+
+        
+          
+          
+          
+            <script id="image-upload-template" type="text/html">
+  
+
+<form id="upload-image" method="POST"
+      action="/xhr/parluciaga/tecniflex1/image-upload/">
+  <input type='hidden' name='csrfmiddlewaretoken' value='TVicTaUDkqegmWPpDTKXAjsVua0OL4VX' />
+
+  <div class="drop-target">
+    <p class="centered">Drag image here</p>
+  </div>
+
+  
+  <div>
+    <button class="aui-button click-target">Select an image</button>
+    <input name="file" type="file" class="hidden file-target"
+           accept="image/jpeg, image/gif, image/png" />
+    <input type="submit" class="hidden">
+  </div>
+</form>
+
+
+</script>
+          
+        
+      </div>
+    </div>
+  </div>
+
+    </div>
+  </div>
+
+  <footer id="footer" role="contentinfo">
+    <section class="footer-body">
+      
+  <ul>
+    <li>
+      <a class="support-ga" target="_blank"
+           data-support-gaq-page="Blog"
+           href="http://blog.bitbucket.org">Blog</a>
+    </li>
+    <li>
+      <a class="support-ga" target="_blank"
+           data-support-gaq-page="Home"
+           href="/support">Soporte</a>
+    </li>
+    <li>
+      <a class="support-ga"
+           data-support-gaq-page="PlansPricing"
+           href="/plans">Planes y precios</a>
+    </li>
+    <li>
+      <a class="support-ga" target="_blank"
+           data-support-gaq-page="DocumentationHome"
+           href="//confluence.atlassian.com/display/BITBUCKET">Documentación</a>
+    </li>
+    <li>
+      <a class="support-ga" target="_blank"
+           data-support-gaq-page="DocumentationAPI"
+           href="//confluence.atlassian.com/x/IYBGDQ">API</a>
+    </li>
+    <li>
+      <a class="support-ga" target="_blank"
+           data-support-gaq-page="SiteStatus"
+           href="http://status.bitbucket.org/">Estado del servidor</a>
+    </li>
+    <li>
+      <a class="support-ga" id="meta-info"
+           data-support-gaq-page="MetaInfo"
+           href="#">Información de la versión</a>
+    </li>
+    <li>
+      <a class="support-ga" target="_blank"
+           data-support-gaq-page="EndUserAgreement"
+           href="//www.atlassian.com/end-user-agreement?utm_source=bitbucket&amp;utm_medium=link&amp;utm_campaign=footer">Términos de servicio</a>
+    </li>
+    <li>
+      <a class="support-ga" target="_blank"
+           data-support-gaq-page="PrivacyPolicy"
+           href="//www.atlassian.com/company/privacy?utm_source=bitbucket&amp;utm_medium=link&amp;utm_campaign=footer">Política de privacidad</a>
+    </li>
+  </ul>
+  <div id="meta-info-content" style="display: none;">
+    <ul>
+      
+        
+          <li><a href="/account/user/txapelgorri/"
+                 class="view-language-link">español</a></li>
+        
+      
+      <li>
+        <a class="support-ga" target="_blank"
+           data-support-gaq-page="GitDocumentation"
+           href="http://git-scm.com/">Git 1.8.5.2</a>
+      </li>
+      <li>
+        <a class="support-ga" target="_blank"
+           data-support-gaq-page="HgDocumentation"
+           href="http://mercurial.selenic.com/">Mercurial 2.9</a>
+      </li>
+      <li>
+        <a class="support-ga" target="_blank"
+           data-support-gaq-page="DjangoDocumentation"
+           href="https://www.djangoproject.com/">Django 1.6.5</a>
+      </li>
+      <li>
+        <a class="support-ga" target="_blank"
+           data-support-gaq-page="PythonDocumentation"
+           href="http://www.python.org/">Python 2.7.3</a>
+      </li>
+      <li>
+        <a class="support-ga" target="_blank"
+           data-support-gaq-page="DeployedVersion"
+           href="#">ede6a1a58b67 / 8cbb38b7bdad @ app22</a>
+      </li>
+    </ul>
+  </div>
+  <ul class="atlassian-links">
+    <li>
+      <a id="atlassian-jira-link" target="_blank" title="Mirar Todo - bugs, tareas, fechas de cierre, código - y reportes pull para estar informado"
+         href="http://www.atlassian.com/software/jira?utm_source=bitbucket&amp;utm_medium=link&amp;utm_campaign=bitbucket_footer">JIRA</a>
+    </li>
+    <li>
+      <a id="atlassian-confluence-link" target="_blank" title="Creación de Contenidos, Colaboración & Intercamdio de Conocimientos para equipos. "
+         href="http://www.atlassian.com/software/confluence/overview/team-collaboration-software?utm_source=bitbucket&amp;utm_medium=link&amp;utm_campaign=bitbucket_footer">Confluence</a>
+    </li>
+    <li>
+      <a id="atlassian-bamboo-link" target="_blank" title="Integración continua y despliegues, gestión de versiones"
+         href="http://www.atlassian.com/software/bamboo/overview?utm_source=bitbucket&amp;utm_medium=link&amp;utm_campaign=bitbucket_footer">Bamboo</a>
+    </li>
+    <li>
+      <a id="atlassian-stash-link" target="_blank" title="Administración de repositorios Git, detrás de su firewall y listo para su Empresa."
+         href="http://www.atlassian.com/software/stash?utm_source=bitbucket&amp;utm_medium=link&amp;utm_campaign=bitbucket_footer">Stash</a>
+    </li>
+    <li>
+      <a id="atlassian-sourcetree-link" target="_blank" title="Un cliente gratis de Git y Mercurial para Mac o Windows. "
+         href="http://www.sourcetreeapp.com/?utm_source=bitbucket&amp;utm_medium=link&amp;utm_campaign=bitbucket_footer">SourceTree</a>
+    </li>
+    <li>
+      <a id="atlassian-hipchat-link" target="_blank" title="Group chat and IM built for teams."
+         href="http://www.hipchat.com/?utm_source=bitbucket&amp;utm_medium=link&amp;utm_campaign=bitbucket_footer">HipChat</a>
+    </li>
+  </ul>
+  <div id="footer-logo">
+    <a target="_blank" title="Bitbucket es desarrollado por Atlassian en San Francisco."
+       href="http://www.atlassian.com?utm_source=bitbucket&amp;utm_medium=logo&amp;utm_campaign=bitbucket_footer">Atlassian</a>
+  </div>
+
+  
+
+<div data-modules="components/mentions/index">
+  <script id="mention-result" type="text/html">
+  
+<img class="avatar avatar24" src="[[avatar_url]]">
+[[#display_name]]
+  <span class="display-name">[[&display_name]]</span> <small class="username">[[&username]]</small>
+[[/display_name]]
+[[^display_name]]
+  <span class="username">[[&username]]</span>
+[[/display_name]]
+[[#is_teammate]][[^is_team]]
+  <span class="aui-lozenge aui-lozenge-complete aui-lozenge-subtle">Compañero de equipo</span>
+[[/is_team]][[/is_teammate]]
+
+</script>
+  <script id="mention-call-to-action" type="text/html">
+  
+[[^query]]
+<li class="bb-typeahead-item">Empieza a escribir para buscar un usuario</li>
+[[/query]]
+[[#query]]
+<li class="bb-typeahead-item">Sigue escribiendo para buscar un usuario</li>
+[[/query]]
+
+</script>
+  <script id="mention-no-results" type="text/html">
+  
+[[^searching]]
+<li class="bb-typeahead-item">No hemos encontrado coincidencias para <em>[[query]]</em>.</li>
+[[/searching]]
+[[#searching]]
+<li class="bb-typeahead-item bb-typeahead-searching">Buscando <em>[[query]]</em>.</li>
+[[/searching]]
+
+</script>
+</div>
+
+  
+
+<div data-modules="components/repo-typeahead/index">
+  <script id="repo-typeahead-result" type="text/html">
+  <span class="aui-avatar aui-avatar-project aui-avatar-xsmall">
+  <span class="aui-avatar-inner">
+    <img src="[[avatar]]">
+  </span>
+</span>
+<span class="owner">[[&owner]]</span>/<span class="slug">[[&slug]]</span>
+
+</script>
+</div>
+
+  <script id="share-form-template" type="text/html">
+  
+
+<div class="error aui-message hidden">
+  <span class="aui-icon icon-error"></span>
+  <div class="message"></div>
+</div>
+<form class="aui">
+  <table class="widget bb-list aui">
+    <thead>
+    <tr class="assistive">
+      <th class="user">Usuario</th>
+      <th class="role">Rol</th>
+      <th class="actions">Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+      <tr class="form">
+        <td colspan="2">
+          <input type="text" class="text bb-user-typeahead user-or-email"
+                 placeholder="Usuario o correo electrónico."
+                 autocomplete="off"
+                 data-bb-typeahead-focus="false"
+                 [[#disabled]]disabled[[/disabled]]>
+        </td>
+        <td class="actions">
+          <button type="submit" class="aui-button aui-style" disabled>Agregar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>
+
+</script>
+  <script id="share-detail-template" type="text/html">
+  
+
+[[#username]]
+<td class="user
+           [[#hasCustomGroups]]custom-groups[[/hasCustomGroups]]"
+    [[#error]]data-error="[[error]]"[[/error]]>
+  <div title="[[displayName]]">
+    <a href="/[[username]]" class="user">
+      <img class="avatar avatar16" src="[[avatar]]" />
+      <span>[[displayName]]</span>
+    </a>
+  </div>
+</td>
+[[/username]]
+[[^username]]
+<td class="email
+           [[#hasCustomGroups]]custom-groups[[/hasCustomGroups]]"
+    [[#error]]data-error="[[error]]"[[/error]]>
+  <div title="[[email]]">
+    <span class="aui-icon aui-icon-small aui-iconfont-email"></span>
+    [[email]]
+  </div>
+</td>
+[[/username]]
+<td class="role
+           [[#hasCustomGroups]]custom-groups[[/hasCustomGroups]]">
+  <div>
+    [[#group]]
+      [[#hasCustomGroups]]
+        <select class="group [[#noGroupChoices]]hidden[[/noGroupChoices]]">
+          [[#groups]]
+            <option value="[[slug]]"
+                    [[#isSelected]]selected[[/isSelected]]>
+              [[name]]
+            </option>
+          [[/groups]]
+        </select>
+      [[/hasCustomGroups]]
+      [[^hasCustomGroups]]
+      <label>
+        <input type="checkbox" class="admin"
+               [[#isAdmin]]checked[[/isAdmin]]>
+        Administrador
+      </label>
+      [[/hasCustomGroups]]
+    [[/group]]
+    [[^group]]
+      <ul>
+        <li class="permission aui-lozenge aui-lozenge-complete
+                   [[^read]]aui-lozenge-subtle[[/read]]"
+            data-permission="read">
+          leído
+        </li>
+        <li class="permission aui-lozenge aui-lozenge-complete
+                   [[^write]]aui-lozenge-subtle[[/write]]"
+            data-permission="write">
+          escribir
+        </li>
+        <li class="permission aui-lozenge aui-lozenge-complete
+                   [[^admin]]aui-lozenge-subtle[[/admin]]"
+            data-permission="admin">
+          administrador
+        </li>
+      </ul>
+    [[/group]]
+  </div>
+</td>
+<td class="actions
+           [[#hasCustomGroups]]custom-groups[[/hasCustomGroups]]">
+  <div>
+    <a href="#" class="delete">
+      <span class="aui-icon aui-icon-small aui-iconfont-remove">Eliminar</span>
+    </a>
+  </div>
+</td>
+
+</script>
+  <script id="share-team-template" type="text/html">
+  
+
+<div class="clearfix">
+  <span class="team-avatar-container">
+    <img src="[[avatar]]" alt="[[display_name]]" title="[[display_name]]" class="avatar avatar32" />
+  </span>
+  <span class="team-name-container">
+    [[display_name]]
+  </span>
+</div>
+<p class="helptext">
+  
+    Existing users are granted access to this team immediately.
+    New users will be sent an invitation.
+  
+</p>
+<div class="share-form"></div>
+
+</script>
+
+    </section>
+  </footer>
+</div>
+
+<script src="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/jsi18n/es/djangojs.js"></script>
+
+  
+  <script id="require-js"
+          src="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/amd/build/main.js"
+          data-main="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/amd/build/main"
+          data-page-module="repo/index"></script>
+
+
+
+
+<script>
+  (function () {
+    var ga = document.createElement('script');
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.setAttribute('async', 'true');
+    document.documentElement.firstChild.appendChild(ga);
+  }());
+</script>
+
+
+  
+
+<script id="source-changeset" type="text/html">
+  
+
+<a href="/parluciaga/tecniflex1/src/[[raw_node]]/[[path]]?at=unoycero"
+   class="[[#selected]]highlight[[/selected]]"
+   data-hash="[[node]]">
+  [[#author.username]]
+    <img class="avatar avatar16" src="[[author.avatar]]"/>
+    <span class="author" title="[[raw_author]]">[[author.display_name]]</span>
+  [[/author.username]]
+  [[^author.username]]
+    <img class="avatar avatar16" src="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/img/default_avatar/16/user_blue.png"/>
+    <span class="author unmapped" title="[[raw_author]]">[[author]]</span>
+  [[/author.username]]
+  <time datetime="[[utctimestamp]]" data-title="true">[[utctimestamp]]</time>
+  <span class="message">[[message]]</span>
+</a>
+
+</script>
+<script id="embed-template" type="text/html">
+  
+
+<form class="aui embed">
+  <label for="embed-code">Embebe esta fuente en otra página:</label>
+  <input type="text" readonly="true" value="&lt;script src=&quot;[[url]]&quot;&gt;&lt;/script&gt;" id="embed-code">
+</form>
+
+</script>
+<script id="edit-form-template" type="text/html">
+  
+
+
+<form class="edit-form aui"
+      data-repository="[[owner]]/[[slug]]"
+      data-destination-repository="[[destinationOwner]]/[[destinationSlug]]"
+      data-local-id="[[localID]]"
+      data-is-writer="[[#isWriter]]true[[/isWriter]][[^isWriter]]false[[/isWriter]]"
+      data-has-push-access="[[#hasPushAccess]]true[[/hasPushAccess]][[^hasPushAccess]]false[[/hasPushAccess]]"
+      data-is-pull-request="[[#isPullRequest]]true[[/isPullRequest]][[^isPullRequest]]false[[/isPullRequest]]"
+      data-hash="[[hash]]"
+      data-branch="[[branch]]"
+      data-path="[[path]]"
+      data-is-create="[[isCreate]]"
+      data-preview-url="/xhr/[[owner]]/[[slug]]/preview/[[hash]]/[[encodedPath]]"
+      data-preview-error="Hemos tenido un problema generando su vista previa."
+      data-unsaved-changes-error="Sus cambios se perderán. ¿Esta seguro que quiere salir?">
+  <div class="toolbar clearfix">
+    <div class="primary">
+      <h2>
+        [[#isCreate]]
+          
+            Creating <span class="edit-path">[[path]]</span> on branch: <strong>[[branch]]</strong>
+          
+        [[/isCreate]]
+        [[^isCreate]]
+          
+            Editing <span class="edit-path">[[path]]</span> on branch: <strong>[[branch]]</strong>
+          
+        [[/isCreate]]
+      </h2>
+    </div>
+    <div class="secondary">
+      <div class="hunk-nav aui-buttons">
+        <button class="prev-hunk-button aui-button aui-button aui-style"
+              disabled="disabled" aria-disabled="true" title="previous change">&#x25B2;</button>
+        <button class="next-hunk-button aui-button aui-button aui-style"
+              disabled="disabled" aria-disabled="true" title="next change">&#x25BC;</button>
+      </div>
+    </div>
+  </div>
+  <div class="file-editor">
+    <textarea id="id_source">[[content]]</textarea>
+  </div>
+  <div class="preview-pane"></div>
+  <div class="toolbar footer-toolbar clearfix">
+    <div class="primary">
+      <div id="syntax-mode" class="field">
+        <label for="id_syntax-mode">Modo de Sintaxis:</label>
+        <select id="id_syntax-mode">
+          [[#syntaxes]]
+            <option value="[[#mime]][[mime]][[/mime]][[^mime]][[mode]][[/mime]]">[[label]]</option>
+          [[/syntaxes]]
+        </select>
+      </div>
+      <div id="indent-mode" class="field">
+        <label for="id_indent-mode">Modo Alineado:</label>
+        <select id="id_indent-mode">
+          <option value="tabs">Pestañas</option>
+          <option value="spaces">Espacios</option>
+        </select>
+      </div>
+      <div id="indent-size" class="field">
+        <label for="id_indent-size">Espacio de la alineación:</label>
+        <select id="id_indent-size">
+          <option value="2">2</option>
+          <option value="4">4</option>
+          <option value="8">8</option>
+        </select>
+      </div>
+    </div>
+    <div class="secondary">
+      [[^isCreate]]
+        <button class="preview-button aui-button aui-style"
+                disabled="disabled" aria-disabled="true"
+                data-preview-label="Ver diferencias"
+                data-edit-label="Editar archivo">Ver diferencias</button>
+      [[/isCreate]]
+      <button class="save-button aui-button aui-button-primary aui-style"
+              disabled="disabled" aria-disabled="true">Confirmar</button>
+      [[^isCreate]]
+        <a class="cancel-link" href="#">Cancelar</a>
+      [[/isCreate]]
+    </div>
+  </div>
+</form>
+
+</script>
+<script id="commit-form-template" type="text/html">
+  
+
+<form class="aui commit-form"
+      data-title="Cambios del commit"
+      [[#isDelete]]
+        data-default-message="[[filename]] deleted online with Bitbucket"
+      [[/isDelete]]
+      [[#isCreate]]
+        data-default-message="[[filename]] created online with Bitbucket"
+      [[/isCreate]]
+      [[^isDelete]]
+        [[^isCreate]]
+          data-default-message="[[filename]] edited online with Bitbucket"
+        [[/isCreate]]
+      [[/isDelete]]
+      data-fork-error="Tuvimos problemas para crear tu bifurcación."
+      data-commit-error="Tuvimos problemas registrando tus cambios."
+      data-pull-request-error="Tuvimos problemas tramitando tu petición de <em>pull</em>."
+      data-update-error="Hemos tenido un problema actualizando tu pull request."
+      data-branch-conflict-error="Ya existe una rama con ese nombre."
+      data-forking-message="variante del Repositorio"
+      data-committing-message="Enviando cambios"
+      data-merging-message="Creando variante y uniendo cambios"
+      data-creating-pr-message="Creando solicitud pull"
+      data-updating-pr-message="actualizando solicitud pull"
+      data-cta-label="Confirmar"
+      data-cancel-label="Cancelar">
+  [[#isDelete]]
+    <div class="aui-message info">
+      <span class="aui-icon icon-info"></span>
+      <span class="message">
+        
+          Committing this change will delete [[filename]] from your repository.
+        
+      </span>
+    </div>
+  [[/isDelete]]
+  <div class="aui-message error hidden">
+    <span class="aui-icon icon-error"></span>
+    <span class="message"></span>
+  </div>
+  [[^isWriter]]
+    <div class="aui-message info">
+      <span class="aui-icon icon-info"></span>
+      <p class="title">
+        
+          No tienes acceso de escritura en este repositorio.
+        
+      </p>
+      <span class="message">
+        
+Crearemos un fork para ti y enviaremos una solicitud de ⏎ 
+descarga de vuelta al repositorio.⏎
+      </span>
+    </div>
+  [[/isWriter]]
+  [[#isRename]]
+    <div class="field-group">
+      <label for="id_path">New path</label>
+      <input type="text" id="id_path" class="text" value="[[path]]"/>
+    </div>
+  [[/isRename]]
+  <div class="field-group">
+    <label for="id_message">Mensaje de confirmación</label>
+    <textarea id="id_message" class="long-field textarea"></textarea>
+  </div>
+  [[^isPullRequest]]
+    [[#isWriter]]
+      <fieldset class="group">
+        <div class="checkbox">
+          [[#hasPushAccess]]
+            <input id="id_create-pullrequest" class="checkbox" type="checkbox">
+            <label for="id_create-pullrequest">Descargar este cambio mediante </em>pull<em></label>
+          [[/hasPushAccess]]
+          [[^hasPushAccess]]
+            <input id="id_create-pullrequest" class="checkbox" type="checkbox" checked="checked" aria-disabled="true" disabled="true">
+            <label for="id_create-pullrequest" title="Las restricciones de rama no te permiten actualizar esta rama.">Descargar este cambio mediante </em>pull<em></label>
+          [[/hasPushAccess]]
+
+        </div>
+      </fieldset>
+      <div id="pr-fields">
+        <div id="branch-name-group" class="field-group">
+          <label for="id_branch-name">Nombre de la rama</label>
+          <input type="text" id="id_branch-name" class="text long-field">
+        </div>
+        <div id="reviewers-group" class="field-group"
+              data-api-url="/parluciaga/tecniflex1/pull-request/xhr/reviewer/parluciaga/tecniflex1/:reviewer_name">
+          <label for="participants">Revisores</label>
+          <select id="participants" class="long-field" name="reviewers" multiple></select>
+          <div class="error"></div>
+          
+          <div id="suggested" class="reviewers">
+            <span class="label">Agregar</span>
+            <ul>
+              
+                
+                   <li data-username="w0www" data-display-name="Imanol Alvarez">
+  <img class="avatar avatar16" src="https://secure.gravatar.com/avatar/c39db484720c1eacbeee216cfd14a740?d=https%3A%2F%2Fd3oaxc4q5k2d6q.cloudfront.net%2Fm%2F8cbb38b7bdad%2Fimg%2Fdefault_avatar%2F32%2Fuser_blue.png&amp;s=32" alt="Imanol Alvarez avatar" />
+  Imanol Alvarez
+</li>
+
+                
+              
+            </ul>
+          </div>
+          
+        </div>
+      </div>
+    [[/isWriter]]
+  [[/isPullRequest]]
+  <button type="submit" id="id_submit">Confirmar</button>
+</form>
+
+</script>
+<script id="merge-message-template" type="text/html">
+  Unida [[hash]] en [[branch]]⏎
+
+[[message]]
+
+</script>
+<script id="commit-merge-error-template" type="text/html">
+  
+
+
+
+Tuvimos problemas fusionando tus cambios. Los hemos almacenado en la rama <strong>[[branchName]]</strong>, 
+puedes verlos <a href="/[[owner]]/[[slug]]/full-commit/[[hash]]/[[path]]?at=[[encodedBranchName]]">aquí</a> o
+<a href="#" class="create-pull-request-link">hacer <em>pull</em> de los cambios</a>.
+
+
+</script>
+
+
+
+
+  <div id="recently-mentioned-937577"
+      data-value="[]"></div>
+
+
+
+  
+
+<!--[if lt IE 9]><script src="https://d3oaxc4q5k2d6q.cloudfront.net/m/8cbb38b7bdad/lib/aui/js/aui-ie.js"></script><![endif]-->
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"beacon-4.newrelic.com","queueTime":0,"licenseKey":"a2cef8c3d3","agent":"js-agent.newrelic.com/nr-411.min.js","transactionName":"Z11RZxdWW0cEVkYLDV4XdUYLVEFdClsdAAtEWkZQDlJBGgRFQhFMQl1DXFcZQ10AQkFYBFlUVlEXWEJHAA==","userAttributes":"SxpaQDpWQEANUFwWC1NZR1YBFQ9AF0BXTkBZS2xSFV4XDgNUXhEHHBpGQABFaloEWFdAWBJMS1IVUllTCkdAC0BN","applicationID":"1841284","errorBeacon":"bam.nr-data.net","applicationTime":326}</script></body>
+</html>
