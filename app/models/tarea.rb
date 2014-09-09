@@ -10,8 +10,10 @@ class Tarea < ActiveRecord::Base
     timestamps
   end
 
+  # Una tarea depende de un proceso y de una orden de trabajo.
   belongs_to :ord_trab
   belongs_to :proceso
+
   belongs_to :recurso
   belongs_to :asignado, :class_name => "User", :foreign_key => :asignada_a
   # Se elimina dependent => destroy, porque podría borrarse una tarea y perder el registro del trabajo de los operadores.
@@ -24,7 +26,7 @@ class Tarea < ActiveRecord::Base
 
 	named_scope :activa, :conditions => ["state IN (?)", ["habilitada","iniciada","detenida","enviada","recibida"]]
   named_scope :disp, :conditions => ["state IN (?)", ["habilitada","detenida","enviada","recibida"]]
-  named_scope :detipo, lambda { |proce| { :joins => :procesos, :conditions => ["proceso.nombre = ?", proce] }}
+  named_scope :detipo, lambda { |proce| { :conditions => ["proceso_id = ?", Proceso.find_by_nombre(proce).id] }}
   
   def after_create
   	self.ciclo ||= 1

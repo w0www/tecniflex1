@@ -6,6 +6,7 @@
       <select-field label="Cliente" name="cliente" options="&Cliente.all.map{|c| [c.name]}"/>
       <input-field label="Cod. cliente" name="codigo_cliente"/>
       <select-field label="Estado" name="estado" options="&OrdTrab::Lifecycle.states.keys.map{|s|[s.to_s]}"/>
+      <select-field label="Proceso" name="proceso" options="&Proceso.all"/>
       <input-field label="O.T." name="orden"/>
       <date-field label="Fecha" name="fecha"/>
       <select-field label="Tipo Mat" name="tipomat" options="&Tipomat.all.map{|t| [t.nombre, t.id]}.uniq"/>

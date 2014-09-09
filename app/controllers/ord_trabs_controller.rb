@@ -28,10 +28,7 @@ class OrdTrabsController < ApplicationController
         hobo_ajax_response if request.xhr?
       end
     else
-      hobo_new do
-        this.attributes = params[:ord_trab] || {}
-        hobo_ajax_response if request.xhr?
-      end
+      request.xhr? ? hobo_ajax_response : hobo_new
     end
   end
 
@@ -60,6 +57,7 @@ class OrdTrabsController < ApplicationController
 	def index
     inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
     final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time if params[:fecha_fin] && !params[:fecha_fin].blank?
+    
     hobo_index OrdTrab.apply_scopes(
       :cliente_is => params[:cliente],
       :codCliente_contains => params[:codigo_cliente],
@@ -67,6 +65,7 @@ class OrdTrabsController < ApplicationController
       :espesor_id_is => params[:espesor],
       :tipomat_id_is => params[:tipomat],
       :state_is => params[:estado],
+      :proceso_is => params[:proceso],
       :created_between => [inicial, final]
     )
 	end
@@ -86,7 +85,6 @@ class OrdTrabsController < ApplicationController
     end
   end
   
-  
   index_action :tablero do
     @hora_actual = DateTime.now.in_time_zone
     @grupro = Grupoproc.tablero.order_by(:position)
@@ -97,6 +95,7 @@ class OrdTrabsController < ApplicationController
       :cliente_is => params[:cliente],
       :codCliente_contains => params[:codigo_cliente],
       :numOT_contains => params[:orden],
+      :proceso_is => params[:proceso],
       :state_is => params[:estado],
       :created_between => [inicial, final]
     ).paginate(:page => params[:page], :per_page => 35)

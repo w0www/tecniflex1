@@ -251,7 +251,7 @@
     </td>
     <td colspan="2" rowspan="5" style="text-align: center">
       <select name="ord_trab[dispBandas]">
-        <option value="-1" selected="selected">Ninguna</option>
+        <option value="" selected="selected">Ninguna</option>
         <option value="0">Bandas Alineadas</option>
         <option value="1">Bandas Desplazadas</option>
       </select>

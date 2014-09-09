@@ -71,15 +71,17 @@
                        <p class="iniciales"><%= @tod.usersgp(proce.abreviacion) -%></p>
                      </td>
                    <% end %>
-                   <% fecha_entrega = @tod.fechaEntrega ? @tod.fechaEntrega : Date.tomorrow.to_time %>
+                   <% fecha_entrega = @tod.fechaEntrega ? @tod.fechaEntrega : nil %>
                 <% 
-                  if fecha_entrega - 1.hour <= @hora_actual + tiempo_total.minute &&
+                  if fecha_entrega && fecha_entrega - 1.hour <= @hora_actual + tiempo_total.minute &&
                      fecha_entrega > @hora_actual + tiempo_total.minute
                     color = 'lightyellow'
-                  elsif fecha_entrega > @hora_actual + tiempo_total.minute
+                  elsif fecha_entrega && fecha_entrega > @hora_actual + tiempo_total.minute
                     color = 'lightgreen'
-                  elsif fecha_entrega <= @hora_actual + tiempo_total.minute
+                  elsif fecha_entrega && fecha_entrega <= @hora_actual + tiempo_total.minute
                     color = 'red'
+                  elsif fecha_entrega.blank?
+                    color = ''
                   end
                 %>
                    <td rowspan="2" style="background-color:#{color if color}"/>

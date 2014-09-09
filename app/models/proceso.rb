@@ -18,7 +18,10 @@ class Proceso < ActiveRecord::Base
     timestamps
   end
 
+  # Un proceso tiene muchas ordenes de trabajo (Tabla relacionada "Tareas")
+  has_many :ord_trabs, :through => :tareas
   has_many :tareas, :dependent => :destroy
+
   has_many :recursos
   has_many :users, :through => :user_labors
   has_many :user_labors

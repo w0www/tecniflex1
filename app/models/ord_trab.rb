@@ -88,8 +88,11 @@ class OrdTrab < ActiveRecord::Base
   has_many :pruebas
   has_many :tipopruebas, :through => :pruebas, :accessible => true
   has_many :separacions, :dependent => :destroy, :accessible => true, :order => :position
+
+  # Una orden de trabajo tiene muchos procesos. (Tabla relacionada "TAREAS")
   has_many :procesos, :through => :tareas, :accessible => true
   has_many :tareas, :accessible => true, :dependent => :destroy, :autosave => true
+
   belongs_to :encargado, :class_name => "User", :scope => {:rol_is => 'Supervisor' || 'Gerente'}
   belongs_to :curva
  # HABILITAR CONTACTO ASOCIADO A OT, ELEGIDO ENTRE CONTACTOS DEL CLIENTE (VER SCOPE)
@@ -103,6 +106,12 @@ class OrdTrab < ActiveRecord::Base
   belongs_to  :sustrato
 
   default_scope :order => 'numOT DESC'
+
+  # Scope que busca en varias columnas el material entregado
+  named_scope :proceso_is, lambda { |search| { 
+    :include => :tareas,
+    :conditions => ["tareas.proceso_id = ? AND tareas.state = ?", Proceso.find_by_nombre(search).id, 'habilitada'] } }
+
 
   def armacod
     armac = ""
@@ -652,7 +661,6 @@ class OrdTrab < ActiveRecord::Base
   end
 
 	private
-
 
 #	def fecha_posterior
 #		errors.add(:fechaEntrega, 'La fecha de entrega debe ser posterior a la fecha actual') if fechaEntrega < fecha
