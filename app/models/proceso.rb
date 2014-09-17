@@ -5,16 +5,16 @@ class Proceso < ActiveRecord::Base
   acts_as_list
 
   fields do
-    nombre          :string, :name => :true
-    descripcion     :text
-    prueba	    :boolean
-    reinit	    :boolean # Reiniciar procesos
-    varev	    :boolean # Volver a revision                    
-    rev		    :boolean # Revision
-    destderev	    :boolean # Destino de revision
-    edmeds	    :boolean # Edicion de medidas
-    minutos_minimo  :integer
-    factura         :boolean, :default => false # Facturacion
+    nombre                :string, :name => :true
+    descripcion           :text
+    prueba	              :boolean
+    reiniciar         	  :boolean # Reiniciar procesos
+    volver_a_revision	    :boolean # Volver a revision                    
+    rev		                :boolean # Revision
+    volver_desde_revision	:boolean # Destino de revision
+    edicion_medidas	      :boolean # Edicion de medidas
+    minutos_minimo        :integer
+    factura               :boolean, :default => false # Facturacion
     timestamps
   end
 

@@ -15,10 +15,12 @@
           <td colspan="2"><view:ord_trab.fechaEntrega/></td>
         </tr>
         <tr>
-          <th>C&oacute;digo Cliente:</th>
+          <th>Código Cliente:</th>
           <td colspan="2"><view:ord_trab.codTflex/></td>
-          <th>C&oacute;digo Tecniflex:</th>
-          <td colspan="2"><%= if this.ord_trab.cliente then this.ord_trab.cliente.sigla else "" end %>-<view:ord_trab.codCliente/></td>
+          <th>Código Tecniflex:</th>
+          <td colspan="2">
+            <view:ord_trab.cliente.sigla if="&this.ord_trab.cliente"/>-<view:ord_trab.codCliente/>
+          </td>
         </tr>
         <tr rowspan="2">
           <th>Instrucciones</th>
@@ -32,7 +34,7 @@
         <tr/>
       </table>
     </div>
-    <% if this.proceso.edmeds %>
+    <if test="&this.proceso.edicion_medidas">
       <table class="tarea">
         <tr>
           <th>Color</th>
@@ -57,38 +59,32 @@
           </tr>
         </repeat>
       </table>
-    <%end%>
+    </if>
     <div part="botones">
-      <% @intervs = this.intervencions.find(:all, :joins => :user, :conditions => ["name = ?", current_user.name]) %>
-      <% if this.activa? %>
-        <% if @intervs != [] %>
-          <% if @intervs.last.termino == nil %>
-            <% @termin = 0 %>
-            <form with="&@intervs.last" >
-              <after-submit uri="/tareas/#{this.tarea.id}" />
-              <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
-              <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{this.tarea.id}"/>
+      <if test="&this.activa?">
+        <if test="&@intervenciones != []">
+          <if test="&@intervenciones.last.termino == nil">
+            <form with="&@intervenciones.last" >
+              <inicio-form/>
               Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
-              <%= hidden_field_tag 'envio', ''%>
-              <% if this.tarea.proceso.prueba %>
-                <%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
-                <%= submit_tag "enviar", :onclick =>"$('envio').value='enviar';",
-                    :id => "enviar", :class => "button submit-button", :name => "enviar" %>
-              <% elsif this.tarea.proceso.varev %>
-                <%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
-                <%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", 
-                :id => "terminar", :class => "button submit-button", :name => "enviar" %>
-                <%= submit_tag "rechazar", :onclick =>"$('envio').value='rechazar';", :id => "rechazar", :class => "button submit-button" %>
-              <% elsif this.tarea.proceso.rev %>
-                <%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
-                <%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';",
-                :id => "terminar", :class => "button submit-button", :name => "enviar" %>
-                <select  class="input belongs_to" name="procdest">
-                  <% @destas.each do |proce| %>
+              <input type="hidden" name="envio" id="envio" value=""/>
+              <if test="&this.tarea.proceso.prueba">
+                <input-detener/>
+                <input-enviar/>
+              </if>
+              <else><if test="&this.tarea.proceso.volver_a_revision">
+                <input-detener/>
+                <input-terminar/>
+                <input-rechazar/>
+              </if><else><if test="&this.tarea.proceso.rev">
+                <input-detener/>
+                <input-terminar/>
+                <select class="input belongs_to" name="procdest">
+                  <% @procesos_volver_desde_revision.each do |proce| %>
                     <option value="#{proce.id}"><%= proce.nombre -%></option>
-                  <%end%>
+                  <% end %>
                 </select>
-				<% buttons = [ ["cancel", "jQuery(this).dialog('close')"] ] %>
+				        <% buttons = [["cancel", "jQuery(this).dialog('close')"]] %>
                 <hjq-dialog id="campos-rechazo" style="width:280px;margin-left:67%" buttons="&buttons">
                   Observaciones matriceria<input:observaciones-matriceria/><br/>
                   Observaciones analisis<input:observaciones-analisis/><br/>
@@ -102,66 +98,86 @@
                   Colores<%= select_tag "intervencion[colores]", options_from_collection_for_select(Separacion.all, 'id', 'color'), :multiple => true %><br/>
                   Responsable<select-menu first-option="Selecciona usuario" options="&User.all.map{|u| [u.name, u.id]}" name="intervencion[responsable]"/><br/>
                   Observaciones rechazo<input:observaciones-rechazo/><br/>
-                  <%= submit_tag "rechazar", :onclick =>"$('envio').value='rechazar';", :id => "rechazar", :class => "button submit-button" %>
+                  <input-rechazar/>
                   <a href="#" id="ocultar-rechazo" class="button submit-button">cancelar</a>
                 </hjq-dialog>
                 <a href="#" id="mostrar-rechazo" class="button submit-button">rechazar</a>
-              <% else %>
-                <%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
-                <%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminar", :class => "button submit-button" %>
-              <% end %>
+              </if><else>
+                <input-detener/>
+                <input-terminar/>
+              </else></else></else>
             </form>
-          <% else %>
-            <% @estatarea = this.id %>
+          </if>
+          <else>
             <form with="&Intervencion.new">
-              <after-submit uri="/tareas/#{@estatarea}" />
-              <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
-              <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{@estatarea}"/>
+              <inicio-form/>
               <input class="hidden" type="text" name="term" value="1"/>
-              <%= hidden_field_tag 'envio', ''%>
-              <% if Tarea.find(@estatarea).state == "enviada" %>
+              <input type="hidden" name="envio" id="envio" value=""/>
+              <if test="&Tarea.find(@tarea.id).state == 'enviada'">
                 Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
-                <% if Tarea.find(@estatarea).proceso.reinit %>
+                <span if="&Tarea.find(@tarea.id).proceso.reiniciar">
                   <input type="checkbox" id="checker" name="vuelta" onchange="toggler()"/>Generar nuevo V.B.
-                <% end %>
-                <%= submit_tag "recibir", :onclick =>"$('envio').value='recibir';", :id => "recibir", :class => "button submit-button" %>
-                <%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminax", :class => "button submit-button" %>
-              <% else %>
-                <% if Tarea.find(@estatarea).proceso.nombre == 'Matriceria' && Tarea.find(@estatarea).ord_trab.dispBandas == -1 %>
-                    Este proceso no se puede iniciar porque no has seleccionado una disposición de bandas.
-                <% else %>
-                  <%= submit_tag "iniciar", :onclick =>"$('envio').value='iniciar';", :id=>"iniciar", :class => "button submit-button" %>
-                <% end %>
-              <% end %>
+                </span>
+                <input-recibir/>
+                <input-terminar/>
+              </if>
+              <else>
+                <if test="&Tarea.find(@tarea.id).proceso.nombre == 'Matriceria' && Tarea.find(@tarea.id).ord_trab.dispBandas == -1">
+                  Este proceso no se puede iniciar porque no has seleccionado una disposición de bandas.
+                </if>
+                <else>
+                  <input-iniciar/>
+                </else>
+              </else>
             </form>
-          <% end %>
-        <% else %>
-          <% @estatarea = this.id %>
+          </else>
+        </if>
+        <else>
           <br/>
-          <% if Tarea.find(@estatarea).proceso.nombre == 'Matriceria' && Tarea.find(@estatarea).ord_trab.dispBandas >= 0 && Tarea.find(@estatarea).ord_trab.dispBandas <= 1 %>
+          <if test="&Tarea.find(@tarea.id).proceso.nombre == 'Matriceria' && Tarea.find(@tarea.id).ord_trab.dispBandas.blank?">
+            Este proceso no se puede iniciar porque no has seleccionado una disposición de bandas.
+          </if>
+          <else>
             <form with="&Intervencion.new">
-              <after-submit uri="/tareas/#{params[:id]}" />
-              <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
-              <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{params[:id]}"/>
+              <inicio-form/>
               <submit label="Iniciar" id="iniciar"/>
             </form>
-          <% elsif Tarea.find(@estatarea).proceso.nombre == 'Matriceria' && Tarea.find(@estatarea).ord_trab.dispBandas == -1 %>
-              Este proceso no se puede iniciar porque no has seleccionado una disposición de bandas.
-          <% else %>
-           <form with="&Intervencion.new">
-              <after-submit uri="/tareas/#{params[:id]}" />
-              <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
-              <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{params[:id]}"/>
-              <submit label="Iniciar" id="iniciar"/>
-            </form>
-          <% end %>
-        <% end %>
-    <% end %>
+          </else>
+        </else>
+      </if>
     </div>
   </content-body:>
-
 </show-page>
 
+<def tag="inicio-form">
+  <after-submit uri="/tareas/#{@tarea.id}" />
+  <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
+  <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{@tarea.id}"/>
+</def>
+
+<def tag="input-detener">
+  <input type="submit" onclick="$('envio').value='detener';" id="detener" class="button submit-button"/>
+</def>
+
+<def tag="input-enviar">
+  <input type="submit" onclick="$('envio').value='enviar';" id="enviar" class="button submit-button" name="enviar"/>
+</def>
+
+<def tag="input-terminar">
+  <input type="submit" onclick="$('envio').value='terminar';" id="terminar" class="button submit-button" name="enviar"/>
+</def>
+
+<def tag="input-rechazar">
+  <input type="submit" onclick="$('envio').value='rechazar';" id="rechazar" class="button submit-button"/>
+</def>
+
+<def tag="input-recibir">
+  <input type="submit" onclick="$('envio').value='recibir';" id="recibir" class="button submit-button"/>
+</def>
+
+<def tag="input-iniciar">
+  <input type="submit" onclick="$('envio').value='iniciar';" id="iniciar" class ="button submit-button"/>
+</def>
 
 <def tag="ocultar-campos">
    <script type="text/javascript">

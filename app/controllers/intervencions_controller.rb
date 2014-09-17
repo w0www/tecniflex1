@@ -130,7 +130,7 @@ class IntervencionsController < ApplicationController
           this.termino = Time.now
           this.tarea.lifecycle.terminar!(current_user)
 				elsif params[:envio] == "recibir"
-				  unless this.tarea.proceso.reinit
+				  unless this.tarea.proceso.reiniciar
 						this.tarea.lifecycle.recibir!(current_user)
 					else
 						if params[:vuelta]
@@ -173,19 +173,16 @@ class IntervencionsController < ApplicationController
 				elsif params[:envio] == "rechazar"
           this.colores = "#{params[:intervencion][:colores].join(",")}" if params[:intervencion][:colores]
           this.rechazada = true
-					if this.tarea.proceso.varev
-						this.tarea.lifecycle.rechazar!(current_user)
-            this.termino = Time.now
-            this.save
+  				this.tarea.lifecycle.rechazar!(current_user)
+          this.termino = Time.now
+          this.save
+        else
+					if this.tarea.proceso.volver_a_revision
 						this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user)
 					elsif this.tarea.proceso.rev
-						this.tarea.lifecycle.rechazar!(current_user)
-            this.termino = Time.now
-            this.save
 						this.tarea.ord_trab.volver_a(params[:procdest],current_user)
 					end
         end
-  ##    redirect_to '/front/index' if valid?
       hobo_ajax_response if request.xhr?
     end
   end

@@ -162,7 +162,7 @@ class OrdTrab < ActiveRecord::Base
  		tares = self.tareas || []
  		if tares != []
 			estata = tares.proceso_id_is(procid).first
-			if Proceso.destderev.include?(Proceso.find(procid)) || Proceso.rev.include?(Proceso.find(procid))
+			if Proceso.volver_desde_revision.include?(Proceso.find(procid)) || Proceso.rev.include?(Proceso.find(procid))
 				estata.lifecycle.habilitar!(usuario)
 			else
 				nil
@@ -239,7 +239,7 @@ class OrdTrab < ActiveRecord::Base
   validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.vb || self.ptr", :on => :habilitar
   validates_presence_of :trapping, :curva, :impresora, :cilindro, :nCopias, :sustrato, :fechaEntrega, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_presence_of :cliente, :nomprod, :codCliente, :espesor, :supRev, :if => "self.pol && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
-  validates_presence_of :encargado_id
+  validates_presence_of :encargado_id, :dispBandas
   validates_associated :separacions, :if => "(self.mtje || self.mtz || self.pol) && self.activa? ", :on => :habilitar
 #	validate :fecha_posterior
 

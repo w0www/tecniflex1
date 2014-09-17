@@ -2455,7 +2455,7 @@
               </ht>
             </h2>
 
-            <record-flags fields="prueba, reinit, edmeds, varev, rev, destderev, factura" param/>
+            <record-flags fields="prueba, reiniciar, edicion_medidas, volver_a_revision, rev, volver_desde_revision, factura" param/>
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="procesos.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">

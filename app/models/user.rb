@@ -24,36 +24,36 @@
 
   #named_scope :administrators, lambda {|acting_user| {:conditions => {acting_user.administrator?} }}
 
-  def intervencions_tiempo_total(estado,rechazada)
+  def int_tiempo_total(estado,rechazada)
     tiempo = 0
-    for i in self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada IS NULL", Date.today.day, Date.today.month, Date.today.year])
-       tiempo  += i.termino - i.inicio
+    rechazada = rechazada == "false" ? "IS NULL" : "IS NOT NULL"
+    for i in self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada #{rechazada}", Date.today.day, Date.today.month, Date.today.year])
+      dife = i.termino ? (i.termino - i.inicio) / 3600 : 0
+      tiempo += dife
     end
-    dia = (tiempo / 60).round
+    # Devolvemos 3.68 horas (integer)
+    dia = tiempo.to_s.first(4).to_f
     tiempo = 0
-    for i in self.intervencions.find(:all, :conditions => ["WEEK(#{estado}) = ? AND rechazada IS NULL", Date.today.strftime("%U")])
-       tiempo  += i.termino - i.inicio
+    for i in self.intervencions.find(:all, :conditions => ["WEEK(#{estado}) = ? AND rechazada #{rechazada}", Date.today.strftime("%U")])
+      dife = i.termino ? (i.termino - i.inicio) / 3600 : 0
+      tiempo += dife
     end
-    semana = (tiempo / 60).round
+    semana = tiempo.to_s.first(4).to_f
     tiempo = 0
-    for i in self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada IS NULL", Date.today.month])
-       tiempo  += i.termino - i.inicio
+    for i in self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada #{rechazada}", Date.today.month])
+      dife = i.termino ? (i.termino - i.inicio) / 3600 : 0
+      tiempo += dife
     end
-    mes = (tiempo / 60).round
+    mes = tiempo.to_s.first(4).to_f
     return "#{dia} / #{semana} / #{mes}"
   end
 
 
-  def intervencions_totales(estado,rechazada)
-    if rechazada == "false"
-      dia = self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada IS NULL", Date.today.day, Date.today.month, Date.today.year]).count
-      semana = self.intervencions.find(:all, :conditions => ["WEEK(#{estado}) = ? AND rechazada IS NULL", Date.today.strftime("%U")]).count
-      mes = self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada IS NULL", Date.today.month]).count
-    elsif rechazada == "true"
-      dia = self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada IS NOT NULL", Date.today.day, Date.today.month, Date.today.year]).count
-      semana = self.intervencions.find(:all, :conditions => ["WEEK(#{estado}) = ? AND rechazada IS NOT NULL", Date.today.year]).count
-      mes = self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada IS NOT NULL", Date.today.month]).count
-    end
+  def int_totales(estado,rechazada)
+    rechazada = rechazada == "false" ? "IS NULL" : "IS NOT NULL"
+    dia = self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada #{rechazada}", Date.today.day, Date.today.month, Date.today.year]).count
+    semana = self.intervencions.find(:all, :conditions => ["WEEK(#{estado}) = ? AND rechazada #{rechazada}", Date.today.strftime("%U")]).count
+    mes = self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada #{rechazada}", Date.today.month]).count
     return "#{dia} / #{semana} / #{mes}"
   end
 

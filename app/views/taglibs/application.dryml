@@ -174,12 +174,6 @@
   </form>
 </extend>
 
-<!-- <extend tag="card" for="Intervencion"> -->
-<!--  <header:> -->
-<!--		<h4><view with="&this.tarea.ord_trab.nomprod"></view> :<a><view with="&this.tarea"/></a></h4> -->
-<!--	</header:> -->
-<!-- </extend> -->
-
 <def tag="ver" param>
   <view: class="vista" />
 </def>
@@ -216,13 +210,6 @@
   <hjq-datepicker merge />
 </def>
 
-<!-- <extend tag="form" for="Separacion">
-  <old-form merge>
-    <field-list: fields="color, anilox, lpi, tipomat, grosor"/>
-  </old-form>
-</extend>
--->
-
 <extend tag="form" for="Cilindro">
   <old-form merge>
     <field-list: fields="nombre, distorsion, duplo, espesor, impresora"/>
@@ -258,25 +245,23 @@
 
 <extend tag="show-page" for="Cliente">
   <old-show-page merge>
-
     <content-body:>
-            <field-list fields="razsocial, rut, sigla, direccion, telefono, fpago, tarifa, plazopago, descuento, curvas" param/>
-            <section param="collection-section">
-              <h3 param="collection-heading">
-                  Contactos <a href="#{base_url}/clientes/#{@cliente.id}-#{@cliente}/contactos/new" style="font-size: 90%; float: right;text-decoration: underline">Nuevo</a>
-              </h3>
-
-              <collection:contactos param/>
-            </section>
+      <field-list fields="razsocial, rut, sigla, direccion, telefono, fpago, tarifa, plazopago, descuento, curvas" param/>
+      <section param="collection-section">
+        <h3 param="collection-heading">
+          Contactos <a href="#{base_url}/clientes/#{@cliente.id}-#{@cliente}/contactos/new" 
+          style="font-size: 90%; float: right;text-decoration: underline">Nuevo</a>
+        </h3>
+        <collection:contactos param/>
+      </section>
     </content-body:>
     <aside:>
-          <section param="impresoras-collection-section">
-            <h3 param="impresoras-collection-heading">
-              Impresoras           <a href="#{base_url}/clientes/#{@cliente.id}-#{@cliente}/impresoras/new" style="font-size: 90%; float: right;text-decoration: underline">Nueva</a>
-              <!-- /*TODO Corregir enlace de Cancel para que vuelva al cliente -->
-            </h3>
-            <collection:impresoras  param="impresoras-collection"/>
-          </section>
+      <section param="impresoras-collection-section">
+        <h3 param="impresoras-collection-heading">
+          Impresoras           <a href="#{base_url}/clientes/#{@cliente.id}-#{@cliente}/impresoras/new" style="font-size: 90%; float: right;text-decoration: underline">Nueva</a>
+        </h3>
+        <collection:impresoras  param="impresoras-collection"/>
+      </section>
     </aside:>
   </old-show-page>
 </extend>
@@ -284,52 +269,20 @@
 <extend tag="index-for-cliente-page" for="Impresora">
   <old-index-for-cliente-page merge>
     <content-body:>
-        <a href="#{base_url}/clientes/#{@cliente.id}-#{@cliente}/impresoras/new">
-          Nueva Impresora
-        </a>
-
-
-        <page-nav param="top-page-nav"/>
-
-        <collection replace>
-		<div>
-			<table-plus fields="this, distorsion, pctdistor" />
-		</div>
-	</collection>
-
-        <page-nav param="bottom-page-nav"/>
-      </content-body:>
+      <a href="#{base_url}/clientes/#{@cliente.id}-#{@cliente}/impresoras/new">
+        Nueva Impresora
+      </a>
+      <page-nav param="top-page-nav"/>
+      <collection replace>
+  		  <div>
+    	  	<table-plus fields="this, distorsion, pctdistor" />
+  		  </div>
+  	  </collection>
+      <page-nav param="bottom-page-nav"/>
+    </content-body:>
   </old-index-for-cliente-page>
 </extend>
 
-<!-- <extend tag="show-page" for="Impresora">
-  <old-show-page merge>
-
-    <content-body:>
-            <field-list with="&@this" fields="trapdefault, bumpcurve, curva" param/>
-            <section param="collection-section">
-              <h3 param="collection-heading">
-                  Cilindros <a href="#{base_url}/impresoras/#{@impresora.id}/cilindros/new" style="font-size: 90%; float: right;text-decoration: underline">Nuevo</a>
-              </h3>
-
-              <collection:cilindros replace>
-                <table-plus with="&@this" fields="name,distorsion,pctDistor,duplo,espesor">
-                  <empty-message:>No hay cilindros definidos</empty-message:>
-                </table-plus>
-              </collection:cilindros>
-            </section>
-    </content-body:>
-
-    <aside:>
-      <section param="aniloxes-collection-section">
-        <h3 param="aniloxes-collection-heading">
-          Aniloxes <a href="#{base_url}/impresoras/#{@impresora.id}/anilox/new" style="font-size: 90%; float: right;text-decoration: underline">Nuevo</a>
-        </h3>
-        <view:aniloxes/>
-      </section>
-     </aside:>
-  </old-show-page>
-</extend> -->
 
 <extend tag="show-page" for="Impresora">
   <old-show-page merge>

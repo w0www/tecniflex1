@@ -9,23 +9,12 @@
     </div>
 
     <div class="content-body">
-<<<<<<< HEAD
-      <div class="parte-izquierda" style="width:60%;float:left;">
-        <tabla-tablero/>
-      </div>
-      <div class="parte-derecha" >
-        <div class="derecha-superior" style="width:35%;float:right;">
-          <tabla-tiempos/><br/>
-        </div>
-        <div class="derecha-inferior" style="width:35%;float:right;">
-=======
       <div style="margin-top:10px;">
         <div class="parte-izquierda" style="width:47%;float:right;">
           <tabla-tablero/>
         </div>
         <div class="parte-derecha" style="width:50%">
           <tabla-tiempos/><br/>
->>>>>>> reordenar pantalla
           <tabla-actividad/><br/>
         </div>
       </div>
@@ -47,12 +36,12 @@
       <tr>
         <th><%= ot.numOT %> </th>
         <repeat with="&@grupro">
-			<% proces = [] %>
-			<% ottars = [] %>
-			<% proces = this.procesos.*.id %>
-			<% ottars = ot.tareas.all :conditions => {:proceso_id => proces} %>
-			<% ttotal = ottars.*.tneto.reduce(:+) || "-" %>
-			<td><%= ttotal %> </td>
+			  <% proces = [] %>
+			  <% ottars = [] %>
+			  <% proces = this.procesos.*.id %>
+			  <% ottars = ot.tareas.all :conditions => {:proceso_id => proces} %>
+			  <% ttotal = ottars.*.tneto.reduce(:+) || 0 %>
+			  <td><if test="&ttotal != 0"><%= ttotal %>m</if></td>
         </repeat>
       </tr>
       <% end %>
@@ -63,7 +52,7 @@
 <def tag="tabla-actividad">
   <if test="&!@users.blank?">
     <label style="color:#fff; font-size:20px;">Actividad por usuario</label>
-    <table class="tablero" id="tactividad">
+    <table class="tablero" id="tactividad" style="border:0px;">
       <tbody>
         <tr>
           <th rowspan="2">Usuarios</th>
@@ -71,13 +60,29 @@
           <th colspan="3">Errores</th>
           <th colspan="3">Horas registradas</th>
         </tr>
-        <tr><th>Dia</th><th>Semana</th><th>Mes</th><th>Dia</th><th>Semana</th><th>Mes</th><th>Dia</th><th>Semana</th><th>Mes</th></tr>
+        <tr>
+          <th>Dia</th>
+          <th>Semana</th>
+          <th>Mes</th>
+          <th>Dia</th>
+          <th>Semana</th>
+          <th>Mes</th>
+          <th>Dia</th>
+          <th>Semana</th>
+          <th>Mes</th>
+        </tr>
         <% for u in @users %> 
           <tr class="#{scope.even_odd}">
             <th style="min-width:60px;"><%= u.name.first(10) %></th>
-            <td><%= u.intervencions_totales("termino","false").split(" / ")[0] %></td><td><%= u.intervencions_totales("termino","false").split(" / ")[1] %></td><td><%= u.intervencions_totales("termino","false").split(" / ")[2] %></td>
-            <td><%= u.intervencions_totales("termino","true").split(" / ")[0] %></td><td><%= u.intervencions_totales("termino","true").split(" / ")[1] %></td><td><%= u.intervencions_totales("termino","true").split(" / ")[2] %></td>
-            <td><%= u.intervencions_tiempo_total("termino","false").split(" / ")[0] %></td><td><%= u.intervencions_tiempo_total("termino","false").split(" / ")[1] %></td><td><%= u.intervencions_tiempo_total("termino","false").split(" / ")[2] %></td>
+            <td><%= u.int_totales("termino","false").split(" / ")[0] unless u.int_totales("termino","false").split(" / ")[0].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","false").split(" / ")[1] unless u.int_totales("termino","false").split(" / ")[1].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","false").split(" / ")[2] unless u.int_totales("termino","false").split(" / ")[2].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","true").split(" / ")[0] unless u.int_totales("termino","true").split(" / ")[0].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","true").split(" / ")[1] unless u.int_totales("termino","true").split(" / ")[1].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","true").split(" / ")[2] unless u.int_totales("termino","true").split(" / ")[2].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[0] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[0].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[1] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[1].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
           </tr>
         <% end %>
       </tbody>

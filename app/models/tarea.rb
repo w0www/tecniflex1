@@ -92,17 +92,15 @@ class Tarea < ActiveRecord::Base
 		end
   end
 
+  # Calcula el tiempo en minutos neto en realizarse una tarea
   def tneto 
     tne = 0
-    for pega in self.intervencions.each 
-      if pega.termino
-        dife = pega.termino - pega.inicio
-      else
-        dife = 0
-      end
+    for intervencion in self.intervencions
+      dife = intervencion.termino ? (intervencion.termino - intervencion.inicio) / 60 : 0
       tne += dife
     end
-    tne.to_i
+    # Devolvemos 3.68 (integer)
+    return tne.to_s.first(4).to_f
   end
   
   def proctar
@@ -125,12 +123,12 @@ class Tarea < ActiveRecord::Base
 
 		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :unless => "(self.asignada_a == nil) && (self.proceso.grupoproc.asignar == true)"
 
-		transition :cambiar, { :enviada => :cambiada }, :available_to => :all, :if => "self.proceso.reinit" do
+		transition :cambiar, { :enviada => :cambiada }, :available_to => :all, :if => "self.proceso.reiniciar" do
 			estor = self.ord_trab.sortars
 			estor[estor.index(self)-1].lifecycle.habilitar!(User.first) if estor[estor.index(self)-1]
 		end
 
-		transition :habilitar, { :cambiada => :habilitada }, :available_to => :all, :if => "self.proceso.reinit"
+		transition :habilitar, { :cambiada => :habilitada }, :available_to => :all, :if => "self.proceso.reiniciar"
 
 		##Agregar condición para rehabilitar toda la OT, a pedido de un supervisor.
 		transition :habilitar, { :terminada => :habilitada }, :available_to => :all do
@@ -152,13 +150,14 @@ class Tarea < ActiveRecord::Base
 		## Crear método "volver_a(proceso)" que maneje el flujo y los estados de las tareas.
 		############
 
-		transition :enviar, { :iniciada => :enviada }, :available_to => :all, :if => "self.proceso.prueba" do
+
+		transition :enviar, { :iniciada => :enviada }, :available_to => :all do
 			RecibArchMailer.delay.deliver_enviado(self.ord_trab.cliente, self.ord_trab)
 		end
 
-		transition :recibir, { :enviada => :recibida }, :available_to => :all, :if => "self.proceso.prueba"
+		transition :recibir, { :enviada => :recibida }, :available_to => :all
 
-		transition :reiniciar, { :recibida => :iniciada }, :available_to => :all, :if => "self.proceso.prueba" do
+		transition :reiniciar, { :recibida => :iniciada }, :available_to => :all do
 			aumentaciclo
 		end
 
@@ -203,7 +202,7 @@ class Tarea < ActiveRecord::Base
   end
 
   def update_permitted?
-    acting_user.superv? || self.proceso.edmeds
+    acting_user.superv? || self.proceso.edicion_medidas
   end
 
   def destroy_permitted?

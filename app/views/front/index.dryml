@@ -4,51 +4,33 @@
 
   <content:>
     <header class="content-header">
-
       <if test="&@asignacions == [] && Tarea.find_utiles(current_user) == []"><h1>Bienvenido a <app-name/></h1></if>
-				<section class="welcome-message">
-
-
-        <% if User.count == 0 -%>
-          <h3 style="margin-top: 20px;">There are no user accounts - please provide the details of the site administrator</h3>
-          <do with="&User.new"><% this.exempt_from_edit_checks = true %>
-            <signup-form/>
-          </do>
-        <% end -%>
-
-
-      </section>
     </header>
-     <% if !current_user.guest? -%>
-    <section class="content-body">
-			<section with="&current_user.sinfin" if="&current_user.sinfin">
-				<h2>Tareas en Curso</h2>
-				<br/>
-				<collection/>
-				<br/>
-			</section>
-
-      <section with="&@asignacions">
-        <if test="&@asignacions"><h2>Ordenes de Trabajo Asignadas</h2>
-               <repeat with="&@asignacions.group_by(&:ord_trab)">
-               <!--   <h4 style="margin-left: 40%"><a with="&this_key"/> : <%= this.first.ord_trab.nomprod %></h4> -->
-                  <collection/>
-               </repeat>
-        </if>
-      </section>
+    <if test="&current_user.guest?">
+      <section class="content-body">
+	  		<section with="&current_user.sinfin" if="&current_user.sinfin">
+	  			<h2>Tareas en Curso</h2>
+	  			<br/>
+	  			<collection/>
+	  			<br/>
+	  		</section>
+        <section with="&@asignacions">
+          <if test="&@asignacions"><h2>Ordenes de Trabajo Asignadas</h2>
+            <repeat with="&@asignacions.group_by(&:ord_trab)">
+              <collection/>
+            </repeat>
+          </if>
+        </section>
 				<unless test="&Tarea.find_utiles(current_user) == []">
 					<section with="&Tarea.find_utiles(current_user)">
 						<br/>
 						<h2>Ordenes de Trabajo Disponibles </h2>
-									<repeat with="&this.group_by(&:ord_trab)">
-										<!-- <h4 style="margin-left: 40%"><a with="&this_key"/> : <%= this.first.ord_trab.nomprod %></h4> -->
-										<collection/>
-									</repeat>
-
+						<repeat with="&this.group_by(&:ord_trab)">
+  						<collection/>
+  					</repeat>
 					</section>
 				</unless>
-    </section>
-    <% end -%>
+      </section>
+    </if>
   </content:>
-
 </page>
