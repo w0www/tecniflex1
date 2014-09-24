@@ -21,7 +21,7 @@ class Separacion < ActiveRecord::Base
 
   acts_as_list :scope => :ord_trab
 
-  validates_presence_of :color, :lpi, :anilox, :tipomat, :espesor, :if => :mtzomtje?
+  validates_presence_of :color, :lpi, :anilox, :if => :mtzomtje?
 
   def mtzomtje?
 	(self.ord_trab.mtje ||  self.ord_trab.mtz) && self.ord_trab.activa?

@@ -224,7 +224,6 @@ class OrdTrab < ActiveRecord::Base
 
 		transition :terminar, { :iniciada => :terminada }, :available_to => "User.supervisores"
 
-
     transition :reactivar, {:terminada => :habilitada}, :available_to => "User.supervisores" do
     	esta = self
     	self.tareas.each do |tara|
@@ -248,9 +247,8 @@ class OrdTrab < ActiveRecord::Base
   validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.vb || self.ptr", :on => :habilitar
   validates_presence_of :trapping, :curva, :impresora, :cilindro, :nCopias, :sustrato, :fechaEntrega, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_presence_of :cliente, :nomprod, :codCliente, :espesor, :supRev, :if => "self.pol && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
-  validates_presence_of :encargado_id, :dispBandas
+  validates_presence_of :encargado_id, :dispBandas, :espesor, :tipomat
   validates_associated :separacions, :if => "(self.mtje || self.mtz || self.pol) && self.activa? ", :on => :habilitar
-#	validate :fecha_posterior
 
 
   def before_create

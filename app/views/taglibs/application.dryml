@@ -328,9 +328,19 @@
 </def>
 
 <def tag="card" for="Tarea">
-  <card class="  #{this.state}" param="default" merge>
+  <card class="&this.state" param="default" merge>
     <header: param >
-      <a><table width="80%"><tr><th width="15%" class="  #{this.ord_trab.claset}"><%= if this.ord_trab.cliente then this.ord_trab.cliente.sigla else "" end %>-<%= this.ord_trab.codCliente %></th><td width="20%"><name/></td><td class="#{this.ord_trab.urgclass}">&nbsp;&nbsp;</td><td width="65%"><%= this.ord_trab.nomprod%></td></tr></table></a>
+      <a><table width="80%"><tr>
+        <th width="15%" class="&this.ord_trab.claset">
+          <this.ord-trab.cliente.sigla if="&this.ord_trab.cliente"/> - <this.ord-trab.codCliente/>
+        </th>
+        <td width="20%"><name/></td>
+        <td class="&this.ord_trab.urgclass">&nbsp;&nbsp;</td>
+        <td width="54%"><this.ord-trab.nomprod/></td>
+        <td width="20%">
+          <%= this.ord_trab.fechaEntrega.strftime("%d/%m/%Y %H:%M") if this.ord_trab.fechaEntrega %>
+        </td>
+      </tr></table></a>
     </header:>
   </card>
 </def>

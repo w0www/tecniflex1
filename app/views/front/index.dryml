@@ -6,7 +6,7 @@
     <header class="content-header">
       <if test="&@asignacions == [] && Tarea.find_utiles(current_user) == []"><h1>Bienvenido a <app-name/></h1></if>
     </header>
-    <if test="&current_user.guest?">
+    <if test="&!current_user.guest?">
       <section class="content-body">
 	  		<section with="&current_user.sinfin" if="&current_user.sinfin">
 	  			<h2>Tareas en Curso</h2>
