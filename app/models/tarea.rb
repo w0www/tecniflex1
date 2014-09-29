@@ -153,7 +153,7 @@ class Tarea < ActiveRecord::Base
 		############
 
 
-		transition :enviar, { :iniciada => :enviada }, :available_to => :all do
+		transition :enviar, { [:iniciada, :recibida, :habilitada] => :enviada }, :available_to => :all do
 			RecibArchMailer.delay.deliver_enviado(self.ord_trab.cliente, self.ord_trab)
 		end
 

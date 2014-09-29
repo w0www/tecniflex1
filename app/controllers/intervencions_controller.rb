@@ -126,25 +126,31 @@ class IntervencionsController < ApplicationController
 
   def create
     hobo_create do
-				if params[:envio] == "terminar"
-          this.termino = Time.now
-          this.tarea.lifecycle.terminar!(current_user)
-				elsif params[:envio] == "recibir"
-				  unless this.tarea.proceso.reiniciar
-						this.tarea.lifecycle.recibir!(current_user)
-					else
-						if params[:vuelta]
-							this.tarea.lifecycle.cambiar!(current_user)
-						else
-							this.tarea.lifecycle.recibir!(current_user)
-						end
-					end
-			  elsif params[:envio] == "iniciar"
-			  	unless this.tarea.state == "habilitada"
-            this.inicio = Time.now
-						this.tarea.lifecycle.reiniciar!(current_user)
-					end
+			if params[:envio] == "terminar"
+        this.termino = Time.now
+        this.tarea.lifecycle.terminar!(current_user)
+			elsif params[:envio] == "recibir"
+			  unless this.tarea.proceso.reiniciar
+					this.tarea.lifecycle.recibir!(current_user)
+				else
+					params[:vuelta] ? this.tarea.lifecycle.cambiar!(current_user) : this.tarea.lifecycle.recibir!(current_user)
 				end
+        this.rechazada = true
+        this.termino = Time.now
+		  elsif params[:envio] == "iniciar"
+		  	unless this.tarea.state == "habilitada"
+          this.inicio = Time.now
+					this.tarea.lifecycle.reiniciar!(current_user)
+				end
+      elsif params[:envio] == "rechazar"
+        this.colores = "#{params[:intervencion][:colores].join(",")}" if params[:intervencion][:colores]
+        this.rechazada = true
+				this.tarea.lifecycle.rechazar!(current_user)
+        this.termino = Time.now
+        this.save
+        this.tarea.proceso.volver_a_revision ? this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user) :
+                                               this.tarea.ord_trab.volver_a(params[:procdest],current_user)
+			end
       this.save
       hobo_ajax_response if request.xhr?
     end
@@ -152,37 +158,35 @@ class IntervencionsController < ApplicationController
 
   def update
     hobo_update do
-				if params[:envio] == "terminar"
-					flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada'
-          this.tarea.lifecycle.terminar!(current_user)
-          this.termino = Time.now
-          this.final = true
-          this.save
-				elsif params[:envio] == "detener"
-          this.tarea.lifecycle.detener!(current_user)
-          this.termino = Time.now
-          this.save
-				elsif params[:envio] == "enviar"
-					this.tarea.lifecycle.enviar!(current_user)
-          this.termino = Time.now
-          this.save
-				elsif params[:envio] == "recibir"
-					this.tarea.lifecycle.recibir!(current_user)
-          this.termino = Time.now
-          this.save
-				elsif params[:envio] == "rechazar"
-          this.colores = "#{params[:intervencion][:colores].join(",")}" if params[:intervencion][:colores]
-          this.rechazada = true
-  				this.tarea.lifecycle.rechazar!(current_user)
-          this.termino = Time.now
-          this.save
-        else
-					if this.tarea.proceso.volver_a_revision
-						this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user)
-					elsif this.tarea.proceso.rev
-						this.tarea.ord_trab.volver_a(params[:procdest],current_user)
-					end
-        end
+			if params[:envio] == "terminar"
+				flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada'
+        this.tarea.lifecycle.terminar!(current_user)
+        this.termino = Time.now
+        this.final = true
+        this.save
+			elsif params[:envio] == "detener"
+        this.tarea.lifecycle.detener!(current_user)
+        this.termino = Time.now
+        this.save
+			elsif params[:envio] == "enviar"
+				this.tarea.lifecycle.enviar!(current_user)
+        this.termino = Time.now
+        this.save
+			elsif params[:envio] == "recibir"
+				this.tarea.lifecycle.recibir!(current_user)
+        this.rechazada = true
+        this.termino = Time.now
+        this.save
+			elsif params[:envio] == "rechazar"
+        this.colores = "#{params[:intervencion][:colores].join(",")}" if params[:intervencion][:colores]
+        this.rechazada = true
+				this.tarea.lifecycle.rechazar!(current_user)
+        this.termino = Time.now
+        this.tarea.proceso.volver_a_revision ? this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user) :
+                                               this.tarea.ord_trab.volver_a(params[:procdest],current_user)
+        this.save
+      else
+      end
       hobo_ajax_response if request.xhr?
     end
   end

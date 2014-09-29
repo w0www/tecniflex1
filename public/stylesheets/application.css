@@ -335,6 +335,24 @@ ul.hjq-input-many div.buttons {
     background-position: -722px -290px;
 }
 
+#rechazar {
+	margin-left: 30%;
+  display: inline;
+	width: 144px; height: 144px;
+	background-image: url(images/BotonesTX.png);
+	background-position: -722px -2px;
+	text-indent: -9999px;
+        background-color: gainsboro;
+}
+
+#rechazar:hover {
+    background-position: -722px -146px;
+}
+
+#rechazar:active {
+    background-position: -722px -290px;
+}
+
 .debug_dump {
     color: #999999;
 }

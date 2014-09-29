@@ -64,7 +64,7 @@
       <if test="&this.activa?">
         <if test="&@intervenciones != []">
           <if test="&@intervenciones.last.termino == nil">
-            <form with="&@intervenciones.last" >
+            <form with="&@intervenciones.last">
               <inicio-form/>
               Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
               <input type="hidden" name="envio" id="envio" value=""/>
@@ -75,32 +75,32 @@
               <else><if test="&this.tarea.proceso.volver_a_revision">
                 <input-detener/>
                 <input-terminar/>
-                <input-rechazar/>
+                <input-recibir/>
               </if><else><if test="&this.tarea.proceso.rev">
                 <input-detener/>
                 <input-terminar/>
-                <select class="input belongs_to" name="procdest">
-                  <% @procesos_volver_desde_revision.each do |proce| %>
-                    <option value="#{proce.id}"><%= proce.nombre -%></option>
-                  <% end %>
-                </select>
-                <div id="campos-rechazo" style="margin-left:67%">
-                  Observaciones matriceria<input:observaciones-matriceria/><br/>
-                  Observaciones analisis<input:observaciones-analisis/><br/>
-                  OT incompleta<input:ot-incompleta/><br/>
-                  Observaciones micropunto<input:observaciones-micropunto/><br/>
-                  RIPeo<input:ripeo/><br/>
-                  Distorsion<input:distorsion/><br/>
-                  Texto<input:texto/><br/>
-                  Foto<input:foto/><br/>
+                <input-rechazar/>
+                <div id="campos-rechazo" style="margin-left:33%">
+                 <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
+                 <select class="input belongs_to" name="procdest">
+                    <% @procesos_volver_desde_revision.each do |proce| %>
+                      <option value="#{proce.id}"><%= proce.nombre -%></option>
+                    <% end %>
+                  </select><br/>
+                  Observaciones matriceria<input:observaciones-matriceria/>
                   Observaciones V/B<input:observaciones-vb/><br/>
-                  Colores<%= select_tag "intervencion[colores]", options_from_collection_for_select(Separacion.all, 'id', 'color'), :multiple => true %><br/>
+                  Observaciones analisis<input:observaciones-analisis/>
+                  OT incompleta<input:ot-incompleta/>
+                  Observaciones micropunto<input:observaciones-micropunto/>
+                  RIPeo<input:ripeo/><br/>
+                  Distorsion<input:distorsion/>
+                  Texto<input:texto/>
+                  Foto<input:foto/>
                   Responsable<select-menu first-option="Selecciona usuario" options="&User.all.map{|u| [u.name, u.id]}" name="intervencion[responsable]"/><br/>
+                  Colores<%= select_tag "intervencion[colores]", options_from_collection_for_select(Separacion.all, 'id', 'color'), :multiple => true %><br/>
                   Observaciones rechazo<input:observaciones-rechazo/><br/>
-                  <input-rechazar/>
-                  <a href="#" id="ocultar-rechazo" class="button submit-button">cancelar</a>
                 </div>
-                <a href="#" id="mostrar-rechazo" class="button submit-button">rechazar</a>
+                <a href="#" id="mostrar-rechazo" class="button submit-button">Mostrar opciones de rechazo</a>
               </if><else>
                 <input-detener/>
                 <input-terminar/>
