@@ -28,7 +28,11 @@ class OrdTrabsController < ApplicationController
         hobo_ajax_response if request.xhr?
       end
     else
-      request.xhr? ? hobo_ajax_response : hobo_new
+      hobo_new do
+        this.attributes = params[:ord_trab] || {}
+        hobo_ajax_response if request.xhr?
+      end
+
     end
   end
 

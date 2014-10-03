@@ -207,7 +207,7 @@
         <th colspan="3" class="centrada">Encargado</th>
       </tr>
       <tr>
-        <td class="centrada" colspan="5"/>
+        <td class="centrada" colspan="5">Material: <view:tipomat if="tipomat"/></td>
         <td colspan="2" class="centrada"><view:trapping if="trapping"/></td>
         <td colspan="3" class="centrada"><view:curva if="curva"/></td>
         <td colspan="3" class="centrada"><view:encargado if="encargado"/></td>
@@ -221,7 +221,6 @@
         <th>Color</th>
         <th>Anilox</th>
         <th>lpi</th>
-        <th>Material</th>
         <th>Alto</th>
         <th>Ancho</th>
         <th>Area</th>
@@ -234,7 +233,6 @@
           <td><view:color if="color"/></td>
           <td><view:anilox if="anilox"/></td>
           <td><view:lpi if="lpi"/></td>
-          <td><view:tipomat if="tipomat"/></td>
           <td><view:alto if="alto"/></td>
           <td><view:ancho if="ancho"/></td>
           <td><view:area if="area"/></td>

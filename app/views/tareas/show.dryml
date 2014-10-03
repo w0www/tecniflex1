@@ -87,17 +87,19 @@
                       <option value="#{proce.id}"><%= proce.nombre -%></option>
                     <% end %>
                   </select><br/>
-                  Observaciones matriceria<input:observaciones-matriceria/>
-                  Observaciones V/B<input:observaciones-vb/><br/>
-                  Observaciones analisis<input:observaciones-analisis/>
-                  OT incompleta<input:ot-incompleta/>
-                  Observaciones micropunto<input:observaciones-micropunto/>
+                  Observaciones analisis<input:observaciones-analisis/><br/>
+                  OT incompleta<input:ot-incompleta/><br/>
+                  OT con error<input:ot-error/><br/>
+                  Observaciones matriceria<input:observaciones-matriceria/><br/>
+                  Observaciones montaje<input:observaciones-montaje/><br/>
+                  Observaciones micropunto<input:observaciones-micropunto/><br/>
                   RIPeo<input:ripeo/><br/>
-                  Distorsion<input:distorsion/>
-                  Texto<input:texto/>
-                  Foto<input:foto/>
+                  Distorsion<input:distorsion/><br/>
+                  Texto<input:texto/><br/>
+                  Foto<input:foto/><br/>
+                  Observaciones V/B<input:observaciones-vb/><br/>
                   Responsable<select-menu first-option="Selecciona usuario" options="&User.all.map{|u| [u.name, u.id]}" name="intervencion[responsable]"/><br/>
-                  Colores<%= select_tag "intervencion[colores]", options_from_collection_for_select(Separacion.all, 'id', 'color'), :multiple => true %><br/>
+                  Colores<input:colores/><br/>
                   Observaciones rechazo<input:observaciones-rechazo/><br/>
                 </div>
                 <a href="#" id="mostrar-rechazo" class="button submit-button">Mostrar opciones de rechazo</a>

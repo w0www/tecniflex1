@@ -8,9 +8,11 @@ class Intervencion < ActiveRecord::Base
     final         :boolean
     observaciones :text
     # Campos a rellenar si se rechaza una revisionMM
-    observaciones_matriceria  :boolean
     observaciones_analisis    :boolean
     ot_incompleta             :boolean
+    ot_error                  :boolean
+    observaciones_matriceria  :boolean
+    observaciones_montaje     :boolean
     observaciones_micropunto  :boolean
     ripeo                     :boolean
     distorsion                :boolean
