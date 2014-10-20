@@ -69,7 +69,7 @@ class OrdTrabsController < ApplicationController
       :espesor_id_is => params[:espesor],
       :tipomat_id_is => params[:tipomat],
       :state_is => params[:estado],
-      :proceso_is => params[:proceso],
+      :proceso_is => [params[:proceso], params[:estado_proceso]],
       :created_between => [inicial, final]
     )
 	end
@@ -99,7 +99,7 @@ class OrdTrabsController < ApplicationController
       :cliente_is => params[:cliente],
       :codCliente_contains => params[:codigo_cliente],
       :numOT_contains => params[:orden],
-      :proceso_is => params[:proceso],
+      :proceso_is => [params[:proceso], params[:estado_proceso]],
       :state_is => params[:estado],
       :created_between => [inicial, final]
     ).paginate(:page => params[:page], :per_page => 35)

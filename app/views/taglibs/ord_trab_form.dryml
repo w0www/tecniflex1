@@ -191,9 +191,22 @@
     <td colspan="2"><input:colorBarcode style="width:40px"/></td>
     <td colspan="2" rowspan="5" style="text-align: center">
       <select name="ord_trab[dispBandas]">
-        <option value="" selected="selected">Ninguna</option>
-        <option value="0">Bandas Alineadas</option>
-        <option value="1">Bandas Desplazadas</option>
+        <%
+          case this.dispBandas
+          when 0 %>
+            <option value="">Ninguna</option>
+            <option value="0" selected="selected">Bandas Alineadas</option>
+            <option value="1">Bandas Desplazadas</option>
+          <% when 1 %>
+            <option value="">Ninguna</option>
+            <option value="0">Bandas Alineadas</option>
+            <option value="1" selected="selected">Bandas Desplazadas</option>
+          <% else %>
+            <option value="" selected="selected">Ninguna</option>
+            <option value="0">Bandas Alineadas</option>
+            <option value="1">Bandas Desplazadas</option>
+          <% end %>  
+        %>
       </select>
     </td>
   </tr>

@@ -3,25 +3,24 @@
   <form method="get" action="#{action}" id="filters" class="ui-widget-content ui-corner-all"
     style="#{'display:none' unless params[:cliente]}"    >
     <fieldset class="feckless-fields horizontal informe">
-      <select-field label="Cliente" name="cliente" options="&Cliente.all.map{|c| [c.name]}"/>
+      <select-field label="Cliente" name="cliente" options="&Cliente.all.map{|c| [c.name]}" first-option="Filtrar por cliente"/>
       <input-field label="Cod. cliente" name="codigo_cliente"/>
-      <select-field label="Estado" name="estado" options="&OrdTrab::Lifecycle.states.keys.map{|s|[s.to_s]}"/>
-      <select-field label="Proceso" name="proceso" options="&Proceso.all"/>
+      <select-field label="Proceso" name="proceso" options="&Proceso.all" first-option="Filtrar por proceso"/>
+      <select-field label="Estado proceso" name="estado_proceso" options="&Tarea::Lifecycle.states.keys.map{|s|[s.to_s]}" first-value="habilitada" first-option="habilitada"/>
+      <select-field label="Estado OT" name="estado" options="&OrdTrab::Lifecycle.states.keys.map{|s|[s.to_s]}" first-option="Filtrar por estado"/>
       <input-field label="O.T." name="orden"/>
       <date-field label="Fecha" name="fecha"/>
-      <select-field label="Tipo Mat" name="tipomat" options="&Tipomat.all.map{|t| [t.nombre, t.id]}.uniq"/>
-      <select-field label="Espesor" name="espesor" options="&Espesor.all.map{|e| [e.calibre, e.id]}.uniq"/>
       <placeholder-field/>
       <submit-field/>
   </fieldset>
   </form>
 </def>
 
-<def tag="select-field" attrs="label, name, options">
+<def tag="select-field" attrs="label, name, options, first-option, first-value">
   <div class="field">
     <label><%= label %></label>
-    <select-menu name="#{name}" 
-              first-option="Filtrar por #{label}"
+    <select-menu name="#{name}" first-value="#{first_value}"
+              first-option="#{first_option}"
               selected="&params[name.to_sym]"
               options="&options" />
   </div>

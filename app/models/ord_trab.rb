@@ -108,9 +108,9 @@ class OrdTrab < ActiveRecord::Base
   default_scope :order => 'numOT DESC'
 
   # Scope que busca en varias columnas el material entregado
-  named_scope :proceso_is, lambda { |search| { 
+  named_scope :proceso_is, lambda { |proceso,estado| { 
     :include => :tareas,
-    :conditions => ["tareas.proceso_id = ? AND tareas.state = ?", Proceso.find_by_nombre(search).id, 'habilitada'] } }
+    :conditions => ["tareas.proceso_id = ? AND tareas.state = ?", Proceso.find_by_nombre(proceso).id, estado] } }
 
 
   def armacod
@@ -258,6 +258,8 @@ class OrdTrab < ActiveRecord::Base
 		else
 			self.numOT = (OrdTrab.order_by(:id).last.id.to_i || 0) + 60001
 		end
+    logger.info "esto es fecha_entrega #{fechaEntrega}"
+
   end
 
   def activa?
