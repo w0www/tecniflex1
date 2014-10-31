@@ -178,7 +178,7 @@ class IntervencionsController < ApplicationController
         this.termino = Time.now
         this.save
 			elsif params[:envio] == "rechazar"
-        this.colores = "#{params[:intervencion][:colores].join(",")}" if params[:intervencion][:colores]
+        this.colores = params[:intervencion][:colores].join(",") if params[:intervencion][:colores] && !params[:intervencion][:colores].blank?
         this.rechazada = true
 				this.tarea.lifecycle.rechazar!(current_user)
         this.termino = Time.now
