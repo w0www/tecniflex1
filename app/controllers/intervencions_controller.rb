@@ -150,6 +150,7 @@ class IntervencionsController < ApplicationController
         this.save
         this.tarea.proceso.volver_a_revision ? this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user) :
                                                this.tarea.ord_trab.volver_a(params[:procdest],current_user)
+        redirect_to "/" if this.tarea.proceso.nombre.downcase == "revisionvb" || this.tarea.proceso.nombre.downcase == "vistobueno"
 			end
       this.save
       hobo_ajax_response if request.xhr?
@@ -172,10 +173,10 @@ class IntervencionsController < ApplicationController
 				this.tarea.lifecycle.enviar!(current_user)
         this.termino = Time.now
         this.save
+        redirect_to "/" if this.tarea.proceso.nombre.downcase == "vistobueno"
 			elsif params[:envio] == "recibir"
 				this.tarea.lifecycle.recibir!(current_user)
-        this.rechazada = true
-        this.termino = Time.now
+        this.termino = Time.now 
         this.save
 			elsif params[:envio] == "rechazar"
         this.colores = params[:intervencion][:colores].join(",") if params[:intervencion][:colores] && !params[:intervencion][:colores].blank?
@@ -185,7 +186,7 @@ class IntervencionsController < ApplicationController
         this.tarea.proceso.volver_a_revision ? this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user) :
                                                this.tarea.ord_trab.volver_a(params[:procdest],current_user)
         this.save
-      else
+        redirect_to "/" if this.tarea.proceso.nombre.downcase == "revisionvb" || this.tarea.proceso.nombre.downcase == "vistobueno"
       end
       hobo_ajax_response if request.xhr?
     end

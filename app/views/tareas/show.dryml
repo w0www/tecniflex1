@@ -122,6 +122,10 @@
                 <input-recibir/>
                 <input-terminar/>
               </if>
+              <else><if test="&Tarea.find(@tarea.id).state == 'recibida' && Tarea.find(@tarea.id).proceso.nombre.downcase == 'vistobueno'">
+                <input-rechazar/>
+                <input-terminar/>
+              </if></else>
               <else>
                 <if test="&Tarea.find(@tarea.id).proceso.nombre == 'Matriceria' && Tarea.find(@tarea.id).ord_trab.dispBandas == -1">
                   Este proceso no se puede iniciar porque no has seleccionado una disposición de bandas.
