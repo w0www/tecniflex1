@@ -10,7 +10,6 @@
       #efecto { width: 850px; height: 78px; padding: 0.4em; position: relative; display:none}
       #efecto h3 { margin: 0; padding: 0.4em; text-align: center; }
     </style>
-    <h1><%= @test %></h1>
     <div id="tabs">
       <ul>
         <li><a href="#tabs-1">Tablero de Control</a></li>
@@ -37,41 +36,36 @@
             </thead>
             <tbody>
               <% @todas.each do |tod| %>
-              <!-- <repeat with="&@todas"> -->
-                <% @tod = tod %>
                 <% tiempo_total = 0 %>
+                <% cliente = tod.cliente %>
                 <tr class="st#{tod.state}">
-                  <th style="width:70px;" class="#{@tod.prioridad}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a><br/><span style="font-weight:normal"><%= if tod.cliente then tod.cliente.sigla else "" end-%>-<%= tod.codCliente %>- v.<%= tod.version || 1 %></span></th><th rowspan="2" style="width: 12em;" class="#{@tod.state}"><%=  tod.nomprod -%></th>
+                  <th style="width:70px;" class="#{tod.prioridad}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a><br/><span style="font-weight:normal"><%= cliente ? cliente.sigla : "" -%>-<%= tod.codCliente %>- v.<%= tod.version || 1 %></span></th><th rowspan="2" style="width: 12em;" class="#{tod.state}"><%=  tod.nomprod -%></th>
                     <!-- SUYCCOM HACK: revisar con Jaime estas lineas para intentar optimizar-->
                     <% @grupro.each do |proce|%>
-                      <% tiempo_total += proce.procesos.first.minutos_minimo if proce.procesos.first.minutos_minimo %>
+                      <% proceso = proce.procesos %>
+                      <% tarea = tod.tareas.proceso_is(proceso.first) ? tod.tareas.proceso_is(proceso.first).first : nil %>
+                      <% tiempo_total += proceso.first.minutos_minimo if proceso.first.minutos_minimo %>
                       <td class="#{tod.estgrupro(proce.abreviacion)[1]}" rowspan="2">
-                       <% if @tod.tareas.proceso_is(proce.procesos.first) != [] %>
-                         <% if @tod.tareas.proceso_is(proce.procesos.first).first.proceso %>
-                            <% if @tod.tareas.proceso_is(proce.procesos.first).first.ciclo.to_i >= 3 %>
-                              <div class="ciclo red">
-                                <%= @tod.tareas.proceso_is(proce.procesos.first).first.ciclo %>
-                              </div>
-                            <% elsif (@tod.tareas.proceso_is(proce.procesos.first).first.ciclo.to_i > 1) && (@tod.tareas.proceso_is(proce.procesos.first).first.ciclo.to_i < 3) %>
-                              <div class="ciclo yel">
-                                <%= @tod.tareas.proceso_is(proce.procesos.first).first.ciclo %>
-                              </div>
-                            <% else %>
-                              <div class="ciclo ver">
-                                <%= @tod.tareas.proceso_is(proce.procesos.first).first.ciclo %>
-                              </div>
-                           <% end %>
-                         <% end %>
-                       <% end %>
-                       <% if proce.procesos.count > 1 %>
-                         <%= @tod.estgrupro(proce.abreviacion)[0] -%> <br/>
-                       <% else %>
-                         <%= @tod.estgrupro(proce.abreviacion)[1] -%> <br/>
-                       <% end %>
-                       <p class="iniciales"><%= @tod.usersgp(proce.abreviacion) -%></p>
-                     </td>
-                   <% end %>
-                   <% fecha_entrega = @tod.fechaEntrega ? @tod.fechaEntrega : nil %>
+                        <unless test="&tarea.blank?">
+                          <if test="&tarea.proceso">
+                            <if test="&tarea.ciclo.to_i >= 3">
+                              <div class="ciclo red"><%= tarea.ciclo %></div>
+                            </if>
+                          </if>
+                          <else>
+                            <if test="&(tarea.ciclo.to_i > 1) && (tarea.ciclo.to_i < 3)">
+                              <div class="ciclo yel"><%= tarea.ciclo %></div>
+                            </if>
+                            <else>
+                              <div class="ciclo ver"><%= tarea.ciclo %></div>
+                            </else>
+                          </else>
+                        </unless>
+                      <%= proceso.count > 1 ? tod.estgrupro(proce.abreviacion)[0] : tod.estgrupro(proce.abreviacion)[1] %> <br/>
+                      <p class="iniciales"><%= tod.usersgp(proce.abreviacion) -%></p>
+                      </td>
+                    <% end %>
+                    <% fecha_entrega = tod.fechaEntrega ? tod.fechaEntrega : nil %>
                 <% 
                   if fecha_entrega && fecha_entrega - 1.hour <= @hora_actual + tiempo_total.minute &&
                      fecha_entrega > @hora_actual + tiempo_total.minute
@@ -86,7 +80,7 @@
                 %>
                    <td rowspan="2" style="background-color:#{color if color}"/>
                    <td rowspan="2">
-                     <do with="&@tod"><% transitions = this.lifecycle.publishable_transitions_for(current_user) %><transition-buttons/><unless test='&transitions'>Asignar Tareas</unless></do></td>
+                     <do with="&tod"><% transitions = this.lifecycle.publishable_transitions_for(current_user) %><transition-buttons/><unless test='&transitions'>Asignar Tareas</unless></do></td>
                     </tr>
                     <tr/>
                <%end%>
@@ -103,9 +97,8 @@
               </tr>
             </thead>
             <tbody>
-              <% @usuarios=User.find(:all, :order => :name) %>
               <repeat with="&@usuarios">
-              <tr></tr>
+                <tr></tr>
               </repeat>
              </tbody>
            </table>
@@ -120,20 +113,15 @@
       jQuery("#tabs").tabs();
       // run the currently selected effect
       function runEffect() {
-
         // run the effect
-          jQuery( "#efecto" ).slideToggle( 'slow', function(){
-          } );
-          };
+        jQuery( "#efecto" ).slideToggle( 'slow', function(){});
+      };
 
-        // set effect from select menu value
-        jQuery( "#button" ).click(function() {
-          runEffect();
-            return false;
-          });
-
-
+      // set effect from select menu value
+      jQuery( "#button" ).click(function() {
+        runEffect();
+          return false;
+        });
     });
-
   </page-scripts:>
 </page>

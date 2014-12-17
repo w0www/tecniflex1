@@ -92,6 +92,7 @@ class OrdTrabsController < ApplicationController
   index_action :tablero do
     @hora_actual = DateTime.now.in_time_zone
     @grupro = Grupoproc.tablero.order_by(:position)
+    @usuarios = User.find(:all, :order => :name)
     @clies = Cliente.all
     inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
     final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time if params[:fecha_fin] && !params[:fecha_fin].blank?
@@ -102,7 +103,7 @@ class OrdTrabsController < ApplicationController
       :proceso_is => [params[:proceso], params[:estado_proceso]],
       :state_is => params[:estado],
       :created_between => [inicial, final]
-    ).paginate(:page => params[:page], :per_page => 35)
+    ).paginate(:page => params[:page], :per_page => 20)
     hobo_ajax_response if request.xhr?
   end
 
