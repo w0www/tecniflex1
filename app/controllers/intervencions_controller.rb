@@ -174,10 +174,10 @@ class IntervencionsController < ApplicationController
   def update
     hobo_update do
 			if params[:envio] == "terminar"
-				flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada' if this.proceso.nombre.downcase != 'vistobueno' && this.tarea.state != "en_revision"
+				flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada' if this.tarea.proceso.nombre.downcase != 'vistobueno' && this.tarea.state != "en_revision"
         this.tarea.lifecycle.terminar!(current_user)
         this.termino = Time.now
-        this.final = true if this.proceso.nombre.downcase != 'vistobueno' && this.tarea.state != "en_revision"
+        this.final = true if this.tarea.proceso.nombre.downcase != 'vistobueno' && this.tarea.state != "en_revision"
         this.save
 			elsif params[:envio] == "detener"
         this.tarea.lifecycle.detener!(current_user)

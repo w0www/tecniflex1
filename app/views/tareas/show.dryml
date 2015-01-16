@@ -140,7 +140,6 @@
           </if>
           <else>
             <form with="&Intervencion.new">
-<% logger.info "esto entra aqui "%>
               <inicio-form/>
               <input class="hidden" type="text" name="term" value="1"/>
               <input type="hidden" name="envio" id="envio" value=""/>
@@ -151,13 +150,14 @@
                 </span>
                 <input-recibir/>
                 <input-terminar/>
-              </if>
-              <else><if test="&Tarea.find(@tarea.id).state == 'recibida' && Tarea.find(@tarea.id).proceso.nombre.downcase == 'vistobueno'">
+              </if><else><if test="&@tarea.proceso.nombre.downcase == 'vistobueno' && @tarea.state == 'recibida'">
+                  <input-enviar-cliente/>
+              </if><else><if test="&@tarea.state == 'recibida' && @tarea.proceso.nombre.downcase == 'vistobueno'">
                 <input-rechazar/>
                 <input-terminar/>
-              </if></else>
+              </if></else></else>
               <else>
-                <if test="&Tarea.find(@tarea.id).proceso.nombre == 'Matriceria' && Tarea.find(@tarea.id).ord_trab.dispBandas == -1">
+                <if test="&@tarea.proceso.nombre == 'Matriceria' && @tarea.ord_trab.dispBandas == -1">
                   Este proceso no se puede iniciar porque no has seleccionado una disposición de bandas.
                 </if>
                 <else><if test="&@tarea.proceso.nombre.downcase == 'vistobueno' && @tarea.state == 'en_revision' || @tarea.proceso.nombre.downcase == 'revisionvb' && @tarea.state == 'iniciada'">
@@ -193,12 +193,11 @@
         </if>
         <else>
           <br/>
-          <if test="&Tarea.find(@tarea.id).proceso.nombre == 'Matriceria' && Tarea.find(@tarea.id).ord_trab.dispBandas.blank?">
+          <if test="&@tarea.proceso.nombre == 'Matriceria' && @tarea.ord_trab.dispBandas.blank?">
             Este proceso no se puede iniciar porque no has seleccionado una disposición de bandas.
           </if>
           <else>
             <form with="&Intervencion.new">
-<% logger.info "esto entra aqui2 "%>
               <inicio-form/>
               <submit label="Iniciar" id="iniciar"/>
             </form>

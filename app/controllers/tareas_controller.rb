@@ -38,9 +38,6 @@ class TareasController < ApplicationController
     this.lifecycle.habilitar!(current_user) if semaforo
   end
 
-
-  end
-
   def show
     @tarea = Tarea.find(params[:id])
     @termin = 0
