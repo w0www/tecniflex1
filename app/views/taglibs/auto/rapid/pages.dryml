@@ -3175,6 +3175,305 @@
 </def>
 
 
+<def tag="crear-page" polymorphic/>
+<def tag="crear-page" for="Tarea">
+  
+  <page title="#{ht 'tareas.crear.title', :default=>['Crear']}" merge>  
+
+    <body: class="lifecycle-start-page crear-page" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.crear.heading">
+            Crear
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <crear-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="habilitar-page" polymorphic/>
+<def tag="habilitar-page" for="Tarea">
+  <page title="#{ht 'tareas.habilitar.title', :default=>['Habilitar']}" merge>
+
+    <body: class="lifecycle-transition-page habilitar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.habilitar.heading">
+            Habilitar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <habilitar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="cambiar-page" polymorphic/>
+<def tag="cambiar-page" for="Tarea">
+  <page title="#{ht 'tareas.cambiar.title', :default=>['Cambiar']}" merge>
+
+    <body: class="lifecycle-transition-page cambiar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.cambiar.heading">
+            Cambiar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <cambiar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="iniciar-page" polymorphic/>
+<def tag="iniciar-page" for="Tarea">
+  <page title="#{ht 'tareas.iniciar.title', :default=>['Iniciar']}" merge>
+
+    <body: class="lifecycle-transition-page iniciar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.iniciar.heading">
+            Iniciar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <iniciar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="enviar-page" polymorphic/>
+<def tag="enviar-page" for="Tarea">
+  <page title="#{ht 'tareas.enviar.title', :default=>['Enviar']}" merge>
+
+    <body: class="lifecycle-transition-page enviar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.enviar.heading">
+            Enviar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <enviar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="enviar-pdf-page" polymorphic/>
+<def tag="enviar-pdf-page" for="Tarea">
+  <page title="#{ht 'tareas.enviar_pdf.title', :default=>['Enviar Pdf']}" merge>
+
+    <body: class="lifecycle-transition-page enviar-pdf-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.enviar_pdf.heading">
+            Enviar Pdf
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <enviar-pdf-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="terminar-page" polymorphic/>
+<def tag="terminar-page" for="Tarea">
+  <page title="#{ht 'tareas.terminar.title', :default=>['Terminar']}" merge>
+
+    <body: class="lifecycle-transition-page terminar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.terminar.heading">
+            Terminar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <terminar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="recibir-page" polymorphic/>
+<def tag="recibir-page" for="Tarea">
+  <page title="#{ht 'tareas.recibir.title', :default=>['Recibir']}" merge>
+
+    <body: class="lifecycle-transition-page recibir-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.recibir.heading">
+            Recibir
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <recibir-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="reiniciar-page" polymorphic/>
+<def tag="reiniciar-page" for="Tarea">
+  <page title="#{ht 'tareas.reiniciar.title', :default=>['Reiniciar']}" merge>
+
+    <body: class="lifecycle-transition-page reiniciar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.reiniciar.heading">
+            Reiniciar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <reiniciar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="detener-page" polymorphic/>
+<def tag="detener-page" for="Tarea">
+  <page title="#{ht 'tareas.detener.title', :default=>['Detener']}" merge>
+
+    <body: class="lifecycle-transition-page detener-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.detener.heading">
+            Detener
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <detener-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="rechazar-page" polymorphic/>
+<def tag="rechazar-page" for="Tarea">
+  <page title="#{ht 'tareas.rechazar.title', :default=>['Rechazar']}" merge>
+
+    <body: class="lifecycle-transition-page rechazar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.rechazar.heading">
+            Rechazar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <rechazar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="terminar-page" polymorphic/>
+<def tag="terminar-page" for="Tarea">
+  <page title="#{ht 'tareas.terminar.title', :default=>['Terminar']}" merge>
+
+    <body: class="lifecycle-transition-page terminar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.terminar.heading">
+            Terminar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <terminar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="eliminar-page" polymorphic/>
+<def tag="eliminar-page" for="Tarea">
+  <page title="#{ht 'tareas.eliminar.title', :default=>['Eliminar']}" merge>
+
+    <body: class="lifecycle-transition-page eliminar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="tareas.eliminar.heading">
+            Eliminar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <eliminar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
 
 
 

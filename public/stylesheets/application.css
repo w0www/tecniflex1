@@ -393,6 +393,11 @@ ul.hjq-input-many div.buttons {
     background-color: lightgreen !important;
 }
 
+.en_revision{
+  background-color:BurlyWood  !important;
+  color:black;
+}
+
 .detenida{
     background-color: sandybrown !important;
 }

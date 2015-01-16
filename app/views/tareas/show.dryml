@@ -69,13 +69,42 @@
               Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
               <input type="hidden" name="envio" id="envio" value=""/>
               <if test="&this.tarea.proceso.prueba">
-                <input-detener/>
-                <input-enviar/>
-              </if>
-              <else><if test="&this.tarea.proceso.volver_a_revision">
+                <if test="&this.tarea.proceso.nombre.downcase == 'vistobueno' && this.tarea.state == 'iniciada'">
+                  <input-detener/>
+                  <input-enviar-pdf/>
+                </if>
+                <else><if test="&this.tarea.proceso.nombre.downcase == 'vistobueno' && this.tarea.state == 'recibida'">
+                  <input-enviar-cliente/>
+                </if></else><else>
+                  <input-detener/>
+                  <input-enviar/>
+                </else>
+              </if><else><if test="&this.tarea.proceso.volver_a_revision">
                 <input-detener/>
                 <input-terminar/>
                 <input-recibir/>
+              </if><else><if test="&this.tarea.proceso.nombre.downcase == 'revisionvb' && this.tarea.state == 'iniciada'">
+                  <input-rechazar/>
+                  <input-terminar/>
+                  <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
+                  <div id="campos-rechazo" style="margin-left:30%;display:table;">
+                    <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
+                    <input type="hidden" name="procdest" value="#{Proceso.find_by_nombre('Vistobueno').id}"/><br/>
+                    Observaciones analisis<input:observaciones-analisis/><br/>
+                    OT incompleta<input:ot-incompleta/><br/>
+                    OT con error<input:ot-error/><br/>
+                    Observaciones matriceria<input:observaciones-matriceria/><br/>
+                    Observaciones montaje<input:observaciones-montaje/><br/>
+                    Observaciones micropunto<input:observaciones-micropunto/><br/>
+                    RIPeo<input:ripeo/><br/>
+                    Distorsion<input:distorsion/><br/>
+                    Texto<input:texto/><br/>
+                    Foto<input:foto/><br/>
+                    Observaciones V/B<input:observaciones-vb/><br/>
+                    Responsable<select-menu first-option="Selecciona usuario" options="&User.all.map{|u| [u.name, u.id]}" name="intervencion[responsable]"/><br/>
+                    Colores<input:colores/><br/>
+                    Observaciones rechazo<input:observaciones-rechazo/><br/>
+                  </div>
               </if><else><if test="&this.tarea.proceso.rev">
                 <input-detener/>
                 <input-terminar/>
@@ -106,11 +135,12 @@
               </if><else>
                 <input-detener/>
                 <input-terminar/>
-              </else></else></else>
+              </else></else></else></else>
             </form>
           </if>
           <else>
             <form with="&Intervencion.new">
+<% logger.info "esto entra aqui "%>
               <inicio-form/>
               <input class="hidden" type="text" name="term" value="1"/>
               <input type="hidden" name="envio" id="envio" value=""/>
@@ -130,7 +160,31 @@
                 <if test="&Tarea.find(@tarea.id).proceso.nombre == 'Matriceria' && Tarea.find(@tarea.id).ord_trab.dispBandas == -1">
                   Este proceso no se puede iniciar porque no has seleccionado una disposición de bandas.
                 </if>
-                <else>
+                <else><if test="&@tarea.proceso.nombre.downcase == 'vistobueno' && @tarea.state == 'en_revision' || @tarea.proceso.nombre.downcase == 'revisionvb' && @tarea.state == 'iniciada'">
+                  <input-rechazar/>
+                  <input-terminar/>
+                  <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
+                  <div id="campos-rechazo" style="margin-left:30%;display:table;">
+                    <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
+                    <input type="hidden" name="procdest" value="#{Proceso.find_by_nombre('Vistobueno').id}"/><br/>
+                    Observaciones analisis<input:observaciones-analisis/><br/>
+                    OT incompleta<input:ot-incompleta/><br/>
+                    OT con error<input:ot-error/><br/>
+                    Observaciones matriceria<input:observaciones-matriceria/><br/>
+                    Observaciones montaje<input:observaciones-montaje/><br/>
+                    Observaciones micropunto<input:observaciones-micropunto/><br/>
+                    RIPeo<input:ripeo/><br/>
+                    Distorsion<input:distorsion/><br/>
+                    Texto<input:texto/><br/>
+                    Foto<input:foto/><br/>
+                    Observaciones V/B<input:observaciones-vb/><br/>
+                    Responsable<select-menu first-option="Selecciona usuario" options="&User.all.map{|u| [u.name, u.id]}" name="intervencion[responsable]"/><br/>
+                    Colores<input:colores/><br/>
+                    Observaciones rechazo<input:observaciones-rechazo/><br/>
+                  </div>
+                </if><else><if test="&@tarea.proceso.nombre.downcase == 'vistobueno' && @tarea.state == 'recibida'">
+                  <input-enviar-cliente/>
+                </if></else></else><else>
                   <input-iniciar/>
                 </else>
               </else>
@@ -144,6 +198,7 @@
           </if>
           <else>
             <form with="&Intervencion.new">
+<% logger.info "esto entra aqui2 "%>
               <inicio-form/>
               <submit label="Iniciar" id="iniciar"/>
             </form>
@@ -192,6 +247,14 @@
 
 <def tag="input-enviar">
   <input type="submit" onclick="$('envio').value='enviar';" id="enviar" class="button submit-button" name="enviar"/>
+</def>
+
+<def tag="input-enviar-cliente">
+  <input type="submit" onclick="$('envio').value='enviar_cliente';" id="enviar" class="button submit-button" style="margin-left:30%;" name="enviar"/>
+</def>
+
+<def tag="input-enviar-pdf">
+  <input type="submit" onclick="$('envio').value='enviar_pdf';" id="enviar" class="button submit-button" name="enviar"/>
 </def>
 
 <def tag="input-terminar">

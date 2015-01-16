@@ -17,15 +17,15 @@ class Tarea < ActiveRecord::Base
   belongs_to :recurso
   belongs_to :asignado, :class_name => "User", :foreign_key => :asignada_a
   # Se elimina dependent => destroy, porque podría borrarse una tarea y perder el registro del trabajo de los operadores.
-  has_many :intervencions, :accessible => true
+  has_many :intervencions, :accessible => true, :dependent => :destroy
 
   has_many :users, :through => :intervencions 
   def name
     self.ord_trab.numOT.to_s + '_' + self.proceso.nombre.to_s
   end
 
-	named_scope :activa, :conditions => ["state IN (?)", ["habilitada","iniciada","detenida","enviada","recibida"]]
-  named_scope :disp, :conditions => ["state IN (?)", ["habilitada","detenida","enviada","recibida"]]
+	named_scope :activa, :conditions => ["state IN (?)", ["habilitada","iniciada","detenida","enviada","recibida", "en_revision"]]
+  named_scope :disp, :conditions => ["state IN (?)", ["habilitada","detenida","enviada","recibida", "en_revision"]]
   named_scope :detipo, lambda { |proce| { :conditions => ["proceso_id = ?", Proceso.find_by_nombre(proce).id] }}
   
   def after_create
@@ -51,11 +51,11 @@ class Tarea < ActiveRecord::Base
 	end
 
 	def activa?
-    ['habilitada','iniciada','detenida','recibida','enviada'].include?(self.state)
+    ['habilitada','iniciada','detenida','recibida','enviada', 'en_revision'].include?(self.state)
   end
 
   def activa_poli?
-    ['habilitada','iniciada','detenida','recibida','enviada'].include?(self.state)
+    ['habilitada','iniciada','detenida','recibida','enviada', 'en_revision'].include?(self.state)
   end
 
   def gp(grupo)
@@ -118,9 +118,13 @@ class Tarea < ActiveRecord::Base
   lifecycle do
 
 		state :creada, :default => true
-		state :habilitada, :iniciada, :detenida, :enviada, :cambiada, :recibida, :terminada, :reiniciada, :rechazada
+
+		state :habilitada, :iniciada, :detenida, :enviada, :cambiada, :recibida, :terminada, :reiniciada, :rechazada, :en_revision
+
 		create :crear, :become => :creada, :available_to => :all
-		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :unless => "(self.asignada_a.nil?) && (self.proceso.grupoproc.asignar)"
+
+		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :unless => "(self.asignada_a == nil) && (self.proceso.grupoproc.asignar == true)"
+
 		transition :cambiar, { :enviada => :cambiada }, :available_to => :all, :if => "self.proceso.reiniciar" do
 			estor = self.ord_trab.sortars
 			estor[estor.index(self)-1].lifecycle.habilitar!(User.first) if estor[estor.index(self)-1]
@@ -129,12 +133,18 @@ class Tarea < ActiveRecord::Base
 		transition :habilitar, { :cambiada => :habilitada }, :available_to => :all, :if => "self.proceso.reiniciar"
 
 		##Agregar condición para rehabilitar toda la OT, a pedido de un supervisor.
-		transition :habilitar, { [:terminada, :rechazada] => :habilitada }, :available_to => :all do
+		transition :habilitar, { :terminada => :habilitada }, :available_to => :all do
 		  aumentaciclo
 		end
 
+		transition :habilitar, { :rechazada => :habilitada}, :available_to => :all do
+			aumentaciclo
+		end
+
 		transition :iniciar, { :habilitada => :iniciada }, :available_to => :all do
-			self.ord_trab.lifecycle.iniciar!(User.first) if self.ord_trab.state == "habilitada"
+			if self.ord_trab.state == "habilitada"
+				self.ord_trab.lifecycle.iniciar!(User.first)
+			end
 		end
 
 		###########
@@ -143,13 +153,19 @@ class Tarea < ActiveRecord::Base
 		############
 
 
-		transition :enviar, { [:iniciada, :recibida, :habilitada] => :enviada }, :available_to => :all do
-			RecibArchMailer.delay.deliver_enviado(self.ord_trab.cliente, self.ord_trab)
-      # Cuando enviamos Visto Bueno creamos directamente y redirigimos a /
-      if self.proceso.nombre.downcase == "vistobueno"
-        self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+    transition :enviar, { [:iniciada, :recibida, :habilitada] => :enviada }, :available_to => :all do
+      RecibArchMailer.delay.deliver_enviado(self.ord_trab.cliente, self.ord_trab)
+    end
+
+    transition :enviar_pdf, { :iniciada => :en_revision }, :available_to => :all, :if => "self.proceso.nombre.downcase == 'vistobueno'"
+
+		transition :terminar, { :recibida => :terminada }, :available_to => :all, :if => "self.proceso.nombre.downcase == 'vistobueno'" do
+      logger.info "esto esto"
+      if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+        self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first)
+        self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.iniciar!(User.first) 
       end
-		end
+    end
 
 		transition :recibir, { :enviada => :recibida }, :available_to => :all
 
@@ -161,35 +177,32 @@ class Tarea < ActiveRecord::Base
 
 		transition :detener, { :iniciada => :detenida }, :available_to => :all
 
-		transition :rechazar, { :iniciada => :rechazada }, :available_to => :all do
-      # Cuando se rechaza la "revision VB" pasamos el proceso "Visto Bueno" a recibido
-      OrdTrab.find(self.ord_trab.id).tareas.find(:all, :conditions => ["proceso_id = ?",Proceso.find(:all, :conditions => ["nombre = 'VistoBueno'"]).first.id]).first.lifecycle.recibir!(User.first) if self.proceso.nombre.downcase == "revisionvb"
-    end
 
-		transition :rechazar, { :recibida => :iniciada }, :available_to => :all , :if => "self.proceso.nombre.downcase == 'vistobueno'"
+		transition :rechazar, { :iniciada => :rechazada }, :available_to => :all
 
-		transition :terminar, {[:enviada, :recibida, :iniciada] => :terminada}, :available_to => :all do
-      comprobar_si_visto_bueno_o_revision_vb
-    end
+		transition :rechazar, { :en_revision => :habilitada }, :available_to => :all
 
-		transition :eliminar, {[:creada, :habilitada, :terminada] => :destroy}, :available_to => :all
-
-  end
-
-  def comprobar_si_visto_bueno_o_revision_vb
-      # Cuando terminamos RevisionVB no se crea ninguna intervencion nueva
-      unless self.proceso.nombre.downcase == "revisionvb"
-        # Cuando terminamos el proceso VISTO BUENO se crea el siguiente proceso saltandonos RevisionVB
-        if self.proceso.nombre.downcase == "vistobueno"
-          self.ord_trab.sortars[self.ord_trab.sortars.index(self)+2].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+2]
-        else
-      	  self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
-        end
-      else
-        # Aqui entra porque hemos terminado revisionVB tenemos que redirigir al index y cambiar el estado del proceso VistoBueno a recibido
-        OrdTrab.find(self.ord_trab.id).tareas.find(:all, :conditions => ["proceso_id = ?",Proceso.find(:all, :conditions => ["nombre = 'VistoBueno'"]).first.id]).first.lifecycle.recibir!(User.first)
+		transition :terminar, { :enviada => :terminada }, :available_to => :all do
+      if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
       end
-  end
+    end
+
+		transition :terminar, { :iniciada => :terminada }, :available_to => :all do
+			if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+      	self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+      end
+    end
+
+		transition :terminar, { :en_revision => :recibida }, :available_to => :all
+
+		transition :eliminar, {:creada => :destroy}, :available_to => :all
+
+    transition :eliminar, {:habilitada => :destroy}, :available_to => :all
+
+    transition :eliminar, {:terminada => :destroy}, :available_to => :all
+
+	end
 
 	def interventor?
 		if self.intervencions != []

@@ -11,6 +11,8 @@ class TareasController < ApplicationController
       if this.ord_trab && this.ord_trab.tarasigs
         # Si todas las tareas están asignadas, automáticamente habilitamos la OT
         this.ord_trab.lifecycle.habilitar!(current_user)
+        # Si todas estan terminadas es porque vamos paso a paso y necesitamos habilitar la tarea
+        comprueba_si_necesita_activar
         unless this.ord_trab.errors.blank?
           flash[:error] = "Aunque todas las tareas de la OT #{this.ord_trab.numOT} ya están asignadas, no se ha podido habilitar automáticamente la OT debido a los siguientes errores: #{this.ord_trab.errors.full_messages}"
         end
@@ -25,6 +27,18 @@ class TareasController < ApplicationController
 				end
 			end
 		end
+  end
+
+  def comprueba_si_necesita_activar
+    # Semaforo = true porque pensamos que todas estan acabadas
+    semaforo = true
+    for tarea in this.ord_trab.tareas
+      semaforo = false if tarea.state != 'terminada' && tarea.id != this.id
+    end
+    this.lifecycle.habilitar!(current_user) if semaforo
+  end
+
+
   end
 
   def show
