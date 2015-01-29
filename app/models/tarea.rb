@@ -117,23 +117,22 @@ class Tarea < ActiveRecord::Base
 
   lifecycle do
 
-		state :creada, :default => true
+    state :creada, :default => true
 
-		state :habilitada, :iniciada, :detenida, :enviada, :cambiada, :recibida, :terminada, :reiniciada, :rechazada, :en_revision
+    state :habilitada, :iniciada, :detenida, :enviada, :cambiada, :recibida, :terminada, :reiniciada, :rechazada, :en_revision
 
-		create :crear, :become => :creada, :available_to => :all
+    create :crear, :become => :creada, :available_to => :all
 
-		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :unless => "(self.asignada_a == nil) && (self.proceso.grupoproc.asignar == true)"
+    transition :habilitar, { :creada => :habilitada }, :available_to => :all, :unless => "(self.asignada_a == nil) && (self.proceso.grupoproc.asignar == true)"
 
-		transition :cambiar, { :enviada => :cambiada }, :available_to => :all, :if => "self.proceso.reiniciar" do
-			estor = self.ord_trab.sortars
-			estor[estor.index(self)-1].lifecycle.habilitar!(User.first) if estor[estor.index(self)-1]
+    transition :cambiar, { :enviada => :cambiada }, :available_to => :all, :if => "self.proceso.reiniciar" do
+      estor = self.ord_trab.sortars
+      estor[estor.index(self)-1].lifecycle.habilitar!(User.first) if estor[estor.index(self)-1]
 		end
 
 		transition :habilitar, { :cambiada => :habilitada }, :available_to => :all, :if => "self.proceso.reiniciar"
-
 		##Agregar condición para rehabilitar toda la OT, a pedido de un supervisor.
-		transition :habilitar, { :terminada => :habilitada }, :available_to => :all do
+		transition :habilitar, { [:terminada, :en_revision] => :habilitada }, :available_to => :all do
 		  aumentaciclo
 		end
 
@@ -152,22 +151,18 @@ class Tarea < ActiveRecord::Base
 		## Crear método "volver_a(proceso)" que maneje el flujo y los estados de las tareas.
 		############
 
-
     transition :enviar, { [:iniciada, :recibida, :habilitada] => :enviada }, :available_to => :all do
       RecibArchMailer.delay.deliver_enviado(self.ord_trab.cliente, self.ord_trab)
     end
 
-    transition :enviar_pdf, { :iniciada => :en_revision }, :available_to => :all, :if => "self.proceso.nombre.downcase == 'vistobueno'"
-
-		transition :terminar, { :recibida => :terminada }, :available_to => :all, :if => "self.proceso.nombre.downcase == 'vistobueno'" do
-      logger.info "esto esto"
+    transition :enviar_pdf, { :iniciada => :en_revision }, :available_to => :all, :if => "self.proceso.nombre.downcase == 'vistobueno'" do
+      # Cuando enviamos el PDF tenemos que habilitar la revision VB
       if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
         self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first)
-        self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.iniciar!(User.first) 
       end
     end
 
-		transition :recibir, { :enviada => :recibida }, :available_to => :all
+    transition :recibir, { [:enviada, :en_revision] => :recibida }, :available_to => :all
 
 		transition :reiniciar, { :recibida => :iniciada }, :available_to => :all do
 			aumentaciclo
@@ -177,32 +172,26 @@ class Tarea < ActiveRecord::Base
 
 		transition :detener, { :iniciada => :detenida }, :available_to => :all
 
-
-		transition :rechazar, { :iniciada => :rechazada }, :available_to => :all
-
-		transition :rechazar, { :en_revision => :habilitada }, :available_to => :all
-
-		transition :terminar, { :enviada => :terminada }, :available_to => :all do
-      if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
-				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+		transition :rechazar, { [:iniciada, :recibida] => :rechazada }, :available_to => :all do
+      # Si rechazamos revisionVB tenemos que volver a VistoBueno como iniciado
+      if self.proceso.nombre.downcase == 'revisionvb'
+        self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.habilitar!(User.first) 
+        aumentaciclo
       end
     end
 
-		transition :terminar, { :iniciada => :terminada }, :available_to => :all do
-			if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
-      	self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+    transition :terminar, { [:iniciada, :enviada, :recibida] => :terminada }, :available_to => :all do
+      if self.proceso.nombre.downcase == 'revisionvb'
+        self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.recibir!(User.first)
+      elsif self.ord_trab.sortars[self.ord_trab.sortars.index(self)+2] && self.proceso.nombre.downcase == 'vistobueno'
+        self.ord_trab.sortars[self.ord_trab.sortars.index(self)+2].lifecycle.habilitar!(User.first)
+      else
+        self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first)
       end
     end
 
-		transition :terminar, { :en_revision => :recibida }, :available_to => :all
-
-		transition :eliminar, {:creada => :destroy}, :available_to => :all
-
-    transition :eliminar, {:habilitada => :destroy}, :available_to => :all
-
-    transition :eliminar, {:terminada => :destroy}, :available_to => :all
-
-	end
+    transition :eliminar, {[:creada, :habilitada, :terminada] => :destroy}, :available_to => :all
+  end
 
 	def interventor?
 		if self.intervencions != []

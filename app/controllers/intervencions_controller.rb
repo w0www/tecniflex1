@@ -127,9 +127,12 @@ class IntervencionsController < ApplicationController
   def create
     hobo_create do
 			if params[:envio] == "terminar"
+        flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada'
         this.termino = Time.now
+        this.final = true
         this.tarea.lifecycle.terminar!(current_user)
-			elsif params[:envio] == "recibir"
+        this.save
+      elsif params[:envio] == "recibir"
 			  unless this.tarea.proceso.reiniciar
 					this.tarea.lifecycle.recibir!(current_user)
 				else
@@ -147,24 +150,21 @@ class IntervencionsController < ApplicationController
         this.rechazada = true
 				this.tarea.lifecycle.rechazar!(current_user)
         this.termino = Time.now
-        this.save
         this.tarea.proceso.volver_a_revision ? this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user) :
                                                this.tarea.ord_trab.volver_a(params[:procdest],current_user)
       elsif params[:envio] == "enviar"
 				this.tarea.lifecycle.enviar!(current_user)
         this.termino = Time.now
-        this.save
       elsif params[:envio] == "enviar_pdf"
         this.tarea.lifecycle.enviar_pdf!(current_user)
         this.termino = Time.now
-        this.save
+        redirect_to "/"
       elsif params[:envio] == "enviar_cliente"
         # Cuando se envia el visto bueno a el cliente creamos el proceso REVISIONVB y terminamos el proceso Visto bueno
         flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada'
         this.tarea.lifecycle.terminar!(current_user)
         this.termino = Time.now
         this.final = true
-        this.save
 			end
       this.save
       hobo_ajax_response if request.xhr?
@@ -173,11 +173,11 @@ class IntervencionsController < ApplicationController
 
   def update
     hobo_update do
-			if params[:envio] == "terminar"
-				flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada' if this.tarea.proceso.nombre.downcase != 'vistobueno' && this.tarea.state != "en_revision"
+      if params[:envio] == "terminar"
+        flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada'
         this.tarea.lifecycle.terminar!(current_user)
         this.termino = Time.now
-        this.final = true if this.tarea.proceso.nombre.downcase != 'vistobueno' && this.tarea.state != "en_revision"
+        this.final = true
         this.save
 			elsif params[:envio] == "detener"
         this.tarea.lifecycle.detener!(current_user)
@@ -191,6 +191,7 @@ class IntervencionsController < ApplicationController
         this.tarea.lifecycle.enviar_pdf!(current_user)
         this.termino = Time.now
         this.save
+        redirect_to "/"
       elsif params[:envio] == "enviar_cliente"
         # Cuando se envia el visto bueno a el cliente creamos el proceso REVISIONVB y terminamos el proceso Visto bueno
         flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada'

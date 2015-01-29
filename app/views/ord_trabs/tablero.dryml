@@ -89,7 +89,6 @@
               <!-- </repeat> -->
             </tbody>
           </table>
-          <%= will_paginate @todas %>
         </div>
         <div id="tabs-2">
           <table class="tablero">
