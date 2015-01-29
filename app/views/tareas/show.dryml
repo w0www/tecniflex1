@@ -72,8 +72,7 @@
                 <if test="&this.tarea.proceso.nombre.downcase == 'vistobueno' && this.tarea.state == 'iniciada'">
                   <input-detener/>
                   <input-enviar-pdf/>
-                </if>
-                <else><if test="&this.tarea.proceso.nombre.downcase == 'vistobueno' && this.tarea.state == 'recibida'">
+                </if><else><if test="&this.tarea.proceso.nombre.downcase == 'vistobueno' && this.tarea.state == 'enviada'">
                   <input-terminar/>
                   <input-rechazar/>
                   <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
@@ -95,7 +94,9 @@
                     Colores<input:colores/><br/>
                     Observaciones rechazo<input:observaciones-rechazo/><br/>
                   </div>
-                </if></else><else>
+                </if><else><if test="&this.tarea.proceso.nombre.downcase == 'vistobueno' && this.tarea.state == 'recibida'">
+                  <input-enviar style="margin-left:37%;"/>
+                </if></else></else><else>
                   <input-detener/>
                   <input-enviar/>
                 </else>
@@ -164,14 +165,14 @@
               <inicio-form/>
               <input class="hidden" type="text" name="term" value="1"/>
               <input type="hidden" name="envio" id="envio" value=""/>
-              <if test="&Tarea.find(@tarea.id).state == 'enviada'">
+              <if test="&@tarea.state == 'enviada' && @tarea.proceso.nombre.downcase != 'vistobueno'">
                 Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
                 <span if="&Tarea.find(@tarea.id).proceso.reiniciar">
                   <input type="checkbox" id="checker" name="vuelta" onchange="toggler()"/>Generar nuevo V.B.
                 </span>
                 <input-recibir/>
                 <input-terminar/>
-              </if><else><if test="&@tarea.proceso.nombre.downcase == 'vistobueno' && @tarea.state == 'recibida'">
+              </if><else><if test="&@tarea.proceso.nombre.downcase == 'vistobueno' && @tarea.state == 'enviada'">
                   <input-rechazar/>
                   <input-terminar/>
                   <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
@@ -194,8 +195,7 @@
                     Observaciones rechazo<input:observaciones-rechazo/><br/>
                   </div>
               </if><else><if test="&@tarea.state == 'recibida' && @tarea.proceso.nombre.downcase == 'vistobueno'">
-                <input-rechazar/>
-                <input-terminar/>
+                <div style="margin-left:37%;"><input-enviar/></div>
               </if></else></else>
               <else>
                 <if test="&@tarea.proceso.nombre == 'Matriceria' && @tarea.ord_trab.dispBandas == -1">
@@ -203,28 +203,6 @@
                 </if>
                 <else><if test="&@tarea.proceso.nombre.downcase == 'revisionvb' && @tarea.state == 'iniciada'">
                   <input-detener/>
-                  <input-rechazar/>
-                  <input-terminar/>
-                  <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
-                  <div id="campos-rechazo" style="margin-left:30%;display:table;">
-                    <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
-                    <input type="hidden" name="procdest" value="#{Proceso.find_by_nombre('Vistobueno').id}"/><br/>
-                    Observaciones analisis<input:observaciones-analisis/><br/>
-                    OT incompleta<input:ot-incompleta/><br/>
-                    OT con error<input:ot-error/><br/>
-                    Observaciones matriceria<input:observaciones-matriceria/><br/>
-                    Observaciones montaje<input:observaciones-montaje/><br/>
-                    Observaciones micropunto<input:observaciones-micropunto/><br/>
-                    RIPeo<input:ripeo/><br/>
-                    Distorsion<input:distorsion/><br/>
-                    Texto<input:texto/><br/>
-                    Foto<input:foto/><br/>
-                    Observaciones V/B<input:observaciones-vb/><br/>
-                    Responsable<select-menu first-option="Selecciona usuario" options="&User.all.map{|u| [u.name, u.id]}" name="intervencion[responsable]"/><br/>
-                    Colores<input:colores/><br/>
-                    Observaciones rechazo<input:observaciones-rechazo/><br/>
-                  </div>
-                </if><else><if test="&@tarea.proceso.nombre.downcase == 'vistobueno' && @tarea.state == 'recibida'">
                   <input-rechazar/>
                   <input-terminar/>
                   <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
@@ -268,7 +246,7 @@
                     Colores<input:colores/><br/>
                     Observaciones rechazo<input:observaciones-rechazo/><br/>
                   </div>
-                </if></else></else></else><else>
+                </if></else></else><else>
                   <input-iniciar/>
                 </else>
               </else>

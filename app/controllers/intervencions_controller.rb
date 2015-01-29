@@ -131,7 +131,6 @@ class IntervencionsController < ApplicationController
         this.termino = Time.now
         this.final = true
         this.tarea.lifecycle.terminar!(current_user)
-        this.save
       elsif params[:envio] == "recibir"
 			  unless this.tarea.proceso.reiniciar
 					this.tarea.lifecycle.recibir!(current_user)
@@ -159,12 +158,6 @@ class IntervencionsController < ApplicationController
         this.tarea.lifecycle.enviar_pdf!(current_user)
         this.termino = Time.now
         redirect_to "/"
-      elsif params[:envio] == "enviar_cliente"
-        # Cuando se envia el visto bueno a el cliente creamos el proceso REVISIONVB y terminamos el proceso Visto bueno
-        flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada'
-        this.tarea.lifecycle.terminar!(current_user)
-        this.termino = Time.now
-        this.final = true
 			end
       this.save
       hobo_ajax_response if request.xhr?
@@ -178,32 +171,21 @@ class IntervencionsController < ApplicationController
         this.tarea.lifecycle.terminar!(current_user)
         this.termino = Time.now
         this.final = true
-        this.save
 			elsif params[:envio] == "detener"
         this.tarea.lifecycle.detener!(current_user)
         this.termino = Time.now
-        this.save
 			elsif params[:envio] == "enviar"
 				this.tarea.lifecycle.enviar!(current_user)
         this.termino = Time.now
-        this.save
       elsif params[:envio] == "enviar_pdf"
         this.tarea.lifecycle.enviar_pdf!(current_user)
         this.termino = Time.now
         this.save
         redirect_to "/"
-      elsif params[:envio] == "enviar_cliente"
-        # Cuando se envia el visto bueno a el cliente creamos el proceso REVISIONVB y terminamos el proceso Visto bueno
-        flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada'
-        this.tarea.lifecycle.terminar!(current_user)
-        this.termino = Time.now
-        this.final = true
-        this.save
 			elsif params[:envio] == "recibir"
 				this.tarea.lifecycle.recibir!(current_user)
         this.rechazada = true
         this.termino = Time.now
-        this.save
 			elsif params[:envio] == "rechazar"
         this.colores = params[:intervencion][:colores].join(",") if params[:intervencion][:colores] && !params[:intervencion][:colores].blank?
         this.rechazada = true
@@ -211,9 +193,9 @@ class IntervencionsController < ApplicationController
         this.termino = Time.now
         this.tarea.proceso.volver_a_revision ? this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user) :
                                                this.tarea.ord_trab.volver_a(params[:procdest],current_user)
-        this.save
-      else
+
       end
+      this.save
       hobo_ajax_response if request.xhr?
     end
   end
