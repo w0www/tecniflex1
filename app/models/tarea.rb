@@ -176,7 +176,6 @@ class Tarea < ActiveRecord::Base
       # Si rechazamos revisionVB tenemos que volver a VistoBueno como iniciado
       if self.proceso.nombre.downcase == 'revisionvb'
         self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.habilitar!(User.first) 
-        aumentaciclo
       end
     end
 
