@@ -124,10 +124,10 @@ class Tarea < ActiveRecord::Base
     create :crear, :become => :creada, :available_to => :all
 
     transition :habilitar, { :creada => :habilitada }, :available_to => :all, :unless => "(self.asignada_a == nil) && (self.proceso.grupoproc.asignar == true)"
-
-    transition :cambiar, { :enviada => :cambiada }, :available_to => :all, :if => "self.proceso.reiniciar" do
+    # Solo entra en el proceso PRINTER, cuando se rechaza despues de haberlo enviado.
+    transition :cambiar, { :enviada => :cambiada }, :available_to => :all, :if => "self.proceso.nombre.downcase == 'printer'" do
       estor = self.ord_trab.sortars
-      estor[estor.index(self)-1].lifecycle.habilitar!(User.first) if estor[estor.index(self)-1]
+      estor[estor.index(self)-2].lifecycle.habilitar!(User.first) if estor[estor.index(self)-2]
 		end
 
 		transition :habilitar, { :cambiada => :habilitada }, :available_to => :all, :if => "self.proceso.reiniciar"
