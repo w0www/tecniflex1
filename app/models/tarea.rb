@@ -191,7 +191,7 @@ class Tarea < ActiveRecord::Base
         self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.recibir!(User.first)
       elsif self.ord_trab.sortars[self.ord_trab.sortars.index(self)+2] && self.proceso.nombre.downcase == 'vistobueno'
         self.ord_trab.sortars[self.ord_trab.sortars.index(self)+2].lifecycle.habilitar!(User.first)
-      else
+      elsif self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
         self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first)
       end
     end
