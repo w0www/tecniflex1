@@ -132,11 +132,7 @@ class IntervencionsController < ApplicationController
         this.final = true
         this.tarea.lifecycle.terminar!(current_user)
       elsif params[:envio] == "recibir"
-			  unless this.tarea.proceso.reiniciar
-					this.tarea.lifecycle.recibir!(current_user)
-				else
-					params[:vuelta] ? this.tarea.lifecycle.cambiar!(current_user) : this.tarea.lifecycle.recibir!(current_user)
-				end
+        params[:vuelta] ? this.tarea.lifecycle.cambiar!(current_user) : this.tarea.lifecycle.recibir!(current_user)
         this.rechazada = true
         this.termino = Time.now
 		  elsif params[:envio] == "iniciar"

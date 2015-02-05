@@ -164,6 +164,13 @@ class Tarea < ActiveRecord::Base
 
     transition :recibir, { [:enviada, :en_revision] => :recibida }, :available_to => :all
 
+    transition :recibir, { :iniciada => :rechazada }, :available_to => :all, :if => "self.proceso.nombre.downcase == 'polimero'" do
+      # Habilitamos la RevisionMM
+      self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.habilitar!(User.first)
+    end
+
+    
+
 		transition :reiniciar, { :recibida => :iniciada }, :available_to => :all do
 			aumentaciclo
 		end
