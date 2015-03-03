@@ -53,7 +53,7 @@
                         end
                       %>
                       <% tarea = tod.tareas.proceso_is(proces) ? tod.tareas.proceso_is(proces).first : nil %>
-                      <% tiempo_total += proce.first.minutos_minimo if proceso.first.minutos_minimo %>
+                      <% tiempo_total += proceso.first.minutos_minimo if proceso.first.minutos_minimo %>
                       <td class="#{tarea.state if tarea}" rowspan="2">
                         <unless test="&tarea.blank?">
                           <if test="&tarea.proceso">
