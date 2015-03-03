@@ -37,33 +37,35 @@
             <tbody>
               <% @todas.each do |tod| %>
                 <% tiempo_total = 0 %>
-                <% cliente = tod.cliente %>
-                <tr class="st#{tod.state}">
-                  <th style="width:70px;" class="#{tod.prioridad}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a><br/><span style="font-weight:normal"><%= cliente ? cliente.sigla : "" -%>-<%= tod.codCliente %>- v.<%= tod.version || 1 %></span></th><th rowspan="2" style="width: 12em;" class="#{tod.state}"><%=  tod.nomprod -%></th>
-                    <!-- SUYCCOM HACK: revisar con Jaime estas lineas para intentar optimizar-->
-                    <% @grupro.each do |proce|%>
-                      <% proceso = proce.procesos %>
-                      <% tarea = tod.tareas.proceso_is(proceso.first) ? tod.tareas.proceso_is(proceso.first).first : nil %>
-                      <% tiempo_total += proceso.first.minutos_minimo if proceso.first.minutos_minimo %>
-                      <td class="#{tod.estgrupro(proce.abreviacion)[1]}" rowspan="2">
-                        <unless test="&tarea.blank?">
-                          <if test="&tarea.proceso">
-                            <if test="&tarea.ciclo.to_i >= 3">
-                              <div class="ciclo red"><%= tarea.ciclo %></div>
-                            </if>
-                          </if>
-                          <else>
-                            <if test="&(tarea.ciclo.to_i > 1) && (tarea.ciclo.to_i < 3)">
-                              <div class="ciclo yel"><%= tarea.ciclo %></div>
-                            </if>
-                            <else>
-                              <div class="ciclo ver"><%= tarea.ciclo %></div>
-                            </else>
-                          </else>
-                        </unless>
-                      <%= proceso.count > 1 ? tod.estgrupro(proce.abreviacion)[0] : tod.estgrupro(proce.abreviacion)[1] %> <br/>
-                      <p class="iniciales"><%= tod.usersgp(proce.abreviacion) -%></p>
-                      </td>
+                <tr class="st#{ord_trab.state}">
+                  <th style="width:70px;" class="#{ord_trab.prioridad}" rowspan="2">
+                    <a with="&ord_trab"><%=  ord_trab.numOT -%></a><br/>
+                    <span style="font-weight:normal">
+                      <%= cliente ? cliente.sigla : "" -%>-<%= ord_trab.codCliente %>- v.<%= ord_trab.version || 1 %>
+                    </span>
+                  </th>
+                  <th rowspan="2" style="width: 12em;" class="#{ord_trab.state}"><%=  ord_trab.nomprod -%></th>
+                    <% @procesos.each do |proce| %>
+                      <% tarea = tareas.proceso_is(proce).first %>
+                      <% proceso = tarea.proceso if tarea %>
+                      <% ciclo = tarea.ciclo if tarea %>
+                      <% tiempo_total += proceso.minutos_minimo if tarea && proceso.minutos_minimo %>
+                      <unless test="&tarea.blank?">
+                        <td class="#{tarea.state}" rowspan="2">
+                          <if test="&ciclo >= 3">
+                            <div class="ciclo red"><%= ciclo %></div>
+                          </if><else><if test="&ciclo > 1 && 3 > ciclo">
+                            <div class="ciclo yel"><%= ciclo %></div>
+                          </if><else>
+                            <div class="ciclo ver"><%= ciclo %></div>
+                          </else></else>
+                          <%= tarea.state %>
+                          <p class="iniciales"><%= User.find(tarea.asignada_a).iniciales if tarea.asignada_a && User.find(tarea.asignada_a) -%></p>
+                        </td>
+                      </unless>
+                      <else>
+                        <td rowspan="2"/>
+                      </else>
                     <% end %>
                     <% fecha_entrega = tod.fechaEntrega ? tod.fechaEntrega : nil %>
                 <% 
