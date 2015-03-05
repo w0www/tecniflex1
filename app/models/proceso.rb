@@ -5,19 +5,23 @@ class Proceso < ActiveRecord::Base
   acts_as_list
 
   fields do
-    nombre      :string, :name => :true
-    descripcion :text
-    prueba			:boolean
-    reinit			:boolean #reiniciar procesos
-    varev				:boolean #volver a revision                    
-    rev					:boolean #revision
-    destderev		:boolean #destino de revision
-    edmeds			:boolean #Edicion de medidas
-    factura     :boolean, :default => false #Facturacion
+    nombre                :string, :name => :true
+    descripcion           :text
+    prueba	              :boolean
+    reiniciar         	  :boolean # Reiniciar procesos
+    volver_a_revision	    :boolean # Volver a revision                    
+    rev		                :boolean # Revision
+    volver_desde_revision	:boolean # Destino de revision
+    edicion_medidas	      :boolean # Edicion de medidas
+    minutos_minimo        :integer
+    factura               :boolean, :default => false # Facturacion
     timestamps
   end
 
+  # Un proceso tiene muchas ordenes de trabajo (Tabla relacionada "Tareas")
+  has_many :ord_trabs, :through => :tareas
   has_many :tareas, :dependent => :destroy
+
   has_many :recursos
   has_many :users, :through => :user_labors
   has_many :user_labors
@@ -25,19 +29,18 @@ class Proceso < ActiveRecord::Base
   belongs_to :sucesor, :class_name => "Proceso"
   belongs_to :grupoproc
 
-	default_scope :order => 'position'
+  default_scope :order => 'position'
 
-	def self.asignables
-		@gasig = Grupoproc.asignar
-		Proceso.find(:all, :conditions => ["grupoproc_id IN (?)", @gasig])
-	end
+  def self.asignables
+    @gasig = Grupoproc.asignar
+    Proceso.find(:all, :conditions => ["grupoproc_id IN (?)", @gasig])
+  end
 
-	def self.checkproc(ticket)
-  	gpro = Proceso.all(:joins => [:grupoproc], :conditions => {"grupoprocs.#{ticket}" => true})
-	end
+  def self.checkproc(ticket)
+    gpro = Proceso.all(:joins => [:grupoproc], :conditions => {"grupoprocs.#{ticket}" => true})
+  end
 
   # --- Permissions --- #
-
   def create_permitted?
     acting_user.administrator?
   end

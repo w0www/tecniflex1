@@ -1,0 +1,165 @@
+<page title="pantalla" without-header class="pantalla" style="background-color:black !important">
+  <head:>
+    <param-content />
+    <meta http-equiv="refresh" content="30"/>
+  </head:>
+  <content: replace>
+    <div class="page-header" id="pantalla">
+      .
+    </div>
+
+    <div class="content-body">
+      <div style="margin-top:10px;">
+        <div class="parte-izquierda" style="width:47%;float:right;">
+          <tabla-tablero/>
+        </div>
+        <div class="parte-derecha" style="width:50%">
+          <tabla-tiempos/><br/>
+          <tabla-actividad/><br/>
+        </div>
+      </div>
+    </div>
+  </content:>
+</page>
+
+<def tag="tabla-tiempos">
+  <label style="color:#fff; font-size:20px;">Tiempos por O.T.</label>
+  <table class="tablero">
+    <tbody>
+      <tr>
+		<th>O.T.</th>
+        <repeat with="&@grupro" >
+          <th width="5%" style="text-align:center;"><view:nombre/> </th>
+        </repeat>
+      </tr>
+      <% for ot in @todas %>
+      <tr>
+        <th><%= ot.numOT %> </th>
+        <repeat with="&@grupro">
+			  <% proces = [] %>
+			  <% ottars = [] %>
+			  <% proces = this.procesos.*.id %>
+			  <% ottars = ot.tareas.all :conditions => {:proceso_id => proces} %>
+			  <% ttotal = ottars.*.tneto.reduce(:+) || 0 %>
+			  <td><if test="&ttotal != 0"><%= ttotal %>m</if></td>
+        </repeat>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</def>
+
+<def tag="tabla-actividad">
+  <if test="&!@users.blank?">
+    <label style="color:#fff; font-size:20px;">Actividad por usuario</label>
+    <table class="tablero" id="tactividad" style="border:0px;">
+      <tbody>
+        <tr>
+          <th rowspan="2">Usuarios</th>
+          <th colspan="3">Intervenciones terminadas</th>
+          <th colspan="3">Errores</th>
+          <th colspan="3">Horas registradas</th>
+        </tr>
+        <tr>
+          <th>Dia</th>
+          <th>Semana</th>
+          <th>Mes</th>
+          <th>Dia</th>
+          <th>Semana</th>
+          <th>Mes</th>
+          <th>Dia</th>
+          <th>Semana</th>
+          <th>Mes</th>
+        </tr>
+        <% for u in @users %> 
+          <tr class="#{scope.even_odd}">
+            <th style="min-width:60px;"><%= u.name.first(10) %></th>
+            <td><%= u.int_totales("termino","false").split(" / ")[0] unless u.int_totales("termino","false").split(" / ")[0].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","false").split(" / ")[1] unless u.int_totales("termino","false").split(" / ")[1].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","false").split(" / ")[2] unless u.int_totales("termino","false").split(" / ")[2].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","true").split(" / ")[0] unless u.int_totales("termino","true").split(" / ")[0].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","true").split(" / ")[1] unless u.int_totales("termino","true").split(" / ")[1].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","true").split(" / ")[2] unless u.int_totales("termino","true").split(" / ")[2].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[0] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[0].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[1] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[1].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </if>
+</def>
+
+<def tag="tabla-tablero">
+  <label style="color:#fff; font-size:20px; padding-top:15px;">Tablero</label>
+  <table style="border:1px solid;" class="tablero">
+    <thead>
+      <tr>
+        <th width="8%">O.T.</th>
+        <th width="20%">Nombre</th>
+        <repeat with="&@grupro" >
+          <th width="5%" style="text-align:center;"><view:nombre/> </th>
+        </repeat>
+      </tr>
+    </thead>
+    <tbody>
+      <% @todas.each do |tod| %>
+      <% @tod = tod %>
+      <% tiempo_total = 0 %>
+      <% fecha_entrega = @tod.fechaEntrega ? @tod.fechaEntrega : Date.tomorrow.to_time %>
+	  <% if fecha_entrega - 1.hour <= @hora_actual + tiempo_total.minute && fecha_entrega > @hora_actual + tiempo_total.minute
+			color = 'lightyellow'
+		  elsif fecha_entrega > @hora_actual + tiempo_total.minute
+			color = 'lightgreen'
+		  elsif fecha_entrega <= @hora_actual + tiempo_total.minute
+			color = 'red'
+          end
+        %>
+      <tr >
+        <th style="background-color:#{color if color}" rowspan="2">
+          <a with="&tod"><%=  tod.numOT -%></a><br/>
+          <span style="font-weight:normal">
+            <%= if tod.cliente then tod.cliente.sigla else "" end -%>-
+            <%= tod.codCliente %>- v.<%= tod.version || 1 %>
+          </span>
+        </th>
+        <th rowspan="2" class="#{@tod.state}">
+          <%= tod.nomprod -%>
+        </th>
+        <% @grupro.each do |proce|%>
+          <% tiempo_total += proce.procesos.first.minutos_minimo if proce.procesos.first.minutos_minimo %>
+          <td class="#{tod.estgrupro(proce.abreviacion)[1]}" rowspan="2">
+            <% if @tod.tareas.proceso_is(proce.procesos.first) != [] %>
+              <% if @tod.tareas.proceso_is(proce.procesos.first).first.proceso %>
+                <% if @tod.tareas.proceso_is(proce.procesos.first).first.ciclo.to_i >= 3 %>
+                  <div class="ciclo red">
+                    <%= @tod.tareas.proceso_is(proce.procesos.first).first.ciclo %>
+                  </div>
+                <% elsif (@tod.tareas.proceso_is(proce.procesos.first).first.ciclo.to_i > 1) && (@tod.tareas.proceso_is(proce.procesos.first).first.ciclo.to_i < 3) %>
+                  <div class="ciclo yel">
+                    <%= @tod.tareas.proceso_is(proce.procesos.first).first.ciclo %>
+                  </div>
+                <% else %>
+                  <div class="ciclo ver">
+                    <%= @tod.tareas.proceso_is(proce.procesos.first).first.ciclo %>
+                  </div>
+                <% end %>
+              <% end %>
+            <% end %>
+            <% if proce.procesos.count > 1 %>
+              <%= @tod.estgrupro(proce.abreviacion)[0] -%> <br/>
+            <% else %>
+              <%= @tod.estgrupro(proce.abreviacion)[1] -%> <br/>
+            <% end %>
+            <p class="iniciales">
+              <%= @tod.usersgp(proce.abreviacion) -%>
+            </p>
+          </td>
+        <% end %>
+        
+      </tr>
+      <tr/>
+      <%end%>
+    </tbody>
+  </table>
+</def>

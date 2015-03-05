@@ -1,4 +1,20 @@
-html, body {background-color: #005; }
+html, body {background-color: darkgray; }
+
+.pantalla body{
+	width:100%;
+	background: black;
+}
+
+#pantalla {
+	background-color: white;
+	background-position: left center;
+	height: 90px;
+}
+
+#tactividad th {
+	min-width: 45px;
+}
+	
 
 .section.content {background: gainsboro;padding-bottom: 100px;}
 
@@ -35,8 +51,9 @@ h2 {
     width: 350px;
 }
 
-td {
+.tablero td {
     border-collapse:collapse;
+    background-color: #eee;
 
 }
 
@@ -318,6 +335,24 @@ ul.hjq-input-many div.buttons {
     background-position: -722px -290px;
 }
 
+#rechazar {
+	margin-left: 30%;
+  display: inline;
+	width: 144px; height: 144px;
+	background-image: url(images/BotonesTX.png);
+	background-position: -722px -2px;
+	text-indent: -9999px;
+        background-color: gainsboro;
+}
+
+#rechazar:hover {
+    background-position: -722px -146px;
+}
+
+#rechazar:active {
+    background-position: -722px -290px;
+}
+
 .debug_dump {
     color: #999999;
 }
@@ -358,6 +393,11 @@ ul.hjq-input-many div.buttons {
     background-color: lightgreen !important;
 }
 
+.en_revision{
+  background-color:BurlyWood  !important;
+  color:black;
+}
+
 .detenida{
     background-color: sandybrown !important;
 }
@@ -385,6 +425,10 @@ ul.hjq-input-many div.buttons {
 		color:black;
 }
 
+.desconocido{
+	background-color: #eee !important;
+}
+
 #stock td,#stock th {
     border: solid;
     padding-top: 2px;
@@ -410,8 +454,26 @@ ul.hjq-input-many div.buttons {
 }
 
 ul.navigation {
-    background-color: #003;
+    background-color: white;
 }
+
+
+.page-header .navigation.main-nav a {
+    background: url("../images/30-3E547A-242E42.png") repeat-x scroll 0 0 #242E42;
+    color: white;
+}
+
+.page-header .navigation.main-nav {
+		margin-top: 30px;
+}
+
+.page-header h1 {
+		margin-top: 0px;
+}
+
+.user-link {color: black;}
+
+.nav-item {color: black;}
 
 .verde {
     background-color: green !important;
@@ -484,4 +546,12 @@ fieldset.horizontal.informe .field {
   font-weight: bold;
   font-size: 11px;
   color: white;
+}
+
+.parte-izquierda {
+	padding-top: 20px;
+}
+
+.parte-derecha {
+	padding-top: 20px;
 }

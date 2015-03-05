@@ -6,7 +6,6 @@ class Impresora < ActiveRecord::Base
     name        :string
     trapdefault :decimal
     bumpcurve   :string
-    curva				:string
     timestamps
   end
 

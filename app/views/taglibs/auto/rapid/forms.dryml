@@ -63,7 +63,7 @@
 <def tag="form" for="Curva">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="nombre, descripcion, impresion, lineatura, clientes, espesor, impresora, sustrato, tipomat" param/>
+    <field-list fields="nombre, descripcion, impresion, lineatura, clientes, espesor, sustrato, tipomat" param/>
     <div param="actions">
       <submit label="#{ht 'curvas.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -123,7 +123,7 @@
 <def tag="form" for="Intervencion">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="inicio, termino, final, observaciones, tarea, user" param/>
+    <field-list fields="inicio, termino, final, observaciones, observaciones_analisis, ot_incompleta, ot_error, observaciones_matriceria, observaciones_montaje, observaciones_micropunto, ripeo, distorsion, texto, foto, observaciones_vb, colores, responsable, observaciones_rechazo, rechazada, tarea, user" param/>
     <div param="actions">
       <submit label="#{ht 'intervencions.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -281,7 +281,7 @@
 <def tag="form" for="Proceso">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="position, nombre, descripcion, prueba, reinit, varev, rev, destderev, edmeds, factura, grupoproc, sucesor" param/>
+    <field-list fields="position, nombre, descripcion, prueba, reiniciar, volver_a_revision, rev, volver_desde_revision, edicion_medidas, minutos_minimo, factura, grupoproc, sucesor" param/>
     <div param="actions">
       <submit label="#{ht 'procesos.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -348,17 +348,9 @@
   </form>
 </def>
 
-<def tag="crear-form" polymorphic/>
-<def tag="crear-form" for="Tarea">
-  <form lifecycle="crear" merge param="default">
-    <error-messages param/>
-    <field-list fields="" param/>
-    <div param="actions">
-      <submit label="#{ht 'tareas.actions.crear', :default=>['Crear']}" param/><or-cancel param="cancel"/>
-    </div>
-  </form>
-</def>
 
+<<<<<<< HEAD
+=======
 <def tag="habilitar-form" polymorphic/>
 <def tag="habilitar-form" for="Tarea">
   <form lifecycle="habilitar" merge param="default">
@@ -436,6 +428,28 @@
     </div>
   </form>
 </def>
+<def tag="enviar-pdf-form" polymorphic/>
+<def tag="enviar-pdf-form" for="Tarea">
+  <form lifecycle="enviar_pdf" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.enviar_pdf', :default=>['Enviar Pdf']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="terminar-form" polymorphic/>
+<def tag="terminar-form" for="Tarea">
+  <form lifecycle="terminar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.terminar', :default=>['Terminar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
 <def tag="recibir-form" polymorphic/>
 <def tag="recibir-form" for="Tarea">
   <form lifecycle="recibir" merge param="default">
@@ -491,6 +505,28 @@
     </div>
   </form>
 </def>
+<def tag="rechazar-form" polymorphic/>
+<def tag="rechazar-form" for="Tarea">
+  <form lifecycle="rechazar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.rechazar', :default=>['Rechazar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="terminar-form" polymorphic/>
+<def tag="terminar-form" for="Tarea">
+  <form lifecycle="terminar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.terminar', :default=>['Terminar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
 <def tag="terminar-form" polymorphic/>
 <def tag="terminar-form" for="Tarea">
   <form lifecycle="terminar" merge param="default">
@@ -546,6 +582,7 @@
     </div>
   </form>
 </def>
+>>>>>>> ultimos cambios
 
 <def tag="form" for="Tinta">
   <form merge param="default">
@@ -598,7 +635,7 @@
 <def tag="form" for="User">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="name, rol, email_address, administrator, iniciales, state, procesos" param/>
+    <field-list fields="name, rol, email_address, administrator, iniciales, tablero, state, procesos" param/>
     <div param="actions">
       <submit label="#{ht 'users.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

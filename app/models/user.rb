@@ -8,6 +8,7 @@
     email_address :email_address, :login => true
     administrator :boolean, :default => false
     iniciales     :string, :unique
+    tablero       :boolean, :default => false
     timestamps
   end
 
@@ -23,6 +24,38 @@
 
   #named_scope :administrators, lambda {|acting_user| {:conditions => {acting_user.administrator?} }}
 
+  def int_tiempo_total(estado,rechazada)
+    tiempo = 0
+    rechazada = rechazada == "false" ? "IS NULL" : "IS NOT NULL"
+    for i in self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada #{rechazada}", Date.today.day, Date.today.month, Date.today.year])
+      dife = i.termino ? (i.termino - i.inicio) / 3600 : 0
+      tiempo += dife
+    end
+    # Devolvemos 3.68 horas (integer)
+    dia = tiempo.to_s.first(4).to_f
+    tiempo = 0
+    for i in self.intervencions.find(:all, :conditions => ["WEEK(#{estado}) = ? AND rechazada #{rechazada}", Date.today.strftime("%U")])
+      dife = i.termino ? (i.termino - i.inicio) / 3600 : 0
+      tiempo += dife
+    end
+    semana = tiempo.to_s.first(4).to_f
+    tiempo = 0
+    for i in self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada #{rechazada}", Date.today.month])
+      dife = i.termino ? (i.termino - i.inicio) / 3600 : 0
+      tiempo += dife
+    end
+    mes = tiempo.to_s.first(4).to_f
+    return "#{dia} / #{semana} / #{mes}"
+  end
+
+
+  def int_totales(estado,rechazada)
+    rechazada = rechazada == "false" ? "IS NULL" : "IS NOT NULL"
+    dia = self.intervencions.find(:all, :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND rechazada #{rechazada}", Date.today.day, Date.today.month, Date.today.year]).count
+    semana = self.intervencions.find(:all, :conditions => ["WEEK(#{estado}) = ? AND rechazada #{rechazada}", Date.today.strftime("%U")]).count
+    mes = self.intervencions.find(:all, :conditions => ["MONTH(#{estado}) = ? AND rechazada #{rechazada}", Date.today.month]).count
+    return "#{dia} / #{semana} / #{mes}"
+  end
 
 	def facturador?
 		self.rol == "Facturador"

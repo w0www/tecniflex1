@@ -32,6 +32,7 @@ class OrdTrabsController < ApplicationController
         this.attributes = params[:ord_trab] || {}
         hobo_ajax_response if request.xhr?
       end
+
     end
   end
 
@@ -48,21 +49,27 @@ class OrdTrabsController < ApplicationController
 		@ord_trab = OrdTrab.find(params[:id])
 	end
 
-  # def update
-#     hobo_update do
-#       hobo_ajax_response if request.xhr?
-#    end
-#   end
-
+  def update
+    # Parseamos el valor del datepicker
+    fecha_entrega = Date.strptime params[:ord_trab]["fechaEntrega"], "%d/%m/%Y"
+    params[:ord_trab]["fechaEntrega(1i)"] = fecha_entrega.year.to_s
+    params[:ord_trab]["fechaEntrega(2i)"] = fecha_entrega.month.to_s
+    params[:ord_trab]["fechaEntrega(3i)"] = fecha_entrega.day.to_s
+    hobo_update
+  end
 
 	def index
     inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
     final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time if params[:fecha_fin] && !params[:fecha_fin].blank?
+    
     hobo_index OrdTrab.apply_scopes(
       :cliente_is => params[:cliente],
       :codCliente_contains => params[:codigo_cliente],
       :numOT_contains => params[:orden],
+      :espesor_id_is => params[:espesor],
+      :tipomat_id_is => params[:tipomat],
       :state_is => params[:estado],
+      :proceso_is => [params[:proceso], params[:estado_proceso]],
       :created_between => [inicial, final]
     )
 	end
@@ -82,9 +89,11 @@ class OrdTrabsController < ApplicationController
     end
   end
   
-  
   index_action :tablero do
+    @hora_actual = DateTime.now.in_time_zone
     @grupro = Grupoproc.tablero.order_by(:position)
+    @procesos = Proceso.order_by(:position)
+    @usuarios = User.find(:all, :order => :name)
     @clies = Cliente.all
     inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
     final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time if params[:fecha_fin] && !params[:fecha_fin].blank?
@@ -92,9 +101,10 @@ class OrdTrabsController < ApplicationController
       :cliente_is => params[:cliente],
       :codCliente_contains => params[:codigo_cliente],
       :numOT_contains => params[:orden],
+      :proceso_is => [params[:proceso], params[:estado_proceso]],
       :state_is => params[:estado],
       :created_between => [inicial, final]
-    ).paginate(:page => params[:page], :per_page => 35)
+    ).paginate(:page => params[:page], :per_page => 20)
     hobo_ajax_response if request.xhr?
   end
 

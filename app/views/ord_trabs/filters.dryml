@@ -3,9 +3,11 @@
   <form method="get" action="#{action}" id="filters" class="ui-widget-content ui-corner-all"
     style="#{'display:none' unless params[:cliente]}"    >
     <fieldset class="feckless-fields horizontal informe">
-      <select-field label="Cliente" name="cliente" options="&Cliente.all.map{|c| [c.name]}"/>
+      <select-field label="Cliente" name="cliente" options="&Cliente.all.map{|c| [c.name]}" first-option="Filtrar por cliente"/>
       <input-field label="Cod. cliente" name="codigo_cliente"/>
-      <select-field label="Estado" name="estado" options="&OrdTrab::Lifecycle.states.keys.map{|s|[s.to_s]}"/>
+      <select-field label="Proceso" name="proceso" options="&Proceso.all" first-option="Filtrar por proceso"/>
+      <select-field label="Estado proceso" name="estado_proceso" options="&Tarea::Lifecycle.states.keys.map{|s|[s.to_s]}" first-value="habilitada" first-option="habilitada"/>
+      <select-field label="Estado OT" name="estado" options="&OrdTrab::Lifecycle.states.keys.map{|s|[s.to_s]}" first-option="Filtrar por estado"/>
       <input-field label="O.T." name="orden"/>
       <date-field label="Fecha" name="fecha"/>
       <placeholder-field/>
@@ -14,13 +16,27 @@
   </form>
 </def>
 
-<def tag="select-field" attrs="label, name, options">
+<def tag="select-field" attrs="label, name, options, first-option, first-value">
   <div class="field">
     <label><%= label %></label>
-    <select-menu name="#{name}" 
-              first-option="Filtrar por #{label}"
+    <select-menu name="#{name}" first-value="#{first_value}"
+              first-option="#{first_option}"
               selected="&params[name.to_sym]"
               options="&options" />
+  </div>
+</def>
+
+<def tag="tipomat-field" attrs="label, name">
+  <div class="field num_siniestro-field  ">
+    <label><%= label %></label>
+    <input type="text" name="#{name}" value="&params[name.to_sym]"/>
+  </div>
+</def>
+
+<def tag="espesor-field" attrs="label, name">
+  <div class="field num_siniestro-field  ">
+    <label><%= label %></label>
+    <input type="text" name="#{name}" value="&params[name.to_sym]"/>
   </div>
 </def>
 

@@ -4,6 +4,7 @@
     style="#{'display:none' unless params[:cliente]}"    >
     <fieldset class="feckless-fields horizontal informe">
       <select-field label="Usuario" name="user" options="&User.all.map{|c| [c.name]}"/>
+      <select-field label="Estado" name="state" options="&['rechazada']"/>
       <date-field label="Fecha" name="fecha"/>
       <placeholder-field/>
       <submit-field/>

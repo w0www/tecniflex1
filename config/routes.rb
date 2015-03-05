@@ -6,6 +6,7 @@ ActionController::Routing::Routes.draw do |map|
   # Rutas para gestionar la cola de delayed_job
   map.cola 'front/cola', :controller => 'front', :action => 'cola'
   map.connect 'front/cola/eliminar/:id', :controller => 'front', :action => 'eliminar'
+  map.pantalla 'front/pantalla', :controller => 'front', :action => 'pantalla'
 
   Hobo.add_routes(map)
 

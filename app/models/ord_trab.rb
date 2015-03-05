@@ -8,7 +8,7 @@ class OrdTrab < ActiveRecord::Base
     numGuia       :integer
     fecha         :date
     clase         :integer
-    fechaEntrega  :date
+    fechaEntrega  :datetime
     observaciones :text
     cfinal        :string
 		vb        		:boolean
@@ -88,8 +88,11 @@ class OrdTrab < ActiveRecord::Base
   has_many :pruebas
   has_many :tipopruebas, :through => :pruebas, :accessible => true
   has_many :separacions, :dependent => :destroy, :accessible => true, :order => :position
+
+  # Una orden de trabajo tiene muchos procesos. (Tabla relacionada "TAREAS")
   has_many :procesos, :through => :tareas, :accessible => true
   has_many :tareas, :accessible => true, :dependent => :destroy, :autosave => true
+
   belongs_to :encargado, :class_name => "User", :scope => {:rol_is => 'Supervisor' || 'Gerente'}
   belongs_to :curva
  # HABILITAR CONTACTO ASOCIADO A OT, ELEGIDO ENTRE CONTACTOS DEL CLIENTE (VER SCOPE)
@@ -103,6 +106,12 @@ class OrdTrab < ActiveRecord::Base
   belongs_to  :sustrato
 
   default_scope :order => 'numOT DESC'
+
+  # Scope que busca en varias columnas el material entregado
+  named_scope :proceso_is, lambda { |proceso,estado| { 
+    :include => :tareas,
+    :conditions => ["tareas.proceso_id = ? AND tareas.state = ?", Proceso.find_by_nombre(proceso).id, estado] } }
+
 
   def armacod
     armac = ""
@@ -162,7 +171,7 @@ class OrdTrab < ActiveRecord::Base
  		tares = self.tareas || []
  		if tares != []
 			estata = tares.proceso_id_is(procid).first
-			if Proceso.destderev.include?(Proceso.find(procid)) || Proceso.rev.include?(Proceso.find(procid))
+			if Proceso.volver_desde_revision.include?(Proceso.find(procid)) || Proceso.rev.include?(Proceso.find(procid))
 				estata.lifecycle.habilitar!(usuario)
 			else
 				nil
@@ -215,7 +224,6 @@ class OrdTrab < ActiveRecord::Base
 
 		transition :terminar, { :iniciada => :terminada }, :available_to => "User.supervisores"
 
-
     transition :reactivar, {:terminada => :habilitada}, :available_to => "User.supervisores" do
     	esta = self
     	self.tareas.each do |tara|
@@ -234,12 +242,15 @@ class OrdTrab < ActiveRecord::Base
 
 	end
 
+  # VALIDACIONES
+  # SUYCCOM HACK: COMENTAR CUANDO SE PUEDA QUE SON ESTAS VALIDACIONES YA QUE PARECE QUE SE REPITEN
   validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.vb || self.ptr", :on => :habilitar
   validates_presence_of :trapping, :curva, :impresora, :cilindro, :nCopias, :sustrato, :fechaEntrega, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_presence_of :cliente, :nomprod, :codCliente, :espesor, :supRev, :if => "self.pol && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
-
+  validates_presence_of :encargado_id
+  validates_presence_of :dispBandas, :espesor, :tipomat, :if => "self.mtz"
   validates_associated :separacions, :if => "(self.mtje || self.mtz || self.pol) && self.activa? ", :on => :habilitar
-#	validate :fecha_posterior
+
 
   def before_create
 		if OrdTrab.all == []
@@ -247,6 +258,8 @@ class OrdTrab < ActiveRecord::Base
 		else
 			self.numOT = (OrdTrab.order_by(:id).last.id.to_i || 0) + 60001
 		end
+    logger.info "esto es fecha_entrega #{fechaEntrega}"
+
   end
 
   def activa?
@@ -315,7 +328,7 @@ class OrdTrab < ActiveRecord::Base
   def tnetot
     timot = Time.at(0)
     self.tareas.each do |latar|
-      timot += latar.tneto.to_i
+      timot += latar.tneto
     end
     timot
   end
@@ -649,7 +662,6 @@ class OrdTrab < ActiveRecord::Base
   end
 
 	private
-
 
 #	def fecha_posterior
 #		errors.add(:fechaEntrega, 'La fecha de entrega debe ser posterior a la fecha actual') if fechaEntrega < fecha

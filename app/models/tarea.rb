@@ -10,8 +10,10 @@ class Tarea < ActiveRecord::Base
     timestamps
   end
 
+  # Una tarea depende de un proceso y de una orden de trabajo.
   belongs_to :ord_trab
   belongs_to :proceso
+
   belongs_to :recurso
   belongs_to :asignado, :class_name => "User", :foreign_key => :asignada_a
   # Se elimina dependent => destroy, porque podría borrarse una tarea y perder el registro del trabajo de los operadores.
@@ -22,9 +24,9 @@ class Tarea < ActiveRecord::Base
     self.ord_trab.numOT.to_s + '_' + self.proceso.nombre.to_s
   end
 
-	named_scope :activa, :conditions => ["state IN (?)", ["habilitada","iniciada","detenida","enviada","recibida"]]
-  named_scope :disp, :conditions => ["state IN (?)", ["habilitada","detenida","enviada","recibida"]]
-  named_scope :detipo, lambda { |proce| { :joins => :procesos, :conditions => ["proceso.nombre = ?", proce] }}
+	named_scope :activa, :conditions => ["state IN (?)", ["habilitada","iniciada","detenida","enviada","recibida", "en_revision"]]
+  named_scope :disp, :conditions => ["state IN (?)", ["habilitada","detenida","enviada","recibida", "en_revision"]]
+  named_scope :detipo, lambda { |proce| { :conditions => ["proceso_id = ?", Proceso.find_by_nombre(proce).id] }}
   
   def after_create
   	self.ciclo ||= 1
@@ -49,11 +51,11 @@ class Tarea < ActiveRecord::Base
 	end
 
 	def activa?
-    ['habilitada','iniciada','detenida','recibida','enviada'].include?(self.state)
+    ['habilitada','iniciada','detenida','recibida','enviada', 'en_revision'].include?(self.state)
   end
 
-	def activa_poli?
-    ['habilitada','iniciada','detenida','recibida','enviada'].include?(self.state)
+  def activa_poli?
+    ['habilitada','iniciada','detenida','recibida','enviada', 'en_revision'].include?(self.state)
   end
 
   def gp(grupo)
@@ -92,17 +94,15 @@ class Tarea < ActiveRecord::Base
 		end
   end
 
+  # Calcula el tiempo en minutos neto en realizarse una tarea
   def tneto 
-    tne = Time.at(0)
-    self.intervencions.each do |pega|
-      if pega.termino
-        dife = pega.termino - pega.inicio
-      else
-        dife = 0
-      end
+    tne = 0
+    for intervencion in self.intervencions
+      dife = intervencion.termino ? (intervencion.termino - intervencion.inicio) / 60 : 0
       tne += dife
     end
-    tne
+    # Devolvemos 3.68 (integer)
+    return tne.to_s.first(4).to_f
   end
   
   def proctar
@@ -117,23 +117,22 @@ class Tarea < ActiveRecord::Base
 
   lifecycle do
 
-		state :creada, :default => true
+    state :creada, :default => true
 
-		state :habilitada, :iniciada, :detenida, :enviada, :cambiada, :recibida, :terminada, :reiniciada, :rechazada
+    state :habilitada, :iniciada, :detenida, :enviada, :cambiada, :recibida, :terminada, :reiniciada, :rechazada, :en_revision
 
-		create :crear, :become => :creada, :available_to => :all
+    create :crear, :become => :creada, :available_to => :all
 
-		transition :habilitar, { :creada => :habilitada }, :available_to => :all, :unless => "(self.asignada_a == nil) && (self.proceso.grupoproc.asignar == true)"
-
-		transition :cambiar, { :enviada => :cambiada }, :available_to => :all, :if => "self.proceso.reinit" do
-			estor = self.ord_trab.sortars
-			estor[estor.index(self)-1].lifecycle.habilitar!(User.first) if estor[estor.index(self)-1]
+    transition :habilitar, { :creada => :habilitada }, :available_to => :all, :unless => "(self.asignada_a == nil) && (self.proceso.grupoproc.asignar == true)"
+    # Solo entra en el proceso PRINTER, cuando se rechaza despues de haberlo enviado.
+    transition :cambiar, { :enviada => :cambiada }, :available_to => :all, :if => "self.proceso.nombre.downcase == 'printer'" do
+      estor = self.ord_trab.sortars
+      estor[estor.index(self)-2].lifecycle.habilitar!(User.first) if estor[estor.index(self)-2]
 		end
 
-		transition :habilitar, { :cambiada => :habilitada }, :available_to => :all, :if => "self.proceso.reinit"
-
+		transition :habilitar, { :cambiada => :habilitada }, :available_to => :all, :if => "self.proceso.reiniciar"
 		##Agregar condición para rehabilitar toda la OT, a pedido de un supervisor.
-		transition :habilitar, { :terminada => :habilitada }, :available_to => :all do
+		transition :habilitar, { [:terminada, :en_revision] => :habilitada }, :available_to => :all do
 		  aumentaciclo
 		end
 
@@ -152,13 +151,27 @@ class Tarea < ActiveRecord::Base
 		## Crear método "volver_a(proceso)" que maneje el flujo y los estados de las tareas.
 		############
 
-		transition :enviar, { :iniciada => :enviada }, :available_to => :all, :if => "self.proceso.prueba" do
-			RecibArchMailer.delay.deliver_enviado(self.ord_trab.cliente, self.ord_trab)
-		end
+    transition :enviar, { [:iniciada, :recibida, :habilitada] => :enviada }, :available_to => :all do
+      RecibArchMailer.delay.deliver_enviado(self.ord_trab.cliente, self.ord_trab)
+    end
 
-		transition :recibir, { :enviada => :recibida }, :available_to => :all, :if => "self.proceso.prueba"
+    transition :enviar_pdf, { :iniciada => :en_revision }, :available_to => :all, :if => "self.proceso.nombre.downcase == 'vistobueno'" do
+      # Cuando enviamos el PDF tenemos que habilitar la revision VB
+      if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+        self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first)
+      end
+    end
 
-		transition :reiniciar, { :recibida => :iniciada }, :available_to => :all, :if => "self.proceso.prueba" do
+    transition :recibir, { [:enviada, :en_revision] => :recibida }, :available_to => :all
+
+    transition :recibir, { :iniciada => :rechazada }, :available_to => :all, :if => "self.proceso.nombre.downcase == 'polimero'" do
+      # Habilitamos la RevisionMM
+      self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.habilitar!(User.first)
+    end
+
+    
+
+		transition :reiniciar, { :recibida => :iniciada }, :available_to => :all do
 			aumentaciclo
 		end
 
@@ -166,27 +179,25 @@ class Tarea < ActiveRecord::Base
 
 		transition :detener, { :iniciada => :detenida }, :available_to => :all
 
-		transition :rechazar, { :iniciada => :rechazada }, :available_to => :all
-
-		transition :terminar, { :enviada => :terminada }, :available_to => :all do
-      if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
-				self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+		transition :rechazar, { [:iniciada, :recibida, :enviada] => :rechazada }, :available_to => :all do
+      # Si rechazamos revisionVB tenemos que volver a VistoBueno como iniciado
+      if self.proceso.nombre.downcase == 'revisionvb'
+        self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.habilitar!(User.first) 
       end
     end
 
-		transition :terminar, { :iniciada => :terminada }, :available_to => :all do
-			if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
-      	self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+    transition :terminar, { [:iniciada, :enviada, :recibida] => :terminada }, :available_to => :all do
+      if self.proceso.nombre.downcase == 'revisionvb'
+        self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.recibir!(User.first)
+      elsif self.ord_trab.sortars[self.ord_trab.sortars.index(self)+2] && self.proceso.nombre.downcase == 'vistobueno'
+        self.ord_trab.sortars[self.ord_trab.sortars.index(self)+2].lifecycle.habilitar!(User.first)
+      elsif self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
+        self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first)
       end
     end
 
-		transition :eliminar, {:creada => :destroy}, :available_to => :all
-
-    transition :eliminar, {:habilitada => :destroy}, :available_to => :all
-
-    transition :eliminar, {:terminada => :destroy}, :available_to => :all
-
-	end
+    transition :eliminar, {[:creada, :habilitada, :terminada] => :destroy}, :available_to => :all
+  end
 
 	def interventor?
 		if self.intervencions != []
@@ -203,7 +214,7 @@ class Tarea < ActiveRecord::Base
   end
 
   def update_permitted?
-    acting_user.superv? || self.proceso.edmeds
+    acting_user.superv? || self.proceso.edicion_medidas
   end
 
   def destroy_permitted?

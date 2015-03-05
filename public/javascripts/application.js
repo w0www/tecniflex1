@@ -39,15 +39,10 @@
    //       });
         Event.addBehavior({
             "form.ord-trab select.ord_trab_cliente:change": function(ev) {
-            		Hobo.ajaxRequest(window.location.href, ['contac'],
+            		Hobo.ajaxRequest(window.location.href, ['contac', 'primter', 'siglac', 'curva-part'],
                     {params: Form.serializeElements([this]), method: 'get',
                     spinnerNextTo: this, message: ""});
-                Hobo.ajaxRequest(window.location.href, ['primter'],
-                    {params: Form.serializeElements([this]), method: 'get',
-                    spinnerNextTo: this, message: ""});
-                Hobo.ajaxRequest(window.location.href, ['siglac'],
-                    {params: Form.serializeElements([this]), method: 'get',
-                    spinnerNextTo: this, message: ""});
+                
             },
             "form.ord-trab select.ord_trab_impresora:change": function(ev) {
                 Hobo.ajaxRequest(window.location.href, ['cyl'],

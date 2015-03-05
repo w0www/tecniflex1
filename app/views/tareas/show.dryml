@@ -1,129 +1,331 @@
 <show-page for="Tarea">
-
-    <heading:>
-      <view:ord_trab/>&nbsp;>&nbsp;<view:ord_trab.nomprod/>&nbsp;>&nbsp;<view:proceso/>
-    </heading:>
-
-
-
+  <append-scripts:>
+    <ocultar-campos/>
+  </append-scripts:>
+  <heading:>
+    <view:ord_trab/>&nbsp;>&nbsp;<view:ord_trab.nomprod/>&nbsp;>&nbsp;<view:proceso/>
+  </heading:>
   <content-body: >
     <div part="campos">
       <table class="tarea">
-        <tr><th>Cliente</th><td colspan="2"><view:ord_trab.cliente/></td><th>Fecha tope:</th><td colspan="2"><view:ord_trab.fechaEntrega/></td></tr>
-        <tr><th>C&oacute;digo Cliente:</th><td colspan="2"><view:ord_trab.codTflex/></td><th>C&oacute;digo Tecniflex:</th><td colspan="2"><%= if this.ord_trab.cliente then this.ord_trab.cliente.sigla else "" end %>-<view:ord_trab.codCliente/></td></tr>
-        <tr rowspan="2"><th>Instrucciones</th><td colspan="4"><view:ord_trab.observaciones/></td></tr>
-        <tr><th>Estado:</th><td colspan="2"><view:state/></td></tr>
-        <tr></tr>
+        <tr>
+          <th>Cliente</th>
+          <td colspan="2"><view:ord_trab.cliente/></td>
+          <th>Fecha tope:</th>
+          <td colspan="2"><view:ord_trab.fechaEntrega/></td>
+        </tr>
+        <tr>
+          <th>Código Cliente:</th>
+          <td colspan="2"><view:ord_trab.codTflex/></td>
+          <th>Código Tecniflex:</th>
+          <td colspan="2">
+            <view:ord_trab.cliente.sigla if="&this.ord_trab.cliente"/>-<view:ord_trab.codCliente/>
+          </td>
+        </tr>
+        <tr rowspan="2">
+          <th>Instrucciones</th>
+          <td colspan="4"><view:ord_trab.observaciones/></td>
+        </tr>
+        <tr>
+          <th>Estado:</th>
+          <td colspan="2"><view:state/></td>
+        </tr>
+        <tr/>
         <tr/>
       </table>
     </div>
-      <% if this.proceso.edmeds %>
-
-        <table class="tarea">
-
-        <tr><th>Color</th><th>Anilox</th><th>Lineatura</th><th>Material</th><th style="width:100px">Ancho</th><th style="width:100px">Alto</th><th>Area</th><th>Stock</th></tr>
- <!--       </table>
-        <table class="shower">-->
+    <if test="&this.proceso.edicion_medidas">
+      <table class="tarea">
+        <tr>
+          <th>Color</th>
+          <th>Anilox</th>
+          <th>Lineatura</th>
+          <th>Material</th>
+          <th style="width:100px">Ancho</th>
+          <th style="width:100px">Alto</th>
+          <th>Area</th>
+          <th>Stock</th>
+        </tr>
         <repeat with="&@sepas" part="sepas">
-
-   <!--       <form with="&sepa" update="resumen">   -->
-            <% @polis = [this.tipomat,this.ancho,this.alto,this.espesor] %>
-
-            <tr><td><view:color/></td><td><view:anilox/></td><td><view:lpi/></td><td><view:tipomat/></td><td><editor:ancho update="sepas" />&nbsp;cm.</td><td><editor:alto update="sepas" />&nbsp;cm.</td><td><%= this.areasep -%>&nbsp;cm<sup>2</sup></td><td></td></tr>
-   <!--         </form>  -->
-         </repeat>
-
-          </table>
-        <%end%>
-<div part="botones">
- <% @intervs = this.intervencions.find(:all, :joins => :user, :conditions => ["name = ?", current_user.name]) %>
- <%if this.activa? %>
-
-    <%if @intervs != []%>
-
-        <% if @intervs.last.termino == nil%>
-            <% @termin = 0 %>
-                 <form with="&@intervs.last" >
-											<after-submit uri="/tareas/#{this.tarea.id}" />
-
-                      <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
-                      <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{this.tarea.id}"/>
-<!--
-                      <input class="hidden" type="text" name="intervencion[termino]" value="#{Time.now}"/>
--->
-                      Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
-                      <%= hidden_field_tag 'envio', ''%>
-                      <% if this.tarea.proceso.prueba %>
-												<!-- :onclick =>"javascript:jQuery('envio').value='algo' se usa para asegurarse de que el parametro 'envio' sea seteado correctamente -->
-													<%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
-													<%= submit_tag "enviar", :onclick =>"$('envio').value='enviar';", :id => "enviar", :class => "button submit-button", :name => "enviar" %>
-											<% elsif this.tarea.proceso.varev %>
-													<%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
-													<%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminar", :class => "button submit-button", :name => "enviar" %>
-													<%= submit_tag "rechazar", :onclick =>"$('envio').value='rechazar';", :id => "rechazar", :class => "button submit-button" %>
-											<% elsif this.tarea.proceso.rev %>
-													<%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
-													<%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminar", :class => "button submit-button", :name => "enviar" %>
-													<select  class="input belongs_to" name="procdest">
-														<%@destas.each do |proce| %>
-																<option value="#{proce.id}"><%= proce.nombre -%></option>
-														<%end%>
-													</select>
-													<%= submit_tag "rechazar", :onclick =>"$('envio').value='rechazar';", :id => "rechazar", :class => "button submit-button" %>
-											<% else %>
-												<%= submit_tag "detener", :onclick =>"$('envio').value='detener';", :id => "detener", :class => "button submit-button" %>
-												<%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminar", :class => "button submit-button" %>
-											<% end %>
-
-                </form>
-         <% else %>
-              <% @estatarea = this.id %>
-               <form with="&Intervencion.new">
-										<after-submit uri="/tareas/#{@estatarea}" />
-                    <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
-                    <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{@estatarea}"/>
-                    <input class="hidden" type="text" name="term" value="1"/>
-                    <!-- Observaciones <input:observaciones style="height:2em;width: 70%"/><br/> -->
-                    <%= hidden_field_tag 'envio', ''%>
-                    <% if Tarea.find(@estatarea).state == "enviada" %>
-                    Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
-<!--
-                      <input class="hidden" type="text" name="intervencion[termino]" value="#{Intervencion.ahora}"/>
--->
-                      <% if Tarea.find(@estatarea).proceso.reinit %><input type="checkbox" id="checker" name="vuelta" onchange="toggler()"/>Generar nuevo V.B.<% end %>
-											<%= submit_tag "recibir", :onclick =>"$('envio').value='recibir';", :id => "recibir", :class => "button submit-button" %>
-											<%= submit_tag "terminar", :onclick =>"$('envio').value='terminar';", :id => "terminax", :class => "button submit-button" %>
-                    <% else %>
-											<%= submit_tag "iniciar", :onclick =>"$('envio').value='iniciar';", :id=>"iniciar", :class => "button submit-button" %>
-										<% end %>
-              </form>
-         <%  end %>
-
-   <% else %>
+          <% @polis = [this.tipomat,this.ancho,this.alto,this.espesor] %>
+          <tr>
+            <td><view:color/></td>
+            <td><view:anilox/></td>
+            <td><view:lpi/></td><td><view:tipomat/></td>
+            <td><editor:ancho update="sepas" />&nbsp;cm.</td>
+            <td><editor:alto update="sepas" />&nbsp;cm.</td>
+            <td><%= this.areasep -%>&nbsp;cm<sup>2</sup></td>
+            <td></td>
+          </tr>
+        </repeat>
+      </table>
+    </if>
+    <div part="botones">
+      <if test="&this.activa?">
+        <if test="&@intervenciones != []">
+          <if test="&@intervenciones.last.termino == nil">
+            <form with="&@intervenciones.last">
+              <inicio-form/>
+              Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
+              <input type="hidden" name="envio" id="envio" value=""/>
+              <if test="&this.tarea.proceso.prueba">
+                <if test="&this.tarea.proceso.nombre.downcase == 'vistobueno' && this.tarea.state == 'iniciada'">
+                  <input-detener/>
+                  <input-enviar-pdf/>
+                </if><else><if test="&this.tarea.proceso.nombre.downcase == 'vistobueno' && this.tarea.state == 'enviada'">
+                  <input-terminar/>
+                  <input-rechazar/>
+                  <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
+                  <div id="campos-rechazo" style="margin-left:30%;display:table;">
+                    <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
+                    <input type="hidden" name="procdest" value="#{Proceso.find_by_nombre('Vistobueno').id}"/><br/>
+                    Observaciones analisis<input:observaciones-analisis/><br/>
+                    OT incompleta<input:ot-incompleta/><br/>
+                    OT con error<input:ot-error/><br/>
+                    Observaciones matriceria<input:observaciones-matriceria/><br/>
+                    Observaciones montaje<input:observaciones-montaje/><br/>
+                    Observaciones micropunto<input:observaciones-micropunto/><br/>
+                    RIPeo<input:ripeo/><br/>
+                    Distorsion<input:distorsion/><br/>
+                    Texto<input:texto/><br/>
+                    Foto<input:foto/><br/>
+                    Observaciones V/B<input:observaciones-vb/><br/>
+                    Responsable<select-menu first-option="Selecciona usuario" options="&User.all.map{|u| [u.name, u.id]}" name="intervencion[responsable]"/><br/>
+                    Colores<input:colores/><br/>
+                    Observaciones rechazo<input:observaciones-rechazo/><br/>
+                  </div>
+                </if><else><if test="&this.tarea.proceso.nombre.downcase == 'vistobueno' && this.tarea.state == 'recibida'">
+                  <input-enviar style="margin-left:37%;"/>
+                </if></else></else><else>
+                  <input-detener/>
+                  <input-enviar/>
+                </else>
+              </if><else><if test="&this.tarea.proceso.volver_a_revision">
+                <input-detener/>
+                <input-terminar/>
+                <input-recibir/>
+              </if><else><if test="&this.tarea.proceso.nombre.downcase == 'revisionvb' && this.tarea.state == 'iniciada'">
+                  <input-detener/>
+                  <input-terminar/>
+                  <input-rechazar/>
+                  <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
+                  <div id="campos-rechazo" style="margin-left:30%;display:table;">
+                    <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
+                    <input type="hidden" name="procdest" value="#{Proceso.find_by_nombre('Vistobueno').id}"/><br/>
+                    Observaciones analisis<input:observaciones-analisis/><br/>
+                    OT incompleta<input:ot-incompleta/><br/>
+                    OT con error<input:ot-error/><br/>
+                    Observaciones matriceria<input:observaciones-matriceria/><br/>
+                    Observaciones montaje<input:observaciones-montaje/><br/>
+                    Observaciones micropunto<input:observaciones-micropunto/><br/>
+                    RIPeo<input:ripeo/><br/>
+                    Distorsion<input:distorsion/><br/>
+                    Texto<input:texto/><br/>
+                    Foto<input:foto/><br/>
+                    Observaciones V/B<input:observaciones-vb/><br/>
+                    Responsable<select-menu first-option="Selecciona usuario" options="&User.all.map{|u| [u.name, u.id]}" name="intervencion[responsable]"/><br/>
+                    Colores<input:colores/><br/>
+                    Observaciones rechazo<input:observaciones-rechazo/><br/>
+                  </div>
+              </if><else><if test="&this.tarea.proceso.rev">
+                <input-detener/>
+                <input-terminar/>
+                <input-rechazar/>
+                <div id="campos-rechazo" style="margin-left:33%">
+                 <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
+                 <select class="input belongs_to" name="procdest">
+                    <% @procesos_volver_desde_revision.each do |proce| %>
+                      <option value="#{proce.id}"><%= proce.nombre -%></option>
+                    <% end %>
+                  </select><br/>
+                  Observaciones analisis<input:observaciones-analisis/><br/>
+                  OT incompleta<input:ot-incompleta/><br/>
+                  OT con error<input:ot-error/><br/>
+                  Observaciones matriceria<input:observaciones-matriceria/><br/>
+                  Observaciones montaje<input:observaciones-montaje/><br/>
+                  Observaciones micropunto<input:observaciones-micropunto/><br/>
+                  RIPeo<input:ripeo/><br/>
+                  Distorsion<input:distorsion/><br/>
+                  Texto<input:texto/><br/>
+                  Foto<input:foto/><br/>
+                  Observaciones V/B<input:observaciones-vb/><br/>
+                  Responsable<select-menu first-option="Selecciona usuario" options="&User.all.map{|u| [u.name, u.id]}" name="intervencion[responsable]"/><br/>
+                  Colores<input:colores/><br/>
+                  Observaciones rechazo<input:observaciones-rechazo/><br/>
+                </div>
+                <a href="#" id="mostrar-rechazo" class="button submit-button">Mostrar opciones de rechazo</a>
+              </if><else>
+                <input-detener/>
+                <input-terminar/>
+              </else></else></else></else>
+            </form>
+          </if>
+          <else>
+            <form with="&Intervencion.new">
+              <inicio-form/>
+              <input class="hidden" type="text" name="term" value="1"/>
+              <input type="hidden" name="envio" id="envio" value=""/>
+              <if test="&@tarea.state == 'enviada' && @tarea.proceso.nombre.downcase != 'vistobueno'">
+                Observaciones <input:observaciones style="height:2em;width: 70%"/><br/>
+                <span if="&Tarea.find(@tarea.id).proceso.reiniciar">
+                  <input type="checkbox" id="checker" name="vuelta" onchange="toggler()"/>Generar nuevo V.B.
+                </span>
+                <input-recibir/>
+                <input-terminar/>
+              </if><else><if test="&@tarea.proceso.nombre.downcase == 'vistobueno' && @tarea.state == 'enviada'">
+                  <input-rechazar/>
+                  <input-terminar/>
+                  <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
+                  <div id="campos-rechazo" style="margin-left:30%;display:table;">
+                    <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
+                    <input type="hidden" name="procdest" value="#{Proceso.find_by_nombre('Vistobueno').id}"/><br/>
+                    Observaciones analisis<input:observaciones-analisis/><br/>
+                    OT incompleta<input:ot-incompleta/><br/>
+                    OT con error<input:ot-error/><br/>
+                    Observaciones matriceria<input:observaciones-matriceria/><br/>
+                    Observaciones montaje<input:observaciones-montaje/><br/>
+                    Observaciones micropunto<input:observaciones-micropunto/><br/>
+                    RIPeo<input:ripeo/><br/>
+                    Distorsion<input:distorsion/><br/>
+                    Texto<input:texto/><br/>
+                    Foto<input:foto/><br/>
+                    Observaciones V/B<input:observaciones-vb/><br/>
+                    Responsable<select-menu first-option="Selecciona usuario" options="&User.all.map{|u| [u.name, u.id]}" name="intervencion[responsable]"/><br/>
+                    Colores<input:colores/><br/>
+                    Observaciones rechazo<input:observaciones-rechazo/><br/>
+                  </div>
+              </if><else><if test="&@tarea.state == 'recibida' && @tarea.proceso.nombre.downcase == 'vistobueno'">
+                <div style="margin-left:37%;"><input-enviar/></div>
+              </if></else></else>
+              <else>
+                <if test="&@tarea.proceso.nombre == 'Matriceria' && @tarea.ord_trab.dispBandas == -1">
+                  Este proceso no se puede iniciar porque no has seleccionado una disposición de bandas.
+                </if>
+                <else><if test="&@tarea.proceso.nombre.downcase == 'revisionvb' && @tarea.state == 'iniciada'">
+                  <input-detener/>
+                  <input-rechazar/>
+                  <input-terminar/>
+                  <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
+                  <div id="campos-rechazo" style="margin-left:30%;display:table;">
+                    <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
+                    <input type="hidden" name="procdest" value="#{Proceso.find_by_nombre('Vistobueno').id}"/><br/>
+                    Observaciones analisis<input:observaciones-analisis/><br/>
+                    OT incompleta<input:ot-incompleta/><br/>
+                    OT con error<input:ot-error/><br/>
+                    Observaciones matriceria<input:observaciones-matriceria/><br/>
+                    Observaciones montaje<input:observaciones-montaje/><br/>
+                    Observaciones micropunto<input:observaciones-micropunto/><br/>
+                    RIPeo<input:ripeo/><br/>
+                    Distorsion<input:distorsion/><br/>
+                    Texto<input:texto/><br/>
+                    Foto<input:foto/><br/>
+                    Observaciones V/B<input:observaciones-vb/><br/>
+                    Responsable<select-menu first-option="Selecciona usuario" options="&User.all.map{|u| [u.name, u.id]}" name="intervencion[responsable]"/><br/>
+                    Colores<input:colores/><br/>
+                    Observaciones rechazo<input:observaciones-rechazo/><br/>
+                  </div>
+                </if><else><if test="&@tarea.proceso.nombre.downcase == 'vistobueno' && @tarea.state == 'en_revision'">
+                  <input-rechazar/>
+                  <input-terminar/>
+                  <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
+                  <div id="campos-rechazo" style="margin-left:30%;display:table;">
+                    <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
+                    <input type="hidden" name="procdest" value="#{Proceso.find_by_nombre('Vistobueno').id}"/><br/>
+                    Observaciones analisis<input:observaciones-analisis/><br/>
+                    OT incompleta<input:ot-incompleta/><br/>
+                    OT con error<input:ot-error/><br/>
+                    Observaciones matriceria<input:observaciones-matriceria/><br/>
+                    Observaciones montaje<input:observaciones-montaje/><br/>
+                    Observaciones micropunto<input:observaciones-micropunto/><br/>
+                    RIPeo<input:ripeo/><br/>
+                    Distorsion<input:distorsion/><br/>
+                    Texto<input:texto/><br/>
+                    Foto<input:foto/><br/>
+                    Observaciones V/B<input:observaciones-vb/><br/>
+                    Responsable<select-menu first-option="Selecciona usuario" options="&User.all.map{|u| [u.name, u.id]}" name="intervencion[responsable]"/><br/>
+                    Colores<input:colores/><br/>
+                    Observaciones rechazo<input:observaciones-rechazo/><br/>
+                  </div>
+                </if></else></else><else>
+                  <input-iniciar/>
+                </else>
+              </else>
+            </form>
+          </else>
+        </if>
+        <else>
           <br/>
-          <form with="&Intervencion.new">
-								<after-submit uri="/tareas/#{params[:id]}" />
-                <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
-                <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{params[:id]}"/>
-<!--
-          <input class="hidden" type="text" name="intervencion[inicio]" value="#{Time.now}"/>
--->
-                <!-- Observaciones <input:observaciones style="height:2em;width: 70%"/><br/> -->
-                <submit label="Iniciar" id="iniciar"/>
-          </form>
-   <% end %>
-
-  <%end%>
-</div>
- <!--  <form with="&Intervencion.new" update="campos">
-      <input class="hidden" type="text" name="intervencion[fhinicio]" value="#{Time.now}"/>
-      <input type="text" name="intervencion[user]" value="#{current_user}"/>
-      <input type="text" name="intervencion[tarea]" value="#{params['id']}"/>
-      <input:observaciones/><br/>
-      <submit label="Iniciar"/>
-    </form>
-      -->
+          <if test="&@tarea.proceso.nombre == 'Matriceria' && @tarea.ord_trab.dispBandas.blank?">
+            Este proceso no se puede iniciar porque no has seleccionado una disposición de bandas.
+          </if>
+          <else>
+            <form with="&Intervencion.new">
+              <inicio-form/>
+              <submit label="Iniciar" id="iniciar"/>
+            </form>
+          </else>
+        </else>
+      </if>
+    </div>
   </content-body:>
-
 </show-page>
 
+<def tag="ocultar-campos">
+   <script type="text/javascript">
+    jQuery(document).ready(function(){
+      // Ocultamos todos los campos nuevos
+      jQuery('#campos-rechazo').hide();
+      jQuery('#mostrar-rechazo').show();
+      jQuery('#ocultar-rechazo').hide();
+      // Si pinchamos en el botón mágico de rechazar
+      jQuery('#mostrar-rechazo').click(function(){
+        // Mostramos los campos, el botón de rechazar bueno y un botón de cancelar
+        jQuery('#campos-rechazo').show();
+        jQuery('#mostrar-rechazo').hide();
+        jQuery('#ocultar-rechazo').show();
+        
+      });
+      // Si pinchamos en el botón mágico de cancelar
+      jQuery('#ocultar-rechazo').click(function(){
+        // Ocultamos los campos y mostramos el botón mágico de rechazar
+        jQuery('#mostrar-rechazo').show();
+        jQuery('#campos-rechazo').hide();
+        jQuery('#ocultar-rechazo').hide();
+      });
+    });
+   </script>
+</def>
+
+<def tag="inicio-form">
+  <after-submit uri="/tareas/#{@tarea.id}" />
+  <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
+  <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{@tarea.id}"/>
+</def>
+
+<def tag="input-detener">
+  <input type="submit" onclick="$('envio').value='detener';" id="detener" class="button submit-button"/>
+</def>
+
+<def tag="input-enviar">
+  <input type="submit" onclick="$('envio').value='enviar';" id="enviar" class="button submit-button" name="enviar"/>
+</def>
+
+<def tag="input-enviar-pdf">
+  <input type="submit" onclick="$('envio').value='enviar_pdf';" id="enviar" class="button submit-button" name="enviar"/>
+</def>
+
+<def tag="input-terminar">
+  <input type="submit" onclick="$('envio').value='terminar';" id="terminar" class="button submit-button" name="enviar"/>
+</def>
+
+<def tag="input-rechazar">
+  <input type="submit" onclick="$('envio').value='rechazar';" id="rechazar" class="button submit-button"/>
+</def>
+
+<def tag="input-recibir">
+  <input type="submit" onclick="$('envio').value='recibir';" id="recibir" class="button submit-button"/>
+</def>
+
+<def tag="input-iniciar">
+  <input type="submit" onclick="$('envio').value='iniciar';" id="iniciar" class ="button submit-button"/>
+</def>
