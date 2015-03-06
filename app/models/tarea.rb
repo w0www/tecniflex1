@@ -210,11 +210,11 @@ class Tarea < ActiveRecord::Base
   # --- Permissions --- #
 
   def create_permitted?
-    acting_user.superv?
+    acting_user.signed_up?
   end
 
   def update_permitted?
-    acting_user.superv? || self.proceso.edicion_medidas
+    acting_user.signed_up? || self.proceso.edicion_medidas
   end
 
   def destroy_permitted?
