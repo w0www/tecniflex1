@@ -1,3 +1,4 @@
+# encoding: utf-8
 class TareasController < ApplicationController
 
   hobo_model_controller

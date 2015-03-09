@@ -15,9 +15,9 @@
           <td colspan="2"><view:ord_trab.fechaEntrega/></td>
         </tr>
         <tr>
-          <th>Código Cliente:</th>
+          <th>Codigo Cliente:</th>
           <td colspan="2"><view:ord_trab.codTflex/></td>
-          <th>Código Tecniflex:</th>
+          <th>Codigo Tecniflex:</th>
           <td colspan="2">
             <view:ord_trab.cliente.sigla if="&this.ord_trab.cliente"/>-<view:ord_trab.codCliente/>
           </td>
@@ -256,7 +256,7 @@
         <else>
           <br/>
           <if test="&@tarea.proceso.nombre == 'Matriceria' && @tarea.ord_trab.dispBandas.blank?">
-            Este proceso no se puede iniciar porque no has seleccionado una disposición de bandas.
+            Este proceso no se puede iniciar porque no has seleccionado una disposicion de bandas.
           </if>
           <else>
             <form with="&Intervencion.new">

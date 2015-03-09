@@ -1,3 +1,4 @@
+# encoding: utf-8
 class Tarea < ActiveRecord::Base
 
   hobo_model # Don't put anything above this
@@ -156,7 +157,7 @@ class Tarea < ActiveRecord::Base
     end
 
     transition :enviar_pdf, { :iniciada => :en_revision }, :available_to => :all, :if => "self.proceso.nombre.downcase == 'vistobueno'" do
-      # Cuando enviamos el PDF tenemos que habilitar la revision VB
+      # Cuando<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> enviamos el PDF tenemos que habilitar la revision VB
       if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
         self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first)
       end
