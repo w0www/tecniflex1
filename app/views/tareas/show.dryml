@@ -199,7 +199,7 @@
               </if></else></else>
               <else>
                 <if test="&@tarea.proceso.nombre == 'Matriceria' && @tarea.ord_trab.dispBandas == -1">
-                  Este proceso no se puede iniciar porque no has seleccionado una disposición de bandas.
+                  Este proceso no se puede iniciar porque no has seleccionado una disposicion de bandas.
                 </if>
                 <else><if test="&@tarea.proceso.nombre.downcase == 'revisionvb' && @tarea.state == 'iniciada'">
                   <input-detener/>
