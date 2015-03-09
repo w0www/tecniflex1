@@ -277,17 +277,17 @@
       jQuery('#campos-rechazo').hide();
       jQuery('#mostrar-rechazo').show();
       jQuery('#ocultar-rechazo').hide();
-      // Si pinchamos en el botón mágico de rechazar
+      // Si pinchamos en el boton magico de rechazar
       jQuery('#mostrar-rechazo').click(function(){
-        // Mostramos los campos, el botón de rechazar bueno y un botón de cancelar
+        // Mostramos los campos, el boton de rechazar bueno y un boton de cancelar
         jQuery('#campos-rechazo').show();
         jQuery('#mostrar-rechazo').hide();
         jQuery('#ocultar-rechazo').show();
         
       });
-      // Si pinchamos en el botón mágico de cancelar
+      // Si pinchamos en el boton magico de cancelar
       jQuery('#ocultar-rechazo').click(function(){
-        // Ocultamos los campos y mostramos el botón mágico de rechazar
+        // Ocultamos los campos y mostramos el boton magico de rechazar
         jQuery('#mostrar-rechazo').show();
         jQuery('#campos-rechazo').hide();
         jQuery('#ocultar-rechazo').hide();
