@@ -1,7 +1,7 @@
-Administración (Creación, edición, listado y borrado) de:
+Administracion (Creacion, edicion, listado y borrado) de:
   Usuarios
     Rol (Supervisor, Operador, Administrador)
-    Procesos habilitados (matricería, grabado, etc.)
+    Procesos habilitados (matriceria, grabado, etc.)
   Clientes
     Impresoras  
       Cilindros
@@ -11,24 +11,24 @@ Administración (Creación, edición, listado y borrado) de:
   Tipos de polimero
   Stocks de polimeros
   Ordenes de Trabajo
-    Creación de OTs a partir de OTs anteriores
+    Creacion de OTs a partir de OTs anteriores
     Marcas
     Colores
-    Asignación de usuarios a tareas
-    Asignación de responsable por OT
+    Asignacion de usuarios a tareas
+    Asignacion de responsable por OT
     Validaciones
       Nro. de OT unico
-      Altura de montaje (alto de módulo x n. de pasos) debe ser menor a desarrollo del cilindro
+      Altura de montaje (alto de modulo x n. de pasos) debe ser menor a desarrollo del cilindro
   Procesos
   Recursos (maquinas)
     Ordenamiento de Tareas activas
   
 Registro de operaciones
-  Registra Operador, hora de inicio y hora de término de cada intervención
+  Registra Operador, hora de inicio y hora de termino de cada intervencion
   Permite hacer observaciones
   En algunos casos permite operaciones adicionales:
-    Grabador: El sistema muestra los polímeros aptos en bodega, y el operador selecciona los que va a utilizar.
-    Montajista: Puede definir las dimensiones de los polímeros a utilizar para cada color.
+    Grabador: El sistema muestra los polimeros aptos en bodega, y el operador selecciona los que va a utilizar.
+    Montajista: Puede definir las dimensiones de los polimeros a utilizar para cada color.
   
 Tablero de control:
   Indica estado de cada OT

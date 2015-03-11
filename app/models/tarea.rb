@@ -17,7 +17,7 @@ class Tarea < ActiveRecord::Base
 
   belongs_to :recurso
   belongs_to :asignado, :class_name => "User", :foreign_key => :asignada_a
-  # Se elimina dependent => destroy, porque podría borrarse una tarea y perder el registro del trabajo de los operadores.
+  # Se elimina dependent => destroy, porque podria borrarse una tarea y perder el registro del trabajo de los operadores.
   has_many :intervencions, :accessible => true, :dependent => :destroy
 
   has_many :users, :through => :intervencions 
@@ -132,7 +132,7 @@ class Tarea < ActiveRecord::Base
 		end
 
 		transition :habilitar, { :cambiada => :habilitada }, :available_to => :all, :if => "self.proceso.reiniciar"
-		##Agregar condición para rehabilitar toda la OT, a pedido de un supervisor.
+		##Agregar condicion para rehabilitar toda la OT, a pedido de un supervisor.
 		transition :habilitar, { [:terminada, :en_revision] => :habilitada }, :available_to => :all do
 		  aumentaciclo
 		end
@@ -149,7 +149,7 @@ class Tarea < ActiveRecord::Base
 
 		###########
 		## Idea: aumentar contadores al terminar tarea anterior, para todas excepto la primera
-		## Crear método "volver_a(proceso)" que maneje el flujo y los estados de las tareas.
+		## Crear metodo "volver_a(proceso)" que maneje el flujo y los estados de las tareas.
 		############
 
     transition :enviar, { [:iniciada, :recibida, :habilitada] => :enviada }, :available_to => :all do

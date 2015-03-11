@@ -17,7 +17,7 @@ class OrdTrabsController < ApplicationController
       @prima.separacions.each do |sepa|
         @sepas << sepa.attributes.except(:ord_trab_id)
       end
-      # @sepash es un hash con las separación de la OT
+      # @sepash es un hash con las separacion de la OT
       @sepash = {:separacions => @sepas}
       # @nueva_ot es una nueva OT con los atributos de la OT original + las separaciones
       @nueva_ot = OrdTrab.new(@primat.merge(@sepash))

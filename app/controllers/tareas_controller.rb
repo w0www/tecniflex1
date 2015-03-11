@@ -10,12 +10,12 @@ class TareasController < ApplicationController
   def update
 		hobo_update do
       if this.ord_trab && this.ord_trab.tarasigs
-        # Si todas las tareas están asignadas, automáticamente habilitamos la OT
+        # Si todas las tareas estan asignadas, automaticamente habilitamos la OT
         this.ord_trab.lifecycle.habilitar!(current_user)
         # Si todas estan terminadas es porque vamos paso a paso y necesitamos habilitar la tarea
         comprueba_si_necesita_activar
         unless this.ord_trab.errors.blank?
-          flash[:error] = "Aunque todas las tareas de la OT #{this.ord_trab.numOT} ya están asignadas, no se ha podido habilitar automáticamente la OT debido a los siguientes errores: #{this.ord_trab.errors.full_messages}"
+          flash[:error] = "Aunque todas las tareas de la OT #{this.ord_trab.numOT} ya estan asignadas, no se ha podido habilitar automaticamente la OT debido a los siguientes errores: #{this.ord_trab.errors.full_messages}"
         end
       end
 			if request.xhr?          
