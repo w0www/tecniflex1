@@ -34,7 +34,7 @@
         <tr/>
       </table>
     </div>
-    <if test="&this.proceso.edicion_medidas">
+    <if test="&this.proceso.nombre.downcase == 'montaje'">
       <table class="tarea">
         <tr>
           <th>Color</th>
@@ -46,7 +46,7 @@
           <th>Area</th>
           <th>Stock</th>
         </tr>
-        <repeat with="&@sepas" part="sepas">
+        <repeat with="&@separaciones" part="sepas">
           <% @polis = [this.tipomat,this.ancho,this.alto,this.espesor] %>
           <tr>
             <td><view:color/></td>
