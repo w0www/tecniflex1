@@ -190,10 +190,10 @@ class Tarea < ActiveRecord::Base
     transition :terminar, { [:iniciada, :enviada, :recibida] => :terminada }, :available_to => :all do
       if self.proceso.nombre.downcase == 'revisionvb'
         self.ord_trab.sortars[self.ord_trab.sortars.index(self)-1].lifecycle.recibir!(User.first)
-      elsif self.ord_trab.sortars[self.ord_trab.sortars.index(self)+2] && self.proceso.nombre.downcase == 'vistobueno'
-        self.ord_trab.sortars[self.ord_trab.sortars.index(self)+2].lifecycle.habilitar!(User.first)
-      elsif self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
-        self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first)
+      elsif self.proceso.nombre.downcase == 'vistobueno'
+        self.ord_trab.sortars[self.ord_trab.sortars.index(self)+2].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+2]
+      else
+        self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
       end
     end
 
