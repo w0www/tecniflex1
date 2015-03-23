@@ -8,17 +8,19 @@ class TareasController < ApplicationController
   #auto_actions_for :ord_trab, :index
 
   def update
+
+    asignacion = params[:tarea][:asignada_a].blank? ? false : true
 		hobo_update do
-      if this.ord_trab && !this.ord_trab.tarasigs
+      if this.ord_trab && this.ord_trab.tarasigs || asignacion
         # Si todas las tareas estan asignadas, automaticamente habilitamos la OT
-        this.ord_trab.lifecycle.habilitar!(current_user)
+        this.ord_trab.lifecycle.habilitar!(current_user) if this.ord_trab.tarasigs
         # Si todas estan terminadas es porque vamos paso a paso y necesitamos habilitar la tarea
         comprueba_si_necesita_activar
         unless this.ord_trab.errors.blank?
           flash[:error] = "Aunque todas las tareas de la OT #{this.ord_trab.numOT} ya estan asignadas, no se ha podido habilitar automaticamente la OT debido a los siguientes errores: #{this.ord_trab.errors.full_messages}"
         end
       end
-      if request.xhr?          
+      if request.xhr?
         if this.state == "terminada"
           render :json => {
             :location => url_for(:controller => 'front', :action => 'index')
@@ -31,12 +33,17 @@ class TareasController < ApplicationController
   end
 
   def comprueba_si_necesita_activar
+    # Si necesitamos activar vamos a necesitar activar la primera tarea que solo este en estado activar
     # Semaforo = true porque pensamos que todas estan acabadas
     semaforo = true
-    for tarea in this.ord_trab.tareas
-      semaforo = false if tarea.state != 'terminada' && tarea.id != this.id
+    for tarea in this.ord_trab.sortars
+      semaforo = false if tarea.state != 'terminada'
+      t = tarea
+      if semaforo == false
+        break
+      end
     end
-    this.lifecycle.habilitar!(current_user) if semaforo
+    t.lifecycle.habilitar!(current_user) if semaforo == false
   end
 
   def show

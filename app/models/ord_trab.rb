@@ -147,13 +147,7 @@ class OrdTrab < ActiveRecord::Base
     
   # Boolean para informar si estan asignadas todas las tareas cuyos procesos pertenecen a grupos de procesos asignables.
   def tarasigs
-		tarasi = true
-			self.tareas.each do |latask|
-				if latask.proceso.grupoproc.asignar && (latask.asignado == nil)
-						tarasi = (tarasi && false)
-				end
-			end
-		tarasi
+    tarasi = self.sortars.*.asignada_a.include?(nil) ? false : true
 	end
 
 # Asigna un codigo de producto (codCliente) a la orden de trabajo, correlativo desde la ultima para ese cliente
