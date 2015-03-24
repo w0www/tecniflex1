@@ -55,7 +55,14 @@ class OrdTrabsController < ApplicationController
     params[:ord_trab]["fechaEntrega(1i)"] = fecha_entrega.year.to_s
     params[:ord_trab]["fechaEntrega(2i)"] = fecha_entrega.month.to_s
     params[:ord_trab]["fechaEntrega(3i)"] = fecha_entrega.day.to_s
-    hobo_update
+    hobo_update do 
+      if valid?
+        # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
+        if this.sortars.first.proceso.nombre.downcase == "polimero"
+          this.sortars.first.lifecycle.habilitar!(current_user)
+        end
+      end
+    end
   end
 
 	def index
