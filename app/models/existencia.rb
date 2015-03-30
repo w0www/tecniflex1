@@ -7,8 +7,8 @@ class Existencia < ActiveRecord::Base
     numfact :integer
     lote  :string
     serie :string
-    existalto :decimal
-    existancho :decimal
+    existalto :decimal, :precision => 8, :scale => 2, :default => 0
+    existancho :decimal, :precision => 8, :scale => 2, :default => 0
     codigo :string
     timestamps
   end

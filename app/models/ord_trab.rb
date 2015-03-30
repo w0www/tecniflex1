@@ -44,15 +44,15 @@ class OrdTrab < ActiveRecord::Base
     mcCrucescol   :string
     mcCrucesapy   :string
     mcTacas       :boolean
-    mcTacasH      :decimal, :precision => 5, :scale => 3
-    mcTacasV      :decimal, :precision => 5, :scale => 3
+    mcTacasH      :decimal, :precision => 8, :scale => 2, :default => 0
+    mcTacasV      :decimal, :precision => 8, :scale => 2, :default => 0
     mcTacascol    :string
     mcTacasapy    :string
     mcTiras       :boolean
     mcTirascol    :string
     mcTirasapy    :string
     mcExceso      :boolean
-    mcExcesoq     :decimal, :precision => 5, :scale => 3
+    mcExcesoq     :decimal, :precision => 8, :scale => 2, :default => 0
     mcExcesocol   :string
     mcExcesoapy   :string
     mcMarcas      :boolean
@@ -65,23 +65,23 @@ class OrdTrab < ActiveRecord::Base
     codTflex      :string
     version				:integer
     codCliente     :string
-    mdi_desarrollo :decimal
-    mdi_ancho      :decimal
+    mdi_desarrollo :decimal, :precision => 8, :scale => 2, :default => 0
+    mdi_ancho      :decimal, :precision => 8, :scale => 2, :default => 0
     barcode        :string
     colorBarcode   :string
     dispBandas     :integer
-    distTotalPerim :decimal
-    distorAncho    :decimal
-    nPasos         :decimal
-    nBandas        :decimal
+    distTotalPerim :decimal, :precision => 8, :scale => 2, :default => 0
+    distorAncho    :decimal, :precision => 8, :scale => 2, :default => 0
+    nPasos         :decimal, :precision => 8, :scale => 2, :default => 0
+    nBandas        :decimal, :precision => 8, :scale => 2, :default => 0
     nCopias        :integer
     colorUnion     :integer
     supRev enum_string(:' ', :'Superficie', :'Reverso')
     tipofotop enum_string(:'CDI', :'CDI DIGIFLOW', :'DOLEV', :'THERMOFLEX')
-    trapping       :decimal
+    trapping       :decimal, :precision => 8, :scale => 2, :default => 0
     urgente				:boolean
     prioridad enum_string(:'Normal', :'Repeticion', :'Sin Costo*')
-    pctdistor      :decimal
+    pctdistor      :decimal, :precision => 8, :scale => 2, :default => 0
     timestamps
   end
 
@@ -252,8 +252,6 @@ class OrdTrab < ActiveRecord::Base
 		else
 			self.numOT = (OrdTrab.order_by(:id).last.id.to_i || 0) + 60001
 		end
-    logger.info "esto es fecha_entrega #{fechaEntrega}"
-
   end
 
   def activa?
@@ -341,15 +339,10 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def before_save
-    unless self.nBandas?
-      self.nBandas = 1
-    end
-    unless self.nPasos?
-      self.nPasos = 1
-    end
-    unless self.nCopias?
-      self.nCopias = 1
-    end
+    self.nBandas = 1 unless self.nBandas?
+    self.nPasos = 1 unless self.nPasos?
+    self.nCopias = 1 unless self.nCopias?
+
 		sarr = ["vb", "ptr", "mtz", "mtje"]
 		sarr.each do |saejec|
 			tes = saejec + "_changed?"

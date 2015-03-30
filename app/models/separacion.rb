@@ -7,9 +7,9 @@ class Separacion < ActiveRecord::Base
     position :integer
     anilox   :string
     lpi      :string
-    area    :decimal
-    alto    :decimal
-    ancho   :decimal
+    area    :decimal, :precision => 8, :scale => 2, :default => 0
+    alto    :decimal, :precision => 8, :scale => 2, :default => 0
+    ancho   :decimal, :precision => 8, :scale => 2, :default => 0
     timestamps
   end
 

@@ -4,7 +4,7 @@ class Impresora < ActiveRecord::Base
 
   fields do
     name        :string
-    trapdefault :decimal
+    trapdefault :decimal, :precision => 8, :scale => 2, :default => 0
     bumpcurve   :string
     timestamps
   end

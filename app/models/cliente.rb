@@ -10,7 +10,7 @@
     direccion :string
     telefono  :string
     fpago     :string
-    tarifa		:decimal
+    tarifa		:decimal, :precision => 8, :scale => 2, :default => 0
     plazopago :string
     descuento :string
     timestamps
