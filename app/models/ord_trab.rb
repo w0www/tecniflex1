@@ -239,7 +239,7 @@ class OrdTrab < ActiveRecord::Base
   # VALIDACIONES
   # SUYCCOM HACK: COMENTAR CUANDO SE PUEDA QUE SON ESTAS VALIDACIONES YA QUE PARECE QUE SE REPITEN
   validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.vb || self.ptr", :on => :habilitar
-  validates_presence_of :trapping, :curva, :impresora, :cilindro, :nCopias, :sustrato, :fechaEntrega, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
+  validates_presence_of :trapping, :curva, :impresora, :cilindro, :nCopias, :sustrato, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_presence_of :cliente, :nomprod, :codCliente, :espesor, :supRev, :if => "self.pol && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_presence_of :encargado_id
   validates_presence_of :dispBandas, :espesor, :tipomat, :if => "self.mtz"
