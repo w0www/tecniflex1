@@ -4,10 +4,10 @@
 
   fields do
     nombre		   :string
-    distorsion :decimal
-    pctDistor   :decimal, :precision => 5, :scale => 3
+    distorsion :decimal, :precision => 8, :scale => 3
+    pctDistor   :decimal, :precision => 8, :scale => 3
     duplo      :string
-    espesor    :decimal, :precision => 3, :scale => 2
+    espesor    :decimal, :precision => 8, :scale => 3
     timestamps
   end
 
