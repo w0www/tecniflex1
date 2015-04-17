@@ -395,21 +395,29 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def after_save
+#    stream = render_to_string(:template=>"ord_trabs/show" )
+#    f = open("#{self.id}.xml", "wb")
+#    begin
+#      f.write(stream)
+#    ensure
+#      f.close()
+#    end
+
     # Cada vez que guardamos (ya sea al crear o editar) tenemos que generar el XML y guardarlo en una ubicacion
     # Cogemos el XML con wget y se guarda en la raiz de la aplicacion
-require 'net/http'
-f = open("#{self.id}.xml", "wb")
-begin
-  Net::HTTP.start("200.27.182.37") do |http|
-    http.request_get("/ord_trabs/#{self.id}.xml") do |resp|
-      resp.read_body do |segment|
-        f.write(segment)
-      end
-    end
-  end
-ensure
-    f.close()
-end
+#require 'net/http'
+#f = open("#{self.id}.xml", "wb")
+#begin
+#  Net::HTTP.start("200.27.182.37") do |http|
+#    http.request_get("/ord_trabs/#{self.id}.xml") do |resp|
+#      resp.read_body do |segment|
+#        f.write(segment)
+#      end
+#    end
+#  end
+#ensure
+#    f.close()
+#end
 
 #    system("wget http://127.0.0.1:3000/ord_trabs/6388.xml")
     # Movemos ese fichero con cd hasta el nas
