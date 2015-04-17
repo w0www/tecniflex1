@@ -80,7 +80,11 @@ class OrdTrabsController < ApplicationController
   def show
     hobo_show do |format|
       format.html { @taras = this.sortarasigs }
-      format.xml { @ord_trab = OrdTrab.find(params[:id]) }
+      format.xml {
+        @ord_trab = OrdTrab.find(params[:id]) 
+        stream = render_to_string(:template=>"ord_trabs/show" )  
+        send_data(stream, :type=>"text/xml",:filename => "test.xml")
+      }
     end
   end
 

@@ -69,6 +69,10 @@
   def self.supervisores
 		User.rol_is("Supervisor")
 	end
+
+  def nombre
+    return self.name
+  end
   
   # Entrega un arreglo de arreglos de intervenciones por usuario, que incluyen el numero de tarea, el nombre del proceso, la fecha de inicio y la fecha de termino
   #def intertars

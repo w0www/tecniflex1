@@ -159,6 +159,13 @@ class OrdTrab < ActiveRecord::Base
 		end
  end
 
+  # Metodos creados para usarlos en el XML (SE PUEDEN USAR EN MAS SITIOS)
+
+  def codigo_producto
+    texto = "#{self.cliente.sigla}"
+    texto = "#{texto} - #{self.codCliente}" if self.codCliente
+  end
+
  # Permite volver a una tarea anterior, habilitandola
  def volver_a(procid,usuario)
  		esteprocid = Proceso.find(procid)
@@ -387,13 +394,27 @@ class OrdTrab < ActiveRecord::Base
     end
   end
 
- # Se elimina y se traslada a separacion->after_update
-#def after_save
-  #  separacions.each {|sepa| sepa.areasep}
-   # tareas.each do |tare|
-   #   if tare.asignada_a
+  def after_save
+    # Cada vez que guardamos (ya sea al crear o editar) tenemos que generar el XML y guardarlo en una ubicacion
+    # Cogemos el XML con wget y se guarda en la raiz de la aplicacion
+require 'net/http'
+f = open("#{self.id}.xml", "wb")
+begin
+  Net::HTTP.start("200.27.182.37") do |http|
+    http.request_get("/ord_trabs/#{self.id}.xml") do |resp|
+      resp.read_body do |segment|
+        f.write(segment)
+      end
+    end
+  end
+ensure
+    f.close()
+end
 
-  #end
+#    system("wget http://127.0.0.1:3000/ord_trabs/6388.xml")
+    # Movemos ese fichero con cd hasta el nas
+#    system("mv -rf /home/imanol/Documentos/aplicaciones/ror/tecniflex1/#{self.id}.xml /mnt/nas/")
+  end
 
   def validate
 #    if (mdi_desarrollo*nPasos) > cilindro.desarr
