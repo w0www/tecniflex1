@@ -34,16 +34,17 @@
     <tnx_trapping><%= @ord_trab.trapping %></tnx_trapping>
     <tnx_curva><%= @ord_trab.curva %></tnx_curva>
     <tnx_encargado><%= @ord_trab.encargado.nombre %></tnx_encargado>
-    <% i = 1 %>
-    <% for c in @ord_trab.separacions %>
-      <tnx_color_<%= i %>><%= c.color %></tnx_color_<%= i %>>
-      <tnx_anilox_color_<%= i %>><%= c.anilox %></tnx_anilox_color_<%= i %>>
-      <tnx_lpi_color_<%= i %>><%= c.lpi %></tnx_lpi_color_<%= i %>>
-      <tnx_alto_color_<%= i %>><%= c.alto %></tnx_alto_color_<%= i %>>
-      <tnx_ancho_color_<%= i %>><%= c.ancho %></tnx_ancho_color_<%= i %>>
-      <tnx_area_color_<%= i %>><%= c.area %></tnx_area_color_<%= i %>>
-      <tnx_copia_color_<%= i %>><%= c.ord_trab.nCopias %></tnx_copia_color_<%= i %>>
-      <% i = i + 1 %>
+    <% n = 0 %>
+    <% for i in 1..8 %>
+      <% separacion = @ord_trab.separacions[n] %>
+      <tnx_color_<%= i %>><%= separacion.blank? ? 0 : separacion.color %></tnx_color_<%= i %>>
+      <tnx_anilox_color_<%= i %>><%= separacion.blank? ? 0 : separacion.anilox %></tnx_anilox_color_<%= i %>>
+      <tnx_lpi_color_<%= i %>><%= separacion.blank? ? 0 : separacion.lpi %></tnx_lpi_color_<%= i %>>
+      <tnx_alto_color_<%= i %>><%= separacion.blank? ? 0 : separacion.alto %></tnx_alto_color_<%= i %>>
+      <tnx_ancho_color_<%= i %>><%= separacion.blank? ? 0 : separacion.ancho %></tnx_ancho_color_<%= i %>>
+      <tnx_area_color_<%= i %>><%= separacion.blank? ? 0 : separacion.area %></tnx_area_color_<%= i %>>
+      <tnx_copia_color_<%= i %>><%= separacion.blank? ? 0 : separacion.ord_trab.nCopias %></tnx_copia_color_<%= i %>>
+      <% n = n + 1 %>
     <% end %>
   </CreateJobParameters>
 </JOBS>

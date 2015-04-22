@@ -98,7 +98,7 @@ end
       format.xml {
         @ord_trab = OrdTrab.find(params[:id]) 
         stream = render_to_string(:template=>"ord_trabs/show" )
-        send_data(stream, :type=>"text/xml",:filename => "test.xml")
+        send_data(stream, :type=>"text/xml",:filename => "#{@ord_trab.numOT}.xml")
       }
     end
   end
@@ -409,7 +409,7 @@ end
 
   def crear_fichero_xml
     stream = render_to_string(:template=>"ord_trabs/show.xml")
-    f = open("#{Rails.root}/lib/nas/#{this.id}.xml", "wb")
+    f = open("#{Rails.root}/lib/nas/#{this.numOT}.xml", "wb")
     begin
       f.write(stream)
     ensure
