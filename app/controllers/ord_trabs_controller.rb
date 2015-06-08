@@ -17,7 +17,7 @@ class OrdTrabsController < ApplicationController
       @prima.separacions.each do |sepa|
         @sepas << sepa.attributes.except(:ord_trab_id)
       end
-      # @sepash es un hash con las separacion de la OT
+      # @sepash es un hash con las separación de la OT
       @sepash = {:separacions => @sepas}
       # @nueva_ot es una nueva OT con los atributos de la OT original + las separaciones
       @nueva_ot = OrdTrab.new(@primat.merge(@sepash))
@@ -51,34 +51,13 @@ class OrdTrabsController < ApplicationController
 
   def update
     # Parseamos el valor del datepicker
-    fecha_entrega = Date.strptime params[:ord_trab]["fechaEntrega"], "%d/%m/%Y"
-    params[:ord_trab]["fechaEntrega(1i)"] = fecha_entrega.year.to_s
-    params[:ord_trab]["fechaEntrega(2i)"] = fecha_entrega.month.to_s
-    params[:ord_trab]["fechaEntrega(3i)"] = fecha_entrega.day.to_s
-    hobo_update do 
-      if valid?
-        # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
-        if this.sortars.first.proceso.nombre.downcase == "polimero"
-          this.sortars.first.lifecycle.habilitar!(current_user)
-        end
-      end
+    if params[:ord_trab] && params[:ord_trab]["fechaEntrega"]
+      fecha_entrega = Date.strptime params[:ord_trab]["fechaEntrega"], "%d/%m/%Y"
+      params[:ord_trab]["fechaEntrega(1i)"] = fecha_entrega.year.to_s
+      params[:ord_trab]["fechaEntrega(2i)"] = fecha_entrega.month.to_s
+      params[:ord_trab]["fechaEntrega(3i)"] = fecha_entrega.day.to_s
     end
-  end
-
-  def create
-    # Parseamos el valor del datepicker
-    fecha_entrega = Date.strptime params[:ord_trab]["fechaEntrega"], "%d/%m/%Y"
-    params[:ord_trab]["fechaEntrega(1i)"] = fecha_entrega.year.to_s
-    params[:ord_trab]["fechaEntrega(2i)"] = fecha_entrega.month.to_s
-    params[:ord_trab]["fechaEntrega(3i)"] = fecha_entrega.day.to_s
-    hobo_create do 
-      if valid?
-        # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
-        if this.sortars.first.proceso.nombre.downcase == "polimero"
-          this.sortars.first.lifecycle.habilitar!(current_user)
-        end
-      end
-    end
+    hobo_update
   end
 
 	def index
