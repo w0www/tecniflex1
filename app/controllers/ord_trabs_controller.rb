@@ -57,7 +57,8 @@ class OrdTrabsController < ApplicationController
         # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
         this.sortars.first.lifecycle.habilitar!(current_user) if this.sortars.first.proceso.nombre.downcase == "polimero"
         # Si es todo valido vamos a crear el fichero XML del mismo
-        crear_fichero_xml
+        confi = Configuration.find_by_key("export_to_xml")
+        crear_fichero_xml if confi && confi.value == "true"
       end
     end
 end
@@ -70,7 +71,8 @@ end
         # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
         this.sortars.first.lifecycle.habilitar!(current_user) if this.sortars.first.proceso.nombre.downcase == "polimero"
         # Si es todo valido vamos a crear el fichero XML del mismo
-        crear_fichero_xml
+        confi = Configuration.find_by_key("export_to_xml")
+        crear_fichero_xml if confi && confi.value == "true"
       end
     end
   end

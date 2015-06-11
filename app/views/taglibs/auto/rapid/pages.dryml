@@ -2041,7 +2041,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, prioridad, pctdistor, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, sustrato, tipomat" param/>
+            <field-list fields="numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, prioridad, pctdistor, export_to_xml, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, sustrato, tipomat" param/>
           </section>
     </content:>
 
@@ -3308,29 +3308,6 @@
 
       <section param="content-body">
         <enviar-pdf-form param="form"/>
-      </section>
-    </content:>
-
-  </page>
-</def>
-
-<def tag="terminar-page" polymorphic/>
-<def tag="terminar-page" for="Tarea">
-  <page title="#{ht 'tareas.terminar.title', :default=>['Terminar']}" merge>
-
-    <body: class="lifecycle-transition-page terminar-page" param/>
-
-    <content:>
-      <header param="content-header">
-        <h2 param="heading">
-          <ht key="tareas.terminar.heading">
-            Terminar
-          </ht>
-        </h2>
-      </header>
-
-      <section param="content-body">
-        <terminar-form param="form"/>
       </section>
     </content:>
 

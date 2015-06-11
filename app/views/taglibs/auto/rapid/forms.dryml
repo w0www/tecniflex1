@@ -159,7 +159,7 @@
 <def tag="form" for="OrdTrab">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="numOT, numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, prioridad, pctdistor, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, procesos, separacions, sustrato, tareas, tipomat, tipopruebas" param/>
+    <field-list fields="numOT, numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, prioridad, pctdistor, export_to_xml, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, procesos, separacions, sustrato, tareas, tipomat, tipopruebas" param/>
     <div param="actions">
       <submit label="#{ht 'ord_trabs.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -348,9 +348,17 @@
   </form>
 </def>
 
+<def tag="crear-form" polymorphic/>
+<def tag="crear-form" for="Tarea">
+  <form lifecycle="crear" merge param="default">
+    <error-messages param/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'tareas.actions.crear', :default=>['Crear']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
 
-<<<<<<< HEAD
-=======
 <def tag="habilitar-form" polymorphic/>
 <def tag="habilitar-form" for="Tarea">
   <form lifecycle="habilitar" merge param="default">
@@ -439,14 +447,14 @@
     </div>
   </form>
 </def>
-<def tag="terminar-form" polymorphic/>
-<def tag="terminar-form" for="Tarea">
-  <form lifecycle="terminar" merge param="default">
+<def tag="recibir-form" polymorphic/>
+<def tag="recibir-form" for="Tarea">
+  <form lifecycle="recibir" merge param="default">
     <error-messages param/>
     <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
     <field-list fields="" param/>
     <div param="actions">
-      <submit label="#{ht 'tareas.actions.terminar', :default=>['Terminar']}" param/><or-cancel param="cancel"/>
+      <submit label="#{ht 'tareas.actions.recibir', :default=>['Recibir']}" param/><or-cancel param="cancel"/>
     </div>
   </form>
 </def>
@@ -505,39 +513,6 @@
     </div>
   </form>
 </def>
-<def tag="rechazar-form" polymorphic/>
-<def tag="rechazar-form" for="Tarea">
-  <form lifecycle="rechazar" merge param="default">
-    <error-messages param/>
-    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
-    <field-list fields="" param/>
-    <div param="actions">
-      <submit label="#{ht 'tareas.actions.rechazar', :default=>['Rechazar']}" param/><or-cancel param="cancel"/>
-    </div>
-  </form>
-</def>
-<def tag="terminar-form" polymorphic/>
-<def tag="terminar-form" for="Tarea">
-  <form lifecycle="terminar" merge param="default">
-    <error-messages param/>
-    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
-    <field-list fields="" param/>
-    <div param="actions">
-      <submit label="#{ht 'tareas.actions.terminar', :default=>['Terminar']}" param/><or-cancel param="cancel"/>
-    </div>
-  </form>
-</def>
-<def tag="terminar-form" polymorphic/>
-<def tag="terminar-form" for="Tarea">
-  <form lifecycle="terminar" merge param="default">
-    <error-messages param/>
-    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
-    <field-list fields="" param/>
-    <div param="actions">
-      <submit label="#{ht 'tareas.actions.terminar', :default=>['Terminar']}" param/><or-cancel param="cancel"/>
-    </div>
-  </form>
-</def>
 <def tag="terminar-form" polymorphic/>
 <def tag="terminar-form" for="Tarea">
   <form lifecycle="terminar" merge param="default">
@@ -560,29 +535,6 @@
     </div>
   </form>
 </def>
-<def tag="eliminar-form" polymorphic/>
-<def tag="eliminar-form" for="Tarea">
-  <form lifecycle="eliminar" merge param="default">
-    <error-messages param/>
-    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
-    <field-list fields="" param/>
-    <div param="actions">
-      <submit label="#{ht 'tareas.actions.eliminar', :default=>['Eliminar']}" param/><or-cancel param="cancel"/>
-    </div>
-  </form>
-</def>
-<def tag="eliminar-form" polymorphic/>
-<def tag="eliminar-form" for="Tarea">
-  <form lifecycle="eliminar" merge param="default">
-    <error-messages param/>
-    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
-    <field-list fields="" param/>
-    <div param="actions">
-      <submit label="#{ht 'tareas.actions.eliminar', :default=>['Eliminar']}" param/><or-cancel param="cancel"/>
-    </div>
-  </form>
-</def>
->>>>>>> ultimos cambios
 
 <def tag="form" for="Tinta">
   <form merge param="default">
