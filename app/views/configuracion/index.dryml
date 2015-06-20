@@ -18,6 +18,7 @@
     </ul>
     <h2>Parametros</h2>
     <ul>
+        <li><a to="&ListBarcode" action="index">Códigos de barras</a></li>
         <li><a to="&Unidad" action="index" >Unidades</a></li>
         <li><a to="&Espesor" action="index">Espesores de polimeros</a></li>
         <li><a to="&Tipomat" action="index">Marcas de polimeros</a></li>
@@ -25,13 +26,21 @@
     </ul>
     <h2>Otras configuraciones</h2>
     Permitir exportar las ordenes de trabajo a XML
-    <ul>
-      <li>
-        <input type="checkbox" id="export_to_xml" name="export_to_xml"/>Si
-        <input type="checkbox" id="not_export_to_xml" name="not_export_to_xml"/>No
-        <a href="/configuracion"><input type="button" value="guardar"/></a>
-      </li>
-    </ul>
+    <form action="/configuracion">
+        <% confi = Configuration.find_by_key('export_to_xml') %>
+        <if test="&confi && confi.value.to_s == 'true'">
+          <input type="checkbox" id="export_to_xml" name="export_to_xml" checked/>Si
+          <input type="checkbox" id="not_export_to_xml" name="not_export_to_xml"/>No
+
+<!--          <a href="/configuracion"><input type="button" value="guardar"/></a>-->
+        </if><else><if test="&confi && confi.value.to_s == 'false'">
+          <input type="checkbox" id="export_to_xml" name="export_to_xml" />Si
+          <input type="checkbox" id="not_export_to_xml" name="not_export_to_xml" checked="true"/>No
+<!--          <a href="/configuracion"><input type="button" value="guardar"/></a>-->
+        </if></else>
+          <submit value="guardar"/>
+    </form>
+
     </section>
   </content:>
 </page>

@@ -11,6 +11,7 @@
     <tnx_desarrollo><%= @ord_trab.mdi_desarrollo.to_s %></tnx_desarrollo>
     <tnx_ancho><%= @ord_trab.mdi_ancho.to_s %></tnx_ancho>
     <tnx_cod_barras><%= @ord_trab.barcode %></tnx_cod_barras>
+    <tnx_tipo_cod_barras><%= @ord_trab.list_barcode %></tnx_tipo_cod_barras>
     <tnx_color_cod><%= @ord_trab.colorBarcode %></tnx_color_cod>
     <tnx_tacas><%= @ord_trab.mcTacas? ? "Si" : "No" %></tnx_tacas>
     <tnx_tacas_H><%= @ord_trab.mcTacasH %></tnx_tacas_H>
@@ -26,7 +27,7 @@
     <tnx_n_pasos><%= @ord_trab.nPasos %></tnx_n_pasos>
     <tnx_n_bandas><%= @ord_trab.nBandas %></tnx_n_bandas>
     <tnx_n_copias><%= @ord_trab.nCopias %></tnx_n_copias>
-    <tnx_fecha_entrega><%= @ord_trab.fechaEntrega %></tnx_fecha_entrega>
+    <tnx_fecha_entrega><%= @ord_trab.fechaEntrega.utc.iso8601.chomp("Z") %></tnx_fecha_entrega>
     <tnx_espesor><%= @ord_trab.espesor.to_s %></tnx_espesor>
     <tnx_categoria><%= @ord_trab.tipofotop %></tnx_categoria>
     <tnx_lado><%= @ord_trab.supRev %></tnx_lado>

@@ -8,8 +8,8 @@
     <nav-item with="&Anilox"><ht key="aniloxes.nav_item">Aniloxes</ht></nav-item>
     <nav-item with="&Bodega"><ht key="bodegas.nav_item">Bodegas</ht></nav-item>
     <nav-item with="&Cliente"><ht key="clientes.nav_item">Clientes</ht></nav-item>
+    <nav-item with="&Configuration"><ht key="configurations.nav_item">Configurations</ht></nav-item>
     <nav-item with="&Contacto"><ht key="contactos.nav_item">Contactos</ht></nav-item>
-    <nav-item with="&Curva"><ht key="curvas.nav_item">Curvas</ht></nav-item>
   </navigation>
 </def>
 
@@ -589,6 +589,126 @@
           </ht>
         </h2>
         <delete-button label="#{ht 'clientes.actions.delete', :default=>['Remove This Cliente']}" param/>
+      </section>
+
+      <section param="content-body">
+        <form param/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+
+
+
+
+<!-- ====== Configuration Pages ====== -->
+
+<def tag="index-page" for="Configuration">
+  <page merge title="#{ht 'configurations.index.title', :default=>['Configurations'] }">
+    <body: class="index-page configuration" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="configurations.index.heading">
+            Configurations
+          </ht>
+        </h2>
+
+        <p param="count" if>
+          <ht key="configurations.collection.count" count="&this.size">
+            There <count prefix="are"/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+        <a action="new" to="&model" param="new-link">
+          <ht key="configurations.actions.new">New Configuration</ht>
+        </a>
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+
+
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="new-page" for="Configuration">
+  <page merge title="#{ht 'configurations.new.title', :default=>[' New Configuration'] }">
+    <body: class="new-page configuration" param/>
+
+    <content: param>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="configurations.new.heading">
+            New Configuration
+          </ht>
+        </h2>
+      </section>
+
+      <section param="content-body">
+        <form param>
+          <submit: label="#{ht 'configurations.actions.create', :default=>['Create Configuration']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="show-page" for="Configuration">
+  <page merge title="#{ht 'configurations.show.title', :default=>['Configuration'] }">
+
+    <body: class="show-page configuration" param/>
+
+    <content: param>
+          <header param="content-header">
+            <h2 param="heading">
+              <ht key="configurations.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <name/>
+              </ht>
+            </h2>
+
+            <record-flags fields="value" param/>
+
+            <a action="edit" if="&can_edit?" param="edit-link">
+              <ht key="configurations.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+                Edit Configuration
+              </ht>
+            </a>
+          </header>
+
+          <section param="content-body">
+            <field-list fields="key" param/>
+          </section>
+    </content:>
+
+  </page>
+</def>
+
+
+<def tag="edit-page" for="Configuration">
+  <page merge title="#{ht 'configurations.edit.title', :default=>['Edit Configuration'] }">
+
+    <body: class="edit-page configuration" param/>
+
+    <content:>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="configurations.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
+            Edit <type-name/>
+          </ht>
+        </h2>
+        <delete-button label="#{ht 'configurations.actions.delete', :default=>['Remove This Configuration']}" param/>
       </section>
 
       <section param="content-body">
@@ -1691,6 +1811,127 @@
 
 
 
+<!-- ====== ListBarcode Pages ====== -->
+
+<def tag="index-page" for="ListBarcode">
+  <page merge title="#{ht 'list_barcodes.index.title', :default=>['List Barcodes'] }">
+    <body: class="index-page list-barcode" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="list_barcodes.index.heading">
+            List Barcodes
+          </ht>
+        </h2>
+
+        <p param="count" if>
+          <ht key="list_barcodes.collection.count" count="&this.size">
+            There <count prefix="are"/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+        <a action="new" to="&model" param="new-link">
+          <ht key="list_barcodes.actions.new">New List Barcode</ht>
+        </a>
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+
+
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="new-page" for="ListBarcode">
+  <page merge title="#{ht 'list_barcodes.new.title', :default=>[' New List Barcode'] }">
+    <body: class="new-page list-barcode" param/>
+
+    <content: param>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="list_barcodes.new.heading">
+            New List Barcode
+          </ht>
+        </h2>
+      </section>
+
+      <section param="content-body">
+        <form param>
+          <submit: label="#{ht 'list_barcodes.actions.create', :default=>['Create List Barcode']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="show-page" for="ListBarcode">
+  <page merge title="#{ht 'list_barcodes.show.title', :default=>['List Barcode'] }">
+
+    <body: class="show-page list-barcode" param/>
+
+    <content: param>
+          <header param="content-header">
+            <h2 param="heading">
+              <ht key="list_barcodes.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <name/>
+              </ht>
+            </h2>
+
+            <record-flags fields="" param/>
+
+            <a action="edit" if="&can_edit?" param="edit-link">
+              <ht key="list_barcodes.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+                Edit List Barcode
+              </ht>
+            </a>
+          </header>
+
+          <section param="content-body">
+            <view:description param="description"/>
+            <field-list fields="code" param/>
+          </section>
+    </content:>
+
+  </page>
+</def>
+
+
+<def tag="edit-page" for="ListBarcode">
+  <page merge title="#{ht 'list_barcodes.edit.title', :default=>['Edit List Barcode'] }">
+
+    <body: class="edit-page list-barcode" param/>
+
+    <content:>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="list_barcodes.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
+            Edit <type-name/>
+          </ht>
+        </h2>
+        <delete-button label="#{ht 'list_barcodes.actions.delete', :default=>['Remove This List Barcode']}" param/>
+      </section>
+
+      <section param="content-body">
+        <form param/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+
+
+
+
 <!-- ====== MovHeader Pages ====== -->
 
 <def tag="index-page" for="MovHeader">
@@ -2041,7 +2282,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, prioridad, pctdistor, export_to_xml, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, sustrato, tipomat" param/>
+            <field-list fields="numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, prioridad, pctdistor, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, list_barcode, sustrato, tipomat" param/>
           </section>
     </content:>
 

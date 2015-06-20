@@ -48,6 +48,18 @@
 
 
 
+<def tag="form" for="Configuration">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="key, value" param/>
+    <div param="actions">
+      <submit label="#{ht 'configurations.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
 <def tag="form" for="Contacto">
   <form merge param="default">
     <error-messages param/>
@@ -132,6 +144,18 @@
 
 
 
+<def tag="form" for="ListBarcode">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="description, code" param/>
+    <div param="actions">
+      <submit label="#{ht 'list_barcodes.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
 <def tag="form" for="MovHeader">
   <form merge param="default">
     <error-messages param/>
@@ -159,7 +183,7 @@
 <def tag="form" for="OrdTrab">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="numOT, numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, prioridad, pctdistor, export_to_xml, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, procesos, separacions, sustrato, tareas, tipomat, tipopruebas" param/>
+    <field-list fields="numOT, numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, prioridad, pctdistor, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, list_barcode, procesos, separacions, sustrato, tareas, tipomat, tipopruebas" param/>
     <div param="actions">
       <submit label="#{ht 'ord_trabs.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
