@@ -1,0 +1,2 @@
+module ListBarcodesHelper
+end

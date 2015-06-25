@@ -95,6 +95,7 @@ class OrdTrab < ActiveRecord::Base
 
   belongs_to :encargado, :class_name => "User", :scope => {:rol_is => 'Supervisor' || 'Gerente'}
   belongs_to :curva
+  belongs_to :list_barcode
  # HABILITAR CONTACTO ASOCIADO A OT, ELEGIDO ENTRE CONTACTOS DEL CLIENTE (VER SCOPE)
   belongs_to :contacter, :class_name => "Contacto"
 
@@ -158,6 +159,13 @@ class OrdTrab < ActiveRecord::Base
 			2000
 		end
  end
+
+  # Metodos creados para usarlos en el XML (SE PUEDEN USAR EN MAS SITIOS)
+
+  def codigo_producto
+    texto = "#{self.cliente.sigla}"
+    texto = "#{texto} - #{self.codCliente}" if self.codCliente
+  end
 
  # Permite volver a una tarea anterior, habilitandola
  def volver_a(procid,usuario)
@@ -386,14 +394,6 @@ class OrdTrab < ActiveRecord::Base
       end
     end
   end
-
- # Se elimina y se traslada a separacion->after_update
-#def after_save
-  #  separacions.each {|sepa| sepa.areasep}
-   # tareas.each do |tare|
-   #   if tare.asignada_a
-
-  #end
 
   def validate
 #    if (mdi_desarrollo*nPasos) > cilindro.desarr

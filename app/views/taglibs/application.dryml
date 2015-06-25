@@ -314,6 +314,17 @@
   </card>
 </def>
 
+
+<def tag="card" for="ListBarcode">
+  <card class="proceso" param="default" merge>
+    <header: param>
+      <h4 param="heading">
+        <a><view:code/></a>
+      </h4>
+    </header:>
+  </card>
+</def>
+
 <def tag="card" for="Grupoproc">
   <card class="grupoproc" param="default" merge>
     <header: param>
