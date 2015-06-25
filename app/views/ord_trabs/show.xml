@@ -10,8 +10,8 @@
     <tnx_distorsion><%= @ord_trab.cilindro.distorsion.to_s %></tnx_distorsion>
     <tnx_desarrollo><%= @ord_trab.mdi_desarrollo.to_s %></tnx_desarrollo>
     <tnx_ancho><%= @ord_trab.mdi_ancho.to_s %></tnx_ancho>
+    <tnx_tipo_cod_barra><%= @ord_trab.list_barcode %></tnx_tipo_cod_barra>
     <tnx_cod_barras><%= @ord_trab.barcode %></tnx_cod_barras>
-    <tnx_tipo_cod_barras><%= @ord_trab.list_barcode %></tnx_tipo_cod_barras>
     <tnx_color_cod><%= @ord_trab.colorBarcode %></tnx_color_cod>
     <tnx_tacas><%= @ord_trab.mcTacas? ? "Si" : "No" %></tnx_tacas>
     <tnx_tacas_H><%= @ord_trab.mcTacasH %></tnx_tacas_H>
