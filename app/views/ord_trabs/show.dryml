@@ -112,7 +112,10 @@
         <td colspan="2">Peliculas</td>
         <td><if test="&this.mpPelq"><view:mpPelq style="width:40px"/></if></td>
         <td><view:mpPeldev class="boolshow#{@this.mpPeldev}"/></td>
-        <td colspan="3">N.&nbsp;<view:barcode/></td>
+        <td colspan="3">
+          N.&nbsp;<view:barcode/>
+          <br/>Tipo <view:list_barcode/>
+        </td>
         <td colspan="2"><view:colorBarcode/></td>
         <td colspan="2" rowspan="5" style="text-align: center">
           <if test="&this.dispBandas && this.dispBandas == 0">

@@ -1,33 +1,52 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <JOBS>
-    <CreateJobParameters>
-        <OrderID><%=@ord_trab.armacod%></OrderID>
-        <SubOrderID><%=@ord_trab.version%></SubOrderID>
-        <JobName><%=@ord_trab.nomprod%></JobName>
-        <JobDescription></JobDescription>
-        <DueDate><%=@ord_trab.fechaEntrega%></DueDate>
-        <CSRName><%= if @ord_trab.encargado then @ord_trab.encargado.name end%></CSRName>
-        <CSREmail><%= if @ord_trab.encargado then @ord_trab.encargado.email_address end%></CSREmail>
-        <CustomerID><%= if @ord_trab.cliente then @ord_trab.cliente.id end%></CustomerID>
-        <CustomerName><%= if @ord_trab.cliente then @ord_trab.cliente.name end%></CustomerName>
-        <CustomerContact><%= if @ord_trab.contacter then @ord_trab.contacter.name end%></CustomerContact>
-        <CustomerEmail><%= if @ord_trab.contacter then @ord_trab.contacter.email end%></CustomerEmail>
-        <ProofType></ProofType>
-        <Press></Press>
-        <Trapping>Yes</Trapping>
-        <Trap_Distance><%=@ord_trab.trapping%></Trap_Distance>
-        <Workflow></Workflow>
-        <FileName></FileName>
-        <DynaTemplate></DynaTemplate>
-        <StepV><%=@ord_trab.nPasos%></StepV>
-        <StepH><%=@ord_trab.nBandas%></StepH>
-        <HorizontalGap></HorizontalGap>
-        <VerticalGap></VerticalGap>
-        <Rotation>0</Rotation>
-        <Bleed><%=@ord_trab.mcExcesoq%></Bleed>
-        <HorizontalDistortion><%= if @ord_trab.cilindro then @ord_trab.cilindro.pctDistor end%></HorizontalDistortion>
-        <VerticalDistortion><%= if @ord_trab.cilindro then @ord_trab.cilindro.pctDistor end%></VerticalDistortion>
-        <iCutMaterialWidth>2000</iCutMaterialWidth>
-        <iCutMaterialHeight>1000</iCutMaterialHeight>
-    </CreateJobParameters>
+  <CreateJobParameters>
+    <tnx_cliente><%= @ord_trab.cliente %></tnx_cliente>
+    <tnx_producto><%= @ord_trab.nomprod %></tnx_producto>
+    <tnx_cliente_final><%= @ord_trab.cfinal %></tnx_cliente_final>
+    <tnx_cod_prod><%= @ord_trab.codigo_producto %></tnx_cod_prod>
+    <tnx_version><%= @ord_trab.version %></tnx_version>
+    <tnx_cilindro><%= @ord_trab.cilindro %></tnx_cilindro>
+    <tnx_distorsion><%= @ord_trab.cilindro.distorsion.to_s %></tnx_distorsion>
+    <tnx_desarrollo><%= @ord_trab.mdi_desarrollo.to_s %></tnx_desarrollo>
+    <tnx_ancho><%= @ord_trab.mdi_ancho.to_s %></tnx_ancho>
+    <tnx_tipo_cod_barra><%= @ord_trab.list_barcode %></tnx_tipo_cod_barra>
+    <tnx_cod_barras><%= @ord_trab.barcode %></tnx_cod_barras>
+    <tnx_color_cod><%= @ord_trab.colorBarcode %></tnx_color_cod>
+    <tnx_tacas><%= @ord_trab.mcTacas? ? "Si" : "No" %></tnx_tacas>
+    <tnx_tacas_H><%= @ord_trab.mcTacasH %></tnx_tacas_H>
+    <tnx_tacas_V><%= @ord_trab.mcTacasV %></tnx_tacas_V>
+    <tnx_tacas_color><%= @ord_trab.mcTacascol %></tnx_tacas_color>
+    <tnx_taca_apoyo><%= @ord_trab.mcTacasapy %></tnx_taca_apoyo>
+    <tnx_tiras_de_control><%= @ord_trab.mcTiras? ? "Si" : "No" %></tnx_tiras_de_control>
+    <tnx_exceso_alfa><%= @ord_trab.mcExceso? ? "Si" : "No" %></tnx_exceso_alfa>
+    <tnx_exceso_valor><%= @ord_trab.mcExcesoq %></tnx_exceso_valor>
+    <tnx_marcas_de_calce><%= @ord_trab.mcMarcas? ? "Si" : "No" %></tnx_marcas_de_calce>
+    <tnx_pie_imprenta><%= @ord_trab.mcPimpapy %></tnx_pie_imprenta>
+    <tnx_impresora><%= @ord_trab.impresora %></tnx_impresora>
+    <tnx_n_pasos><%= @ord_trab.nPasos %></tnx_n_pasos>
+    <tnx_n_bandas><%= @ord_trab.nBandas %></tnx_n_bandas>
+    <tnx_n_copias><%= @ord_trab.nCopias %></tnx_n_copias>
+    <tnx_fecha_entrega><%= @ord_trab.fechaEntrega.utc.iso8601.chomp("Z") %></tnx_fecha_entrega>
+    <tnx_espesor><%= @ord_trab.espesor.to_s %></tnx_espesor>
+    <tnx_categoria><%= @ord_trab.tipofotop %></tnx_categoria>
+    <tnx_lado><%= @ord_trab.supRev %></tnx_lado>
+    <tnx_material><%= @ord_trab.tipomat %></tnx_material>
+    <tnx_trapping><%= @ord_trab.trapping %></tnx_trapping>
+    <tnx_curva><%= @ord_trab.curva %></tnx_curva>
+    <tnx_encargado><%= @ord_trab.encargado.nombre %></tnx_encargado>
+    <% n = 0 %>
+    <% for i in 1..8 %>
+      <% separacion = @ord_trab.separacions[n] %>
+      <tnx_color_<%= i %>><%= separacion.blank? ? 0 : separacion.color %></tnx_color_<%= i %>>
+      <tnx_anilox_color_<%= i %>><%= separacion.blank? ? 0 : separacion.anilox %></tnx_anilox_color_<%= i %>>
+      <tnx_lpi_color_<%= i %>><%= separacion.blank? ? 0 : separacion.lpi %></tnx_lpi_color_<%= i %>>
+      <tnx_alto_color_<%= i %>><%= separacion.blank? ? 0 : separacion.alto %></tnx_alto_color_<%= i %>>
+      <tnx_ancho_color_<%= i %>><%= separacion.blank? ? 0 : separacion.ancho %></tnx_ancho_color_<%= i %>>
+      <tnx_area_color_<%= i %>><%= separacion.blank? ? 0 : separacion.area %></tnx_area_color_<%= i %>>
+      <tnx_copia_color_<%= i %>><%= separacion.blank? ? 0 : separacion.ord_trab.nCopias %></tnx_copia_color_<%= i %>>
+      <% n = n + 1 %>
+    <% end %>
+  </CreateJobParameters>
 </JOBS>
+

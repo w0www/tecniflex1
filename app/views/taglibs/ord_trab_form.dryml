@@ -91,18 +91,14 @@
         <if test="&@ord_trab.cliente">
           <select  class="contacto ord-trab-impresora input belongs_to ord_trab_impresora" name="ord_trab[impresora_id]">
             <% if @ord_trab.impresora %>
-            <option selected="selected" value="<%= @ord_trab.impresora_id%>
-              ">
-              <%= @ord_trab.impresora.name %></option>
+              <option selected="selected" value="<%= @ord_trab.impresora_id%>"><%= @ord_trab.impresora.name %></option>
             <%else%>
-            <option selected="selected">Ninguno</option>
+              <option selected="selected">Ninguno</option>
             <%end%>
             <% if @ord_trab.cliente %>
             <% if @ord_trab.cliente.impresoras != [] %>
             <repeat with="&@ord_trab.cliente.impresoras">
-              <option value="<%= this.id %>
-                ">
-                <%=  this.name %></option>
+              <option value="<%= this.id %>"><%=  this.name %></option>
             </repeat>
             <% else %>
             <option value="0">Sin Impresora</option>
@@ -187,7 +183,17 @@
     <td colspan="2">Peliculas</td>
     <td><input:mpPelq style="width:40px"/></td>
     <td><input:mpPeldev style="font-size:60%"/></td>
-    <td colspan="3">N.&deg;&nbsp;<input:barcode style="width:80%"/></td>
+    <td colspan="3">
+      N.&deg;&nbsp;<input:barcode style="width:80%"/><br/>
+      Tipo
+      <select name="ord_trab[list_barcode_id]">
+        <option>Ninguno</option>
+        <% selected = @ord_trab.list_barcode ? "selected" : "" %>
+        <repeat with="&ListBarcode.all">
+          <option selected="#{selected}" value="<%= this.id %>"><%=  this.code %></option>
+        </repeat>
+      </select>
+    </td>
     <td colspan="2"><input:colorBarcode style="width:40px"/></td>
     <td colspan="2" rowspan="5" style="text-align: center">
       <select name="ord_trab[dispBandas]">
@@ -307,8 +313,7 @@
     <td class="centrada" colspan="2">
       <div part="curva-part">
         <if test="&@ord_trab.cliente">
-          <select-menu name="ord_trab[curva_id]" 
-            options="&@ord_trab.cliente.curvas.map{|c| [c.to_s, c.id]}" 
+          <select-menu name="ord_trab[curva_id]" options="&@ord_trab.cliente.curvas.map{|c| [c.to_s, c.id]}" 
             selected="&[@ord_trab.curva.to_s, @ord_trab.curva_id]"/>
         </if>
         <else>

@@ -2,7 +2,7 @@
   <body: class="configurar"/>
   <content:>
     <header class="content-header">
-      <h1>
+  <h1>
         Definir entidades
       </h1>
       <br/>
@@ -16,13 +16,45 @@
        <li><a to="&Curva" action="index" >Curvas</a></li>
        <li><a to="&Recurso" action="index" >Recursos Productivos</a></li>
     </ul>
-    <h2>Parametros</h2>   
+    <h2>Parametros</h2>
     <ul>
+        <li><a to="&ListBarcode" action="index">Codigos de barras</a></li>
         <li><a to="&Unidad" action="index" >Unidades</a></li>
         <li><a to="&Espesor" action="index">Espesores de polimeros</a></li>
         <li><a to="&Tipomat" action="index">Marcas de polimeros</a></li>
         <li><a to="&Sustrato" action="index">Sustratos a imprimir</a></li>
-    </ul>    
+    </ul>
+    <h2>Otras configuraciones</h2>
+    Permitir exportar las ordenes de trabajo a XML
+    <form action="/configuracion">
+        <% confi = Configuration.find_by_key('export_to_xml') %>
+        <if test="&confi && confi.value.to_s == 'true'">
+          <input type="checkbox" id="export_to_xml" name="export_to_xml" checked/>Si
+          <input type="checkbox" id="not_export_to_xml" name="not_export_to_xml"/>No
+
+<!--          <a href="/configuracion"><input type="button" value="guardar"/></a>-->
+        </if><else><if test="&confi && confi.value.to_s == 'false'">
+          <input type="checkbox" id="export_to_xml" name="export_to_xml" />Si
+          <input type="checkbox" id="not_export_to_xml" name="not_export_to_xml" checked="true"/>No
+<!--          <a href="/configuracion"><input type="button" value="guardar"/></a>-->
+        </if></else>
+          <submit value="guardar"/>
+    </form>
+
     </section>
   </content:>
 </page>
+
+
+<def tag="desmarcar-marcar">
+  <script type="text/javascript">
+    jQuery(document).ready(function(){
+      jQuery('#export_to_xml').click(function(){
+        jQuery('#not_export_to_xml').prop('checked', false);
+      });
+      jQuery('#not_export_to_xml').click(function(){
+        jQuery("#export_to_xml").prop('checked', false); 
+      });
+    });
+   </script>
+</def>

@@ -17,7 +17,7 @@ class OrdTrabsController < ApplicationController
       @prima.separacions.each do |sepa|
         @sepas << sepa.attributes.except(:ord_trab_id)
       end
-      # @sepash es un hash con las separación de la OT
+      # @sepash es un hash con las separacion de la OT
       @sepash = {:separacions => @sepas}
       # @nueva_ot es una nueva OT con los atributos de la OT original + las separaciones
       @nueva_ot = OrdTrab.new(@primat.merge(@sepash))
@@ -51,13 +51,30 @@ class OrdTrabsController < ApplicationController
 
   def update
     # Parseamos el valor del datepicker
-    if params[:ord_trab] && params[:ord_trab]["fechaEntrega"]
-      fecha_entrega = Date.strptime params[:ord_trab]["fechaEntrega"], "%d/%m/%Y"
-      params[:ord_trab]["fechaEntrega(1i)"] = fecha_entrega.year.to_s
-      params[:ord_trab]["fechaEntrega(2i)"] = fecha_entrega.month.to_s
-      params[:ord_trab]["fechaEntrega(3i)"] = fecha_entrega.day.to_s
+    parsear_datepicker
+    hobo_update do 
+      if valid?
+        # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
+        this.sortars.first.lifecycle.habilitar!(current_user) if this.sortars.first.proceso.nombre.downcase == "polimero"
+        # Si es todo valido vamos a crear el fichero XML del mismo
+        confi = Configuration.find_by_key("export_to_xml")
+        crear_fichero_xml if confi && confi.value == "true"
+      end
     end
-    hobo_update
+end
+
+  def create
+    # Parseamos el valor del datepicker
+    parsear_datepicker
+    hobo_create do 
+      if valid?
+        # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
+        this.sortars.first.lifecycle.habilitar!(current_user) if this.sortars.first.proceso.nombre.downcase == "polimero"
+        # Si es todo valido vamos a crear el fichero XML del mismo
+        confi = Configuration.find_by_key("export_to_xml")
+        crear_fichero_xml if confi && confi.value == "true"
+      end
+    end
   end
 
 	def index
@@ -80,7 +97,11 @@ class OrdTrabsController < ApplicationController
   def show
     hobo_show do |format|
       format.html { @taras = this.sortarasigs }
-      format.xml { @ord_trab = OrdTrab.find(params[:id]) }
+      format.xml {
+        @ord_trab = OrdTrab.find(params[:id]) 
+        stream = render_to_string(:template=>"ord_trabs/show" )
+        send_data(stream, :type=>"text/xml",:filename => "#{@ord_trab.numOT}.xml")
+      }
     end
   end
 
@@ -376,31 +397,35 @@ class OrdTrabsController < ApplicationController
 		end
   end
 
-
-
   def mail_ot
-      @ot = OrdTrab.find(params[:id])
-      email = render_to_string(:action => 'improt', :layout => false, :object => @ot)
-      email = PDFKit.new(email)
-      email.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
-      email = email.to_pdf
-      RecibArchMailer.deliver_enviapdf(@ot,email)
-      redirect_to :action => 'index'
+    @ot = OrdTrab.find(params[:id])
+    email = render_to_string(:action => 'improt', :layout => false, :object => @ot)
+    email = PDFKit.new(email)
+    email.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
+    email = email.to_pdf
+    RecibArchMailer.deliver_enviapdf(@ot,email)
+    redirect_to :action => 'index'
 	end
 
-  #   @esta = OrdTrab.find (params[:id])
-  #          if (@esta.visto == true) || (@esta.ptr == true)
-   #           if @esta.mdi_desarrollo && @esta.mdi_ancho
-  #              do_transition_action :habilitar
-  #            else
-  #              flash[:error] = 'Falta el desarrollo y el ancho'
-  #              render 'mipag'
-  #            end
-  #         else
-  #            do_transition_action :habilitar
- #          end
+  private
 
- #end
+  def crear_fichero_xml
+    stream = render_to_string(:template=>"ord_trabs/show.xml")
+    f = open("#{Rails.root}/lib/nas/#{this.numOT}.xml", "wb")
+    begin
+      f.write(stream)
+    ensure
+      f.close()
+    end
+  end
 
+  def parsear_datepicker
+	if params[:ord_trab] && params[:ord_trab]["fechaEntrega"]
+      fecha_entrega = Date.strptime params[:ord_trab]["fechaEntrega"], "%d/%m/%Y"
+      params[:ord_trab]["fechaEntrega(1i)"] = fecha_entrega.year.to_s
+      params[:ord_trab]["fechaEntrega(2i)"] = fecha_entrega.month.to_s
+      params[:ord_trab]["fechaEntrega(3i)"] = fecha_entrega.day.to_s
+    end
+  end
 end
 
