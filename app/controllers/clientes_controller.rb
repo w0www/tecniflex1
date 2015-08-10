@@ -14,26 +14,6 @@ class ClientesController < ApplicationController
     conditions << [ "fecha_inicial >= ?", params[:fecha_inicial] ] if params[:fecha_inicial].present?
     conditions << [ "fecha_final <= ?", params[:fecha_final] ] if params[:fecha_final].present?
     @todos = Cliente.all(:conditions => conditions )
-  
-    #if params[:orden].blank? && ((params[:startdate].blank? && params[:enddate].blank?) && (params[:cliente].blank? && params[:codCliente].blank?))
-	    #@todas = OrdTrab.all
-	  #elsif params[:orden]
-      #@orde = params[:orden]
-      #@todas = OrdTrab.all
-      ##hobo_index OrdTrab.apply_scopes(:search => [params[:orden], :numOT], :order_by => :numOT)
-    #elsif params[:cliente]
-    	#@elcli = params[:cliente]
-    	#@cocli = params[:codCliente]
-    	#if params[:codCliente] == "Cod. Cliente"
-    		#@todas = OrdTrab.find( :conditions => ["cliente_id = ?", @elcli])
-    	#else
-    		#@todas = OrdTrab.find( :conditions => ["codCliente = ? and cliente_id = ?", @cocli, @elcli])
-    	#end
-    #elsif params[:startdate] && params[:enddate]
-        #@from_date = Date.strptime(params[:startdate],"%d/%m/%Y")
-        #@to_date = Date.strptime(params[:enddate],"%d/%m/%Y")
-        #@todas = OrdTrab.order_by(:id).find(:conditions => ["created_at >= ? and created_at <= ?",@from_date.to_datetime.in_time_zone(Time.zone),@to_date.to_datetime.in_time_zone(Time.zone)])
-    #end
 
   	respond_to do |wants|
 			wants.html
