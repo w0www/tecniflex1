@@ -117,7 +117,12 @@ end
     @grupro = Grupoproc.tablero.order_by(:position)
     @procesos = Proceso.order_by(:position)
     @usuarios = User.find(:all, :order => :name)
+    # si el usuario es un cliente solo mostrar las ord de ese cliente
+    @cliente_logeado = Cliente.find_by_correo(current_user.email_address)
     @clies = Cliente.all
+    if @cliente_logeado
+      params[:cliente] = @cliente_logeado
+    end
     inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
     final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time if params[:fecha_fin] && !params[:fecha_fin].blank?
     @todas = OrdTrab.apply_scopes(

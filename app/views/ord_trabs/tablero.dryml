@@ -13,12 +13,16 @@
     <div id="tabs">
       <ul>
         <li><a href="#tabs-1">Tablero de Control</a></li>
-        <li><a href="#tabs-2">Usuarios</a></li>
+        <% if @cliente_logeado.blank? %>
+          <li><a href="#tabs-2">Usuarios</a></li>
+        <% end %>
       </ul>
       <div id="tabs-1">
           <div class='header' >
-            <filters action="/ord_trabs/tablero"/>
-            <a href="#" id="filter-button" class="nice-button ui-state-default ui-corner-all">Filtrar</a>
+            <% if @cliente_logeado.blank? %>
+              <filters action="/ord_trabs/tablero"/>
+              <a href="#" id="filter-button" class="nice-button ui-state-default ui-corner-all">Filtrar</a>
+            <% end %>
             <br/>
           </div>
           <%= will_paginate @todas %>

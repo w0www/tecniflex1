@@ -4,9 +4,13 @@ class FrontController < ApplicationController
 
   def index
     unless current_user.guest?
-      @ordenes = OrdTrab.find :all
-      @asignacions = current_user.asignacions.activa(:all, :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
-    end    
+      if Cliente.find_by_correo(current_user.email_address)
+        redirect_to "/ord_trabs/tablero"
+      else
+        @ordenes = OrdTrab.find :all
+        @asignacions = current_user.asignacions.activa(:all, :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
+      end
+    end
   end
   
   def summary

@@ -533,7 +533,7 @@
               </ht>
             </h2>
 
-            <record-flags fields="" param/>
+            <record-flags fields="cuenta_usuario" param/>
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="clientes.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
@@ -543,7 +543,7 @@
           </header>
 
           <section param="content-body" with-flash-messages>
-            <field-list fields="razsocial, sigla, rut, correo, direccion, telefono, fpago, tarifa, plazopago, descuento" param/>
+            <field-list fields="razsocial, sigla, rut, correo, direccion, telefono, fpago, tarifa, plazopago, descuento, password" param/>
             <section param="collection-section">
               <h3 param="collection-heading">
                 <ht key="clientes.collection.heading.other" >
