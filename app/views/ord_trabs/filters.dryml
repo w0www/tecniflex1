@@ -1,15 +1,20 @@
 <def tag="filters" attrs="action">
   <filter-js/>
-  <form method="get" action="#{action}" id="filters" class="ui-widget-content ui-corner-all"
-    style="#{'display:none' unless params[:cliente]}"    >
+  <form method="get" action="#{action}" id="filters" class="ui-widget-content ui-corner-all" style="#{'display:none' unless params[:cliente]}">
     <fieldset class="feckless-fields horizontal informe">
-      <select-field label="Cliente" name="cliente" options="&Cliente.all.map{|c| [c.name]}" first-option="Filtrar por cliente"/>
-      <input-field label="Cod. cliente" name="codigo_cliente"/>
-      <select-field label="Proceso" name="proceso" options="&Proceso.all" first-option="Filtrar por proceso"/>
-      <select-field label="Estado proceso" name="estado_proceso" options="&Tarea::Lifecycle.states.keys.map{|s|[s.to_s]}" first-value="habilitada" first-option="habilitada"/>
-      <select-field label="Estado OT" name="estado" options="&OrdTrab::Lifecycle.states.keys.map{|s|[s.to_s]}" first-option="Filtrar por estado"/>
-      <input-field label="O.T." name="orden"/>
-      <date-field label="Fecha" name="fecha"/>
+      <% if @cliente_logeado.blank? %>
+        <select-field label="Cliente" name="cliente" options="&Cliente.all.map{|c| [c.name]}" first-option="Filtrar por cliente"/>
+        <input-field label="Cod. cliente" name="codigo_cliente"/>
+        <select-field label="Proceso" name="proceso" options="&Proceso.all" first-option="Filtrar por proceso"/>
+        <select-field label="Estado proceso" name="estado_proceso" options="&Tarea::Lifecycle.states.keys.map{|s|[s.to_s]}" first-value="habilitada" first-option="habilitada"/>
+        <select-field label="Estado OT" name="estado" options="&OrdTrab::Lifecycle.states.keys.map{|s|[s.to_s]}" first-option="Filtrar por estado"/>
+        <input-field label="O.T." name="orden"/>
+        <date-field label="Fecha" name="fecha"/>
+      <% elsif @cliente_logeado %>
+        <select-field label="Cliente" name="cliente" options="&Cliente.all.map{|c| [c.name]}" first-option="Filtrar por cliente"/>
+        <input-field label="Cod. cliente" name="codigo_cliente"/>
+        <date-field label="Fecha" name="fecha"/>
+      <% end %>
       <placeholder-field/>
       <submit-field/>
   </fieldset>

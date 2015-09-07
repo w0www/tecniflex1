@@ -68,7 +68,7 @@
               <else>
                 <option selected="selected">Ninguno</option>
                 <repeat with="&@ord_trab.cliente.contactos" >
-                  <option value="&this.id">
+                  <option value="<%= this.id %>">
                     <%= this.name %>
                   </option>
                 </repeat>
@@ -187,11 +187,18 @@
       N.&deg;&nbsp;<input:barcode style="width:80%"/><br/>
       Tipo
       <select name="ord_trab[list_barcode_id]">
-        <option>Ninguno</option>
-        <% selected = @ord_trab.list_barcode ? "selected" : "" %>
-        <repeat with="&ListBarcode.all">
-          <option selected="#{selected}" value="<%= this.id %>"><%=  this.code %></option>
-        </repeat>
+        <% if @ord_trab.list_barcode.blank? %>
+          <option selected="selected">Ninguno</option>
+          <repeat with="&ListBarcode.all">
+            <option value="<%= this.id %>"><%=  this.code %></option>
+          </repeat>
+        <% else %>
+          <% arraybarcodes = ListBarcode.all.*.id - [@ord_trab.list_barcode.id] %>
+          <option value="<%= @ord_trab.list_barcode.id %>" selected="selected"><%= @ord_trab.list_barcode.code %></option>
+          <repeat with="&ListBarcode.find(arraybarcodes)">
+            <option value="<%= this.id %>"><%=  this.code %></option>
+          </repeat>        
+        <% end %>
       </select>
     </td>
     <td colspan="2"><input:colorBarcode style="width:40px"/></td>
