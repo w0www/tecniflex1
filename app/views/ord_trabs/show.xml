@@ -54,7 +54,7 @@
     <% n = 0 %>
     <% if @ord_trab.separacions.count > 0 %>
       <% for i in 1..@ord_trab.separacions.count %>
-		    <Ink>     
+        <Ink>
           <% separacion = @ord_trab.separacions[n] %>
           <InkName><%= separacion.blank? ? 0 : separacion.color %></InkName>
           <Group></Group>
@@ -62,7 +62,7 @@
           <Book></Book>
           <Lineature><%= separacion.blank? ? 0 : separacion.anilox %></Lineature>
           <% n = n + 1 %>
-    		</Ink>
+        </Ink>
       <% end %>
     <% end %>
   </Inks>

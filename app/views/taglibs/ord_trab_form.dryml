@@ -53,27 +53,28 @@
       Contacto
       <do part="contac">
         <select  class="contacter ord-trab-contacter input belongs_to ord_trab_contacter" name="ord_trab[contacter_id]">
-          <if test="&@ord_trab.contacter_id != 0">
-            <option selected="selected" value="&@ord_trab.contacter_id">
-              <%= @ord_trab.contacter.name if @ord_trab.contacter != nil %>
+          <if test="&@ord_trab.cliente.blank?">
+            <option selected="selected" value="">
+              Selecciona primero un cliente
             </option>
           </if>
           <else>
-            <if test="&@ord_trab.cliente">
-              <if test="&@ord_trab.cliente.contactos != [] && @ord_trab.cliente.contactos.count == 1">
-                <option selected="selected" value="&@ord_trab.cliente.contactos.first.id">
-                  <%= @ord_trab.cliente.contactos.first.name %>
+            <% if @ord_trab.contacter.blank? %>
+              <option selected="selected">Ninguno</option>
+              <repeat with="&@ord_trab.cliente.contactos" >
+                <option value="<%= this.id %>">
+                  <%= this.name %>
                 </option>
-              </if>
-              <else>
-                <option selected="selected">Ninguno</option>
-                <repeat with="&@ord_trab.cliente.contactos" >
-                  <option value="<%= this.id %>">
-                    <%= this.name %>
-                  </option>
-                </repeat>
-              </else>
-            </if>
+              </repeat>
+            <% elsif @ord_trab.contacter %>
+              <% arraycontactos = @ord_trab.cliente.contactos.*.id - [@ord_trab.contacter_id] %>
+              <option value="<%= @ord_trab.contacter_id %>" selected="selected"><%= @ord_trab.contacter.name %></option>
+              <repeat with="&Contacto.find(arraycontactos)" >
+                <option value="<%= this.id %>">
+                  <%= this.name %>
+                </option>
+              </repeat>
+            <% end %>
           </else>
         </select>
       </do>
