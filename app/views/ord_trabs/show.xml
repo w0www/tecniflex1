@@ -60,7 +60,7 @@
           <Group></Group>
           <Type></Type>
           <Book></Book>
-          <Lineature><%= separacion.blank? ? 0 : separacion.anilox %></Lineature>
+          <Lineature><%= separacion.blank? ? 0 : separacion.lpi %></Lineature>
           <% n = n + 1 %>
         </Ink>
       <% end %>
