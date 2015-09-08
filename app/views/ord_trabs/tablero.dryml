@@ -19,10 +19,8 @@
       </ul>
       <div id="tabs-1">
           <div class='header' >
-            <% if @cliente_logeado.blank? %>
               <filters action="/ord_trabs/tablero"/>
               <a href="#" id="filter-button" class="nice-button ui-state-default ui-corner-all">Filtrar</a>
-            <% end %>
             <br/>
           </div>
           <%= will_paginate @todas %>
