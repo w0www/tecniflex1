@@ -82,16 +82,17 @@
                 <% 
                   if fecha_entrega && fecha_entrega - 1.hour <= @hora_actual + tiempo_total.minute &&
                      fecha_entrega > @hora_actual + tiempo_total.minute
-                    color = 'lightyellow'
+                    color_directo = 'lightyellow'
                   elsif fecha_entrega && fecha_entrega > @hora_actual + tiempo_total.minute
-                    color = 'lightgreen'
+                    color_directo = 'lightgreen'
                   elsif fecha_entrega && fecha_entrega <= @hora_actual + tiempo_total.minute
-                    color = 'red'
+                    color_directo = 'red'
                   elsif fecha_entrega.blank?
-                    color = ''
+                    color_directo = ''
                   end
+                  color_directo = tod.color.blank? ? color_directo : tod.color
                 %>
-                   <td rowspan="2" style="background-color:#{color if color}"/>
+                   <td rowspan="2" style="background-color:#{color_directo if color_directo}"/>
                    <td rowspan="2">
                      <do with="&tod"><% transitions = this.lifecycle.publishable_transitions_for(current_user) %><transition-buttons/><unless test='&transitions'>Asignar Tareas</unless></do></td>
                     </tr>

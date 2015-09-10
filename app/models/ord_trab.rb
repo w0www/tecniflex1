@@ -82,6 +82,7 @@ class OrdTrab < ActiveRecord::Base
     urgente				:boolean
     prioridad enum_string(:'Normal', :'Repeticion', :'Sin Costo*')
     pctdistor      :decimal, :precision => 8, :scale => 2, :default => 0
+    color          :string
     timestamps
   end
 
