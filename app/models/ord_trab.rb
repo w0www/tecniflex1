@@ -334,6 +334,15 @@ class OrdTrab < ActiveRecord::Base
     timot
   end
     
+  def orden_terminada
+    comodin = true
+    self.tareas.each do |tarea|
+      if tarea.activa?
+        comodin = false
+      end
+    end
+    return comodin
+  end
   
 
 	def sortarasigs
@@ -397,9 +406,6 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def validate
-#    if (mdi_desarrollo*nPasos) > cilindro.desarr
-#      errors.add(:mdi_desarrollo, "es insuficiente para el montaje" )
-#    end
     unless valcol(self.mcGuiacol) == 0
         errors.add(:mcGuiacol, "se refiere a un color inexistente")
     end
@@ -409,17 +415,6 @@ class OrdTrab < ActiveRecord::Base
     unless valcol(self.mcPimpcol) == 0
         errors.add(:mcPimpcol, "se refiere a un color inexistente")
     end
-#    @marcs = ["Guia","MPunto","Cruces","Tacas","Tiras","Exceso","Marcas","Pimp" ]
-#    @marcs.each do |lamarc|
-#      @mudcol = "valcol(self.mc#{lamarc}col)"
-#      @mudapy = "valcol(self.mc#{lamarc}apy)"
-#      unless self.send(@mudcol) == 0
-#        errors.add(:mcGuiacol, "se refiere a un color inexistente")
-#      end
-#      unless self.send(@mudapy) == 0
-#        errors.add(:mcGuiacol, "se refiere a un color inexistente")
-#      end
-#    end
   end
 
 # Usado para asignar clases de acuerdo a la prioridad de la OT.
@@ -555,33 +550,6 @@ class OrdTrab < ActiveRecord::Base
      @estag
   end
 
-
-#	  <% @todas.each do |tod| %>
-#            <!-- <repeat with="&@todas"> -->
-#              <% @tod = tod %>
-#              <tr>
-#                  <th style="width:70px;" class="#{@tod.state}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a></th><th rowspan="2" style="width: 12em;" class="#{@tod.state}"><%=  tod.nomprod -%></th>
-#                  <%@ctr = 0%>
- #                 <% @grupro.each do |proce|%>
-#                    <% unless @ctr == 1 %>
-#                      <% tod.tareas.each do |tare| %>
-#                            <% if tare.proceso.grupoproc.abreviacion.to_s == proce.abreviacion.to_s %>
-#                              <td class="#{tare.state}" rowspan="2">
-#                              <%= tare.stvisto -%><br/><%= tare.users.last -%>
-#                              </td>
-#                              <% @ctr += 1 %>
-#                              <%next%>
-#                            <%end%>
-#                      <%end%>
-#                      <% if @ctr == 0 %>
-#                        <td rowspan="2"/>
-#                      <% end %>
-#                    <%end%>
-#                    <% @ctr = 0 %>
-#                  <% end %>
-
-
-
 	def valcol(listacol)
     @valor = 0
     @colarr = listacol.split(',')
@@ -648,12 +616,6 @@ class OrdTrab < ActiveRecord::Base
   def view_permitted?(field)
     true
   end
-
-	private
-
-#	def fecha_posterior
-#		errors.add(:fechaEntrega, 'La fecha de entrega debe ser posterior a la fecha actual') if fechaEntrega < fecha
-#	end
 
 end
 
