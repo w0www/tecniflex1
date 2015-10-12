@@ -267,14 +267,12 @@ class OrdTrab < ActiveRecord::Base
     ['habilitada','iniciada','detenida'].include?(self.state)
   end
 
-	# Boolean que indica si todas las tareas estn terminadas
-	def termtars?
-		if self.tareas != []
-			if self.tareas.*.state.rindex{|x| x!="terminada"} == nil
-				true
-			else
-				false
-			end
+	# Boolean que indica si todas las tareas estn terminadas o la orden no tiene
+	def tareas_terminadas?
+    if self.tareas.blank?
+      false
+    else
+      self.tareas.*.state.rindex{|x| x!="terminada"} == nil ? true : false
 		end
 	end
 
@@ -292,40 +290,57 @@ class OrdTrab < ActiveRecord::Base
 
 
   def after_update
-  	# Habilita la primera tarea al activarse la OT.
-  	estot = self
-  	ordtars = estot.sortars
-  	unless ordtars.*.state.index("creada") == nil
-				if ordtars[ordtars.*.state.index("creada").to_i] == ordtars.first
-					if ordtars.first.asignada_a != nil
-						ordtars.first.lifecycle.habilitar!(User.first)
-					end
-				else
-					# Habilita la primera tarea que aparezca "creada"
-					if (ordtars[ordtars.*.state.index("creada").to_i].asignada_a != nil) && (ordtars[ordtars.*.state.index("creada").to_i-1].state == "terminada")
-						ordtars[ordtars.*.state.index("creada").to_i].lifecycle.habilitar!(User.first)
-					end
-				end
-		end
+    # Habilita la primera tarea al activarse la OT.
+    estot = self
+    ordtars = estot.sortars
+    unless ordtars.*.state.index("creada") == nil
+      if ordtars[ordtars.*.state.index("creada").to_i] == ordtars.first
+        ordtars.first.lifecycle.habilitar!(User.first) if ordtars.first.asignada_a != nil
+      else
+        # Habilita la primera tarea que aparezca "creada"
+        ordtars[ordtars.*.state.index("creada").to_i].lifecycle.habilitar!(User.first) if (ordtars[ordtars.*.state.index("creada").to_i].asignada_a != nil) && (ordtars[ordtars.*.state.index("creada").to_i-1].state == "terminada")
+      end
+    end
 
     @gptar = Hash.new
     self.tareas.asignada_a_is_not('nil').each do |tare|
       @gptar[tare.proceso.grupoproc.id.to_s] = tare.asignada_a.to_s
     end
     if @gptar != {}
-     (self.tareas.all - self.tareas.asignada_a_is_not('nil')).each do |tare|
-        tark = tare
+      (self.tareas.all - self.tareas.asignada_a_is_not('nil')).each do |tark|
         if tark.proceso.grupoproc.id == 9
           tark.asignada_a = @gptar['1']
         else
-        tark.asignada_a = @gptar[tark.proceso.grupoproc.id]
+          tark.asignada_a = @gptar[tark.proceso.grupoproc.id]
         end
         tark.save
       end
     end
-   end
-  
-  
+  end
+
+  def calcular_color_tablero(orden)
+    # Si las tareas estan terminadas tenemos que calcular y guardar el color en base de datos
+    # Si las tareas no estan terminadas solo tenemos que calcular el color
+    fecha_entrega = orden.fechaEntrega
+    hora_actual = DateTime.now.in_time_zone
+    tiempo_total_minute = hora_actual + orden.tiempo_total
+    if fecha_entrega
+      # SI FALTA UNA HORA PARA LA FECHA DE ENTREGA
+      if fecha_entrega - 1.hour <= tiempo_total_minute && fecha_entrega > tiempo_total_minute
+        color_tablero = 'lightyellow'
+      # SI FALTA MAS DE UNA HORA PARA LA FECHA DE ENTREGA
+      elsif fecha_entrega > tiempo_total_minute
+        color_tablero = 'lightgreen'
+      # SI HA PASADO LA FECHA DE ENTREGA
+      elsif fecha_entrega <= tiempo_total_minute
+        color_tablero = 'red'
+      end
+    else
+      color_tablero = ''
+    end
+    return color_tablero
+  end
+
   def tnetot
     timot = Time.at(0)
     self.tareas.each do |latar|
@@ -333,7 +348,16 @@ class OrdTrab < ActiveRecord::Base
     end
     timot
   end
-    
+
+  def tiempo_total
+    tiempo = 0
+    self.procesos.each do |proceso|
+      tiempo += proceso.minutos_minimo if proceso.minutos_minimo
+    end
+    return tiempo
+  end
+
+
   def orden_terminada
     comodin = true
     self.tareas.each do |tarea|

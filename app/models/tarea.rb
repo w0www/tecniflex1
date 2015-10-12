@@ -26,7 +26,7 @@ class Tarea < ActiveRecord::Base
   end
 
 	named_scope :activa, :conditions => ["state IN (?)", ["creada", "habilitada","iniciada","detenida","enviada","recibida", "en_revision"]]
-  named_scope :disp, :conditions => ["state IN (?)", ["creada","habilitada","detenida","enviada","recibida", "en_revision"]]
+  named_scope :disp, :conditions => ["state IN (?)", ["habilitada","iniciada", "detenida","enviada","recibida", "en_revision"]]
   named_scope :detipo, lambda { |proce| { :conditions => ["proceso_id = ?", Proceso.find_by_nombre(proce).id] }}
   
   def after_create

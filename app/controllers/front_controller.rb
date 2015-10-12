@@ -8,7 +8,7 @@ class FrontController < ApplicationController
         redirect_to "/ord_trabs/tablero"
       else
         @ordenes = OrdTrab.find :all
-        @asignacions = current_user.asignacions.activa(:all, :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
+        @asignacions = current_user.asignacions.disp(:all, :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
       end
     end
   end

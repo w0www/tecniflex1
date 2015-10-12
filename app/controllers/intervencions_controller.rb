@@ -126,11 +126,14 @@ class IntervencionsController < ApplicationController
 
   def create
     hobo_create do
+      ord_trab = this.tarea.ord_trab
 			if params[:envio] == "terminar"
         flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada'
         this.termino = Time.now
         this.final = true
         this.tarea.lifecycle.terminar!(current_user)
+        # Actualizamos la Orden para actualizar el codigo de color
+        ord_trab.update_attribute(:color, ord_trab.calcular_color_tablero(ord_trab)) if ord_trab.tareas_terminadas? && ord_trab.color.blank?
       elsif params[:envio] == "recibir"
         params[:vuelta] ? this.tarea.lifecycle.cambiar!(current_user) : this.tarea.lifecycle.recibir!(current_user)
         this.rechazada = true
@@ -162,11 +165,13 @@ class IntervencionsController < ApplicationController
 
   def update
     hobo_update do
+      ord_trab = this.tarea.ord_trab
       if params[:envio] == "terminar"
         flash[:notice] = 'Tarea ' + this.tarea.proceso.nombre + ' terminada'
         this.tarea.lifecycle.terminar!(current_user)
         this.termino = Time.now
         this.final = true
+        ord_trab.update_attribute(:color, ord_trab.calcular_color_tablero(ord_trab)) if ord_trab.tareas_terminadas? && ord_trab.color.blank?
 			elsif params[:envio] == "detener"
         this.tarea.lifecycle.detener!(current_user)
         this.termino = Time.now
