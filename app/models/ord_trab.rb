@@ -80,8 +80,9 @@ class OrdTrab < ActiveRecord::Base
     tipofotop enum_string(:'CDI', :'CDI DIGIFLOW', :'DOLEV', :'THERMOFLEX')
     trapping       :decimal, :precision => 8, :scale => 2, :default => 0
     urgente				:boolean
-    prioridad enum_string(:'Normal', :'Repeticion', :'Sin Costo*')
+    prioridad enum_string(:'N (Trabajo Nuevo)', :'M (Modificacion)', :'R (Reposicion)', :'S (Sin Costo)')
     pctdistor      :decimal, :precision => 8, :scale => 2, :default => 0
+    color          :string
     timestamps
   end
 
@@ -266,14 +267,12 @@ class OrdTrab < ActiveRecord::Base
     ['habilitada','iniciada','detenida'].include?(self.state)
   end
 
-	# Boolean que indica si todas las tareas estn terminadas
-	def termtars?
-		if self.tareas != []
-			if self.tareas.*.state.rindex{|x| x!="terminada"} == nil
-				true
-			else
-				false
-			end
+	# Boolean que indica si todas las tareas estn terminadas o la orden no tiene
+	def tareas_terminadas?
+    if self.tareas.blank?
+      false
+    else
+      self.tareas.*.state.rindex{|x| x!="terminada"} == nil ? true : false
 		end
 	end
 
@@ -291,40 +290,57 @@ class OrdTrab < ActiveRecord::Base
 
 
   def after_update
-  	# Habilita la primera tarea al activarse la OT.
-  	estot = self
-  	ordtars = estot.sortars
-  	unless ordtars.*.state.index("creada") == nil
-				if ordtars[ordtars.*.state.index("creada").to_i] == ordtars.first
-					if ordtars.first.asignada_a != nil
-						ordtars.first.lifecycle.habilitar!(User.first)
-					end
-				else
-					# Habilita la primera tarea que aparezca "creada"
-					if (ordtars[ordtars.*.state.index("creada").to_i].asignada_a != nil) && (ordtars[ordtars.*.state.index("creada").to_i-1].state == "terminada")
-						ordtars[ordtars.*.state.index("creada").to_i].lifecycle.habilitar!(User.first)
-					end
-				end
-		end
+    # Habilita la primera tarea al activarse la OT.
+    estot = self
+    ordtars = estot.sortars
+    unless ordtars.*.state.index("creada") == nil
+      if ordtars[ordtars.*.state.index("creada").to_i] == ordtars.first
+        ordtars.first.lifecycle.habilitar!(User.first) if ordtars.first.asignada_a != nil
+      else
+        # Habilita la primera tarea que aparezca "creada"
+        ordtars[ordtars.*.state.index("creada").to_i].lifecycle.habilitar!(User.first) if (ordtars[ordtars.*.state.index("creada").to_i].asignada_a != nil) && (ordtars[ordtars.*.state.index("creada").to_i-1].state == "terminada")
+      end
+    end
 
     @gptar = Hash.new
     self.tareas.asignada_a_is_not('nil').each do |tare|
       @gptar[tare.proceso.grupoproc.id.to_s] = tare.asignada_a.to_s
     end
     if @gptar != {}
-     (self.tareas.all - self.tareas.asignada_a_is_not('nil')).each do |tare|
-        tark = tare
+      (self.tareas.all - self.tareas.asignada_a_is_not('nil')).each do |tark|
         if tark.proceso.grupoproc.id == 9
           tark.asignada_a = @gptar['1']
         else
-        tark.asignada_a = @gptar[tark.proceso.grupoproc.id]
+          tark.asignada_a = @gptar[tark.proceso.grupoproc.id]
         end
         tark.save
       end
     end
-   end
-  
-  
+  end
+
+  def calcular_color_tablero(orden)
+    # Si las tareas estan terminadas tenemos que calcular y guardar el color en base de datos
+    # Si las tareas no estan terminadas solo tenemos que calcular el color
+    fecha_entrega = orden.fechaEntrega
+    hora_actual = DateTime.now.in_time_zone
+    tiempo_total_minute = hora_actual + orden.tiempo_total
+    if fecha_entrega
+      # SI FALTA UNA HORA PARA LA FECHA DE ENTREGA
+      if fecha_entrega - 1.hour <= tiempo_total_minute && fecha_entrega > tiempo_total_minute
+        color_tablero = 'lightyellow'
+      # SI FALTA MAS DE UNA HORA PARA LA FECHA DE ENTREGA
+      elsif fecha_entrega > tiempo_total_minute
+        color_tablero = 'lightgreen'
+      # SI HA PASADO LA FECHA DE ENTREGA
+      elsif fecha_entrega <= tiempo_total_minute
+        color_tablero = 'red'
+      end
+    else
+      color_tablero = ''
+    end
+    return color_tablero
+  end
+
   def tnetot
     timot = Time.at(0)
     self.tareas.each do |latar|
@@ -332,7 +348,25 @@ class OrdTrab < ActiveRecord::Base
     end
     timot
   end
-    
+
+  def tiempo_total
+    tiempo = 0
+    self.procesos.each do |proceso|
+      tiempo += proceso.minutos_minimo if proceso.minutos_minimo
+    end
+    return tiempo
+  end
+
+
+  def orden_terminada
+    comodin = true
+    self.tareas.each do |tarea|
+      if tarea.activa?
+        comodin = false
+      end
+    end
+    return comodin
+  end
   
 
 	def sortarasigs
@@ -396,9 +430,6 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def validate
-#    if (mdi_desarrollo*nPasos) > cilindro.desarr
-#      errors.add(:mdi_desarrollo, "es insuficiente para el montaje" )
-#    end
     unless valcol(self.mcGuiacol) == 0
         errors.add(:mcGuiacol, "se refiere a un color inexistente")
     end
@@ -408,30 +439,19 @@ class OrdTrab < ActiveRecord::Base
     unless valcol(self.mcPimpcol) == 0
         errors.add(:mcPimpcol, "se refiere a un color inexistente")
     end
-#    @marcs = ["Guia","MPunto","Cruces","Tacas","Tiras","Exceso","Marcas","Pimp" ]
-#    @marcs.each do |lamarc|
-#      @mudcol = "valcol(self.mc#{lamarc}col)"
-#      @mudapy = "valcol(self.mc#{lamarc}apy)"
-#      unless self.send(@mudcol) == 0
-#        errors.add(:mcGuiacol, "se refiere a un color inexistente")
-#      end
-#      unless self.send(@mudapy) == 0
-#        errors.add(:mcGuiacol, "se refiere a un color inexistente")
-#      end
-#    end
   end
 
 # Usado para asignar clases de acuerdo a la prioridad de la OT.
   def claset
     @valorc = "shower"
-		if self.prioridad == "Repeticion"
+		if self.prioridad == "R (Reposicion)"
 			@valorc = "showerhi"
-		elsif self.prioridad == "Sin Costo*"
+		elsif self.prioridad == "S (Sin Costo)"
 			@valorc = "showerin"
     end
 		@valorc
 	end
-  
+
   def urgclass
     if self.urgente
       "Urgencia"
@@ -554,33 +574,6 @@ class OrdTrab < ActiveRecord::Base
      @estag
   end
 
-
-#	  <% @todas.each do |tod| %>
-#            <!-- <repeat with="&@todas"> -->
-#              <% @tod = tod %>
-#              <tr>
-#                  <th style="width:70px;" class="#{@tod.state}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a></th><th rowspan="2" style="width: 12em;" class="#{@tod.state}"><%=  tod.nomprod -%></th>
-#                  <%@ctr = 0%>
- #                 <% @grupro.each do |proce|%>
-#                    <% unless @ctr == 1 %>
-#                      <% tod.tareas.each do |tare| %>
-#                            <% if tare.proceso.grupoproc.abreviacion.to_s == proce.abreviacion.to_s %>
-#                              <td class="#{tare.state}" rowspan="2">
-#                              <%= tare.stvisto -%><br/><%= tare.users.last -%>
-#                              </td>
-#                              <% @ctr += 1 %>
-#                              <%next%>
-#                            <%end%>
-#                      <%end%>
-#                      <% if @ctr == 0 %>
-#                        <td rowspan="2"/>
-#                      <% end %>
-#                    <%end%>
-#                    <% @ctr = 0 %>
-#                  <% end %>
-
-
-
 	def valcol(listacol)
     @valor = 0
     @colarr = listacol.split(',')
@@ -647,12 +640,6 @@ class OrdTrab < ActiveRecord::Base
   def view_permitted?(field)
     true
   end
-
-	private
-
-#	def fecha_posterior
-#		errors.add(:fechaEntrega, 'La fecha de entrega debe ser posterior a la fecha actual') if fechaEntrega < fecha
-#	end
 
 end
 
