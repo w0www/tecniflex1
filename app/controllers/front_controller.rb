@@ -36,6 +36,15 @@ class FrontController < ApplicationController
     @todas = OrdTrab.find(:all, :order => "fechaEntrega desc", :limit => 20)
     @users = User.find(:all, :conditions => ["tablero = true"])
   end
+
+  def polimeros
+    @hora_actual = DateTime.now.in_time_zone
+    id_polimero = Proceso.find_by_nombre("polimero").id
+    id_revisionmm = Proceso.find_by_nombre("revisionmm").id
+    id_facturacion = Proceso.find_by_nombre("facturacion").id
+    @polimeros = Intervencion.find(:all, :conditions => ["tareas.proceso_id IN (?) AND tareas.state IN (?)", [id_facturacion,id_polimero,id_revisionmm],["habilitada","iniciada", "detenida","enviada","recibida", "en_revision"]], :joins => [:tarea])
+
+  end
   
   def eliminar
     tarea = Delayed::Job.find(params[:id])

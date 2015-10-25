@@ -50,6 +50,7 @@
       <% end %>
     <% end %>
   </CreateJobParameters>
+<!--
   <Inks>
     <% n = 0 %>
     <% if @ord_trab.separacions.count > 0 %>
@@ -66,5 +67,6 @@
       <% end %>
     <% end %>
   </Inks>
+-->
 </JOBS>
 

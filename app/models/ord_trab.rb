@@ -80,7 +80,7 @@ class OrdTrab < ActiveRecord::Base
     tipofotop enum_string(:'CDI', :'CDI DIGIFLOW', :'DOLEV', :'THERMOFLEX')
     trapping       :decimal, :precision => 8, :scale => 2, :default => 0
     urgente				:boolean
-    prioridad enum_string(:'Normal', :'Repeticion', :'Sin Costo*')
+    prioridad enum_string(:'N (Trabajo Nuevo)', :'M (Modificacion)', :'R (Reposicion)', :'S (Sin Costo)')
     pctdistor      :decimal, :precision => 8, :scale => 2, :default => 0
     color          :string
     timestamps
@@ -444,14 +444,14 @@ class OrdTrab < ActiveRecord::Base
 # Usado para asignar clases de acuerdo a la prioridad de la OT.
   def claset
     @valorc = "shower"
-		if self.prioridad == "Repeticion"
+		if self.prioridad == "R (Reposicion)"
 			@valorc = "showerhi"
-		elsif self.prioridad == "Sin Costo*"
+		elsif self.prioridad == "S (Sin Costo)"
 			@valorc = "showerin"
     end
 		@valorc
 	end
-  
+
   def urgclass
     if self.urgente
       "Urgencia"

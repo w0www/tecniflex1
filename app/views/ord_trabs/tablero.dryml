@@ -30,7 +30,15 @@
                 <th class="hr1">OT<br/><span style="color:#555;">Cod. Prod.</span></th>
                 <th class="hr2">Nombre</th>
                 <repeat with="&@grupro">
-                  <th><view:nombre/> </th>
+                  <th>
+                    <if test="&this.nombre.delete(' ').downcase == 'vistobueno'">
+                      PDF
+                    </if><else><if test="&this.nombre.delete(' ').downcase == 'revisionvb'">
+                      Revision PDF
+                    </if></else><else>
+                      <view:nombre/>
+                    </else>
+                  </th>
                 </repeat>
                 <th class="colest">Prioridad</th>
                 <th class="colest">Estado</th>
