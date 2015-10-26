@@ -36,15 +36,17 @@
       </tr>
       <% for p in @polimeros %>
       <% color = p.tarea.ord_trab.calcular_color_tablero(p.tarea.ord_trab) %>
+      <% tarea = p.tarea %>
+      <% ord_trab = p.tarea.ord_trab %>
       <tr>
-        <th style="border:1px solid;"><center><%= p.tarea.ord_trab.fecha.strftime("%d/%m/%Y") %></center> </th>
-        <th style="border:1px solid;"><center><%= p.tarea.proceso %></center> </th>
-        <th style="border:1px solid;"><center><%= p.tarea.ord_trab.cliente %></center> </th>
-        <th style="border:1px solid;"><center><%= p.tarea.ord_trab.numOT.to_s + " / " + p.tarea.ord_trab.armacod %></center> </th>
-        <th style="border:1px solid;"><center><%= p.tarea.ord_trab.nomprod %></center> </th>
-        <th style="border:1px solid;"><center><%= p.tarea.ord_trab.nCopias %></center> </th>
-        <th style="border:1px solid;"><center><%= p.tarea.ord_trab.fechaEntrega.strftime("%d/%m/%Y") %></center> </th>
-        <th style="border:1px solid;"><center><%= p.tarea.ord_trab.fechaEntrega.strftime("%H:%M") %></center> </th>
+        <th style="border:1px solid;"><center><%= ord_trab.fecha.strftime("%d/%m/%Y") %></center> </th>
+        <th style="border:1px solid;"><center><%= tarea.proceso %></center> </th>
+        <th style="border:1px solid;"><center><%= ord_trab.cliente %></center> </th>
+        <th style="border:1px solid;"><center><%= ord_trab.numOT.to_s + " / " + p.tarea.ord_trab.armacod %></center> </th>
+        <th style="border:1px solid;"><center><%= ord_trab.nomprod %></center> </th>
+        <th style="border:1px solid;"><center><%= ord_trab.nCopias * ord_trab.separacions.count %></center> </th>
+        <th style="border:1px solid;"><center><%= ord_trab.fechaEntrega.strftime("%d/%m/%Y") %></center> </th>
+        <th style="border:1px solid;"><center><%= ord_trab.fechaEntrega.strftime("%H:%M") %></center> </th>
         <th style="background-color:#{color if color};border:1px solid;"/>
       </tr>
       <% end %>
