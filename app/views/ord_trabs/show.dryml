@@ -24,7 +24,7 @@
       <tr>
         <th colspan="2">Cliente</th>
         <td colspan="4"><view:cliente/></td>
-        <th colspan="2">Prioridad</th>
+        <th colspan="2">Tipo de OT</th>
         <td colspan="1"><view:prioridad/></td>
         <th>Fecha:&nbsp;<view:fecha format="%d-%m-%y"/></th>
         <th>O.T.</th>
