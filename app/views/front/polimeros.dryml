@@ -1,0 +1,56 @@
+<page title="pantalla" without-header class="pantalla" style="background-color:black !important">
+  <head:>
+    <param-content />
+<!--    <meta http-equiv="refresh" content="30"/>-->
+  </head:>
+  <content: replace>
+    <div class="page-header" id="pantalla">
+      .
+    </div>
+
+    <div class="content-body">
+      <div style="margin-top:10px;">
+        <div style="width:100%">
+          <tabla-tiempos/><br/>
+        </div>
+      </div>
+    </div>
+  </content:>
+</page>
+
+<def tag="tabla-tiempos">
+  <label style="color:#fff; font-size:20px;">Polimeros</label>
+  <br/><br/>
+  <table style="color:#fff" width="100%">
+    <tbody>
+      <tr>
+        <th style="width:7%;font-size:16px;"><center>FECHA</center></th>
+        <th style="width:7%;font-size:16px;"><center>PROCESO</center></th>
+        <th style="width:10%;font-size:16px;"><center>CLIENTE</center></th>
+        <th style="width:10%;font-size:16px;"><center>OT/COD.PROD.</center></th>
+        <th style="width:20%;font-size:16px;"><center>NOMBRE DEL TRABAJO</center></th>
+        <th style="width:7%;font-size:16px;"><center>NRO CLISSE</center></th>
+        <th style="width:10%;font-size:16px;"><center>FECHA ENTREGA</center></th>
+        <th style="width:6%;font-size:16px;"><center>HORA</center></th>
+        <th style="font-size:16px;"><center>PRIORIDAD</center></th>
+      </tr>
+      <% for p in @polimeros %>
+      <% color = p.tarea.ord_trab.calcular_color_tablero(p.tarea.ord_trab) %>
+      <% tarea = p.tarea %>
+      <% ord_trab = p.tarea.ord_trab %>
+      <tr>
+        <th style="border:1px solid;"><center><%= ord_trab.fecha.strftime("%d/%m/%Y") %></center> </th>
+        <th style="border:1px solid;"><center><%= tarea.proceso %></center> </th>
+        <th style="border:1px solid;"><center><%= ord_trab.cliente %></center> </th>
+        <th style="border:1px solid;"><center><%= ord_trab.numOT.to_s + " / " + p.tarea.ord_trab.armacod %></center> </th>
+        <th style="border:1px solid;"><center><%= ord_trab.nomprod %></center> </th>
+        <th style="border:1px solid;"><center><%= ord_trab.nCopias * ord_trab.separacions.count %></center> </th>
+        <th style="border:1px solid;"><center><%= ord_trab.fechaEntrega.strftime("%d/%m/%Y") %></center> </th>
+        <th style="border:1px solid;"><center><%= ord_trab.fechaEntrega.strftime("%H:%M") %></center> </th>
+        <th style="background-color:#{color if color};border:1px solid;"/>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</def>
+

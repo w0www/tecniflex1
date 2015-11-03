@@ -30,7 +30,15 @@
                 <th class="hr1">OT<br/><span style="color:#555;">Cod. Prod.</span></th>
                 <th class="hr2">Nombre</th>
                 <repeat with="&@grupro">
-                  <th><view:nombre/> </th>
+                  <th>
+                    <if test="&this.nombre.delete(' ').downcase == 'vistobueno'">
+                      PDF
+                    </if><else><if test="&this.nombre.delete(' ').downcase == 'revisionvb'">
+                      Revision PDF
+                    </if></else><else>
+                      <view:nombre/>
+                    </else>
+                  </th>
                 </repeat>
                 <th class="colest">Prioridad</th>
                 <th class="colest">Estado</th>
@@ -38,7 +46,7 @@
             </thead>
             <tbody>
               <% @todas.each do |tod| %>
-                <% tiempo_total = 0 %>
+                <% tiempo_total = tod.tiempo_total %>
                 <% cliente = tod.cliente %>
                 <tr class="st#{tod.state}">
                   <th style="width:70px;" class="#{tod.prioridad}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a><br/><span style="font-weight:normal"><%= cliente ? cliente.sigla : "" -%>-<%= tod.codCliente %>- v.<%= tod.version || 1 %></span></th><th rowspan="2" style="width: 12em;" class="#{tod.state}"><%=  tod.nomprod -%></th>
@@ -55,7 +63,6 @@
                         end
                       %>
                       <% tarea = tod.tareas.proceso_is(proces) ? tod.tareas.proceso_is(proces).first : nil %>
-                      <% tiempo_total += proceso.first.minutos_minimo if proceso.first.minutos_minimo %>
                       <td class="#{tarea.state if tarea}" rowspan="2">
                         <unless test="&tarea.blank?">
                           <if test="&tarea.proceso">
@@ -78,20 +85,11 @@
                       <p class="iniciales"><%= tod.usersgp(proce.abreviacion) -%></p>
                       </td>
                     <% end %>
-                    <% fecha_entrega = tod.fechaEntrega ? tod.fechaEntrega : nil %>
                 <% 
-                  if fecha_entrega && fecha_entrega - 1.hour <= @hora_actual + tiempo_total.minute &&
-                     fecha_entrega > @hora_actual + tiempo_total.minute
-                    color = 'lightyellow'
-                  elsif fecha_entrega && fecha_entrega > @hora_actual + tiempo_total.minute
-                    color = 'lightgreen'
-                  elsif fecha_entrega && fecha_entrega <= @hora_actual + tiempo_total.minute
-                    color = 'red'
-                  elsif fecha_entrega.blank?
-                    color = ''
-                  end
+                  color = tod.calcular_color_tablero(tod)
+                  color_directo = tod.color.blank? ? color : tod.color
                 %>
-                   <td rowspan="2" style="background-color:#{color if color}"/>
+                   <td rowspan="2" style="background-color:#{color_directo if color_directo}"/>
                    <td rowspan="2">
                      <do with="&tod"><% transitions = this.lifecycle.publishable_transitions_for(current_user) %><transition-buttons/><unless test='&transitions'>Asignar Tareas</unless></do></td>
                     </tr>

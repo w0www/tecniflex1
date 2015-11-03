@@ -41,9 +41,6 @@
     end
   end
 
-#<User id: nil, crypted_password: nil, salt: nil, remember_token: nil, remember_token_expires_at: nil, name: nil, email_address: nil, administrator: false, created_at: nil, updated_at: nil, state: "active", key_timestamp: nil, rol: nil, iniciales: nil, tablero: false>
-
-
   # --- Permissions --- #
 
   def create_permitted?

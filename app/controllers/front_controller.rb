@@ -8,7 +8,7 @@ class FrontController < ApplicationController
         redirect_to "/ord_trabs/tablero"
       else
         @ordenes = OrdTrab.find :all
-        @asignacions = current_user.asignacions.activa(:all, :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
+        @asignacions = current_user.asignacions.disp(:all, :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
       end
     end
   end
@@ -35,6 +35,15 @@ class FrontController < ApplicationController
     @clies = Cliente.all
     @todas = OrdTrab.find(:all, :order => "fechaEntrega desc", :limit => 20)
     @users = User.find(:all, :conditions => ["tablero = true"])
+  end
+
+  def polimeros
+    @hora_actual = DateTime.now.in_time_zone
+    id_polimero = Proceso.find_by_nombre("polimero").id
+    id_revisionmm = Proceso.find_by_nombre("revisionmm").id
+    id_facturacion = Proceso.find_by_nombre("facturacion").id
+    @polimeros = Intervencion.find(:all, :conditions => ["tareas.proceso_id IN (?) AND tareas.state IN (?)", [id_facturacion,id_polimero,id_revisionmm],["habilitada","iniciada", "detenida","enviada","recibida", "en_revision"]], :joins => [:tarea], :order => "tareas.proceso_id DESC")
+
   end
   
   def eliminar

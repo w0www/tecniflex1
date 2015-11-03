@@ -1,8 +1,0 @@
-<index-page>
-	<collection: replace>
-		<div>
-			<table-plus fields="this, existencias.count" controls/>
-		</div>
-	</collection:>
-</index-page>
-
