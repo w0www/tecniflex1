@@ -23,7 +23,7 @@
     <td colspan="3">
       <input:cliente/>
     </td>
-    <th>Prioridad</th>
+    <th>Tipo de OT</th>
     <td colspan="2">
       <input:prioridad style="width:70px"/>
     </td>
