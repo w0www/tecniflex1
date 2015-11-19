@@ -21,7 +21,6 @@
 <def tag="tabla-tiempos">
   <label style="color:#fff; font-size:20px;">Polimeros</label>
   <br/><br/>
-  <% if current_user.email_address != "facturacion@tecniflex.cl"%>
   <table style="color:#fff" width="100%">
     <tbody>
       <tr>
@@ -52,6 +51,5 @@
       <% end %>
     </tbody>
   </table>
-  <% end %>
 </def>
 

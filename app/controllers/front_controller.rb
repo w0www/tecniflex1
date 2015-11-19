@@ -41,8 +41,8 @@ class FrontController < ApplicationController
     @hora_actual = DateTime.now.in_time_zone
     id_polimero = Proceso.find_by_nombre("polimero").id
     id_revisionmm = Proceso.find_by_nombre("revisionmm").id
-    id_facturacion = Proceso.find_by_nombre("facturacion").id
-    @tareas = Tarea.find(:all, :conditions => ["proceso_id IN (?) AND state IN (?)", [id_facturacion,id_polimero,id_revisionmm],["habilitada","iniciada", "detenida","enviada","recibida", "en_revision"]], :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
+    # id_facturacion = Proceso.find_by_nombre("facturacion").id
+    @tareas = Tarea.find(:all, :conditions => ["proceso_id IN (?) AND state IN (?)", [id_polimero,id_revisionmm],["habilitada","iniciada", "detenida","enviada","recibida", "en_revision"]], :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
 
   end
   
