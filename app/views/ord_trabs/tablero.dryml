@@ -13,9 +13,9 @@
     <div id="tabs">
       <ul>
         <li><a href="#tabs-1">Tablero de Control</a></li>
-        <% if @cliente_logeado.blank? %>
-          <li><a href="#tabs-2">Usuarios</a></li>
-        <% end %>
+<!--        <% if @cliente_logeado.blank? %>-->
+<!--          <li><a href="#tabs-2">Usuarios</a></li>-->
+<!--        <% end %>-->
       </ul>
       <div id="tabs-1">
           <div class='header' >
@@ -99,20 +99,20 @@
             </tbody>
           </table>
         </div>
-        <div id="tabs-2">
-          <table class="tablero">
-            <thead>
-              <tr>
-                <th>Usuario</th><th>Rol</th><th>Procesos</th><th>Tareas Disponibles</th><th>Tareas Completadas hoy</th>
-              </tr>
-            </thead>
-            <tbody>
-              <repeat with="&@usuarios">
-                <tr></tr>
-              </repeat>
-             </tbody>
-           </table>
-         </div>
+<!--        <div id="tabs-2">-->
+<!--          <table class="tablero">-->
+<!--            <thead>-->
+<!--              <tr>-->
+<!--                <th>Usuario</th><th>Rol</th><th>Procesos</th><th>Tareas Disponibles</th><th>Tareas Completadas hoy</th>-->
+<!--              </tr>-->
+<!--            </thead>-->
+<!--            <tbody>-->
+<!--              <repeat with="&@usuarios">-->
+<!--                <tr></tr>-->
+<!--              </repeat>-->
+<!--             </tbody>-->
+<!--           </table>-->
+<!--         </div>-->
        </div>
     </section>
   </content:>

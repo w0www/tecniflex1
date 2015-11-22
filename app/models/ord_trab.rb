@@ -80,7 +80,7 @@ class OrdTrab < ActiveRecord::Base
     tipofotop enum_string(:'CDI', :'CDI DIGIFLOW', :'DOLEV', :'THERMOFLEX')
     trapping       :decimal, :precision => 8, :scale => 2, :default => 0
     urgente				:boolean
-    prioridad enum_string(:'N (Trabajo Nuevo)', :'M (Modificacion)', :'R (Reposicion)', :'S (Sin Costo)')
+    prioridad enum_string(:'N (Trabajo Nuevo)', :'M (Modificacion)', :'P (PostScript)', :'R (Reposicion)', :'S (Sin Costo)')
     pctdistor      :decimal, :precision => 8, :scale => 2, :default => 0
     color          :string
     timestamps
@@ -109,11 +109,16 @@ class OrdTrab < ActiveRecord::Base
 
   default_scope :order => 'numOT DESC'
 
-  # Scope que busca en varias columnas el material entregado
-  named_scope :proceso_is, lambda { |proceso,estado| { 
+  # Scope que busca las tareas que tienen el proceso y ese estado.
+  named_scope :proceso_is, lambda { |proceso| { 
     :include => :tareas,
-    :conditions => ["tareas.proceso_id = ? AND tareas.state = ?", Proceso.find_by_nombre(proceso).id, estado] } }
+    :conditions => ["tareas.proceso_id = ?", Proceso.find_by_nombre(proceso).id] } }
+  named_scope :proceso_estado_is, lambda {|estado| {
+    :include => :tareas,
+    :conditions => ["tareas.state = ?", estado] } 
 
+
+  }
 
   def armacod
     armac = ""
