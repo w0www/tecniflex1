@@ -2,7 +2,17 @@ html, body {background-color: darkgray; }
 
 .pantalla body{
 	width:100%;
-	background: black;
+	background: gray;
+}
+
+html.pantalla div.pagination a{
+  background: none;
+  color: white;
+}
+
+html.pantalla div.pagination span.current{
+  background: none;
+  color: black;
 }
 
 #pantalla {
