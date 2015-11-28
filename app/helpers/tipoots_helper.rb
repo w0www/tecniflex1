@@ -1,0 +1,2 @@
+module TipootsHelper
+end

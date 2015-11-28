@@ -78,9 +78,9 @@ class OrdTrab < ActiveRecord::Base
     colorUnion     :integer
     supRev enum_string(:' ', :'Superficie', :'Reverso')
     tipofotop enum_string(:'CDI', :'CDI DIGIFLOW', :'DOLEV', :'THERMOFLEX')
+    prioridad enum_string(:'N (Trabajo Nuevo)', :'M (Modificacion)', :'P (PostScript)', :'R (Reposicion)', :'S (Sin Costo)')
     trapping       :decimal, :precision => 8, :scale => 2, :default => 0
     urgente				:boolean
-    prioridad enum_string(:'N (Trabajo Nuevo)', :'M (Modificacion)', :'P (PostScript)', :'R (Reposicion)', :'S (Sin Costo)')
     pctdistor      :decimal, :precision => 8, :scale => 2, :default => 0
     color          :string
     timestamps
@@ -100,6 +100,7 @@ class OrdTrab < ActiveRecord::Base
  # HABILITAR CONTACTO ASOCIADO A OT, ELEGIDO ENTRE CONTACTOS DEL CLIENTE (VER SCOPE)
   belongs_to :contacter, :class_name => "Contacto"
 
+  belongs_to :tipoot
   belongs_to :cliente, :accessible => true
   belongs_to :impresora
   belongs_to :cilindro
@@ -446,12 +447,12 @@ class OrdTrab < ActiveRecord::Base
     end
   end
 
-# Usado para asignar clases de acuerdo a la prioridad de la OT.
+# Usado para asignar clases de acuerdo a la tipo de la OT.
   def claset
     @valorc = "shower"
-		if self.prioridad == "R (Reposicion)"
+		if self.tipoot == "R (Reposicion)"
 			@valorc = "showerhi"
-		elsif self.prioridad == "S (Sin Costo)"
+		elsif self.tipoot == "S (Sin Costo)"
 			@valorc = "showerin"
     end
 		@valorc
