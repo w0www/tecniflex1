@@ -78,7 +78,7 @@ class OrdTrab < ActiveRecord::Base
     colorUnion     :integer
     supRev enum_string(:' ', :'Superficie', :'Reverso')
     tipofotop enum_string(:'CDI', :'CDI DIGIFLOW', :'DOLEV', :'THERMOFLEX')
-    prioridad enum_string(:'N (Trabajo Nuevo)', :'M (Modificacion)', :'P (PostScript)', :'R (Reposicion)', :'S (Sin Costo)')
+#    prioridad enum_string(:'N (Trabajo Nuevo)', :'M (Modificacion)', :'P (PostScript)', :'R (Reposicion)', :'S (Sin Costo)')
     trapping       :decimal, :precision => 8, :scale => 2, :default => 0
     urgente				:boolean
     pctdistor      :decimal, :precision => 8, :scale => 2, :default => 0
@@ -188,13 +188,6 @@ class OrdTrab < ActiveRecord::Base
       
 		end
  end
-
-#  def convtiem(segs)
-#    horas = segs/3600.to_i
-#    minutos = (segs/60 - horas*60).to_i
-#    segundos = (segs - (minutos * 60 + horas * 3600))
-#    homise = [horas,minutos,segundos]
-#  end
 
   # Ordena las tareas de una OT segun la posicion de sus procesos. Permite habilitar las tareas en orden.
   def sortars
