@@ -1,7 +1,0 @@
-<index-page>
-	<collection: replace>
-		<div>
-			<table-plus fields="this, cliente, cargo, telefono" />
-		</div>
-	</collection:>
-</index-page>

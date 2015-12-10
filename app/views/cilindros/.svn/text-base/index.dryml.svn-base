@@ -1,7 +1,0 @@
-<index-page>
-	<collection: replace>
-		<div>
-			<table-plus fields="this, distorsion, pctdistor" />
-		</div>
-	</collection:>
-</index-page>

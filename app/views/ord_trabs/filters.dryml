@@ -5,8 +5,8 @@
       <% if @cliente_logeado.blank? %>
         <select-field label="Cliente" name="cliente" options="&Cliente.all.map{|c| [c.name]}" first-option="Filtrar por cliente"/>
         <input-field label="Cod. cliente" name="codigo_cliente"/>
-        <select-field label="Proceso" name="proceso" options="&Proceso.all" first-option="Filtrar por proceso"/>
-        <select-field label="Estado proceso" name="estado_proceso" options="&Tarea::Lifecycle.states.keys.map{|s|[s.to_s]}" first-value="habilitada" first-option="habilitada"/>
+        <select-field label="Proceso" name="proceso" options="&Proceso.all.map{|p| [p.nombre]}" first-option="Filtrar por proceso"/>
+        <select-field label="Estado proceso" name="estado_proceso" options="&Tarea::Lifecycle.states.keys.map{|s|[s.to_s]}.uniq" first-value="" first-option="Filtrar por estado"/>
         <select-field label="Estado OT" name="estado" options="&OrdTrab::Lifecycle.states.keys.map{|s|[s.to_s]}" first-option="Filtrar por estado"/>
         <input-field label="O.T." name="orden"/>
         <date-field label="Fecha" name="fecha"/>

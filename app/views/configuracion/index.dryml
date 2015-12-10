@@ -19,6 +19,7 @@
     <h2>Parametros</h2>
     <ul>
         <li><a to="&ListBarcode" action="index">Codigos de barras</a></li>
+        <li><a to="&Tipoot" action="index">Tipos de OT</a></li>
         <li><a to="&Unidad" action="index" >Unidades</a></li>
         <li><a to="&Espesor" action="index">Espesores de polimeros</a></li>
         <li><a to="&Tipomat" action="index">Marcas de polimeros</a></li>

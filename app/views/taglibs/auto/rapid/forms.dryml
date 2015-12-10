@@ -183,7 +183,7 @@
 <def tag="form" for="OrdTrab">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="numOT, numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, prioridad, pctdistor, color, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, list_barcode, procesos, separacions, sustrato, tareas, tipomat, tipopruebas" param/>
+    <field-list fields="numOT, numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, pctdistor, color, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, list_barcode, procesos, separacions, sustrato, tareas, tipomat, tipoot, tipopruebas" param/>
     <div param="actions">
       <submit label="#{ht 'ord_trabs.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -578,6 +578,18 @@
     <field-list fields="nombre, descripcion" param/>
     <div param="actions">
       <submit label="#{ht 'tipomats.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+
+
+
+<def tag="form" for="Tipoot">
+  <form merge param="default">
+    <error-messages param/>
+    <field-list fields="name" param/>
+    <div param="actions">
+      <submit label="#{ht 'tipoots.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
   </form>
 </def>
