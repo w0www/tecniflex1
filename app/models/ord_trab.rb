@@ -78,9 +78,9 @@ class OrdTrab < ActiveRecord::Base
     colorUnion     :integer
     supRev enum_string(:' ', :'Superficie', :'Reverso')
     tipofotop enum_string(:'CDI', :'CDI DIGIFLOW', :'DOLEV', :'THERMOFLEX')
+#    prioridad enum_string(:'N (Trabajo Nuevo)', :'M (Modificacion)', :'P (PostScript)', :'R (Reposicion)', :'S (Sin Costo)')
     trapping       :decimal, :precision => 8, :scale => 2, :default => 0
     urgente				:boolean
-    prioridad enum_string(:'N (Trabajo Nuevo)', :'M (Modificacion)', :'R (Reposicion)', :'S (Sin Costo)')
     pctdistor      :decimal, :precision => 8, :scale => 2, :default => 0
     color          :string
     timestamps
@@ -100,6 +100,7 @@ class OrdTrab < ActiveRecord::Base
  # HABILITAR CONTACTO ASOCIADO A OT, ELEGIDO ENTRE CONTACTOS DEL CLIENTE (VER SCOPE)
   belongs_to :contacter, :class_name => "Contacto"
 
+  belongs_to :tipoot
   belongs_to :cliente, :accessible => true
   belongs_to :impresora
   belongs_to :cilindro
@@ -109,11 +110,16 @@ class OrdTrab < ActiveRecord::Base
 
   default_scope :order => 'numOT DESC'
 
-  # Scope que busca en varias columnas el material entregado
-  named_scope :proceso_is, lambda { |proceso,estado| { 
+  # Scope que busca las tareas que tienen el proceso y ese estado.
+  named_scope :proceso_is, lambda { |proceso| { 
     :include => :tareas,
-    :conditions => ["tareas.proceso_id = ? AND tareas.state = ?", Proceso.find_by_nombre(proceso).id, estado] } }
+    :conditions => ["tareas.proceso_id = ?", Proceso.find_by_nombre(proceso).id] } }
+  named_scope :proceso_estado_is, lambda {|estado| {
+    :include => :tareas,
+    :conditions => ["tareas.state = ?", estado] } 
 
+
+  }
 
   def armacod
     armac = ""
@@ -182,13 +188,6 @@ class OrdTrab < ActiveRecord::Base
       
 		end
  end
-
-#  def convtiem(segs)
-#    horas = segs/3600.to_i
-#    minutos = (segs/60 - horas*60).to_i
-#    segundos = (segs - (minutos * 60 + horas * 3600))
-#    homise = [horas,minutos,segundos]
-#  end
 
   # Ordena las tareas de una OT segun la posicion de sus procesos. Permite habilitar las tareas en orden.
   def sortars
@@ -441,12 +440,12 @@ class OrdTrab < ActiveRecord::Base
     end
   end
 
-# Usado para asignar clases de acuerdo a la prioridad de la OT.
+# Usado para asignar clases de acuerdo a la tipo de la OT.
   def claset
     @valorc = "shower"
-		if self.prioridad == "R (Reposicion)"
+		if self.tipoot == "R (Reposicion)"
 			@valorc = "showerhi"
-		elsif self.prioridad == "S (Sin Costo)"
+		elsif self.tipoot == "S (Sin Costo)"
 			@valorc = "showerin"
     end
 		@valorc

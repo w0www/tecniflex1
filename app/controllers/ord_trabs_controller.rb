@@ -116,7 +116,7 @@ end
     @hora_actual = DateTime.now.in_time_zone
     @grupro = Grupoproc.tablero.order_by(:position)
     @procesos = Proceso.order_by(:position)
-    @usuarios = User.find(:all, :order => :name)
+#    @usuarios = User.find(:all, :order => :name)
     # si el usuario es un cliente solo mostrar las ord de ese cliente
     @cliente_logeado = Cliente.find_by_correo(current_user.email_address)
     @clies = Cliente.all
@@ -124,12 +124,13 @@ end
       params[:cliente] = @cliente_logeado
     end
     inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
-    final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time if params[:fecha_fin] && !params[:fecha_fin].blank?
+    final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time.end_of_day if params[:fecha_fin] && !params[:fecha_fin].blank?
     @todas = OrdTrab.apply_scopes(
       :cliente_is => params[:cliente],
       :codCliente_contains => params[:codigo_cliente],
       :numOT_contains => params[:orden],
-      :proceso_is => [params[:proceso], params[:estado_proceso]],
+      :proceso_estado_is => [params[:estado_proceso]],
+      :proceso_is => [params[:proceso]],
       :state_is => params[:estado],
       :created_between => [inicial, final]
     ).paginate(:page => params[:page], :per_page => 20)
