@@ -40,9 +40,9 @@
       <% for tarea in @tareas %>
       <% ord_trab = tarea.ord_trab %>
       <% 
-        if tarea.proceso_id == 7
-          tarea_revisionmm = ord_trab.tareas.find(:all, :conditions => ["proceso_id = 14"]).first
-          if tarea_revisionmm && tarea_revisionmm.intervencions.count > 1 
+        if tarea.proceso.nombre.downcase == "polimero"
+          tarea_revisionmm = ord_trab.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("revisionmm")]).first
+          if tarea_revisionmm && tarea_revisionmm.state == "terminada" 
             fecha_fin = tarea_revisionmm.intervencions.last.termino.strftime("%d/%m/%Y %H:%M")
           end
         end
