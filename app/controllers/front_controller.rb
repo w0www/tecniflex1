@@ -61,6 +61,8 @@ class FrontController < ApplicationController
         if params[:page].to_i == paginas_totales
           @pagina_siguiente = 1
         end
+      else
+        @pagina_siguiente = 1
       end
     end
     @tareas = @tareas.paginate(:page => params[:page], :per_page => 20)
