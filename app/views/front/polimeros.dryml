@@ -1,4 +1,4 @@
-<page title="pantalla" without-header class="pantalla" style="background-color:gray !important">
+<page title="pantalla" without-header class="pantalla" style="background-color:black !important">
   <head:>
     <param-content />
     <meta http-equiv="refresh" content="60;url=/front/polimeros?page=#{@pagina_siguiente}" />
