@@ -50,6 +50,7 @@ class OrdTrabsController < ApplicationController
 	end
 
   def update
+    params[:fecha] = Date.strptime(params[:fecha], '%d-%m-%Y') if params[:fecha] && !params[:fecha].blank?
     # Parseamos el valor del datepicker
     parsear_datepicker
     hobo_update do 
@@ -61,11 +62,13 @@ class OrdTrabsController < ApplicationController
         crear_fichero_xml if confi && confi.value == true
       end
     end
-end
+  end
 
   def create
+    params[:fecha] = Date.strptime(params[:fecha], '%d-%m-%Y') if params[:fecha] && !params[:fecha].blank?
     # Parseamos el valor del datepicker
     parsear_datepicker
+    params[:fecha] = Date.strptime
     hobo_create do 
       if valid?
         # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
