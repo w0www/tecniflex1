@@ -50,7 +50,7 @@ class OrdTrabsController < ApplicationController
 	end
 
   def update
-    params[:fecha] = Date.strptime(params[:fecha], '%d-%m-%Y') if params[:fecha] && !params[:fecha].blank?
+    params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') 
     # Parseamos el valor del datepicker
     parsear_datepicker
     hobo_update do 
@@ -65,7 +65,7 @@ class OrdTrabsController < ApplicationController
   end
 
   def create
-    params[:fecha] = Date.strptime(params[:fecha], '%d-%m-%Y') if params[:fecha] && !params[:fecha].blank?
+    params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') 
     # Parseamos el valor del datepicker
     parsear_datepicker
     params[:fecha] = Date.strptime
