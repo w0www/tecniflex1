@@ -50,6 +50,7 @@ class OrdTrabsController < ApplicationController
 	end
 
   def update
+    params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') 
     # Parseamos el valor del datepicker
     parsear_datepicker
     hobo_update do 
@@ -61,9 +62,10 @@ class OrdTrabsController < ApplicationController
         crear_fichero_xml if confi && confi.value == true
       end
     end
-end
+  end
 
   def create
+    params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') 
     # Parseamos el valor del datepicker
     parsear_datepicker
     hobo_create do 
