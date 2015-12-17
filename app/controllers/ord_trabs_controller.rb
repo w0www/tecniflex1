@@ -68,7 +68,6 @@ class OrdTrabsController < ApplicationController
     params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') 
     # Parseamos el valor del datepicker
     parsear_datepicker
-    params[:fecha] = Date.strptime
     hobo_create do 
       if valid?
         # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
