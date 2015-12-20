@@ -60,7 +60,7 @@
 
 <def tag="fechapicker">
   <hjq-datepicker dayNamesMin="&['Do', 'Lu', 'Ma', 'Mi', 'Ju', 'Vi', 'Sa']"
-    dateFormat="dd/mm/yy" 
+    dateFormat="dd-mm-yy" 
     firstDay="1" 
     changeYear="true"
     monthNames="&['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']"
