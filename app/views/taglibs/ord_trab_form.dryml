@@ -33,7 +33,7 @@
     </td>
     <th>
       Fecha:&nbsp;
-      <input:fecha style="width:7em;"/>
+      <input:fecha style="width:7em;" value="&l(this.fecha.to_date) if this.fecha"/>
     </th>
     <th>O.T.</th>
     <td></td>
