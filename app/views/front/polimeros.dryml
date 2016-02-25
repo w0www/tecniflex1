@@ -1,7 +1,7 @@
 <page title="pantalla" without-header class="pantalla" style="background-color:black !important">
   <head:>
     <param-content />
-    <meta http-equiv="refresh" content="60;url=/front/polimeros?page=#{@pagina_siguiente}" />
+
   </head:>
   <content: replace>
     <div class="page-header" id="pantalla">
@@ -10,12 +10,10 @@
 
     <div class="content-body">
       <div style="margin-top:10px;">
-        <div style="width:100%">
-          <tabla-tiempos/><br/>
-          <span style="color:#FFFFFF">
-            <%= will_paginate @tareas, :style => "visibility:hidden"%>
-          </span>
-        </div>
+        <tabla-tiempos/><br/>
+        <span style="color:#FFFFFF">
+          <%= will_paginate @tareas, :style => "visibility:hidden"%>
+        </span>
       </div>
     </div>
   </content:>
@@ -24,18 +22,18 @@
 <def tag="tabla-tiempos">
   <label style="color:#fff; font-size:20px;">Polimeros</label>
   <br/><br/>
-  <table style="color:#fff" width="100%">
+  <table id="polimeros">
     <tbody>
       <tr>
-        <th style="width:7%;font-size:16px;"><center>FECHA</center></th>
-        <th style="width:7%;font-size:16px;"><center>PROCESO</center></th>
-        <th style="width:10%;font-size:16px;"><center>CLIENTE</center></th>
-        <th style="width:10%;font-size:16px;"><center>OT/COD.PROD.</center></th>
-        <th style="width:20%;font-size:16px;"><center>NOMBRE DEL TRABAJO</center></th>
-        <th style="width:7%;font-size:16px;"><center>NRO CLISSE</center></th>
-        <th style="width:10%;font-size:16px;"><center>FECHA FIN REVISIONMM</center></th>
-        <th style="width:10%;font-size:16px;"><center>FECHA ENTREGA</center></th>
-        <th style="font-size:16px;"><center>PRIORIDAD</center></th>
+        <th><center>FECHA</center></th>
+        <th><center>PROCESO</center></th>
+        <th><center>CLIENTE</center></th>
+        <th><center>OT/COD.PROD.</center></th>
+        <th><center>NOMBRE DEL TRABAJO</center></th>
+        <th><center>NRO CLISSE</center></th>
+        <th><center>FECHA FIN REVISIONMM</center></th>
+        <th><center>FECHA ENTREGA</center></th>
+        <th style="width:2%;font-size:24px;"><center>PRIORIDAD</center></th>
       </tr>
       <% for tarea in @tareas %>
       <% ord_trab = tarea.ord_trab %>
@@ -49,15 +47,15 @@
       %>
       <% color = ord_trab.calcular_color_tablero(ord_trab) %>
       <tr>
-        <th style="border:1px solid;"><center><%= ord_trab.fecha.strftime("%d/%m/%Y") if ord_trab.fecha %></center> </th>
-        <th style="border:1px solid;"><center><%= tarea.proceso %></center> </th>
-        <th style="border:1px solid;"><center><%= ord_trab.cliente %></center> </th>
-        <th style="border:1px solid;"><center><%= ord_trab.numOT.to_s + " / " + ord_trab.armacod %></center> </th>
-        <th style="border:1px solid;"><center><%= ord_trab.nomprod %></center> </th>
-        <th style="border:1px solid;"><center><%= ord_trab.nCopias * ord_trab.separacions.count %></center> </th>
-        <th style="border:1px solid;"><center><%= fecha_fin if fecha_fin %></center> </th>
-        <th style="border:1px solid;"><center><%= ord_trab.fechaEntrega.strftime("%d/%m/%Y %H:%M") if ord_trab.fechaEntrega %></center> </th>
-        <th style="background-color:#{color if color};border:1px solid;"/>
+        <td><span class="view"><%= ord_trab.fecha.strftime("%d/%m/%Y") if ord_trab.fecha %></span> </td>
+        <td><center><%= tarea.proceso %></center> </td>
+        <td><center><%= ord_trab.cliente %></center> </td>
+        <td><center><%= ord_trab.numOT.to_s + " / " + ord_trab.armacod %></center> </td>
+        <td><center><%= ord_trab.nomprod %></center> </td>
+        <td><center><%= ord_trab.nCopias * ord_trab.separacions.count %></center> </td>
+        <td><center><%= fecha_fin if fecha_fin %></center> </td>
+        <td><center><%= ord_trab.fechaEntrega.strftime("%d/%m/%Y %H:%M") if ord_trab.fechaEntrega %></center> </td>
+        <td style="background-color:#{color if color};"/>
       </tr>
       <% end %>
     </tbody>
