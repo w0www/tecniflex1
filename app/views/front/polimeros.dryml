@@ -54,8 +54,8 @@
       %>
       <% color = ord_trab.calcular_color_tablero(ord_trab) %>     
       <tr style="background-color:#{color_linea if color_linea};">
-        <td><span><%= ord_trab.fecha.strftime("%d/%m/%Y") if ord_trab.fecha %></span></td>
-        <td><span><%= fecha_matriceria if fecha_matriceria %></span> </td>
+        <td><center><%= ord_trab.fecha.strftime("%d/%m/%Y") if ord_trab.fecha %></center></td>
+        <td><center><%= fecha_matriceria if fecha_matriceria %></center> </td>
         <td><center><%= tarea.proceso %></center> </td>
         <td><center><%= ord_trab.cliente %></center> </td>
         <td><center><%= ord_trab.numOT.to_s + " / " + ord_trab.armacod %></center> </td>
