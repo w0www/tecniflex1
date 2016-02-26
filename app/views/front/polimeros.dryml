@@ -26,6 +26,7 @@
     <tbody>
       <tr>
         <th><center>FECHA</center></th>
+        <th><center>FECHA MTZ</center></th>
         <th><center>PROCESO</center></th>
         <th><center>CLIENTE</center></th>
         <th><center>OT/COD.PROD.</center></th>
@@ -38,6 +39,11 @@
       <% for tarea in @tareas %>
       <% ord_trab = tarea.ord_trab %>
       <% 
+        tarea_matriceria = ord_trab.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("matriceria")]).first
+        if tarea_matriceria && tarea_matriceria.state == "terminada" 
+          fecha_matriceria = tarea_revisionmm.intervencions.first.inicio.strftime("%d/%m/%Y %H:%M")
+        end
+
         if tarea.proceso.nombre.downcase == "polimero"
           color_linea = "green" if tarea.state  == "iniciada"    
           tarea_revisionmm = ord_trab.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("revisionmm")]).first
@@ -48,7 +54,8 @@
       %>
       <% color = ord_trab.calcular_color_tablero(ord_trab) %>     
       <tr style="background-color:#{color_linea if color_linea};">
-        <td><span class="view"><%= ord_trab.fecha.strftime("%d/%m/%Y") if ord_trab.fecha %></span> </td>
+        <td><span><%= ord_trab.fecha.strftime("%d/%m/%Y") if ord_trab.fecha %></span></td>
+        <td><span><%= fecha_matriceria if fecha_matriceria %></span> </td>
         <td><center><%= tarea.proceso %></center> </td>
         <td><center><%= ord_trab.cliente %></center> </td>
         <td><center><%= ord_trab.numOT.to_s + " / " + ord_trab.armacod %></center> </td>
