@@ -41,7 +41,7 @@
       <% 
         tarea_matriceria = ord_trab.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("matriceria")]).first
         if tarea_matriceria && tarea_matriceria.state == "terminada" 
-          fecha_matriceria = tarea_revisionmm.intervencions.first.inicio.strftime("%d/%m/%Y %H:%M")
+          fecha_matriceria = tarea_matriceria.intervencions.first.inicio.strftime("%d/%m/%Y %H:%M")
         end
 
         if tarea.proceso.nombre.downcase == "polimero"
