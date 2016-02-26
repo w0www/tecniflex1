@@ -6,18 +6,18 @@ html, body {background-color: darkgray; }
 }
 
 table#polimeros{
-  width:190%;
+  width:100%;
   color:#fff;
 }
 
 table#polimeros tr th{
-  font-size:24px;
+  font-size:16;
 }
 
 table#polimeros tr td{
   border:1px solid;
   padding: 15px;
-  font-size:24px;
+  font-size:16px;
 }
 
 

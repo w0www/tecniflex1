@@ -20,7 +20,7 @@
 </page>
 
 <def tag="tabla-tiempos">
-  <label style="color:#fff; font-size:20px;">Polimeros</label>
+  <label style="color:#fff; font-size:24px;">Polimeros</label>
   <br/><br/>
   <table id="polimeros">
     <tbody>
@@ -33,7 +33,7 @@
         <th><center>NRO CLISSE</center></th>
         <th><center>FECHA FIN REVISIONMM</center></th>
         <th><center>FECHA ENTREGA</center></th>
-        <th style="width:2%;font-size:24px;"><center>PRIORIDAD</center></th>
+        <th style="width:2%;font-size:16px;"><center>PRIORIDAD</center></th>
       </tr>
       <% for tarea in @tareas %>
       <% ord_trab = tarea.ord_trab %>
