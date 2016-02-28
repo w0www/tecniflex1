@@ -4,9 +4,6 @@
 
   </head:>
   <content: replace>
-    <div class="page-header" id="pantalla">
-      .
-    </div>
 
     <div class="content-body">
       <div style="margin-top:10px;">
