@@ -50,7 +50,7 @@ class OrdTrabsController < ApplicationController
 	end
 
   def update
-    params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') 
+    params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') if params[:ord_trab][:fecha]
     # Parseamos el valor del datepicker
     parsear_datepicker
     hobo_update do 

@@ -5,6 +5,23 @@ html, body {background-color: darkgray; }
 	background: black;
 }
 
+table#polimeros{
+  width:100%;
+  color:#fff;
+}
+
+table#polimeros tr th{
+  font-size:16;
+}
+
+table#polimeros tr td{
+  border:1px solid;
+  padding: 15px;
+  font-size:12px;
+}
+
+
+
 html.pantalla div.pagination a{
   background: none;
   color: white;
@@ -19,6 +36,7 @@ html.pantalla div.pagination span.current{
 	background-color: white;
 	background-position: left center;
 	height: 90px;
+  width:190%;
 }
 
 #tactividad th {

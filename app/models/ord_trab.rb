@@ -171,7 +171,39 @@ class OrdTrab < ActiveRecord::Base
 
   def codigo_producto
     texto = "#{self.cliente.sigla}"
-    texto = "#{texto} - #{self.codCliente}" if self.codCliente
+    texto = "#{texto}-#{self.codCliente}" if self.codCliente
+  end
+
+  def mdi_desarrollo_xml
+    if self.mdi_ancho.to_s.include?(".0")
+      return mdi_ancho.to_i.to_s    
+    else
+      return mdi_ancho.to_s
+    end
+  end
+
+  def mdi_ancho_xml
+    if self.mdi_desarrollo.to_s.include?(".0")
+      return mdi_desarrollo.to_i.to_s    
+    else
+      return mdi_desarrollo.to_s
+    end
+  end
+
+  def mcTacasH_xml
+    if self.mcTacasH.to_s.include?(".0")
+      return mcTacasH.to_i.to_s    
+    else
+      return mcTacasH.to_s
+    end
+  end
+
+  def mcTacasV_xml
+    if self.mcTacasV.to_s.include?(".0")
+      return mcTacasV.to_i.to_s    
+    else
+      return mcTacasV.to_s
+    end
   end
 
  # Permite volver a una tarea anterior, habilitandola
