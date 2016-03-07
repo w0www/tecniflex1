@@ -1,7 +1,7 @@
 <page title="pantalla" without-header class="pantalla" style="background-color:black !important">
   <head:>
     <param-content />
-
+    <meta http-equiv="refresh" content="60"/>
   </head:>
   <content: replace>
 
@@ -31,7 +31,7 @@
         <th><center>NRO CLISSE</center></th>
         <th><center>FECHA FIN REVISIONMM</center></th>
         <th><center>FECHA ENTREGA</center></th>
-        <th style="width:2%;font-size:16px;"><center>PRIORIDAD</center></th>
+        <th style="width:1%;"><center>PRIORIDAD</center></th>
       </tr>
       <% for tarea in @tareas %>
       <% ord_trab = tarea.ord_trab %>
