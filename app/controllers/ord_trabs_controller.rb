@@ -419,7 +419,9 @@ class OrdTrabsController < ApplicationController
 
   def crear_fichero_xml
     stream = render_to_string(:template=>"ord_trabs/show.xml")
-    f = open("#{Rails.root}/lib/nas/#{this.numOT}.xml", "wb")
+    # Si el cliente es EMPACK Y COPACK se guarda en XML_IN-EMP_CPK
+    carpeta = this.cliente.name == "COPACK" || this.cliente.name == "EMPACK" ? "XML_IN - EMP_CPK" : "XML_IN"
+    f = open("#{Rails.root}/lib/nas/#{carpeta}/#{this.numOT}.xml", "wb")
     begin
       f.write(stream)
     ensure
