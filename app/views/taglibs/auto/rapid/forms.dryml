@@ -39,7 +39,7 @@
 <def tag="form" for="Cliente">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="name, razsocial, sigla, rut, correo, direccion, telefono, fpago, tarifa, plazopago, descuento, cuenta_usuario, password, contactos, curvas" param/>
+    <field-list fields="name, razsocial, sigla, rut, correo, direccion, telefono, fpago, tarifa, plazopago, descuento, cuenta_usuario, password, generar_xml, contactos, curvas" param/>
     <div param="actions">
       <submit label="#{ht 'clientes.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
