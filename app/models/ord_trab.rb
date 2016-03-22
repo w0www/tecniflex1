@@ -175,19 +175,11 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def mdi_desarrollo_xml
-    if self.mdi_ancho.to_s.include?(".0")
-      return mdi_ancho.to_i.to_s    
-    else
-      return mdi_ancho.to_s
-    end
+    self.mdi_desarrollo.to_s.include?(".0") ? return mdi_desarrollo.to_i.to_s : return mdi_desarrollo.to_s
   end
 
   def mdi_ancho_xml
-    if self.mdi_desarrollo.to_s.include?(".0")
-      return mdi_desarrollo.to_i.to_s    
-    else
-      return mdi_desarrollo.to_s
-    end
+    self.mdi_ancho.to_s.include?(".0") ? return mdi_ancho.to_i.to_s : return mdi_ancho.to_s
   end
 
   def mcTacasH_xml
@@ -220,6 +212,7 @@ class OrdTrab < ActiveRecord::Base
       
 		end
  end
+
 
   # Ordena las tareas de una OT segun la posicion de sus procesos. Permite habilitar las tareas en orden.
   def sortars
