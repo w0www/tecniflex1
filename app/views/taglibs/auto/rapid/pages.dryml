@@ -533,7 +533,7 @@
               </ht>
             </h2>
 
-            <record-flags fields="cuenta_usuario" param/>
+            <record-flags fields="cuenta_usuario, generar_xml" param/>
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="clientes.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
