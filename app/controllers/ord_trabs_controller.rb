@@ -240,9 +240,9 @@ class OrdTrabsController < ApplicationController
               # TIPO OT
               @tipo_ot = orden.tipoot
               # FECHA CREACION OT
-              @fecha_creacion = orden.created_at.strftime("%Y-%m-%d %l:%M:%S")
+              @fecha_creacion = orden.created_at.strftime("%Y-%m-%d %l:%M:%S") if orden.created_at
               # FECHA ENTREGA
-              @fecha_entrega = orden.fechaEntrega.strftime("%Y-%m-%d %l:%M:%S")
+              @fecha_entrega = orden.fechaEntrega.strftime("%Y-%m-%d %l:%M:%S") if orden.fechaEntrega
               # FECHA TERMINO OT
               # SI TODAS LAS TAREAS ESTAN TERMINADAS COGER LA ULTIMA TAREA SU ULTIMA INTERVENCION SU FECHA DE TERMINO
               if orden.orden_terminada
