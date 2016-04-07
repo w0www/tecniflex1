@@ -246,7 +246,7 @@ class OrdTrabsController < ApplicationController
               # FECHA TERMINO OT
               # SI TODAS LAS TAREAS ESTAN TERMINADAS COGER LA ULTIMA TAREA SU ULTIMA INTERVENCION SU FECHA DE TERMINO
               if orden.orden_terminada
-                @fecha_termino = orden.tareas.last.intervencions.last.termino.strftime("%Y-%m-%d %l:%M:%S") if orden.tareas.last.intervencions != []
+                @fecha_termino = orden.tareas.last.intervencions.last.termino.strftime("%Y-%m-%d %l:%M:%S") if orden.tareas.last.intervencions != [] && orden.tareas.last.intervencions.last.termino 
               end
               # PROCESOS
               ## PDF
