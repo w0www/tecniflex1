@@ -246,7 +246,7 @@ class OrdTrabsController < ApplicationController
               # FECHA TERMINO OT
               # SI TODAS LAS TAREAS ESTAN TERMINADAS COGER LA ULTIMA TAREA SU ULTIMA INTERVENCION SU FECHA DE TERMINO
               if orden.orden_terminada
-                @fecha_termino = orden.tareas.last.intervencions.last.termino.strftime("%Y-%m-%d %l:%M:%S") if orden.tareas.last.intervencions != [] && orden.tareas.last.intervencions.last.termino 
+                @fecha_termino = orden.tareas.last.intervencions.last.termino.strftime("%Y-%m-%d %l:%M:%S") if orden.tareas != [] && orden.tareas.last.intervencions != [] && orden.tareas.last.intervencions.last.termino 
               end
               # PROCESOS
               ## PDF
@@ -266,8 +266,8 @@ class OrdTrabsController < ApplicationController
               ## DESPACHO
               @despacho = orden.tareas.detipo("Facturacion").first.state if orden.tareas.detipo("Facturacion") != []
               # AREA
-              @area = orden.separacions.*.area.sum.to_f if orden.separacions
-
+              #@area = orden.separacions.*.area.sum.to_f if orden.separacions
+              @area = 100
 
               arri = [@elclie, @numero_ot, @tipo_ot, @fecha_creacion, @fecha_entrega, @fecha_termino, @pdf, @revision_pdf, @printer, @matriceria, @montaje, @revision, @polimero, @despacho, @area] 
               
