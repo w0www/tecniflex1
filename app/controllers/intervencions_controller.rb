@@ -117,7 +117,7 @@ class IntervencionsController < ApplicationController
           				
         # send it to da browsah
         end
-        send_data(csv_string.force_encoding('ASCII-8BIT'),
+        send_data(csv_string,
                   :type => 'text/csv; charset=iso-8859-1; header=present',
                   :disposition => "attachment", :filename => Time.now.strftime("Intervenciones_al_%d_%m_%Y") + ".csv")
       end

@@ -306,7 +306,7 @@ class OrdTrabsController < ApplicationController
           				
         # send it to da browsah
         end
-        send_data(csv_string.force_encoding('ASCII-8BIT'),
+        send_data(csv_string,
                   :type => 'text/csv; charset=iso-8859-1; header=present',
                   :disposition => "attachment", :filename => Time.now.strftime("Ordenes fact_al_%d_%m_%Y") + ".csv")
       end
@@ -390,7 +390,7 @@ class OrdTrabsController < ApplicationController
 					end
 				end
 				# send it to the browsah
-				send_data(csv_string.force_encoding('ASCII-8BIT'),
+				send_data(csv_string,
 									:type => 'text/csv; charset=iso-8859-1; header=present',
 									:disposition => "attachment", :filename => Time.now.strftime("Ordenes_al_%d_%m_%Y") + ".csv")
 			end
