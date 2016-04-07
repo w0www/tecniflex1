@@ -195,7 +195,6 @@ class OrdTrabsController < ApplicationController
   #####
         csv_string = CSV.generate(:col_sep => ";") do |csv|
           ##################
-          @otsel = OrdTrab.all
           @proces = Proceso.all.*.nombre
           if params[:cliente] != ""
             @clies = params[:cliente]
@@ -226,80 +225,51 @@ class OrdTrabsController < ApplicationController
             @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
             @otsel = OrdTrab.all(:conditions => ["created_at <= ?", @fenal.to_datetime.in_time_zone(Time.zone)])
           end
+
+          @otsel = OrdTrab.all if @otsel.blank?
           
           ##################
-          arre = ["Cliente", "O.T.", "Producto", "Codigo", "Fecha Inicio", "Fecha Termino","N.Fact", "Tiempo bruto", "Tiempo neto", "cm2 tot.", "cm2 fact.", "F. V.B.", "E. V.B.", "F. PTR", "E. PTR"] + @proces
+          arre = ["CLIENTE", "NRO OT", "TIPO OT", "FECHA CREACION OT", "FECHA ENTREGA", "FECHA TERMINO", "PDF", "REVISION PDF", "PRINTER", "MATRICERIA", "MONTAJE", "REVISION", "POLIMERO", "DESPACHO", "AREA"]
           csv << arre
           ## data rows
             @otsel.each do |orden|
-              if orden.tareas
-                primpro = Proceso.prueba.first.id
-                secpro = Proceso.prueba.second.id
-                if primpro != nil
-                  @primpru = orden.tareas.all(:conditions => ["proceso_id = ?", primpro]).first
-                end
-                if secpro != nil
-                  @secpru = orden.tareas.all(:conditions => ["proceso_id = ?", secpro]).first
-                end
+              # Cliente
+              @elclie = orden.cliente ? orden.cliente : ""
+              # NRO OT
+              @numero_ot = orden.numOT
+              # TIPO OT
+              @tipo_ot = orden.tipoot
+              # FECHA CREACION OT
+              @fecha_creacion = orden.created_at.strftime("%Y-%m-%d %l:%M:%S")
+              # FECHA ENTREGA
+              @fecha_entrega = orden.fechaEntrega.strftime("%Y-%m-%d %l:%M:%S")
+              # FECHA TERMINO OT
+              # SI TODAS LAS TAREAS ESTAN TERMINADAS COGER LA ULTIMA TAREA SU ULTIMA INTERVENCION SU FECHA DE TERMINO
+              if orden.orden_terminada
+                @fecha_termino = orden.tareas.last.intervencions.last.termino.strftime("%Y-%m-%d %l:%M:%S") if orden.tareas.last.intervencions != []
               end
-              if orden.cliente
-                @elclie = orden.cliente
-              else
-                @elclie = ""
-              end
-              @estot = orden.ciclos
-              tpar = ((orden.updated_at - orden.created_at))
-              @tparh = Time.duracion(orden.created_at,orden.updated_at)
-              atot = orden.areatot || 0 
-              if orden.numFact != nil
-                factur = orden.updated_at.strftime("%Y-%m-%d %l:%M:%S")
-                areafact = orden.areatot
-              else
-                factur = ""
-                areafact = 0
-                
-              end
-              @listaciclos = []
-              @proces.each do |prociclo|
-                if @estot.assoc(prociclo)
-                  @listaciclos << @estot.assoc(prociclo)[1].to_s
-                else
-                  @listaciclos << ""
-                end
-              end 
-              if @primpru != nil
-                @estprimpru = @primpru.state
-                if @primpru.intervencions != []
-                  if @primpru.intervencions.last.termino != nil
-                    @ultintvb = @primpru.intervencions.last.termino.strftime("%Y-%m-%d %l:%M:%S")
-                  else
-                    @ultintvb = @primpru.intervencions.last.inicio.strftime("%Y-%m-%d %l:%M:%S")
-                  end
-                else
-                  @ultintvb = ""
-                end
-              else
-                @ultintvb = ""
-                @estprimpru = ""
-              end
-              if @secpru != nil
-                @estsecpru = @secpru.state
-                if @secpru.intervencions != []
-                  if @secpru.intervencions.last.termino != nil
-                    @ultintptr = @secpru.intervencions.last.termino.strftime("%Y-%m-%d %l:%M:%S")
-                  else
-                    @ultintptr = @secpru.intervencions.last.inicio.strftime("%Y-%m-%d %l:%M:%S")
-                  end
-                else
-                  @ultintptr = ""
-                end
-              else 
-                @ultintptr = ""
-                @estsecpru = ""
-              end
-              @tiempot = Time.duracion(Time.at(0),orden.tnetot)
-              @FVB = orden
-              arri = [@elclie, orden.numOT, orden.nomprod, orden.armacod, orden.created_at.strftime("%Y-%m-%d %l:%M:%S"), factur, orden.numFact, @tparh, @tiempot, orden.areatot, areafact, @ultintvb, @estprimpru, @ultintptr, @estsecpru] + @listaciclos 
+              # PROCESOS
+              ## PDF
+              @pdf = orden.tareas.detipo("VistoBueno").first.state if orden.tareas.detipo("VistoBueno") != []
+              ## REVISION PDF
+              @revision_pdf = orden.tareas.detipo("RevisionVB").first.state if orden.tareas.detipo("RevisionVB") != []
+              ## PRINTER
+              @printer = orden.tareas.detipo("PRINTER").first.state if orden.tareas.detipo("Printer") != []
+              ## MATRICERIA
+              @matriceria = orden.tareas.detipo("Matriceria").first.state if orden.tareas.detipo("Matriceria") != []
+              ## MONTAJE
+              @montaje = orden.tareas.detipo("Montaje").first.state if orden.tareas.detipo("Montaje") != []
+              ## REVISION
+              @revision = orden.tareas.detipo("RevisionMM").first.state if orden.tareas.detipo("RevisionMM") != []
+              ## POLIMERO
+              @polimero = orden.tareas.detipo("Polimero").first.state if orden.tareas.detipo("Polimero") != []
+              ## DESPACHO
+              @despacho = orden.tareas.detipo("Facturacion").first.state if orden.tareas.detipo("Facturacion") != []
+              # AREA
+              @area = orden.separacions.*.area.sum.to_f if orden.separacions
+
+
+              arri = [@elclie, @numero_ot, @tipo_ot, @fecha_creacion, @fecha_entrega, @fecha_termino, @pdf, @revision_pdf, @printer, @matriceria, @montaje, @revision, @polimero, @despacho, @area] 
               
               csv << arri
              end
