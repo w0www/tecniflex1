@@ -1897,7 +1897,7 @@
 
           <section param="content-body">
             <view:description param="description"/>
-            <field-list fields="code" param/>
+            <field-list fields="code, num_char" param/>
           </section>
     </content:>
 

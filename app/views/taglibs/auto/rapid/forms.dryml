@@ -147,7 +147,7 @@
 <def tag="form" for="ListBarcode">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="description, code" param/>
+    <field-list fields="description, code, num_char" param/>
     <div param="actions">
       <submit label="#{ht 'list_barcodes.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

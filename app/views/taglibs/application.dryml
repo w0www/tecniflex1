@@ -53,6 +53,7 @@
   </old-show-page>
 </extend>
 
+
 <extend tag="new-page" for="MovHeader">
   <old-new-page merge>
   	<heading:>
@@ -323,7 +324,7 @@
   <card class="proceso" param="default" merge>
     <header: param>
       <h4 param="heading">
-        <a><view:code/></a>
+        <a><view:code/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NUM_CHAR: <view:num_char/>
       </h4>
     </header:>
   </card>

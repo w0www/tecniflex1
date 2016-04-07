@@ -285,7 +285,11 @@ class OrdTrab < ActiveRecord::Base
   validates_presence_of :encargado_id
   validates_presence_of :dispBandas, :espesor, :tipomat, :if => "self.mtz"
   validates_associated :separacions, :if => "(self.mtje || self.mtz || self.pol) && self.activa? ", :on => :habilitar
+  validate :limite_codigo_barras
 
+  def limite_codigo_barras
+    errors.add(:barcode, "no puede ser mayor que #{list_barcode.num_char}") if barcode.length > list_barcode.num_char
+  end
 
   def before_create
 		if OrdTrab.all == []
@@ -298,6 +302,7 @@ class OrdTrab < ActiveRecord::Base
   def activa?
     ['habilitada','iniciada','detenida'].include?(self.state)
   end
+
 
 	# Boolean que indica si todas las tareas estn terminadas o la orden no tiene
 	def tareas_terminadas?
