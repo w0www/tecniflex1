@@ -19,12 +19,15 @@
       </ul>
       <div id="tabs-1">
           <div class='header' >
+              <if test="&@error == 1">
+                "No se  ha encontrado ninguna orden de trabajo con esos filtros"
+              </if>
               <filters action="/ord_trabs/tablero"/>
               <a href="#" id="filter-button" class="nice-button ui-state-default ui-corner-all">Filtrar</a>
             <br/>
           </div>
           <%= will_paginate @todas %>
-          <table class="tablero" part="dashboard">
+          <table class="tablero" part="dashboard"> 
             <thead>
               <tr>
                 <th class="hr1">OT<br/><span style="color:#555;">Cod. Prod.</span></th>

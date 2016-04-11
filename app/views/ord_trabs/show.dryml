@@ -1,6 +1,7 @@
 <show-page>
   <heading:>
     <name/> <span style="float:right"> <%= link_to '<< Atras', request.env['HTTP_REFERER'] %></span><br/>
+    <span if="&@message != ''" style="font-color:red"> <%= @message %></span><br/>
   </heading:>
   <edit-link: replace>
     <%if current_user.rol != "Facturador" %>
@@ -11,6 +12,7 @@
   </edit-link:>
   <content-body:>
     <div>
+
       <!-- = button_to "Enviar OT", :action => 'mail_ot', :id => this.id -->
       <%= link_to "Exportar XML", ord_trab_path(:format => 'xml')  %>
     </div>
@@ -230,7 +232,9 @@
         <th>Ancho</th>
         <th>Area</th>
         <th>Copias</th>
-        <td colspan="7" rowspan="<%=  1+this.separacions.count %>">&nbsp;<view:observaciones/></td>
+        <td colspan="7" rowspan="<%=  1+this.separacions.count %>">
+          &nbsp;<view:observaciones/>
+        </td>
       </tr>
       <repeat with="&this.separacions">
         <tr>
@@ -260,6 +264,14 @@
       <%end%>
     </table>
     <transition-buttons class="centrada"/>
+    <br/><br/><span style="font-size:16px">Crear reposición</span><br/>
+    <form action="/ord_trabs/#{this.id}/reposicion">
+      N de Copias: <input type="text" name="ord_trab[nCopias]" id="ord_trab_nCopias" class="integer ord-trab-nCopias"/>
+      <br/>Observaciones: 
+      <br/><textarea name="ord_trab[observaciones]" id="ord_trab_observaciones" class="text ord-trab-observaciones">
+      </textarea>
+      <br/><submit value="Crear nueva reposicion"/>
+    </form>
   </content-body:>
 </show-page>
 

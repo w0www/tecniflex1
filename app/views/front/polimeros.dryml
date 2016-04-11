@@ -1,7 +1,7 @@
 <page title="pantalla" without-header class="pantalla" style="background-color:black !important">
   <head:>
     <param-content />
-    <meta http-equiv="refresh" content="60;url=/front/polimeros?page=#{@pagina_siguiente}" />
+    <meta http-equiv="refresh" content="60;url=/front/polimeros?page=#{@pagina_siguiente}&total=#{@x_tareas}" />
   </head:>
   <content: replace>
 
@@ -9,7 +9,7 @@
       <div style="margin-top:10px;">
         <tabla-tiempos/><br/>
         <span style="color:#FFFFFF">
-          <%= will_paginate @tareas, :style => "visibility:hidden"%>
+          <%= will_paginate @tareas, :style => "visibility:hidden", :params => { :user_id => 95 }%>
         </span>
 
       </div>
@@ -19,6 +19,26 @@
 
 <def tag="tabla-tiempos">
   <label style="color:#fff; font-size:24px;">Polimeros</label>
+  <br/><br/>
+  <label style="color:#fff; font-size:16px;">Contadores</label>
+  <table id="polimeros">
+    <tbody>
+      <tr>
+        <th><center>Terminadas HOY</center></th>
+        <th><center>Terminadas AYER</center></th>
+        <th><center>Terminadas MES</center></th>
+        <th><center>Terminadas AÑO</center></th>
+        <th><center>Terminadas TOTAL</center></th>
+      </tr>  
+      <tr>
+        <td><center><%= @tareas_terminadas_hoy %></center></td>
+        <td><center><%= @tareas_terminadas_ayer %></center></td>
+        <td><center><%= @tareas_terminadas_mes %></center></td>
+        <td><center><%= @tareas_terminadas_aio %></center></td>
+        <td><center><%= @tareas_terminadas_totales %></center></td>
+      </tr>
+    </tbody>
+  </table>
   <br/><br/>
   <table id="polimeros">
     <tbody>
@@ -64,27 +84,6 @@
         <td style="background-color:#{color if color};"/>
       </tr>
       <% end %>
-    </tbody>
-  </table>
-  <br/><br/>
-  <label style="color:#fff; font-size:16px;">Contadores</label>
-  <br/><br/>
-  <table id="polimeros">
-    <tbody>
-      <tr>
-        <th><center>Terminadas HOY</center></th>
-        <th><center>Terminadas AYER</center></th>
-        <th><center>Terminadas MES</center></th>
-        <th><center>Terminadas AÑO</center></th>
-        <th><center>Terminadas TOTAL</center></th>
-      </tr>  
-      <tr>
-        <td><center><%= @tareas_terminadas_hoy %></center></td>
-        <td><center><%= @tareas_terminadas_ayer %></center></td>
-        <td><center><%= @tareas_terminadas_mes %></center></td>
-        <td><center><%= @tareas_terminadas_aio %></center></td>
-        <td><center><%= @tareas_terminadas_totales %></center></td>
-      </tr>
     </tbody>
   </table>
 </def>

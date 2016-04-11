@@ -4,15 +4,17 @@
     <fieldset class="feckless-fields horizontal informe">
       <% if @cliente_logeado.blank? %>
         <select-field label="Cliente" name="cliente" options="&Cliente.all.map{|c| [c.name]}" first-option="Filtrar por cliente"/>
-        <input-field label="Cod. cliente" name="codigo_cliente"/>
+        <codCliente-field label="Cod. cliente" name="codCliente"/>
+        <input-field label="Version" name="version"/>
         <select-field label="Proceso" name="proceso" options="&Proceso.all.map{|p| [p.nombre]}" first-option="Filtrar por proceso"/>
         <select-field label="Estado proceso" name="estado_proceso" options="&Tarea::Lifecycle.states.keys.map{|s|[s.to_s]}.uniq" first-value="" first-option="Filtrar por estado"/>
         <select-field label="Estado OT" name="estado" options="&OrdTrab::Lifecycle.states.keys.map{|s|[s.to_s]}" first-option="Filtrar por estado"/>
         <input-field label="O.T." name="orden"/>
         <date-field label="Fecha" name="fecha"/>
       <% elsif @cliente_logeado %>
-        <input-field label="Cod. cliente" name="codigo_cliente"/>
+        <codCliente-field label="Cod. cliente" name="codCliente"/>
         <date-field label="Fecha" name="fecha"/>
+        <input-field label="Version" name="version"/>
       <% end %>
       <placeholder-field/>
       <submit-field/>
@@ -38,6 +40,13 @@
 </def>
 
 <def tag="espesor-field" attrs="label, name">
+  <div class="field num_siniestro-field  ">
+    <label><%= label %></label>
+    <input type="text" name="#{name}" value="&params[name.to_sym]"/>
+  </div>
+</def>
+
+<def tag="codCliente-field" attrs="label, name">
   <div class="field num_siniestro-field  ">
     <label><%= label %></label>
     <input type="text" name="#{name}" value="&params[name.to_sym]"/>

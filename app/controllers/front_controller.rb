@@ -75,7 +75,18 @@ class FrontController < ApplicationController
         @pagina_siguiente = 1
       end
     end
+    @x_tareas = @tareas.count    
+    if params[:x_tareas] && params[:x_tareas] != @x_tareas
+      # sudo apt-get install beep
+      # Editar en modo root el fichero que se encuentra en /etc/modprobe.d/blacklist.conf   
+      # o en mi caso también en  /etc/modprobe.d/alsa-base-blacklist.conf.
+      # Buscamos y descomentamos la linea ‘blacklist pcspkr’ o ‘blacklist snd-pcsp’, y ya lo tenemos preparado.
+      # chmod 4755 /usr/bin/beep
+      system("beep -l 300 -f 880")
+    end
+    
     @tareas = @tareas.paginate(:page => params[:page], :per_page => 20)
+    
   end
   
   def eliminar

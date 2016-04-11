@@ -68,6 +68,7 @@ class OrdTrab < ActiveRecord::Base
     mdi_desarrollo :decimal, :precision => 8, :scale => 2, :default => 0
     mdi_ancho      :decimal, :precision => 8, :scale => 2, :default => 0
     barcode        :string
+    barcodecopy    :string
     colorBarcode   :string
     dispBandas     :integer
     distTotalPerim :decimal, :precision => 8, :scale => 2, :default => 0
@@ -285,10 +286,14 @@ class OrdTrab < ActiveRecord::Base
   validates_presence_of :encargado_id
   validates_presence_of :dispBandas, :espesor, :tipomat, :if => "self.mtz"
   validates_associated :separacions, :if => "(self.mtje || self.mtz || self.pol) && self.activa? ", :on => :habilitar
-  validate :limite_codigo_barras
+  validate :limite_codigo_barras, :barcodes_iguales
 
   def limite_codigo_barras
-    errors.add(:barcode, "no puede ser mayor que #{list_barcode.num_char}") if barcode.length > list_barcode.num_char
+    errors.add(:barcode, "tiene que tener #{list_barcode.num_char} dígitos") if list_barcode.num_char && list_barcode.num_char > 0 && barcode.length != list_barcode.num_char
+  end
+
+  def barcodes_iguales
+    errors.add(:barcodecopy, "tiene que ser igual que el barcode") if barcode != barcodecopy
   end
 
   def before_create
