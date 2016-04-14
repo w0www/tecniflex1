@@ -10,6 +10,7 @@ class Separacion < ActiveRecord::Base
     area    :decimal, :precision => 8, :scale => 2, :default => 0
     alto    :decimal, :precision => 8, :scale => 2, :default => 0
     ancho   :decimal, :precision => 8, :scale => 2, :default => 0
+    nCopias :integer
     timestamps
   end
 
@@ -34,6 +35,7 @@ class Separacion < ActiveRecord::Base
   		self.lpi = anterior.lpi
   		self.tipomat = anterior.tipomat
   		self.espesor = anterior.espesor
+      self.nCopias = orden.nCopias if self.nCopias.blank?
   	end
 	end
 

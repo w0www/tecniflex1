@@ -347,6 +347,7 @@
         Lpi:<input:lpi style="width:5%"/>
         &nbsp;&nbsp; Al:<input:alto style="width:5%"/>
         x An:<input:ancho  style="width:5%"/>
+        Nº Copias:<input:nCopias  style="width:5%"/>
         <hidden-id-field/>
       </div>
     </item:>

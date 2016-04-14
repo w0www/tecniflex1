@@ -103,30 +103,45 @@ class OrdTrabsController < ApplicationController
   def show
    	# Guardamos en una variable si el usuario que esta viendo el show es un cliente o un operador
     @cliente_logeado = Cliente.find_by_correo(current_user.email_address)
-    if params[:ord_trab] && params[:ord_trab][:nCopias] != ""
-      @nueva_reposicion = OrdTrab.find(params[:id]).clone
-      @nueva_reposicion.observaciones = params[:ord_trab][:observaciones]
-      @nueva_reposicion.nCopias = params[:ord_trab][:nCopias]
-      @nueva_reposicion.tipoot_id = Tipoot.find_by_name("R (REPOSICION)").id
-      @nueva_reposicion.vb = false
-      @nueva_reposicion.ptr = false
-      @nueva_reposicion.mtz = false
-      @nueva_reposicion.mtje = false
-      @nueva_reposicion.pol = true
-      @nueva_reposicion.separacions << OrdTrab.find(params[:id]).separacions
-      @nueva_reposicion.fechaEntrega = calcular_fecha_reposicion
-      @nueva_reposicion.save
-    end
+    @usuario_polimero = current_user.email_address == "polimero@tecniflex.cl"
+    @tipo_tarea_nueva = OrdTrab.find(params[:id]).tipoot_id == Tipoot.find_by_name("N (Trabajo Nuevo)").id
 
-    if @nueva_reposicion && @nueva_reposicion.errors.count == 0
-      @message = "Se ha creado una nueva reposición, click <a href='/ord_trabs/#{@nueva_reposicion.id}'><a href='/ord_trabs/#{@nueva_reposicion.id}'>AQUÍ</a> para verla."
-      @nueva_reposicion.tareas.first.update_attribute(:state, "habilitada") if @nueva_reposicion.tareas != []
-      # Enviar email al cliente
-      RecibArchMailer.avisar_cliente(@ot,@nueva_reposicion.cliente.correo)
-    elsif @nueva_reposicion && @nueva_reposicion.errors.count != 0
-      @message = "Ha ocurrido un error, pongase en contacto con el administrador."
-    end
+    if (@cliente_logeado || @usuario_polimero) && @tipo_tarea_nueva
+      if params[:ord_trab] && params[:ord_trab][:nCopias] != ""
+        @nueva_reposicion = OrdTrab.find(params[:id]).clone
+        @nueva_reposicion.observaciones = params[:ord_trab][:observaciones]
+        @nueva_reposicion.nCopias = params[:ord_trab][:nCopias]
+        @nueva_reposicion.tipoot_id = Tipoot.find_by_name("R (REPOSICION)").id
+        @nueva_reposicion.vb = false
+        @nueva_reposicion.ptr = false
+        @nueva_reposicion.mtz = false
+        @nueva_reposicion.mtje = false
+        @nueva_reposicion.pol = true
+        @nueva_reposicion.fechaEntrega = calcular_fecha_reposicion
+        @nueva_reposicion.save
+        for s in OrdTrab.find(params[:id]).separacions
+          separacion_nueva = s.clone
+          # calcular numero de copias
+          # si recibe algo se guarda ese
+          if params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].blank?
+            num_copias = s.nCopias
+          else
+            num_copias = params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"]
+          end          
+          separacion_nueva.nCopias = num_copias unless num_copias.blank?
+          @nueva_reposicion.separacions << separacion_nueva 
+        end
+      end
 
+      if @nueva_reposicion && @nueva_reposicion.errors.count == 0
+        @message = "Se ha creado una nueva reposición, click <a href='/ord_trabs/#{@nueva_reposicion.id}'><a href='/ord_trabs/#{@nueva_reposicion.id}'>AQUÍ</a> para verla."
+        @nueva_reposicion.tareas.first.update_attribute(:state, "habilitada") if @nueva_reposicion.tareas != []
+        # Enviar email al cliente
+        RecibArchMailer.deliver_avisar_cliente(@nueva_reposicion,@nueva_reposicion.cliente.correo)
+      elsif @nueva_reposicion && @nueva_reposicion.errors.count != 0
+        @message = "Ha ocurrido un error, pongase en contacto con el administrador."
+      end
+    end
     hobo_show do |format|
       format.html { @taras = this.sortarasigs }
       format.xml {
@@ -161,6 +176,39 @@ class OrdTrabsController < ApplicationController
     hobo_new do
       @ot_anterior = OrdTrab.find (params[:id])
       OrdTrab.new(@ot_anterior)
+    end
+  end
+
+  index_action :reposiciones do
+    # Aquí solo pueden llegar los usuarios clientes y el polimero@tecniflex.cl
+    @cliente_logeado = Cliente.find_by_correo(current_user.email_address)
+    if @cliente_logeado || current_user.email_address == "polimero@tecniflex.cl"
+      @hora_actual = DateTime.now.in_time_zone  
+      @grupro = Grupoproc.tablero.order_by(:position)
+      @procesos = Proceso.order_by(:position)
+      @clies = Cliente.all
+      @error = 0
+      if @cliente_logeado
+        params[:cliente] = @cliente_logeado
+      end
+      inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
+      final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time.end_of_day if params[:fecha_fin] && !params[:fecha_fin].blank?
+      codCliente = params[:codCliente].split("-").last unless params[:codCliente].blank?
+      sigla = params[:codCliente].split("-").first unless params[:codCliente].blank?
+      cliente = Cliente.find_by_sigla(sigla) unless sigla.blank?
+      cliente_id = cliente.id unless cliente.blank?
+      version = params[:version] unless params[:version].blank?
+      tipo_ot = Tipoot.find_by_name("N (Trabajo Nuevo)").id
+
+      @error = 1 if codCliente.blank? || cliente.blank?
+
+      @todas = OrdTrab.apply_scopes(
+        :cliente_id_is => cliente_id,
+        :codCliente_is => codCliente,
+        :version_is => version,
+        :tipoot_id_is => tipo_ot
+    )
+
     end
   end
   
@@ -278,7 +326,7 @@ class OrdTrabsController < ApplicationController
           end
 
           ##################
-          arre = ["CLIENTE", "NRO OT", "TIPO OT", "FECHA CREACION OT", "FECHA ENTREGA", "FECHA TERMINO", "PDF", "REVISION PDF", "PRINTER", "MATRICERIA", "MONTAJE", "REVISION", "POLIMERO", "DESPACHO", "AREA"]
+          arre = ["CLIENTE", "NRO OT", "TIPO OT", "FECHA CREACION OT", "HORA CREACION OT", "FECHA ENTREGA", "HORA ENTREGA", "FECHA TERMINO", "HORA TERMINO", "PDF", "REVISION PDF", "PRINTER", "MATRICERIA", "MONTAJE", "REVISION", "POLIMERO", "DESPACHO", "AREA"]
           csv << arre
           ## data rows
             @otsel.each do |orden|
@@ -290,13 +338,20 @@ class OrdTrabsController < ApplicationController
               # TIPO OT
               @tipo_ot = orden.tipoot
               # FECHA CREACION OT
-              @fecha_creacion = orden.created_at.strftime("%Y-%m-%d %l:%M:%S") if orden.created_at
+              @fecha_creacion = orden.created_at.strftime("%d/%m/%Y %l:%M:%S") if orden.created_at
+              # HORA CREACION OT
+              @hora_creacion = orden.created_at.strftime("%l:%M:%S") if orden.created_at
               # FECHA ENTREGA
-              @fecha_entrega = orden.fechaEntrega.strftime("%Y-%m-%d %l:%M:%S") if orden.fechaEntrega
+              @fecha_entrega = orden.fechaEntrega.strftime("%d/%m/%Y %l:%M:%S") if orden.fechaEntrega
+              # HORA ENTREGA
+              @hora_creacion = orden.fechaEntrega.strftime("%l:%M:%S") if orden.fechaEntrega
               # FECHA TERMINO OT
               # SI TODAS LAS TAREAS ESTAN TERMINADAS COGER LA ULTIMA TAREA SU ULTIMA INTERVENCION SU FECHA DE TERMINO
               if orden.orden_terminada
-                @fecha_termino = tareas.last.intervencions.last.termino.strftime("%Y-%m-%d %l:%M:%S") if tareas != [] && tareas.last.intervencions != [] && tareas.last.intervencions.last.termino 
+                if tareas != [] && tareas.last.intervencions != [] && tareas.last.intervencions.last.termino
+                  @fecha_termino = tareas.last.intervencions.last.termino.strftime("%d/%m/%Y") 
+                  @hora_termino = tareas.last.intervencions.last.termino.strftime("%l:%M:%S")
+                end
               end
               tareas_tipo_vistobueno = tareas.detipo("VistoBueno")
               tareas_tipo_revisionvb = tareas.detipo("RevisionVB")
@@ -330,7 +385,7 @@ class OrdTrabsController < ApplicationController
                   @area += o.area.to_f 
                 end
               end
-              arri = [@elclie, @numero_ot, @tipo_ot, @fecha_creacion, @fecha_entrega, @fecha_termino, @pdf, @revision_pdf, @printer, @matriceria, @montaje, @revision, @polimero, @despacho, @area] 
+              arri = [@elclie, @numero_ot, @tipo_ot, @fecha_creacion, @hora_creacion, @fecha_entrega, @hora_entrega, @fecha_termino, @hora_termino, @pdf, @revision_pdf, @printer, @matriceria, @montaje, @revision, @polimero, @despacho, @area] 
               
               csv << arri
              end

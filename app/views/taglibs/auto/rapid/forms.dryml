@@ -341,7 +341,7 @@
 <def tag="form" for="Separacion">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="color, position, anilox, lpi, area, alto, ancho, espesor, ord_trab, tipomat" param/>
+    <field-list fields="color, position, anilox, lpi, area, alto, ancho, nCopias, espesor, ord_trab, tipomat" param/>
     <div param="actions">
       <submit label="#{ht 'separacions.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
