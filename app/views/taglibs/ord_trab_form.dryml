@@ -186,7 +186,7 @@
     <td><input:mpPeldev style="font-size:60%"/></td>
     <td colspan="3">
       N.&deg;&nbsp;<input:barcode style="width:80%"/><br/>
-      <input type="text" placeholder="repite para confirmar" id="ord-trab-barcodecopy" name="ord_trab[barcodecopy]" style="width:95%"/><br/>
+      <input:barcodecopy style="width:95%" placeholder="repite para confirmar" /><br/>
       Tipo
       <select name="ord_trab[list_barcode_id]">
         <% if @ord_trab.list_barcode.blank? %>
@@ -347,7 +347,6 @@
         Lpi:<input:lpi style="width:5%"/>
         &nbsp;&nbsp; Al:<input:alto style="width:5%"/>
         x An:<input:ancho  style="width:5%"/>
-        Nº Copias:<input:nCopias  style="width:5%"/>
         <hidden-id-field/>
       </div>
     </item:>

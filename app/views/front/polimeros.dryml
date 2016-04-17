@@ -70,7 +70,8 @@
           end
         end
       %>
-      <% color = ord_trab.calcular_color_tablero(ord_trab) %>     
+      <% color = ord_trab.calcular_color_tablero(ord_trab) %>
+      <% color_linea = ord_trab.tipoot_id == Tipoot.find_by_name("N (Trabajo Nuevo)").id ? 'red' : '' %>
       <tr style="background-color:#{color_linea if color_linea};">
         <td><center><%= ord_trab.fecha.strftime("%d/%m/%Y") if ord_trab.fecha %></center></td>
         <td><center><%= fecha_matriceria if fecha_matriceria %></center> </td>

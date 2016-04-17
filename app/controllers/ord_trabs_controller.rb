@@ -118,7 +118,7 @@ class OrdTrabsController < ApplicationController
         @nueva_reposicion.mtje = false
         @nueva_reposicion.pol = true
         @nueva_reposicion.fechaEntrega = calcular_fecha_reposicion
-        @nueva_reposicion.save
+        @nueva_reposicion.save(:validate => false)
         for s in OrdTrab.find(params[:id]).separacions
           separacion_nueva = s.clone
           # calcular numero de copias
@@ -137,7 +137,7 @@ class OrdTrabsController < ApplicationController
         @message = "Se ha creado una nueva reposición, click <a href='/ord_trabs/#{@nueva_reposicion.id}'><a href='/ord_trabs/#{@nueva_reposicion.id}'>AQUÍ</a> para verla."
         @nueva_reposicion.tareas.first.update_attribute(:state, "habilitada") if @nueva_reposicion.tareas != []
         # Enviar email al cliente
-        RecibArchMailer.deliver_avisar_cliente(@nueva_reposicion,@nueva_reposicion.cliente.correo)
+        RecibArchMailer.deliver_avisar_cliente(@nueva_reposicion)
       elsif @nueva_reposicion && @nueva_reposicion.errors.count != 0
         @message = "Ha ocurrido un error, pongase en contacto con el administrador."
       end
@@ -338,19 +338,19 @@ class OrdTrabsController < ApplicationController
               # TIPO OT
               @tipo_ot = orden.tipoot
               # FECHA CREACION OT
-              @fecha_creacion = orden.created_at.strftime("%d/%m/%Y %l:%M:%S") if orden.created_at
+              @fecha_creacion = orden.created_at.strftime("%d/%m/%Y") if orden.created_at
               # HORA CREACION OT
-              @hora_creacion = orden.created_at.strftime("%l:%M:%S") if orden.created_at
+              @hora_creacion = orden.created_at.strftime("%H:%M:%S") if orden.created_at
               # FECHA ENTREGA
-              @fecha_entrega = orden.fechaEntrega.strftime("%d/%m/%Y %l:%M:%S") if orden.fechaEntrega
+              @fecha_entrega = orden.fechaEntrega.strftime("%d/%m/%Y") if orden.fechaEntrega
               # HORA ENTREGA
-              @hora_creacion = orden.fechaEntrega.strftime("%l:%M:%S") if orden.fechaEntrega
+              @hora_creacion = orden.fechaEntrega.strftime("%H:%M:%S") if orden.fechaEntrega
               # FECHA TERMINO OT
               # SI TODAS LAS TAREAS ESTAN TERMINADAS COGER LA ULTIMA TAREA SU ULTIMA INTERVENCION SU FECHA DE TERMINO
               if orden.orden_terminada
                 if tareas != [] && tareas.last.intervencions != [] && tareas.last.intervencions.last.termino
                   @fecha_termino = tareas.last.intervencions.last.termino.strftime("%d/%m/%Y") 
-                  @hora_termino = tareas.last.intervencions.last.termino.strftime("%l:%M:%S")
+                  @hora_termino = tareas.last.intervencions.last.termino.strftime("%H:%M:%S")
                 end
               end
               tareas_tipo_vistobueno = tareas.detipo("VistoBueno")
