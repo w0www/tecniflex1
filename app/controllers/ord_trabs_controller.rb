@@ -137,7 +137,11 @@ class OrdTrabsController < ApplicationController
         @message = "Se ha creado una nueva reposición, click <a href='/ord_trabs/#{@nueva_reposicion.id}'><a href='/ord_trabs/#{@nueva_reposicion.id}'>AQUÍ</a> para verla."
         @nueva_reposicion.tareas.first.update_attribute(:state, "habilitada") if @nueva_reposicion.tareas != []
         # Enviar email al cliente
-        RecibArchMailer.deliver_avisar_cliente(@nueva_reposicion)
+        pdf_cliente = render_to_string(:action => 'improt', :layout => false, :object => @nueva_reposicion)
+        pdf_cliente = PDFKit.new(pdf_cliente)
+        pdf_cliente.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
+        pdf_cliente = pdf_cliente.to_pdf
+        RecibArchMailer.deliver_avisar_cliente(@nueva_reposicion,pdf_cliente)
       elsif @nueva_reposicion && @nueva_reposicion.errors.count != 0
         @message = "Ha ocurrido un error, pongase en contacto con el administrador."
       end
