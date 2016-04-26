@@ -234,12 +234,14 @@
           <th>Area</th>
           <th>Copias</th>
           <td colspan="7" rowspan="<%=  1+this.separacions.count %>">
-            &nbsp;<view:observaciones/>
             <if test="&(@cliente_logeado || @usuario_polimero) && @tipo_tarea_nueva"> 
               <textarea name="ord_trab[observaciones]" id="ord_trab_observaciones" 
                         class="text ord-trab-observaciones"  style="width:50%;height:20%;">
               </textarea>
             </if>
+            <else>
+              &nbsp;<view:observaciones/>
+            </else>
           </td>
         </tr>
         <repeat with="&this.separacions">

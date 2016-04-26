@@ -293,7 +293,7 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def barcodes_iguales
-    errors.add(:barcodecopy, "tiene que ser igual que el barcode") if barcode != barcodecopy
+    errors.add(:barcodecopy, "tiene que ser igual que el barcode") if !barcode.blank? && barcode != barcodecopy
   end
 
   def before_create

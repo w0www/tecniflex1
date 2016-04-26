@@ -118,6 +118,9 @@ class OrdTrabsController < ApplicationController
         @nueva_reposicion.mtje = false
         @nueva_reposicion.pol = true
         @nueva_reposicion.fechaEntrega = calcular_fecha_reposicion
+# MODIFICAR LOS DATOS DE LA FECHA DE CREACION
+        @nueva_reposicion.created_at = Time.zone.now
+        @nueva_reposicion.fecha = Date.today
         @nueva_reposicion.save(:validate => false)
         for s in OrdTrab.find(params[:id]).separacions
           separacion_nueva = s.clone
@@ -128,7 +131,7 @@ class OrdTrabsController < ApplicationController
           else
             num_copias = params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"]
           end          
-          separacion_nueva.nCopias = num_copias unless num_copias.blank?
+          separacion_nueva.nCopias  num_copias unless num_copias.blank?
           @nueva_reposicion.separacions << separacion_nueva 
         end
       end
@@ -140,7 +143,7 @@ class OrdTrabsController < ApplicationController
         # pdf_cliente = render_to_string(:action => 'improt', :layout => false, :object => @nueva_reposicion)
         # pdf_cliente = PDFKit.new(pdf_cliente, :page_size => 'Letter')
         # pdf_cliente.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
-        # pdf_cliente = pdf_cliente.to_pdf
+        # pdf_cliente = pdf_client=e.to_pdf
         # RecibArchMailer.deliver_avisar_cliente(@nueva_reposicion,pdf_cliente)
       elsif @nueva_reposicion && @nueva_reposicion.errors.count != 0
         @message = "Ha ocurrido un error, pongase en contacto con el administrador."
