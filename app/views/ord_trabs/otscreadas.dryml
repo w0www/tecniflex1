@@ -12,21 +12,12 @@
         #efecto { width: 850px; height: 78px; padding: 0.4em; position: relative; display:none}
         #efecto h3 { margin: 0; padding: 0.4em; text-align: center; }
       </style>
-        <div style="float:right;">
+        <div style="">
           <form  method='get' action=''>
           <hidden-fields for-query-string skip='page, search'/>
-            
-            <h3>Fecha Inicial: <input type='text' style='width:90px' id='datepicker' name='startdate' value="#{params[:startdate]}"/> 
-            Fecha Final: <input type='text' style='width:90px' id='datepicker2' name='enddate' value="#{params[:enddate]}"/> 
-            <submit class='search-button'  label='Ir'/></h3>
-          </form>
-        </div>
-        <div>
-          <form method='get' action=''>
-            <hidden-fields for-query-string skip='page, search'/>
             <select name="cliente">
-               <% if params[:name] %>
-                  <option selected="selected" value="<%= @codclie%> "><%= @codclie %></option>
+               <% if params[:cliente] %>
+                  <option selected="selected" value="<%= params[:cliente] %> "><%= Cliente.find(params[:cliente]).name %></option>
                <%else%>
                   <option selected="selected" value="">Cliente</option> 
                <%end%>
@@ -34,7 +25,9 @@
                  <option value="<%= x.id %>"><%=  x.name %></option>
                <% end %>
             </select>
-            <submit class='search-button' label='Ir'/>
+            <h3>Fecha Inicial: <input type='text' style='width:90px' id='datepicker' name='startdate' value="#{params[:startdate]}"/> 
+            Fecha Final: <input type='text' style='width:90px' id='datepicker2' name='enddate' value="#{params[:enddate]}"/> 
+            <submit class='search-button'  label='Ir'/></h3>
           </form>
         </div>
               <% cliente ||= ''%>

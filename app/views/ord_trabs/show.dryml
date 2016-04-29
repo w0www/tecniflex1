@@ -236,7 +236,7 @@
           <td colspan="7" rowspan="<%=  1+this.separacions.count %>">
             <if test="&(@cliente_logeado || @usuario_polimero) && @tipo_tarea_nueva"> 
               <textarea name="ord_trab[observaciones]" id="ord_trab_observaciones" 
-                        class="text ord-trab-observaciones"  style="width:50%;height:20%;">
+                        class="text ord-trab-observaciones"  style="width:90%;height:100%;">
               </textarea>
             </if>
             <else>
@@ -266,6 +266,7 @@
         </repeat>
         <tr/>
         <% if User.supervisores.include?(current_user)%>
+          <% if !@usuario_polimero %>
           <tr>
             <th>Tarea</th>
             <th colspan="3">Operador</th>
@@ -277,6 +278,7 @@
               <td colspan="3"><editor:asignado options="&@tara.opciones" include-none blank-message="Sin asignar"/></td>
             </tr>
           </repeat>
+        <%end%>
         <%end%>
       </table>
       <center><submit value="Crear nueva reposicion" onclick="return confirm('¿Está seguro de crear una nueva reposición?');"

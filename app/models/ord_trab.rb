@@ -289,7 +289,9 @@ class OrdTrab < ActiveRecord::Base
   validate :limite_codigo_barras, :barcodes_iguales
 
   def limite_codigo_barras
-    errors.add(:barcode, "tiene que tener #{list_barcode.num_char} dígitos") if list_barcode.num_char && list_barcode.num_char > 0 && barcode.length != list_barcode.num_char
+    if list_barcode
+      errors.add(:barcode, "tiene que tener #{list_barcode.num_char} dígitos") if list_barcode.num_char && list_barcode.num_char > 0 && barcode.length != list_barcode.num_char
+    end
   end
 
   def barcodes_iguales
