@@ -108,7 +108,7 @@ class OrdTrabsController < ApplicationController
     @usuario_polimero = current_user.email_address == "polimero@tecniflex.cl"
     @tipo_tarea_reposicion = OrdTrab.find(params[:id]).tipoot_id == Tipoot.find_by_name("R (Reposicion)").id
 
-    if (@cliente_logeado || @usuario_polimero) && @tipo_tarea_nueva
+    if (@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion
       if params[:ord_trab] && params[:ord_trab][:nCopias] != ""
         @nueva_reposicion = OrdTrab.find(params[:id]).clone
         @nueva_reposicion.observaciones = params[:ord_trab][:observaciones]
@@ -282,6 +282,8 @@ class OrdTrabsController < ApplicationController
           @fechini = params[:startdate] && params[:startdate].blank? ? "" : Date.strptime(params[:startdate], "%d/%m/%Y")
           @fenal = params[:enddate] && params[:enddate].blank? ? "" : Date.strptime(params[:enddate], "%d/%m/%Y")
           
+          Rails.logger.info "esto es las variables @clies, @fechini, @fenal #{@clies} #{@fechini} #{@fenal}"
+
           if @clies != ""
             if @fenal.blank? && @fechini.blank?
               @otsel = OrdTrab.all(:conditions => ["cliente_id = ?", @clies])
@@ -297,16 +299,16 @@ class OrdTrabsController < ApplicationController
             end
           else
             if @fenal.blank? && @fechini.blank?
-              @otsel = OrdTrab.all.group_by(&:cliente_id)
+              @otsel = OrdTrab.all
             elsif @fechini != "" && @fenal.blank?
               @otsel = OrdTrab.all(:conditions => ["created_at >= ?",
-                       @fechini.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
+                       @fechini.to_datetime.in_time_zone(Time.zone)])
             elsif @fechini.blank? && @fenal != ""
               @otsel = OrdTrab.all(:conditions => ["created_at <= ?",
-                       @fenal.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
+                       @fenal.to_datetime.in_time_zone(Time.zone)])
             elsif @fechini != "" && @fenal != ""
               @otsel = OrdTrab.all(:conditions => ["created_at >= ? and created_at <= ?",
-                       @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
+                       @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
             end
           end
 
