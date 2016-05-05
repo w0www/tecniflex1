@@ -56,7 +56,9 @@ class OrdTrabsController < ApplicationController
     hobo_update do 
       if valid?
         # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
-        this.sortars.first.lifecycle.habilitar!(current_user) if this.sortars.first.proceso.nombre.downcase == "polimero"
+        if this.sortars != ""
+          this.sortars.first.lifecycle.habilitar!(current_user) if this.sortars.first.proceso.nombre.downcase == "polimero"
+        end
         # Si es todo valido vamos a crear el fichero XML del mismo
         confi = Configuration.find_by_key("export_to_xml")
         if confi && confi.value == true
@@ -104,7 +106,7 @@ class OrdTrabsController < ApplicationController
    	# Guardamos en una variable si el usuario que esta viendo el show es un cliente o un operador
     @cliente_logeado = Cliente.find_by_correo(current_user.email_address)
     @usuario_polimero = current_user.email_address == "polimero@tecniflex.cl"
-    @tipo_tarea_nueva = OrdTrab.find(params[:id]).tipoot_id == Tipoot.find_by_name("N (Trabajo Nuevo)").id
+    @tipo_tarea_reposicion = OrdTrab.find(params[:id]).tipoot_id == Tipoot.find_by_name("R (Reposicion)").id
 
     if (@cliente_logeado || @usuario_polimero) && @tipo_tarea_nueva
       if params[:ord_trab] && params[:ord_trab][:nCopias] != ""
@@ -126,18 +128,14 @@ class OrdTrabsController < ApplicationController
 
       if @nueva_reposicion && @nueva_reposicion.errors.count == 0
         for s in OrdTrab.find(params[:id]).separacions
-          separacion_nueva = s.clone
-          # calcular numero de copias
-          # si recibe algo se guarda ese
-          if params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].blank?
-            num_copias = s.nCopias
-          else
+          # Si no se rellena el nCopias no hace falta crear ese color en la nueva reposicion
+          unless params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].blank?
+            separacion_nueva = s.clone
             num_copias = params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"]
-          end          
-          separacion_nueva.nCopias = num_copias unless num_copias.blank?
-          @nueva_reposicion.separacions << separacion_nueva
+            separacion_nueva.nCopias = num_copias unless num_copias.blank?
+            @nueva_reposicion.separacions << separacion_nueva
+          end
         end
-
 
         @message = "Se ha creado una nueva reposición, click <a href='/ord_trabs/#{@nueva_reposicion.id}'><a href='/ord_trabs/#{@nueva_reposicion.id}'>AQUÍ</a> para verla."
         @nueva_reposicion.tareas.first.update_attribute(:state, "habilitada") if @nueva_reposicion.tareas != []
@@ -215,7 +213,9 @@ class OrdTrabsController < ApplicationController
         :cliente_id_is => cliente_id,
         :codCliente_is => codCliente,
         :version_is => version,
-        :tipoot_id_is_not => tipo_ot
+        :tipoot_id_is_not => tipo_ot,
+        :proceso_is => 'polimero',
+        :proceso_estado_is => 'terminada'
     )
 
     end
@@ -297,16 +297,16 @@ class OrdTrabsController < ApplicationController
             end
           else
             if @fenal.blank? && @fechini.blank?
-              @otsel = OrdTrab.all
+              @otsel = OrdTrab.all.group_by(&:cliente_id)
             elsif @fechini != "" && @fenal.blank?
               @otsel = OrdTrab.all(:conditions => ["created_at >= ?",
-                       @fechini.to_datetime.in_time_zone(Time.zone)])            
+                       @fechini.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
             elsif @fechini.blank? && @fenal != ""
               @otsel = OrdTrab.all(:conditions => ["created_at <= ?",
-                       @fenal.to_datetime.in_time_zone(Time.zone)])
+                       @fenal.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
             elsif @fechini != "" && @fenal != ""
               @otsel = OrdTrab.all(:conditions => ["created_at >= ? and created_at <= ?",
-                       @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
+                       @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
             end
           end
 

@@ -234,7 +234,7 @@
           <th>Area</th>
           <th>Copias</th>
           <td colspan="7" rowspan="<%=  1+this.separacions.count %>">
-            <if test="&(@cliente_logeado || @usuario_polimero) && @tipo_tarea_nueva"> 
+            <if test="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion"> 
               <textarea name="ord_trab[observaciones]" id="ord_trab_observaciones" 
                         class="text ord-trab-observaciones"  style="width:90%;height:100%;">
               </textarea>
@@ -257,7 +257,7 @@
               num_copias = this.nCopias.blank? ? this.ord_trab.nCopias : this.nCopias
             %>
             <td><%= num_copias %>
-              <if test="&(@cliente_logeado || @usuario_polimero) && @tipo_tarea_nueva"> 
+              <if test="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion"> 
                 <input type="text" name="ord_trab[separacions][#{this.position - 1}][nCopias]" 
                        id="ord_trab_nCopias" class="integer separacion-nCopias" style="width:15%"/>
               </if>
@@ -282,7 +282,7 @@
         <%end%>
       </table>
       <center><submit value="Crear nueva reposicion" onclick="return confirm('¿Está seguro de crear una nueva reposición?');"
-                        if="&(@cliente_logeado || @usuario_polimero) && @tipo_tarea_nueva"/></center>
+                        if="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion"/></center>
     </form>
     <transition-buttons class="centrada"/>
   </content-body:>

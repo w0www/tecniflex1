@@ -118,9 +118,9 @@ class OrdTrab < ActiveRecord::Base
   named_scope :proceso_estado_is, lambda {|estado| {
     :include => :tareas,
     :conditions => ["tareas.state = ?", estado] } 
-
-
   }
+
+
 
   def armacod
     armac = ""

@@ -16,7 +16,7 @@
           <form  method='get' action=''>
           <hidden-fields for-query-string skip='page, search'/>
             <select name="cliente">
-               <% if params[:cliente] %>
+               <% if params[:cliente] && params[:cliente] != "" %>
                   <option selected="selected" value="<%= params[:cliente] %> "><%= Cliente.find(params[:cliente]).name %></option>
                <%else%>
                   <option selected="selected" value="">Cliente</option> 
