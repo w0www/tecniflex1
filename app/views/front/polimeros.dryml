@@ -82,7 +82,17 @@
         <td><center><%= ord_trab.cliente %></center> </td>
         <td><center><%= ord_trab.numOT.to_s + " / " + ord_trab.armacod %></center> </td>
         <td><center><%= ord_trab.nomprod %></center> </td>
-        <td><center><%= ord_trab.separacions.*.nCopias.sum %></center> </td>
+        <% 
+          clisse = 0
+          if ord_trab.separaciones != ""
+            for s in ord_trab.separaciones
+              if s.nCopias
+                clisse = clisse + nCopias
+              end
+            end
+          end
+        %>
+        <td><center><%= clisse %></center> </td>
         <td><center><%= fecha_fin if fecha_fin %></center> </td>
         <td><center><%= ord_trab.fechaEntrega.strftime("%d/%m/%Y %H:%M") if ord_trab.fechaEntrega %></center> </td>
         <td style="background-color:#{color if color};"/>
