@@ -87,7 +87,7 @@
           if ord_trab.separacions != ""
             for s in ord_trab.separacions
               if s.nCopias
-                clisse = clisse + nCopias
+                clisse = clisse + s.nCopias
               end
             end
           end
