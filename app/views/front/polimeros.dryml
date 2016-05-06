@@ -84,8 +84,8 @@
         <td><center><%= ord_trab.nomprod %></center> </td>
         <% 
           clisse = 0
-          if ord_trab.separaciones != ""
-            for s in ord_trab.separaciones
+          if ord_trab.separacions != ""
+            for s in ord_trab.separacions
               if s.nCopias
                 clisse = clisse + nCopias
               end
