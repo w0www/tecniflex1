@@ -83,12 +83,12 @@
         <td><center><%= ord_trab.numOT.to_s + " / " + ord_trab.armacod %></center> </td>
         <td><center><%= ord_trab.nomprod %></center> </td>
         <% 
+          # Calculamos el clisse sumando el nCopias de los colores.
+          # Si el ncopias de la separacion es nil es porque es una nueva tarea y tenemos que coger ncopias del general.
           clisse = 0
           if ord_trab.separacions != ""
             for s in ord_trab.separacions
-              if s.nCopias
-                clisse = clisse + s.nCopias
-              end
+              clisse = s.nCopias ? clisse + s.nCopias : clisse + ord_trab.nCopias
             end
           end
         %>
@@ -101,19 +101,4 @@
     </tbody>
   </table>
 </def>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
