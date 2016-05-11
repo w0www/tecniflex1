@@ -56,7 +56,9 @@ class OrdTrabsController < ApplicationController
     hobo_update do 
       if valid?
         # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
-        this.sortars.first.lifecycle.habilitar!(current_user) if this.sortars.first.proceso.nombre.downcase == "polimero"
+        if this.sortars != ""
+          this.sortars.first.lifecycle.habilitar!(current_user) if this.sortars.first.proceso.nombre.downcase == "polimero"
+        end
         # Si es todo valido vamos a crear el fichero XML del mismo
         confi = Configuration.find_by_key("export_to_xml")
         if confi && confi.value == true
@@ -101,6 +103,52 @@ class OrdTrabsController < ApplicationController
 
 
   def show
+   	# Guardamos en una variable si el usuario que esta viendo el show es un cliente o un operador
+    @cliente_logeado = Cliente.find_by_correo(current_user.email_address)
+    @usuario_polimero = current_user.email_address == "polimero@tecniflex.cl"
+    @tipo_tarea_reposicion = OrdTrab.find(params[:id]).tipoot_id == Tipoot.find_by_name("R (Reposicion)").id
+
+    if (@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion
+      if params[:ord_trab] && params[:ord_trab][:nCopias] != ""
+        @nueva_reposicion = OrdTrab.find(params[:id]).clone
+        @nueva_reposicion.observaciones = params[:ord_trab][:observaciones]
+        @nueva_reposicion.nCopias = params[:ord_trab][:nCopias]
+        @nueva_reposicion.tipoot_id = Tipoot.find_by_name("R (REPOSICION)").id
+        @nueva_reposicion.vb = false
+        @nueva_reposicion.ptr = false
+        @nueva_reposicion.mtz = false
+        @nueva_reposicion.mtje = false
+        @nueva_reposicion.pol = true
+        @nueva_reposicion.fechaEntrega = calcular_fecha_reposicion
+# MODIFICAR LOS DATOS DE LA FECHA DE CREACION
+        @nueva_reposicion.created_at = Time.zone.now
+        @nueva_reposicion.fecha = Date.today
+        @nueva_reposicion.save(false)
+      end
+
+      if @nueva_reposicion && @nueva_reposicion.errors.count == 0
+        for s in OrdTrab.find(params[:id]).separacions
+          # Si no se rellena el nCopias no hace falta crear ese color en la nueva reposicion
+          unless params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].blank?
+            separacion_nueva = s.clone
+            num_copias = params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"]
+            separacion_nueva.nCopias = num_copias unless num_copias.blank?
+            @nueva_reposicion.separacions << separacion_nueva
+          end
+        end
+
+        @message = "Se ha creado una nueva reposición, click <a href='/ord_trabs/#{@nueva_reposicion.id}'><a href='/ord_trabs/#{@nueva_reposicion.id}'>AQUÍ</a> para verla."
+        @nueva_reposicion.tareas.first.update_attribute(:state, "habilitada") if @nueva_reposicion.tareas != []
+        # Enviar email al cliente
+        # pdf_cliente = render_to_string(:action => 'improt', :layout => false, :object => @nueva_reposicion)
+        # pdf_cliente = PDFKit.new(pdf_cliente, :page_size => 'Letter')
+        # pdf_cliente.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
+        # pdf_cliente = pdf_client=e.to_pdf
+        # RecibArchMailer.deliver_avisar_cliente(@nueva_reposicion,pdf_cliente)
+      elsif @nueva_reposicion && @nueva_reposicion.errors.count != 0
+        @message = "Ha ocurrido un error, pongase en contacto con el administrador."
+      end
+    end
     hobo_show do |format|
       format.html { @taras = this.sortarasigs }
       format.xml {
@@ -111,10 +159,65 @@ class OrdTrabsController < ApplicationController
     end
   end
 
+  def calcular_fecha_reposicion
+    # Si es sabado
+    if Time.now.wday == 6
+      # Si la hora pasa de las 12:00
+      if (Time.now + 6.hours).strftime("%H:%M") >= "12:00"
+      # La hora de entrega es el lunes a la 13:00
+        return "#{(Time.now+2.days).year}-#{(Time.now+2.days).month}-#{(Time.now+2.days).day} 13:00".to_time
+      # Si no la hora es la hora de creación + 6 horas
+      else
+        return Time.now + 6.hours
+      end
+    elsif Time.now.wday == 0
+      # Si es domingo la hora de entrega es lunes a la 13:00
+      return "#{(Time.now+1.days).year}-#{(Time.now+1.days).month}-#{(Time.now+1.days).day} 13:00".to_time
+    else
+      # Si es cualquier otro dia de la semana la hora es + 6 horas despues de la hora de creacion
+      return (Time.now + 6.hours)
+    end
+  end
+
   def modificar
     hobo_new do
       @ot_anterior = OrdTrab.find (params[:id])
       OrdTrab.new(@ot_anterior)
+    end
+  end
+
+  index_action :reposiciones do
+    # Aquí solo pueden llegar los usuarios clientes y el polimero@tecniflex.cl
+    @cliente_logeado = Cliente.find_by_correo(current_user.email_address)
+    if @cliente_logeado || current_user.email_address == "polimero@tecniflex.cl"
+      @hora_actual = DateTime.now
+      @grupro = Grupoproc.tablero.order_by(:position)
+      @procesos = Proceso.order_by(:position)
+      @clies = Cliente.all
+      @error = 0
+      if @cliente_logeado
+        params[:cliente] = @cliente_logeado
+      end
+      inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
+      final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time.end_of_day if params[:fecha_fin] && !params[:fecha_fin].blank?
+      codCliente = params[:codCliente].split("-").last unless params[:codCliente].blank?
+      sigla = params[:codCliente].split("-").first unless params[:codCliente].blank?
+      cliente = Cliente.find_by_sigla(sigla) unless sigla.blank?
+      cliente_id = cliente.id unless cliente.blank?
+      version = params[:version] unless params[:version].blank?
+      tipo_ot = Tipoot.find_by_name("R (Reposicion)").id
+
+      @error = 1 if codCliente.blank? || cliente.blank?
+
+      @todas = OrdTrab.apply_scopes(
+        :cliente_id_is => cliente_id,
+        :codCliente_is => codCliente,
+        :version_is => version,
+        :tipoot_id_is_not => tipo_ot,
+        :proceso_is => 'polimero',
+        :proceso_estado_is => 'terminada'
+    )
+
     end
   end
   
@@ -126,14 +229,17 @@ class OrdTrabsController < ApplicationController
     # si el usuario es un cliente solo mostrar las ord de ese cliente
     @cliente_logeado = Cliente.find_by_correo(current_user.email_address)
     @clies = Cliente.all
+    @error = 0
+
     if @cliente_logeado
       params[:cliente] = @cliente_logeado
     end
     inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
     final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time.end_of_day if params[:fecha_fin] && !params[:fecha_fin].blank?
+    codCliente = params[:codCliente].split("-").last unless params[:codCliente].blank?
     @todas = OrdTrab.apply_scopes(
       :cliente_is => params[:cliente],
-      :codCliente_contains => params[:codigo_cliente],
+      :codCliente_is => codCliente,
       :numOT_contains => params[:orden],
       :proceso_estado_is => [params[:estado_proceso]],
       :proceso_is => [params[:proceso]],
@@ -159,154 +265,121 @@ class OrdTrabsController < ApplicationController
   index_action :otscreadas do
     respond_to do |wants|
 			wants.html do
-          @otultsem = OrdTrab.paginate(:page => params[:page]).group_by(&:cliente_id)
-          @proces = Proceso.all.*.nombre
-          if params[:cliente]
-            @clies = params[:cliente]
-            if (params[:startdate].blank? && params[:enddate].blank?)
-              @otultsem = OrdTrab.paginate(:conditions => ["cliente_id = ?", @clies],:page => params[:page]).group_by(&:cliente_id)
-            elsif params[:startdate]
-              @clies = params[:cliente]
-              @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
-              if params[:enddate].blank?
-                @otultsem = OrdTrab.paginate(:conditions => ["cliente_id = ? and created_at >= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone)],:page => params[:page]).group_by(&:cliente_id)
-              else 
-                @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
-                @otultsem = OrdTrab.paginate(:conditions => ["cliente_id = ? and created_at >= ? and created_at <= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)],:page => params[:page]).group_by(&:cliente_id)
-              end
-            elsif (params[:startdate].blank? && params[:enddate])
-              @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
-              @otultsem = OrdTrab.paginate(:conditions => ["cliente_id = ? and created_at <= ?", @clies, @fenal.to_datetime.in_time_zone(Time.zone)],:page => params[:page]).group_by(&:cliente_id)
-            end 
-          elsif params[:startdate]
-              @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
-              if params[:enddate].blank?
-                @otultsem = OrdTrab.all(:conditions => ["created_at >= ?", @fechini.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
-              else 
-                @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
-                @otultsem = OrdTrab.all(:conditions => ["created_at >= ? and created_at <= ?", @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
-              end
-          elsif (params[:startdate].blank? && params[:enddate])
-            @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
-            @otultsem = OrdTrab.all(:conditions => ["created_at <= ?", @fenal.to_datetime.in_time_zone(Time.zone)]).group_by(&:cliente_id)
-          end
+        @proces = Proceso.all.*.nombre
+        inicial = Date.strptime(params[:startdate], '%d/%m/%Y').to_time if params[:startdate] && !params[:startdate].blank?
+        final = Date.strptime(params[:enddate], '%d/%m/%Y').to_time.end_of_day if params[:enddate] && !params[:enddate].blank?
+        @otultsem = OrdTrab.apply_scopes(
+          :cliente_id_is => params[:cliente],
+          :created_between => [inicial, final]
+        ).paginate(:page => params[:page], :per_page => 20).group_by(&:cliente_id)
       end
       wants.csv do
   #####
         csv_string = CSV.generate(:col_sep => ";") do |csv|
           ##################
-          @otsel = OrdTrab.all
           @proces = Proceso.all.*.nombre
-          if params[:cliente] != ""
-            @clies = params[:cliente]
-            if params[:enddate].blank? && params[:startdate].blank?
-              @otsel = OrdTrab.all(:conditions => ["cliente_id = ?", @clies])
-            elsif params[:startdate] != ""
-              @clies = params[:cliente]
-              @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
-              if params[:enddate].blank?
-                @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone)])
-              else 
-                @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
-                @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ? and created_at <= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
-              end
-            elsif (params[:startdate].blank? && params[:enddate] != "")
-              @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
-              @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at <= ?", @clies, @fenal.to_datetime.in_time_zone(Time.zone)])
-            end 
-          elsif params[:startdate] != ""
-              @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
-              if params[:enddate].blank?
-                @otsel = OrdTrab.all(:conditions => ["created_at >= ?", @fechini.to_datetime.in_time_zone(Time.zone)])
-              else 
-                @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
-                @otsel = OrdTrab.all(:conditions => ["created_at >= ? and created_at <= ?", @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
-              end
-          elsif (params[:startdate].blank? && params[:enddate] != "")
-            @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
-            @otsel = OrdTrab.all(:conditions => ["created_at <= ?", @fenal.to_datetime.in_time_zone(Time.zone)])
-          end
+          @clies = params[:cliente] && params[:cliente].blank? ? "" : params[:cliente]
+          @fechini = params[:startdate] && params[:startdate].blank? ? "" : Date.strptime(params[:startdate], "%d/%m/%Y")
+          @fenal = params[:enddate] && params[:enddate].blank? ? "" : Date.strptime(params[:enddate], "%d/%m/%Y")
           
+          Rails.logger.info "esto es las variables @clies, @fechini, @fenal #{@clies} #{@fechini} #{@fenal}"
+
+          if @clies != ""
+            if @fenal.blank? && @fechini.blank?
+              @otsel = OrdTrab.all(:conditions => ["cliente_id = ?", @clies])
+            elsif @fechini != "" && @fenal.blank?
+              @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ?",
+                       @clies, @fechini.to_datetime.in_time_zone(Time.zone)])            
+            elsif @fechini.blank? && @fenal != ""
+              @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at <= ?",
+                       @clies, @fenal.to_datetime.in_time_zone(Time.zone)])
+            elsif @fechini != "" && @fenal != ""
+              @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ? and created_at <= ?",
+                       @clies, @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
+            end
+          else
+            if @fenal.blank? && @fechini.blank?
+              @otsel = OrdTrab.all
+            elsif @fechini != "" && @fenal.blank?
+              @otsel = OrdTrab.all(:conditions => ["created_at >= ?",
+                       @fechini.to_datetime.in_time_zone(Time.zone)])
+            elsif @fechini.blank? && @fenal != ""
+              @otsel = OrdTrab.all(:conditions => ["created_at <= ?",
+                       @fenal.to_datetime.in_time_zone(Time.zone)])
+            elsif @fechini != "" && @fenal != ""
+              @otsel = OrdTrab.all(:conditions => ["created_at >= ? and created_at <= ?",
+                       @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
+            end
+          end
+
           ##################
-          arre = ["Cliente", "O.T.", "Producto", "Codigo", "Fecha Inicio", "Fecha Termino","N.Fact", "Tiempo bruto", "Tiempo neto", "cm2 tot.", "cm2 fact.", "F. V.B.", "E. V.B.", "F. PTR", "E. PTR"] + @proces
+          arre = ["CLIENTE", "NRO OT", "TIPO OT", "FECHA CREACION OT", "HORA CREACION OT", "FECHA ENTREGA", "HORA ENTREGA", "FECHA TERMINO", "HORA TERMINO", "PDF", "REVISION PDF", "PRINTER", "MATRICERIA", "MONTAJE", "REVISION", "POLIMERO", "DESPACHO", "AREA"]
           csv << arre
           ## data rows
             @otsel.each do |orden|
-              if orden.tareas
-                primpro = Proceso.prueba.first.id
-                secpro = Proceso.prueba.second.id
-                if primpro != nil
-                  @primpru = orden.tareas.all(:conditions => ["proceso_id = ?", primpro]).first
-                end
-                if secpro != nil
-                  @secpru = orden.tareas.all(:conditions => ["proceso_id = ?", secpro]).first
+              tareas = orden.tareas
+              # Cliente
+              @elclie = orden.cliente ? orden.cliente : ""
+              # NRO OT
+              @numero_ot = orden.numOT
+              # TIPO OT
+              @tipo_ot = orden.tipoot
+              # FECHA CREACION OT
+              @fecha_creacion = orden.created_at.strftime("%d/%m/%Y") if orden.created_at
+              # HORA CREACION OT
+              @hora_creacion = orden.created_at.strftime("%H:%M:%S") if orden.created_at
+              # FECHA ENTREGA
+              @fecha_entrega = orden.fechaEntrega.strftime("%d/%m/%Y") if orden.fechaEntrega
+              # HORA ENTREGA
+              @hora_entrega = orden.fechaEntrega.strftime("%H:%M:%S") if orden.fechaEntrega
+              # FECHA TERMINO OT
+              # SI TODAS LAS TAREAS ESTAN TERMINADAS COGER LA ULTIMA TAREA SU ULTIMA INTERVENCION SU FECHA DE TERMINO
+              if orden.orden_terminada
+                if tareas != [] && tareas.last.intervencions != [] && tareas.last.intervencions.last.termino
+                  @fecha_termino = tareas.last.intervencions.last.termino.strftime("%d/%m/%Y") 
+                  @hora_termino = tareas.last.intervencions.last.termino.strftime("%H:%M:%S")
                 end
               end
-              if orden.cliente
-                @elclie = orden.cliente
-              else
-                @elclie = ""
-              end
-              @estot = orden.ciclos
-              tpar = ((orden.updated_at - orden.created_at))
-              @tparh = Time.duracion(orden.created_at,orden.updated_at)
-              atot = orden.areatot || 0 
-              if orden.numFact != nil
-                factur = orden.updated_at.strftime("%Y-%m-%d %l:%M:%S")
-                areafact = orden.areatot
-              else
-                factur = ""
-                areafact = 0
-                
-              end
-              @listaciclos = []
-              @proces.each do |prociclo|
-                if @estot.assoc(prociclo)
-                  @listaciclos << @estot.assoc(prociclo)[1].to_s
-                else
-                  @listaciclos << ""
+              tareas_tipo_vistobueno = tareas.detipo("VistoBueno")
+              tareas_tipo_revisionvb = tareas.detipo("RevisionVB")
+              tareas_tipo_printer = tareas.detipo("Printer")
+              tareas_tipo_matriceria = tareas.detipo("Matriceria")
+              tareas_tipo_montaje = tareas.detipo("Montaje")
+              tareas_tipo_revisionmm = tareas.detipo("RevisionMM")
+              tareas_tipo_polimero = tareas.detipo("Polimero")
+              tareas_tipo_facturacion = tareas.detipo("Facturacion")
+              # PROCESOS
+              ## PDF
+              @pdf = tareas_tipo_vistobueno != [] ? tareas_tipo_vistobueno.first.state : ""
+              ## REVISION PDF
+              @revision_pdf = tareas_tipo_revisionvb != [] ? tareas_tipo_revisionvb.first.state : ""
+              ## PRINTER
+              @printer = tareas_tipo_printer != [] ? tareas_tipo_printer.first.state : ""
+              ## MATRICERIA
+              @matriceria = tareas_tipo_matriceria != [] ? tareas_tipo_matriceria.first.state : ""
+              ## MONTAJE
+              @montaje = tareas_tipo_montaje != [] ? tareas_tipo_montaje.first.state : ""
+              ## REVISION
+              @revision = tareas_tipo_revisionmm != [] ? tareas_tipo_revisionmm.first.state : ""
+              ## POLIMERO
+              @polimero = tareas_tipo_polimero != [] ? tareas_tipo_polimero.first.state : ""
+              ## DESPACHO
+              @despacho = tareas_tipo_facturacion != [] ? tareas_tipo_facturacion.first.state : ""
+              # AREA
+              if orden.separacions
+                @area = 0
+                for o in orden.separacions
+                  @area += o.area.to_f 
                 end
-              end 
-              if @primpru != nil
-                @estprimpru = @primpru.state
-                if @primpru.intervencions != []
-                  if @primpru.intervencions.last.termino != nil
-                    @ultintvb = @primpru.intervencions.last.termino.strftime("%Y-%m-%d %l:%M:%S")
-                  else
-                    @ultintvb = @primpru.intervencions.last.inicio.strftime("%Y-%m-%d %l:%M:%S")
-                  end
-                else
-                  @ultintvb = ""
-                end
-              else
-                @ultintvb = ""
-                @estprimpru = ""
               end
-              if @secpru != nil
-                @estsecpru = @secpru.state
-                if @secpru.intervencions != []
-                  if @secpru.intervencions.last.termino != nil
-                    @ultintptr = @secpru.intervencions.last.termino.strftime("%Y-%m-%d %l:%M:%S")
-                  else
-                    @ultintptr = @secpru.intervencions.last.inicio.strftime("%Y-%m-%d %l:%M:%S")
-                  end
-                else
-                  @ultintptr = ""
-                end
-              else 
-                @ultintptr = ""
-                @estsecpru = ""
-              end
-              @tiempot = Time.duracion(Time.at(0),orden.tnetot)
-              @FVB = orden
-              arri = [@elclie, orden.numOT, orden.nomprod, orden.armacod, orden.created_at.strftime("%Y-%m-%d %l:%M:%S"), factur, orden.numFact, @tparh, @tiempot, orden.areatot, areafact, @ultintvb, @estprimpru, @ultintptr, @estsecpru] + @listaciclos 
+              arri = [@elclie, @numero_ot, @tipo_ot, @fecha_creacion, @hora_creacion, @fecha_entrega, @hora_entrega, @fecha_termino, @hora_termino, @pdf, @revision_pdf, @printer, @matriceria, @montaje, @revision, @polimero, @despacho, @area] 
               
               csv << arri
              end
           				
         # send it to da browsah
         end
-        send_data(csv_string.force_encoding('ASCII-8BIT'),
+        send_data(csv_string,
                   :type => 'text/csv; charset=iso-8859-1; header=present',
                   :disposition => "attachment", :filename => Time.now.strftime("Ordenes fact_al_%d_%m_%Y") + ".csv")
       end
@@ -390,7 +463,7 @@ class OrdTrabsController < ApplicationController
 					end
 				end
 				# send it to the browsah
-				send_data(csv_string.force_encoding('ASCII-8BIT'),
+				send_data(csv_string,
 									:type => 'text/csv; charset=iso-8859-1; header=present',
 									:disposition => "attachment", :filename => Time.now.strftime("Ordenes_al_%d_%m_%Y") + ".csv")
 			end

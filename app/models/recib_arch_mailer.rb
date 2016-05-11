@@ -21,7 +21,27 @@ class RecibArchMailer < ActionMailer::Base
 			a.body = email
 			a.filename = @ord_trab.nomprod
 		end
+	end
 
+	def avisar_cliente(ord_trab,pdf_cliente)
+		@ord_trab = ord_trab
+    emails = ['jaime.kunze@gmail.com', 'preprensa@tecniflex.cl']
+    unless @ord_trab.cliente.contactos.blank?
+      emails << @ord_trab.cliente.contactos.*.email
+    else
+      emails << @ord_trab.cliente.correo
+    end
+		subject 		'Nueva Orden de Trabajo Tecniflex'
+		recipients 	emails
+		from				'preprensa@tecniflex.cl'
+		content_type 'multipart/mixed'
+		part "text/plain" do |p|
+			p.body = render_message("avisar_cliente_plain", :ot => @ord_trab.nomprod)
+		end
+		attachment "application/pdf" do |a|
+			a.body = pdf_cliente
+			a.filename = "#{@ord_trab.numOT}.pdf"
+		end
 	end
 
 end

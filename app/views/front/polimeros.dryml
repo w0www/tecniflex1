@@ -1,7 +1,7 @@
 <page title="pantalla" without-header class="pantalla" style="background-color:black !important">
   <head:>
     <param-content />
-    <meta http-equiv="refresh" content="60;url=/front/polimeros?page=#{@pagina_siguiente}" />
+    <meta http-equiv="refresh" content="60;url=/front/polimeros?page=#{@pagina_siguiente}&total=#{@x_tareas}" />
   </head:>
   <content: replace>
 
@@ -9,7 +9,7 @@
       <div style="margin-top:10px;">
         <tabla-tiempos/><br/>
         <span style="color:#FFFFFF">
-          <%= will_paginate @tareas, :style => "visibility:hidden"%>
+          <%= will_paginate @tareas, :style => "visibility:hidden", :params => { :user_id => 95 }%>
         </span>
 
       </div>
@@ -19,6 +19,26 @@
 
 <def tag="tabla-tiempos">
   <label style="color:#fff; font-size:24px;">Polimeros</label>
+  <br/><br/>
+  <label style="color:#fff; font-size:16px;">Contadores</label>
+  <table id="polimeros">
+    <tbody>
+      <tr>
+        <th><center>Terminadas HOY</center></th>
+        <th><center>Terminadas AYER</center></th>
+        <th><center>Terminadas MES</center></th>
+        <th><center>Terminadas AÑO</center></th>
+        <th><center>Terminadas TOTAL</center></th>
+      </tr>  
+      <tr>
+        <td><center><%= @tareas_terminadas_hoy %></center></td>
+        <td><center><%= @tareas_terminadas_ayer %></center></td>
+        <td><center><%= @tareas_terminadas_mes %></center></td>
+        <td><center><%= @tareas_terminadas_aio %></center></td>
+        <td><center><%= @tareas_terminadas_totales %></center></td>
+      </tr>
+    </tbody>
+  </table>
   <br/><br/>
   <table id="polimeros">
     <tbody>
@@ -37,11 +57,13 @@
       <% for tarea in @tareas %>
       <% ord_trab = tarea.ord_trab %>
       <% 
+        fecha_matriceria = ""
         tarea_matriceria = ord_trab.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("matriceria")]).first
         if tarea_matriceria && tarea_matriceria.state == "terminada" 
           fecha_matriceria = tarea_matriceria.intervencions.first.inicio.strftime("%d/%m/%Y %H:%M") if tarea_matriceria.intervencions.first.inicio
         end
 
+        fecha_fin = ""
         if tarea.proceso.nombre.downcase == "polimero"
           color_linea = "green" if tarea.state  == "iniciada"    
           tarea_revisionmm = ord_trab.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("revisionmm")]).first
@@ -50,7 +72,11 @@
           end
         end
       %>
-      <% color = ord_trab.calcular_color_tablero(ord_trab) %>     
+      <% color = ord_trab.calcular_color_tablero(ord_trab) %>
+      <% if color_linea != "green"
+            color_linea = ord_trab.tipoot_id == Tipoot.find_by_name("R (Reposicion)").id ? 'red' : ''
+         end
+      %>
       <tr style="background-color:#{color_linea if color_linea};">
         <td><center><%= ord_trab.fecha.strftime("%d/%m/%Y") if ord_trab.fecha %></center></td>
         <td><center><%= fecha_matriceria if fecha_matriceria %></center> </td>
@@ -58,7 +84,17 @@
         <td><center><%= ord_trab.cliente %></center> </td>
         <td><center><%= ord_trab.numOT.to_s + " / " + ord_trab.armacod %></center> </td>
         <td><center><%= ord_trab.nomprod %></center> </td>
-        <td><center><%= ord_trab.nCopias * ord_trab.separacions.count %></center> </td>
+        <% 
+          # Calculamos el clisse sumando el nCopias de los colores.
+          # Si el ncopias de la separacion es nil es porque es una nueva tarea y tenemos que coger ncopias del general.
+          clisse = 0
+          if ord_trab.separacions != ""
+            for s in ord_trab.separacions
+              clisse = s.nCopias ? clisse + s.nCopias : clisse + ord_trab.nCopias
+            end
+          end
+        %>
+        <td><center><%= clisse %></center> </td>
         <td><center><%= fecha_fin if fecha_fin %></center> </td>
         <td><center><%= ord_trab.fechaEntrega.strftime("%d/%m/%Y %H:%M") if ord_trab.fechaEntrega %></center> </td>
         <td style="background-color:#{color if color};"/>

@@ -1,6 +1,7 @@
 <show-page>
   <heading:>
     <name/> <span style="float:right"> <%= link_to '<< Atras', request.env['HTTP_REFERER'] %></span><br/>
+    <span if="&@message != ''" style="font-color:red"> <%= @message %></span><br/>
   </heading:>
   <edit-link: replace>
     <%if current_user.rol != "Facturador" %>
@@ -11,254 +12,278 @@
   </edit-link:>
   <content-body:>
     <div>
+
       <!-- = button_to "Enviar OT", :action => 'mail_ot', :id => this.id -->
       <%= link_to "Exportar XML", ord_trab_path(:format => 'xml')  %>
     </div>
     <transition-buttons class="centrada"/>
-    <table class="#{ @this.claset}">
-      <% if this.urgente %>
-      <tr>
-        <th colspan="12" class="centrada" style="background-color:yellow !important">U R G E N T E</th>
-      </tr>
-      <% end %>
-      <tr>
-        <th colspan="2">Cliente</th>
-        <td colspan="4"><view:cliente/></td>
-        <th colspan="2">Tipo de OT</th>
-        <td colspan="1"><view:tipoot if="tipoot"/></td>
-        <th>Fecha:&nbsp;<view:fecha format="%d-%m-%y"/></th>
-        <th>O.T.</th>
-        <th><view:numOT/></th>
-      </tr>
-      <tr>
-        <th colspan="2">Producto</th>
-        <td colspan="6"><view:nomprod/></td>
-        <th class="centrada">Num. Fact.</th>
-        <td>
-          <if test="&current_user.facturador?">
-            <editor:numFact/>
-          </if>
-          <else>
-            <if test="&this.numFact">
-              <view:numFact/>
+    <form action="/ord_trabs/#{this.id}/reposicion">
+      <table class="#{ @this.claset}">
+        <% if this.urgente %>
+        <tr>
+          <th colspan="12" class="centrada" style="background-color:yellow !important">U R G E N T E</th>
+        </tr>
+        <% end %>
+        <tr>
+          <th colspan="2">Cliente</th>
+          <td colspan="4"><view:cliente/></td>
+          <th colspan="2">Tipo de OT</th>
+          <td colspan="1"><view:tipoot if="tipoot"/></td>
+          <th>Fecha:&nbsp;<view:fecha format="%d-%m-%y"/></th>
+          <th>O.T.</th>
+          <th><view:numOT/></th>
+        </tr>
+        <tr>
+          <th colspan="2">Producto</th>
+          <td colspan="6"><view:nomprod/></td>
+          <th class="centrada">Num. Fact.</th>
+          <td>
+            <if test="&current_user.facturador?">
+              <editor:numFact/>
             </if>
-          </else>
-        </td>
-        <th class="centrada">Num. Guia</th>
-        <td>
-          <if test="&current_user.facturador?">
-            <editor:numGuia/>
-          </if>
-          <else>
-            <if test="&this.numGuia"><view:numGuia/></if>
-          </else>
-        </td>
-      </tr>
-      <tr>
-        <th colspan="2">Cliente Final</th>
-        <td colspan="7"><view:cfinal/></td>
-        <th>Contacto</th>
-        <td colspan="2"><view:contacter if="contacter"/></td>
-      </tr>
-      <tr><td colspan="12"></td></tr>
-      <tr>
-        <th colspan="2">Cod. Cliente</th>
-        <td colspan ="3"><view:codTflex if="codTflex"/></td>
-        <th colspan="3" class="centrada">Codigo de Producto</th>
-        <th>Version</th>
-        <th colspan="3" class="centrada">Disposici&oacute;n Clisse</th>
-      </tr>
-      <tr>
-        <th colspan="5" class="centrada">Solicitud a Ejecutar</th>
-        <td colspan="3">
-          <view:cliente.sigla/>-<view:codCliente if="codCliente"/>
-        </td>
-        <td><view:version if="version"/></td>
-        <td>Cilindro:&nbsp;<view:cilindro if="cilindro"/></td>
-        <td colspan="2">D.Ancho&nbsp;<view:distorAncho if="distorAncho"/></td>
-      </tr>
-      <tr>
-        <td colspan="1" style="font-size:80%">V.B.: <view:vb class="boolshow#{@this.vb}"/></td>
-        <td>PTR: <view:ptr class="boolshow#{@this.ptr}"/></td>
-        <td>MTZ: <view:mtz class="boolshow#{@this.mtz}"/></td>
-        <td>Mtje: <view:mtje class="boolshow#{@this.mtje}"/></td>
-        <td>Pol: <view:pol class="boolshow#{@this.pol}" if="pol"/></td>
-        <th colspan="4" class="centrada">Medidas de Impresion</th>
-        <td style="font-size:80%">Distorsion Cil.&nbsp;<%= if this.cilindro then this.cilindro.distorsion end -%></td>
-        <td colspan="2" style="font-size:80%;">
-          % Distorsion&nbsp;<%= if this.cilindro then number_to_percentage(this.cilindro.pctDistor) end-%>
-        </td>
-      </tr>
-      <tr>
-        <th colspan="3" title="Material Proporcionado">Mat. Prop.</th>
-        <th title="Cantidad">Cant.</th>
-        <th title="Devolver">Dev.</th>
-        <th>Desarrollo</th>
-        <td><view:mdi_desarrollo if="mdi_desarrollo"/>&nbsp;mm.</td>
-        <td><view:mdi_ancho if="mdi_ancho"/> &nbsp;mm.</td>
-        <th>Ancho</th>
-        <th>Fecha Tope</th>
-        <td colspan="2"><view:fechaEntrega format="%d-%m-%y %H:%M"/></td>
-      </tr>
-      <tr>
-        <td><view:mpFTP class="boolshow#{@this.mpFTP}"/></td>
-        <td colspan="2">Bajar de FTP</td>
-        <td><if test="&this.mpFTPq"><view:mpFTPq style="width:40px"/></if></td>
-        <td><view:mpFTPdev class="boolshow#{@this.mpFTPdev}"/></td>
-        <th colspan="3" class="centrada">Codigo de Barras</th>
-        <th colspan="2" class="centrada">Color</th>
-        <th colspan="2" class="centrada">Disposicion de bandas</th>
-      </tr>
-      <tr>
-        <td><view:mpPel class="boolshow#{@this.mpPel}"/></td>
-        <td colspan="2">Peliculas</td>
-        <td><if test="&this.mpPelq"><view:mpPelq style="width:40px"/></if></td>
-        <td><view:mpPeldev class="boolshow#{@this.mpPeldev}"/></td>
-        <td colspan="3">
-          N.&nbsp;<view:barcode/>
-          <br/>Tipo <view:list_barcode/>
-        </td>
-        <td colspan="2"><view:colorBarcode/></td>
-        <td colspan="2" rowspan="5" style="text-align: center">
-          <if test="&this.dispBandas && this.dispBandas == 0">
-            Bandas Alineadas
-          </if><else><if test="&this.dispBandas && this.dispBandas == 1">
-            Bandas Desplazadas
-          </if></else>
-          <else>
-            Ninguna banda seleccionada
-          </else>
-        </td>
-      </tr>
-      <tr>
-        <td><view:mpImp class="boolshow#{@this.mpImp}"/></td>
-        <td colspan="2">Muestra Impresa</td>
-        <td><if test="&this.mpImpq"><view:mpImpq style="width:40px"/></if></td>
-        <td><view:mpImpdev class="boolshow#{@this.mpImpdev}"/></td>
-        <th colspan="3">Marcas en los Clisse</th>
-        <th>Color</th>
-        <th>Apoyo</th>
-      </tr>
-      <tr>
-        <td><view:mpMgr class="boolshow#{@this.mpMgr}"/></td>
-        <td colspan="2">Material Grafico</td>
-        <td><if test="&this.mpMgrq"><view:mpMgrq style="width:40px"/></if></td>
-        <td><view:mpMgrdev class="boolshow#{@this.mpMgrdev}"/></td>
-        <td colspan="3"><view:mcGuia class="boolshow#{@this.mcGuia}"/>&nbsp;Guia de corte</td>
-        <td><view:mcGuiacol style="width:40px"/></td>
-        <td><view:mcGuiaapy/></td>
-      </tr>
-      <tr>
-        <td><view:mpOpt class="boolshow#{@this.mpOpt}"/></td>
-        <td colspan="2">Mail/DVD/CD</td>
-        <td><if test="&this.mpOptq"><view:mpOptq style="width:40px"/></if></td>
-        <td><view:mpOptdev class="boolshow#{@this.mpOptdev}"/></td>
-        <td colspan="3"><view:mcMPunto class="boolshow#{@this.mcMPunto}"/>&nbsp;Micropunto x modulo</td>
-        <td><view:mcMPuntocol style="width:40px"/></td>
-        <td><view:mcMPuntoapy/></td>
-      </tr>
-      <tr>
-        <td><view:mpPtr class="boolshow#{@this.mpPtr}"/></td>
-        <td colspan="2">Printer</td>
-        <td><if test="&this.mpPtrq"><view:mpPtrq style="width:40px"/></if></td>
-        <td><view:mpPtrdev class="boolshow#{@this.mpPtrdev}"/></td>
-        <td colspan="3"><view:mcCruces class="boolshow#{@this.mcCruces}"/>&nbsp;Cruces</td>
-        <td><view:mcCrucescol style="width:40px"/></td>
-        <td><view:mcCrucesapy style="width:40px"/></td>
-      </tr>
-      <tr>
-        <th colspan="5" class="centrada">Sustrato</th>
-        <td><view:mcTacas class="boolshow#{@this.mcTacas}"/>&nbsp;Tacas</td>
-        <td style="text-align: right"><view:mcTacasH if="mcTacasH"/> mm &nbsp;&nbsp;x</td>
-        <td><view:mcTacasV  if="mcTacasV"/>&nbsp;mm&nbsp;</td>
-        <td><view:mcTacascol style="width:40px"/></td>
-        <td><view:mcTacasapy style="width:40px"/></td>
-        <td colspan="2" class="centrada">Impresora: &nbsp;<view:impresora/></td>
-      </tr>
-      <tr>
-        <td colspan="5" rowspan="2"><view:sustrato if="sustrato" no-wrapper/></td>
-        <td colspan="3"><view:mcTiras class="boolshow#{@this.mcTiras}"/>&nbsp;Tiras de control</td>
-        <td><view:mcTirascol style="width:40px"/></td>
-        <td><view:mcTirasapy style="width:40px"/></td>
-        <td colspan="2" class="centrada">N. de Pasos:&nbsp;<view:nPasos/></td>
-      </tr>
-      <tr>
-        <td colspan="2"><view:mcExceso class="boolshow#{@this.mcExceso}"/>&nbsp;Exceso</td>
-        <td><view:mcExcesoq if="mcExcesoq" style="width:40px"/>&nbsp;mm</td>
-        <td><view:mcExcesocol style="width:40px"/></td>
-        <td><view:mcExcesoapy style="width:40px"/></td>
-        <td colspan="2" class="centrada">N. de Bandas&nbsp;<view:nBandas/></td>
-      </tr>
-      <tr>
-        <th colspan="5" class="centrada">Fotopolimero</th>
-        <td colspan="3"><view:mcMarcas class="boolshow#{@this.mpFTP}"/>&nbsp;Marcas de calce</td>
-        <td><view:mcMarcascol style="width:40px"/></td>
-        <td/>
-        <td colspan="2" class="centrada">N. de Copias&nbsp;<%= this.nCopias %></td>
-      </tr>
-      <tr>
-        <td colspan="2" class="centrada">Espesor: <view:espesor if="espesor"/></td>
-        <td colspan="3" class="centrada">Categoria: <view:tipofotop/></td>
-        <td colspan="3"><view:mcPimp  class="boolshow#{@this.mcPimp}"/>&nbsp;Pie de Imprenta</td>
-        <td><view:mcPimpcol style="width:40px"/></td>
-        <td><view:mcPimpapy style="width:40px"/></td>
-        <th>Entrega:</th>
-        <td><view:fechaEntrega format="%d-%m-%y %H:%M"/></td>
-      </tr>
-      <tr>
-        <td class="centrada" colspan="5">Lado: <view:supRev/></td>
-        <th colspan="2" class="centrada">Trapping</th>
-        <th colspan="3" class="centrada">Curva</th>
-        <th colspan="3" class="centrada">Encargado</th>
-      </tr>
-      <tr>
-        <td class="centrada" colspan="5">Material: <view:tipomat if="tipomat"/></td>
-        <td colspan="2" class="centrada"><view:trapping if="trapping"/></td>
-        <td colspan="3" class="centrada"><view:curva if="curva"/></td>
-        <td colspan="3" class="centrada"><view:encargado if="encargado"/></td>
-      </tr>
-      <tr>
-        <th class="centrada" colspan="7">Colores</th>
-        <th colspan="5" class="centrada">Observaciones</th>
-      </tr>
-      <tr>
-        <th>Pos</th>
-        <th>Color</th>
-        <th>Anilox</th>
-        <th>lpi</th>
-        <th>Alto</th>
-        <th>Ancho</th>
-        <th>Area</th>
-        <th>Copias</th>
-        <td colspan="7" rowspan="<%=  1+this.separacions.count %>">&nbsp;<view:observaciones/></td>
-      </tr>
-      <repeat with="&this.separacions">
-        <tr>
-          <td><view:position/></td>
-          <td><view:color if="color"/></td>
-          <td><view:anilox if="anilox"/></td>
-          <td><view:lpi if="lpi"/></td>
-          <td><view:alto if="alto"/></td>
-          <td><view:ancho if="ancho"/></td>
-          <td><view:area if="area"/></td>
-          <td><view:ord_trab.nCopias if="&this.ord_trab.nCopias"/></td>
+            <else>
+              <if test="&this.numFact">
+                <view:numFact/>
+              </if>
+            </else>
+          </td>
+          <th class="centrada">Num. Guia</th>
+          <td>
+            <if test="&current_user.facturador?">
+              <editor:numGuia/>
+            </if>
+            <else>
+              <if test="&this.numGuia"><view:numGuia/></if>
+            </else>
+          </td>
         </tr>
-      </repeat>
-      <tr/>
-      <% if User.supervisores.include?(current_user)%>
         <tr>
-          <th>Tarea</th>
-          <th colspan="3">Operador</th>
+          <th colspan="2">Cliente Final</th>
+          <td colspan="7"><view:cfinal/></td>
+          <th>Contacto</th>
+          <td colspan="2"><view:contacter if="contacter"/></td>
         </tr>
-        <repeat with="&@taras">
-          <% @tara = this %>
+        <tr><td colspan="12"></td></tr>
+        <tr>
+          <th colspan="2">Cod. Cliente</th>
+          <td colspan ="3"><view:codTflex if="codTflex"/></td>
+          <th colspan="3" class="centrada">Codigo de Producto</th>
+          <th>Version</th>
+          <th colspan="3" class="centrada">Disposici&oacute;n Clisse</th>
+        </tr>
+        <tr>
+          <th colspan="5" class="centrada">Solicitud a Ejecutar</th>
+          <td colspan="3">
+            <view:cliente.sigla/>-<view:codCliente if="codCliente"/>
+          </td>
+          <td><view:version if="version"/></td>
+          <td>Cilindro:&nbsp;<view:cilindro if="cilindro"/></td>
+          <td colspan="2">D.Ancho&nbsp;<view:distorAncho if="distorAncho"/></td>
+        </tr>
+        <tr>
+          <td colspan="1" style="font-size:80%">V.B.: <view:vb class="boolshow#{@this.vb}"/></td>
+          <td>PTR: <view:ptr class="boolshow#{@this.ptr}"/></td>
+          <td>MTZ: <view:mtz class="boolshow#{@this.mtz}"/></td>
+          <td>Mtje: <view:mtje class="boolshow#{@this.mtje}"/></td>
+          <td>Pol: <view:pol class="boolshow#{@this.pol}" if="pol"/></td>
+          <th colspan="4" class="centrada">Medidas de Impresion</th>
+          <td style="font-size:80%">Distorsion Cil.&nbsp;<%= if this.cilindro then this.cilindro.distorsion end -%></td>
+          <td colspan="2" style="font-size:80%;">
+            % Distorsion&nbsp;<%= if this.cilindro then number_to_percentage(this.cilindro.pctDistor) end-%>
+          </td>
+        </tr>
+        <tr>
+          <th colspan="3" title="Material Proporcionado">Mat. Prop.</th>
+          <th title="Cantidad">Cant.</th>
+          <th title="Devolver">Dev.</th>
+          <th>Desarrollo</th>
+          <td><view:mdi_desarrollo if="mdi_desarrollo"/>&nbsp;mm.</td>
+          <td><view:mdi_ancho if="mdi_ancho"/> &nbsp;mm.</td>
+          <th>Ancho</th>
+          <th>Fecha Tope</th>
+          <td colspan="2"><view:fechaEntrega format="%d-%m-%y %H:%M"/></td>
+        </tr>
+        <tr>
+          <td><view:mpFTP class="boolshow#{@this.mpFTP}"/></td>
+          <td colspan="2">Bajar de FTP</td>
+          <td><if test="&this.mpFTPq"><view:mpFTPq style="width:40px"/></if></td>
+          <td><view:mpFTPdev class="boolshow#{@this.mpFTPdev}"/></td>
+          <th colspan="3" class="centrada">Codigo de Barras</th>
+          <th colspan="2" class="centrada">Color</th>
+          <th colspan="2" class="centrada">Disposicion de bandas</th>
+        </tr>
+        <tr>
+          <td><view:mpPel class="boolshow#{@this.mpPel}"/></td>
+          <td colspan="2">Peliculas</td>
+          <td><if test="&this.mpPelq"><view:mpPelq style="width:40px"/></if></td>
+          <td><view:mpPeldev class="boolshow#{@this.mpPeldev}"/></td>
+          <td colspan="3">
+            N.&nbsp;<view:barcode/>
+            <br/>Tipo <view:list_barcode/>
+          </td>
+          <td colspan="2"><view:colorBarcode/></td>
+          <td colspan="2" rowspan="5" style="text-align: center">
+            <if test="&this.dispBandas && this.dispBandas == 0">
+              Bandas Alineadas
+            </if><else><if test="&this.dispBandas && this.dispBandas == 1">
+              Bandas Desplazadas
+            </if></else>
+            <else>
+              Ninguna banda seleccionada
+            </else>
+          </td>
+        </tr>
+        <tr>
+          <td><view:mpImp class="boolshow#{@this.mpImp}"/></td>
+          <td colspan="2">Muestra Impresa</td>
+          <td><if test="&this.mpImpq"><view:mpImpq style="width:40px"/></if></td>
+          <td><view:mpImpdev class="boolshow#{@this.mpImpdev}"/></td>
+          <th colspan="3">Marcas en los Clisse</th>
+          <th>Color</th>
+          <th>Apoyo</th>
+        </tr>
+        <tr>
+          <td><view:mpMgr class="boolshow#{@this.mpMgr}"/></td>
+          <td colspan="2">Material Grafico</td>
+          <td><if test="&this.mpMgrq"><view:mpMgrq style="width:40px"/></if></td>
+          <td><view:mpMgrdev class="boolshow#{@this.mpMgrdev}"/></td>
+          <td colspan="3"><view:mcGuia class="boolshow#{@this.mcGuia}"/>&nbsp;Guia de corte</td>
+          <td><view:mcGuiacol style="width:40px"/></td>
+          <td><view:mcGuiaapy/></td>
+        </tr>
+        <tr>
+          <td><view:mpOpt class="boolshow#{@this.mpOpt}"/></td>
+          <td colspan="2">Mail/DVD/CD</td>
+          <td><if test="&this.mpOptq"><view:mpOptq style="width:40px"/></if></td>
+          <td><view:mpOptdev class="boolshow#{@this.mpOptdev}"/></td>
+          <td colspan="3"><view:mcMPunto class="boolshow#{@this.mcMPunto}"/>&nbsp;Micropunto x modulo</td>
+          <td><view:mcMPuntocol style="width:40px"/></td>
+          <td><view:mcMPuntoapy/></td>
+        </tr>
+        <tr>
+          <td><view:mpPtr class="boolshow#{@this.mpPtr}"/></td>
+          <td colspan="2">Printer</td>
+          <td><if test="&this.mpPtrq"><view:mpPtrq style="width:40px"/></if></td>
+          <td><view:mpPtrdev class="boolshow#{@this.mpPtrdev}"/></td>
+          <td colspan="3"><view:mcCruces class="boolshow#{@this.mcCruces}"/>&nbsp;Cruces</td>
+          <td><view:mcCrucescol style="width:40px"/></td>
+          <td><view:mcCrucesapy style="width:40px"/></td>
+        </tr>
+        <tr>
+          <th colspan="5" class="centrada">Sustrato</th>
+          <td><view:mcTacas class="boolshow#{@this.mcTacas}"/>&nbsp;Tacas</td>
+          <td style="text-align: right"><view:mcTacasH if="mcTacasH"/> mm &nbsp;&nbsp;x</td>
+          <td><view:mcTacasV  if="mcTacasV"/>&nbsp;mm&nbsp;</td>
+          <td><view:mcTacascol style="width:40px"/></td>
+          <td><view:mcTacasapy style="width:40px"/></td>
+          <td colspan="2" class="centrada">Impresora: &nbsp;<view:impresora/></td>
+        </tr>
+        <tr>
+          <td colspan="5" rowspan="2"><view:sustrato if="sustrato" no-wrapper/></td>
+          <td colspan="3"><view:mcTiras class="boolshow#{@this.mcTiras}"/>&nbsp;Tiras de control</td>
+          <td><view:mcTirascol style="width:40px"/></td>
+          <td><view:mcTirasapy style="width:40px"/></td>
+          <td colspan="2" class="centrada">N. de Pasos:&nbsp;<view:nPasos/></td>
+        </tr>
+        <tr>
+          <td colspan="2"><view:mcExceso class="boolshow#{@this.mcExceso}"/>&nbsp;Exceso</td>
+          <td><view:mcExcesoq if="mcExcesoq" style="width:40px"/>&nbsp;mm</td>
+          <td><view:mcExcesocol style="width:40px"/></td>
+          <td><view:mcExcesoapy style="width:40px"/></td>
+          <td colspan="2" class="centrada">N. de Bandas&nbsp;<view:nBandas/></td>
+        </tr>
+        <tr>
+          <th colspan="5" class="centrada">Fotopolimero</th>
+          <td colspan="3"><view:mcMarcas class="boolshow#{@this.mpFTP}"/>&nbsp;Marcas de calce</td>
+          <td><view:mcMarcascol style="width:40px"/></td>
+          <td/>
+          <td colspan="2" class="centrada">N. de Copias&nbsp;<%= this.nCopias %></td>
+        </tr>
+        <tr>
+          <td colspan="2" class="centrada">Espesor: <view:espesor if="espesor"/></td>
+          <td colspan="3" class="centrada">Categoria: <view:tipofotop/></td>
+          <td colspan="3"><view:mcPimp  class="boolshow#{@this.mcPimp}"/>&nbsp;Pie de Imprenta</td>
+          <td><view:mcPimpcol style="width:40px"/></td>
+          <td><view:mcPimpapy style="width:40px"/></td>
+          <th>Entrega:</th>
+          <td><view:fechaEntrega format="%d-%m-%y %H:%M"/></td>
+        </tr>
+        <tr>
+          <td class="centrada" colspan="5">Lado: <view:supRev/></td>
+          <th colspan="2" class="centrada">Trapping</th>
+          <th colspan="3" class="centrada">Curva</th>
+          <th colspan="3" class="centrada">Encargado</th>
+        </tr>
+        <tr>
+          <td class="centrada" colspan="5">Material: <view:tipomat if="tipomat"/></td>
+          <td colspan="2" class="centrada"><view:trapping if="trapping"/></td>
+          <td colspan="3" class="centrada"><view:curva if="curva"/></td>
+          <td colspan="3" class="centrada"><view:encargado if="encargado"/></td>
+        </tr>
+        <tr>
+          <th class="centrada" colspan="7">Colores</th>
+          <th colspan="5" class="centrada">Observaciones</th>
+        </tr>
+        <tr>
+          <th>Pos</th>
+          <th>Color</th>
+          <th>Anilox</th>
+          <th>lpi</th>
+          <th>Alto</th>
+          <th>Ancho</th>
+          <th>Area</th>
+          <th>Copias</th>
+          <td colspan="7" rowspan="<%=  1+this.separacions.count %>">
+            <if test="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion"> 
+              <textarea name="ord_trab[observaciones]" id="ord_trab_observaciones" 
+                        class="text ord-trab-observaciones"  style="width:90%;height:100%;">
+              </textarea>
+            </if>
+            <else>
+              &nbsp;<view:observaciones/>
+            </else>
+          </td>
+        </tr>
+        <repeat with="&this.separacions">
           <tr>
-            <td><if test="&this.proceso"><%= this.proceso -%></if></td>
-            <td colspan="3"><editor:asignado options="&@tara.opciones" include-none blank-message="Sin asignar"/></td>
+            <td><view:position/></td>
+            <td><view:color if="color"/></td>
+            <td><view:anilox if="anilox"/></td>
+            <td><view:lpi if="lpi"/></td>
+            <td><view:alto if="alto"/></td>
+            <td><view:ancho if="ancho"/></td>
+            <td><view:area if="area"/></td>
+            <% 
+              num_copias = this.nCopias.blank? ? this.ord_trab.nCopias : this.nCopias
+            %>
+            <td><%= num_copias %>
+              <if test="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion"> 
+                <input type="text" name="ord_trab[separacions][#{this.position - 1}][nCopias]" 
+                       id="ord_trab_nCopias" class="integer separacion-nCopias" style="width:15%"/>
+              </if>
+            </td>
           </tr>
         </repeat>
-      <%end%>
-    </table>
+        <tr/>
+        <% if User.supervisores.include?(current_user)%>
+          <% if !@usuario_polimero %>
+          <tr>
+            <th>Tarea</th>
+            <th colspan="3">Operador</th>
+          </tr>
+          <repeat with="&@taras">
+            <% @tara = this %>
+            <tr>
+              <td><if test="&this.proceso"><%= this.proceso -%></if></td>
+              <td colspan="3"><editor:asignado options="&@tara.opciones" include-none blank-message="Sin asignar"/></td>
+            </tr>
+          </repeat>
+        <%end%>
+        <%end%>
+      </table>
+      <center><submit value="Crear nueva reposicion" onclick="return confirm('¿Está seguro de crear una nueva reposición?');"
+                        if="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion"/></center>
+    </form>
     <transition-buttons class="centrada"/>
   </content-body:>
 </show-page>

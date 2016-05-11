@@ -186,6 +186,7 @@
     <td><input:mpPeldev style="font-size:60%"/></td>
     <td colspan="3">
       N.&deg;&nbsp;<input:barcode style="width:80%"/><br/>
+      <input:barcodecopy style="width:95%" placeholder="repite para confirmar" /><br/>
       Tipo
       <select name="ord_trab[list_barcode_id]">
         <% if @ord_trab.list_barcode.blank? %>

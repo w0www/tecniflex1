@@ -5,28 +5,19 @@
   <content:>
     <header class="content-header"/>
     <section class="content-body" with='&@ord_trabs'>
-    <style>
-      #button { padding: .5em 1em; text-decoration: none; }
-      #efecto { width: 850px; height: 78px; padding: 0.4em; position: relative; display:none}
-      #efecto h3 { margin: 0; padding: 0.4em; text-align: center; }
-    </style>
-    <div id="tabs">
-      <ul>
-        <li><a href="#tabs-1">Tablero de Control</a></li>
-<!--        <% if @cliente_logeado.blank? %>-->
-<!--          <li><a href="#tabs-2">Usuarios</a></li>-->
-<!--        <% end %>-->
-      </ul>
-      <div id="tabs-1">
-          <div class='header' >
-              <if test="&@error == 1">
-                "No se  ha encontrado ninguna orden de trabajo con esos filtros"
-              </if>
-              <filters action="/ord_trabs/tablero"/>
-              <a href="#" id="filter-button" class="nice-button ui-state-default ui-corner-all">Filtrar</a>
-            <br/>
-          </div>
-          <%= will_paginate @todas %>
+    <form method="get" action="/ord_trabs/reposiciones" id="filters">
+      <fieldset class="feckless-fields horizontal informe">
+        <codCliente-field label="Cod. cliente" name="codCliente"/>
+        <input-field label="Version" name="version"/>
+        <placeholder-field/>
+        <submit-field/>
+      </fieldset>
+    </form>
+        <br/>
+        <if test="&@error == 1">
+          "No se  ha encontrado ninguna orden de trabajo con esos filtros"
+        </if>
+        <else>
           <table class="tablero" part="dashboard"> 
             <thead>
               <tr>
@@ -44,7 +35,6 @@
                   </th>
                 </repeat>
                 <th class="colest">Prioridad</th>
-                <th class="colest">Estado</th>
               </tr>
             </thead>
             <tbody>
@@ -93,48 +83,16 @@
                   color_directo = tod.color.blank? ? color : tod.color
                 %>
                    <td rowspan="2" style="background-color:#{color_directo if color_directo}"/>
-                   <td rowspan="2">
-                     <do with="&tod"><% transitions = this.lifecycle.publishable_transitions_for(current_user) %><transition-buttons/><unless test='&transitions'>Asignar Tareas</unless></do></td>
                     </tr>
                     <tr/>
                <%end%>
-              <!-- </repeat> -->
             </tbody>
           </table>
-        </div>
-<!--        <div id="tabs-2">-->
-<!--          <table class="tablero">-->
-<!--            <thead>-->
-<!--              <tr>-->
-<!--                <th>Usuario</th><th>Rol</th><th>Procesos</th><th>Tareas Disponibles</th><th>Tareas Completadas hoy</th>-->
-<!--              </tr>-->
-<!--            </thead>-->
-<!--            <tbody>-->
-<!--              <repeat with="&@usuarios">-->
-<!--                <tr></tr>-->
-<!--              </repeat>-->
-<!--             </tbody>-->
-<!--           </table>-->
-<!--         </div>-->
-       </div>
+
+        </else>
+
+
+
     </section>
   </content:>
-  <page-scripts:>
-    jQuery(document).ready(function() {
-      jQuery("#datepicker").datepicker();
-      jQuery("#datepicker2").datepicker();
-      jQuery("#tabs").tabs();
-      // run the currently selected effect
-      function runEffect() {
-        // run the effect
-        jQuery( "#efecto" ).slideToggle( 'slow', function(){});
-      };
-
-      // set effect from select menu value
-      jQuery( "#button" ).click(function() {
-        runEffect();
-          return false;
-        });
-    });
-  </page-scripts:>
 </page>

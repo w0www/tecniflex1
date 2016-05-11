@@ -5,6 +5,7 @@ class ListBarcode < ActiveRecord::Base
   fields do
     description :text
     code        :string
+    num_char    :integer
     timestamps
   end
 

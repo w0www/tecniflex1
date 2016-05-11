@@ -68,6 +68,7 @@ class OrdTrab < ActiveRecord::Base
     mdi_desarrollo :decimal, :precision => 8, :scale => 2, :default => 0
     mdi_ancho      :decimal, :precision => 8, :scale => 2, :default => 0
     barcode        :string
+    barcodecopy    :string
     colorBarcode   :string
     dispBandas     :integer
     distTotalPerim :decimal, :precision => 8, :scale => 2, :default => 0
@@ -117,9 +118,9 @@ class OrdTrab < ActiveRecord::Base
   named_scope :proceso_estado_is, lambda {|estado| {
     :include => :tareas,
     :conditions => ["tareas.state = ?", estado] } 
-
-
   }
+
+
 
   def armacod
     armac = ""
@@ -285,7 +286,17 @@ class OrdTrab < ActiveRecord::Base
   validates_presence_of :encargado_id
   validates_presence_of :dispBandas, :espesor, :tipomat, :if => "self.mtz"
   validates_associated :separacions, :if => "(self.mtje || self.mtz || self.pol) && self.activa? ", :on => :habilitar
+  validate :limite_codigo_barras, :barcodes_iguales
 
+  def limite_codigo_barras
+    if list_barcode
+      errors.add(:barcode, "tiene que tener #{list_barcode.num_char} dígitos") if list_barcode.num_char && list_barcode.num_char > 0 && barcode.length != list_barcode.num_char
+    end
+  end
+
+  def barcodes_iguales
+    errors.add(:barcodecopy, "tiene que ser igual que el barcode") if !barcode.blank? && barcode != barcodecopy
+  end
 
   def before_create
 		if OrdTrab.all == []
@@ -298,6 +309,7 @@ class OrdTrab < ActiveRecord::Base
   def activa?
     ['habilitada','iniciada','detenida'].include?(self.state)
   end
+
 
 	# Boolean que indica si todas las tareas estn terminadas o la orden no tiene
 	def tareas_terminadas?

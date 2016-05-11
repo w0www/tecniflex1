@@ -53,6 +53,7 @@
   </old-show-page>
 </extend>
 
+
 <extend tag="new-page" for="MovHeader">
   <old-new-page merge>
   	<heading:>
@@ -79,6 +80,7 @@
     <nav-item href="#{base_url}/">Inicio</nav-item>
     <% end %>
     <nav-item href="#{base_url}/ord_trabs/tablero">Tablero</nav-item>
+    <nav-item href="#{base_url}/ord_trabs/reposiciones" if="&Cliente.find_by_correo(current_user.email_address) || current_user.email_address == 'polimero@tecniflex.cl'">Reposiciones</nav-item>
     <% if current_user.facturador? || current_user.administrator? %>
     <nav-item with="&OrdTrab"><ht key="ord_trabs.nav_item">Ordenes</ht></nav-item>
     <% end %>
@@ -323,7 +325,7 @@
   <card class="proceso" param="default" merge>
     <header: param>
       <h4 param="heading">
-        <a><view:code/></a>
+        <a><view:code/></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; NUM_CHAR: <view:num_char/>
       </h4>
     </header:>
   </card>

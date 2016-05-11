@@ -44,6 +44,16 @@ class FrontController < ApplicationController
     # id_facturacion = Proceso.find_by_nombre("facturacion").id
     @tareas = Tarea.find(:all, :conditions => ["proceso_id IN (?) AND state IN (?)", [id_polimero,id_revisionmm],["habilitada","iniciada", "detenida","enviada","recibida", "en_revision"]], :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
 
+    @tareas_terminadas_hoy = Tarea.find(:all, :conditions => ["proceso_id = ? AND state = ? AND DAY(updated_at) = ? AND MONTH(updated_at) = ? AND YEAR(updated_at) = ?",7, 'terminada', Date.today.day, Date.today.month, Date.today.year]).count
+
+    @tareas_terminadas_ayer = Tarea.find(:all, :conditions => ["proceso_id = ? AND state = ? AND DAY(updated_at) = ? AND MONTH(updated_at) = ? AND YEAR(updated_at) = ?",7, 'terminada', Date.yesterday.day, Date.yesterday.month, Date.yesterday.year]).count
+
+    @tareas_terminadas_mes = Tarea.find(:all, :conditions => ["proceso_id = ? AND state = ? AND MONTH(updated_at) = ? AND YEAR(updated_at) = ?",7, 'terminada', Date.today.month, Date.today.year]).count
+
+    @tareas_terminadas_aio = Tarea.find(:all, :conditions => ["proceso_id = ? AND state = ? AND YEAR(updated_at) = ?",7, 'terminada', Date.today.year]).count
+
+    @tareas_terminadas_totales = Tarea.find(:all, :conditions => ["proceso_id = ? AND state = ?",7, 'terminada']).count
+
     # Calcular las paginas totales
     if @tareas.count <= 20
       paginas_totales = 1
@@ -65,7 +75,18 @@ class FrontController < ApplicationController
         @pagina_siguiente = 1
       end
     end
+    @x_tareas = @tareas.count    
+    if params[:x_tareas] && params[:x_tareas] != @x_tareas
+      # sudo apt-get install beep
+      # Editar en modo root el fichero que se encuentra en /etc/modprobe.d/blacklist.conf   
+      # o en mi caso también en  /etc/modprobe.d/alsa-base-blacklist.conf.
+      # Buscamos y descomentamos la linea ‘blacklist pcspkr’ o ‘blacklist snd-pcsp’, y ya lo tenemos preparado.
+      # chmod 4755 /usr/bin/beep
+      system("beep -l 300 -f 880")
+    end
+    
     @tareas = @tareas.paginate(:page => params[:page], :per_page => 20)
+    
   end
   
   def eliminar

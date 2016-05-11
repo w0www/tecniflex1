@@ -6,7 +6,9 @@
 # Bootstrap the Rails environment, frameworks, and default configuration
 require File.join(File.dirname(__FILE__), 'boot')
 require 'pdfkit'
-require 'csv'
+require 'faster_csv'
+CSV = FCSV
+
 
 Rails::Initializer.run do |config|
   config.gem 'hobo'
