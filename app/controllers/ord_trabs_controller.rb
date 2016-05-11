@@ -85,14 +85,36 @@ class OrdTrabsController < ApplicationController
     end
   end
 
+  def calcular_codigo_cliente
+    codCliente = ""
+    if params[:codCliente]
+      if params[:codCliente].split("-").count > 2
+        indice = 0
+        indice_total = params[:codCliente].split("-").count - 1
+        for c in params[:codCliente].split("-")
+          logger.info "esto es c #{c}"
+          if indice == indice_total
+            codCliente += "#{c}"
+          elsif indice != 0
+            codCliente += "#{c}-"
+          end
+          indice += 1
+        end
+      else
+        codCliente = params[:codCliente].split("-").last unless params[:codCliente].blank?
+      end
+    end  
+    logger.info "esto es codCliente #{codCliente}"
+    return codCliente
+  end
+
 	def index
     inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
     final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time if params[:fecha_fin] && !params[:fecha_fin].blank?
-    codCliente = params[:codCliente].split("-").last unless params[:codCliente].blank?
 
     hobo_index OrdTrab.apply_scopes(
       :cliente_is => params[:cliente],
-      :codCliente_is => codCliente,
+      :codCliente_is => calcular_codigo_cliente,
       :numOT_contains => params[:orden],
       :espesor_id_is => params[:espesor],
       :tipomat_id_is => params[:tipomat],
@@ -201,18 +223,17 @@ class OrdTrabsController < ApplicationController
       end
       inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
       final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time.end_of_day if params[:fecha_fin] && !params[:fecha_fin].blank?
-      codCliente = params[:codCliente].split("-").last unless params[:codCliente].blank?
       sigla = params[:codCliente].split("-").first unless params[:codCliente].blank?
       cliente = Cliente.find_by_sigla(sigla) unless sigla.blank?
       cliente_id = cliente.id unless cliente.blank?
       version = params[:version] unless params[:version].blank?
       tipo_ot = Tipoot.find_by_name("R (Reposicion)").id
 
-      @error = 1 if codCliente.blank? || cliente.blank?
+      @error = 1 if params[:codCliente] && params[:codCliente].blank? || cliente.blank?
 
       @todas = OrdTrab.apply_scopes(
         :cliente_id_is => cliente_id,
-        :codCliente_is => codCliente,
+        :codCliente_is => calcular_codigo_cliente,
         :version_is => version,
         :tipoot_id_is_not => tipo_ot,
         :proceso_is => 'polimero',
@@ -237,10 +258,9 @@ class OrdTrabsController < ApplicationController
     end
     inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
     final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time.end_of_day if params[:fecha_fin] && !params[:fecha_fin].blank?
-    codCliente = params[:codCliente].split("-").last unless params[:codCliente].blank?
     @todas = OrdTrab.apply_scopes(
       :cliente_is => params[:cliente],
-      :codCliente_is => codCliente,
+      :codCliente_is => calcular_codigo_cliente,
       :numOT_contains => params[:orden],
       :proceso_estado_is => [params[:estado_proceso]],
       :proceso_is => [params[:proceso]],
