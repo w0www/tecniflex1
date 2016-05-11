@@ -88,10 +88,11 @@ class OrdTrabsController < ApplicationController
 	def index
     inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
     final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time if params[:fecha_fin] && !params[:fecha_fin].blank?
-    
+    codCliente = params[:codCliente].split("-").last unless params[:codCliente].blank?
+
     hobo_index OrdTrab.apply_scopes(
       :cliente_is => params[:cliente],
-      :codCliente_contains => params[:codigo_cliente],
+      :codCliente_is => codCliente,
       :numOT_contains => params[:orden],
       :espesor_id_is => params[:espesor],
       :tipomat_id_is => params[:tipomat],
