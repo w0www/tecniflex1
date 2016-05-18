@@ -11,7 +11,11 @@ class RecibArchMailer < ActionMailer::Base
 	def enviapdf(ord_trab,email)
 		@ord_trab = ord_trab
 		subject 		'Orden de Trabajo Tecniflex'
-		recipients 	['patricio.arluciaga@gmail.com', 'preprensa@tecniflex.cl']
+    if Rails.env.production?
+		  recipients 	['patricio.arluciaga@gmail.com', 'preprensa@tecniflex.cl']
+    else
+      recipients ['imanol@alvarezperez.net']
+    end
 		from				'preprensa@tecniflex.cl'
 		content_type 'multipart/mixed'
 		part "text/plain" do |p|

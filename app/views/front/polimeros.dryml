@@ -18,6 +18,9 @@
 </page>
 
 <def tag="tabla-tiempos">
+  <div style="float:right;margin-right:10%;font-size:24px;color:#fff">
+    <%= Time.now.strftime("%d/%m/%Y %H:%M") %>
+  </div>
   <label style="color:#fff; font-size:24px;">Polimeros</label>
   <br/><br/>
   <label style="color:#fff; font-size:16px;">Contadores</label>

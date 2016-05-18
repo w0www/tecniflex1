@@ -13,7 +13,7 @@
   <content-body:>
     <div>
 
-      <!-- = button_to "Enviar OT", :action => 'mail_ot', :id => this.id -->
+      <%= button_to "Enviar OT", :action => 'mail_ot', :id => this.id %>
       <%= link_to "Exportar XML", ord_trab_path(:format => 'xml')  %>
     </div>
     <transition-buttons class="centrada"/>
