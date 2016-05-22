@@ -12,9 +12,9 @@
   </edit-link:>
   <content-body:>
     <div>
-
-      <%= button_to "Enviar OT", :action => 'mail_ot', :id => this.id %>
-      <%= link_to "Exportar XML", ord_trab_path(:format => 'xml')  %>
+      <%= link_to "Descargar PDF", :action => 'descargar_pdf', :id => this.id %>
+      &nbsp;&nbsp;&nbsp;<%= link_to "Enviar PDF", :action => 'mail_ot', :id => this.id %>
+      <br/><%= link_to "Exportar XML", ord_trab_path(:format => 'xml')  %>
     </div>
     <transition-buttons class="centrada"/>
     <form action="/ord_trabs/#{this.id}/reposicion">
@@ -266,7 +266,6 @@
         </repeat>
         <tr/>
         <% if User.supervisores.include?(current_user)%>
-          <% if !@usuario_polimero %>
           <tr>
             <th>Tarea</th>
             <th colspan="3">Operador</th>
@@ -279,10 +278,8 @@
             </tr>
           </repeat>
         <%end%>
-        <%end%>
       </table>
-      <center><submit value="Crear nueva reposicion" onclick="return confirm('¿Está seguro de crear una nueva reposición?');"
-                        if="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion"/></center>
+      <center><submit value="Crear nueva reposicion" onclick="return confirm('¿Está seguro de crear una nueva reposición?');" if="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion"/></center>
     </form>
     <transition-buttons class="centrada"/>
   </content-body:>

@@ -8,14 +8,11 @@ class RecibArchMailer < ActionMailer::Base
     body      :cliente => cliente, :trabajo => trabajo
   end
 
+  # Metodo para enviar
 	def enviapdf(ord_trab,email)
 		@ord_trab = ord_trab
 		subject 		'Orden de Trabajo Tecniflex'
-    if Rails.env.production?
-		  recipients 	['patricio.arluciaga@gmail.com', 'preprensa@tecniflex.cl']
-    else
-      recipients ['imanol@alvarezperez.net']
-    end
+    recipients 	['jaime.kunze@gmail.com', 'preprensa@tecniflex.cl', @ord_trab.cliente.correo ]
 		from				'preprensa@tecniflex.cl'
 		content_type 'multipart/mixed'
 		part "text/plain" do |p|
@@ -23,10 +20,11 @@ class RecibArchMailer < ActionMailer::Base
 		end
 		attachment "application/pdf" do |a|
 			a.body = email
-			a.filename = @ord_trab.nomprod
+			a.filename = "#{@ord_trab.numOT}.pdf"
 		end
 	end
 
+  # Metodo para las reposiciones
 	def avisar_cliente(ord_trab,pdf_cliente)
 		@ord_trab = ord_trab
     emails = ['jaime.kunze@gmail.com', 'preprensa@tecniflex.cl']

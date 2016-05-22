@@ -163,11 +163,11 @@ class OrdTrabsController < ApplicationController
         @message = "Se ha creado una nueva reposición, click <a href='/ord_trabs/#{@nueva_reposicion.id}'><a href='/ord_trabs/#{@nueva_reposicion.id}'>AQUÍ</a> para verla."
         @nueva_reposicion.tareas.first.update_attribute(:state, "habilitada") if @nueva_reposicion.tareas != []
         # Enviar email al cliente
-        # pdf_cliente = render_to_string(:action => 'improt', :layout => false, :object => @nueva_reposicion)
-        # pdf_cliente = PDFKit.new(pdf_cliente, :page_size => 'Letter')
-        # pdf_cliente.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
-        # pdf_cliente = pdf_client=e.to_pdf
-        # RecibArchMailer.deliver_avisar_cliente(@nueva_reposicion,pdf_cliente)
+        pdf_cliente = render_to_string(:action => 'improt', :layout => false, :object => @nueva_reposicion)
+        pdf_cliente = PDFKit.new(pdf_cliente, :page_size => 'Letter')
+        pdf_cliente.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
+        pdf_cliente = pdf_cliente.to_pdf
+        RecibArchMailer.deliver_avisar_cliente(@nueva_reposicion,pdf_cliente)
       elsif @nueva_reposicion && @nueva_reposicion.errors.count != 0
         @message = "Ha ocurrido un error, pongase en contacto con el administrador."
       end
@@ -511,6 +511,15 @@ class OrdTrabsController < ApplicationController
     email = email.to_pdf
     RecibArchMailer.deliver_enviapdf(@ot,email)
     redirect_to :action => 'index'
+	end
+
+  def descargar_pdf
+    @ot = OrdTrab.find(params[:id])
+    email = render_to_string(:action => 'improt', :layout => false, :object => @ot)
+    email = PDFKit.new(email)
+    email.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
+    email = email.to_pdf
+    send_data(email, :filename => "#{@ord_trab.numOT}.pdf")    
 	end
 
   private
