@@ -38,7 +38,7 @@ class RecibArchMailer < ActionMailer::Base
 		from				'preprensa@tecniflex.cl'
 		content_type 'multipart/mixed'
 		part "text/plain" do |p|
-			p.body = render_message("avisar_cliente_plain", :ot => @ord_trab.nomprod)
+			p.body = render_message("avisar_cliente_plain", :ot => @ord_trab)
 		end
 		attachment "application/pdf" do |a|
 			a.body = pdf_cliente

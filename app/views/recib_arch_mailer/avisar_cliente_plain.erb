@@ -1,7 +1,18 @@
-Estimado cliente,
+Estimado Cliente
 
-Sirvase encontrar adjunta la Orden de Trabajo correspondiente a " <%= @ot%> "
-Atentamente,
+Fecha: <%= Time.now.strftime("%d/%m/%Y") %>         HORA: <%= Time.now.strftime("%H:%M:%S") %>
 
-Departamento de Preprensa 
+Se ha generado orden de trabajo correspondiente a una reposición de clisse.
+
+Adjuntamos  la orden de trabajo correspondiente a codigo de producto "<%= @ot.cliente.sigla %> - <%= @ot.codCliente %>" version "<%= @ot.version %>"
+
+Producto "<% @ot.nomprod %>".
+
+
+Los detalles de la orden solicitada se encuentra en Adjunto.
+
+ 
+Saludamos, cordialmente
+Departamento de Polimeros
+
 Tecniflex
