@@ -265,7 +265,7 @@
           </tr>
         </repeat>
         <tr/>
-        <% if User.supervisores.include?(current_user)%>
+        <% if User.supervisores.include?(current_user) || @usuario_polimero %>
           <tr>
             <th>Tarea</th>
             <th colspan="3">Operador</th>
