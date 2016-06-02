@@ -56,19 +56,19 @@ class FrontController < ApplicationController
 
     # Calcular las paginas totales
     if @tareas.count <= 20
-      paginas_totales = 1
+      @paginas_totales = 1
     elsif @tareas.count > 20
-      paginas_totales = (@tareas.count / 20) + 1      
+      @paginas_totales = (@tareas.count / 20) + 1      
     end
     # Entramos en /front/polimeros
     if !params[:page]
       params[:page] = 1
-      @pagina_siguiente = paginas_totales == 1 ? 1 : 2
+      @pagina_siguiente = @paginas_totales == 1 ? 1 : 2
     elsif params[:page]
       # Si recibimos params[:id]
-      if paginas_totales > 1
+      if @paginas_totales > 1
         @pagina_siguiente = params[:page].to_i + 1
-        if params[:page].to_i == paginas_totales
+        if params[:page].to_i == @paginas_totales
           @pagina_siguiente = 1
         end
       else

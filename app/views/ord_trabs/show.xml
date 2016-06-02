@@ -35,22 +35,7 @@
     <tnx_trapping><%= @ord_trab.trapping %></tnx_trapping>
     <tnx_curva><%= @ord_trab.curva %></tnx_curva>
     <tnx_encargado><%= @ord_trab.encargado.nombre %></tnx_encargado>
-    <% n = 0 %>
-    <% if @ord_trab.separacions.count > 0 %>
-      <% for i in 1..@ord_trab.separacions.count %>
-        <% separacion = @ord_trab.separacions[n] %>
-        <tnx_color_<%= i %>><%= separacion.blank? ? 0 : separacion.color %></tnx_color_<%= i %>>
-        <tnx_anilox_color_<%= i %>><%= separacion.blank? ? 0 : separacion.anilox %></tnx_anilox_color_<%= i %>>
-        <tnx_lpi_color_<%= i %>><%= separacion.blank? ? 0 : separacion.lpi %></tnx_lpi_color_<%= i %>>
-        <tnx_alto_color_<%= i %>><%= separacion.blank? ? 0 : separacion.alto %></tnx_alto_color_<%= i %>>
-        <tnx_ancho_color_<%= i %>><%= separacion.blank? ? 0 : separacion.ancho %></tnx_ancho_color_<%= i %>>
-        <tnx_area_color_<%= i %>><%= separacion.blank? ? 0 : separacion.area %></tnx_area_color_<%= i %>>
-        <tnx_copia_color_<%= i %>><%= separacion.blank? ? 0 : separacion.ord_trab.nCopias %></tnx_copia_color_<%= i %>>
-        <% n = n + 1 %>
-      <% end %>
-    <% end %>
   </CreateJobParameters>
-<!--
   <Inks>
     <% n = 0 %>
     <% if @ord_trab.separacions.count > 0 %>
@@ -67,6 +52,5 @@
       <% end %>
     <% end %>
   </Inks>
--->
 </JOBS>
 
