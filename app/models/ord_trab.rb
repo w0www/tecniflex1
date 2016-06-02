@@ -488,7 +488,7 @@ class OrdTrab < ActiveRecord::Base
 # Usado para asignar clases de acuerdo a la tipo de la OT.
   def claset
     @valorc = "shower"
-		if self.tipoot.name == "S (Sin Costo)"
+		if self.tipoot && self.tipoot.name == "S (Sin Costo)"
 			@valorc = "showerin"
     end
     if self.urgente
