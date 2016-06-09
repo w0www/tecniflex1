@@ -188,7 +188,7 @@
           <td><view:ancho if="ancho"/></td>
           <td><view:area if="area"/></td>
           <% num_copias = this.nCopias.blank? ? this.ord_trab.nCopias : this.nCopias %>
-          <td><%= num_copias %>
+          <td><%= num_copias %></td>
         </tr>
       </repeat>
       <tr/>
