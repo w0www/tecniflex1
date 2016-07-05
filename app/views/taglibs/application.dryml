@@ -106,8 +106,15 @@
   <card class="ord-trab" param="default" merge>
     <header: param>
       <% @orig = this %>
-  <!--    <h4 param="heading"><a><name/></a>&nbsp;-&nbsp;<view:state/><span style="float:right"><%= link_to 'Nueva version', new_ord_trab_path(:id => @orig.id)%>&nbsp;&nbsp;&nbsp;&nbsp;<a  action="edit">Editar</a></span></h4>  -->
-      <table width="100%"><tr class="#{scope.even_odd}"><td width="10%" style="#{this.claset}"><a><%= if this.cliente then this.cliente.sigla else "" end%>-<%= this.codCliente %></a></td><td width="10%"><a><this.numOT/></a></td><td width="50%"><%= this.nomprod %></td><td width="15%"><%= link_to 'Nueva version', new_ord_trab_path(:id => this.id)%></td><td width="15%"><a  action="edit">Editar</a></td></tr></table>
+      <table width="100%"><tr class="#{scope.even_odd}">
+        <td width="15%" style="#{this.claset}">
+          <a><%= if this.cliente then this.cliente.sigla else "" end%>-<%= this.codCliente %> v.<%= this.version || 1 %></a>
+        </td>
+        <td width="10%"><a><this.numOT/></a></td>
+        <td width="45%"><%= this.nomprod %></td>
+        <td width="15%"><%= link_to 'Nueva version', new_ord_trab_path(:id => this.id)%></td>
+        <td width="15%"><a  action="edit">Editar</a></td></tr>
+      </table>
     </header:>
   <body:>
   </body:>

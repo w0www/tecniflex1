@@ -137,6 +137,7 @@ class OrdTrabsController < ApplicationController
         @nueva_reposicion.observaciones = params[:ord_trab][:observaciones]
         @nueva_reposicion.nCopias = params[:ord_trab][:nCopias]
         @nueva_reposicion.tipoot_id = Tipoot.find_by_name("R (REPOSICION)").id
+        @nueva_reposicion.numFact = ""
         @nueva_reposicion.vb = false
         @nueva_reposicion.ptr = false
         @nueva_reposicion.mtz = false
