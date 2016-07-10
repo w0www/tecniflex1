@@ -7,7 +7,8 @@ ActionController::Routing::Routes.draw do |map|
   map.cola 'front/cola', :controller => 'front', :action => 'cola'
   map.connect 'front/cola/eliminar/:id', :controller => 'front', :action => 'eliminar'
   map.pantalla 'front/pantalla', :controller => 'front', :action => 'pantalla'
-  map.pantalla 'front/polimeros', :controller => 'front', :action => 'polimeros'
+  map.polimeros 'front/polimeros', :controller => 'front', :action => 'polimeros'
+  map.gerencial 'front/gerencial', :controller => 'front', :action => 'gerencial'
   map.reposicion 'ord_trabs/:id/reposicion', :controller => 'ord_trabs', :action => 'show'
 
   Hobo.add_routes(map)

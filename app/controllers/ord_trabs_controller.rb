@@ -137,6 +137,7 @@ class OrdTrabsController < ApplicationController
         @nueva_reposicion.observaciones = params[:ord_trab][:observaciones]
         @nueva_reposicion.nCopias = params[:ord_trab][:nCopias]
         @nueva_reposicion.tipoot_id = Tipoot.find_by_name("R (REPOSICION)").id
+        @nueva_reposicion.numFact = ""
         @nueva_reposicion.vb = false
         @nueva_reposicion.ptr = false
         @nueva_reposicion.mtz = false
@@ -334,13 +335,17 @@ class OrdTrabsController < ApplicationController
           end
 
           ##################
-          arre = ["CLIENTE", "NRO OT", "TIPO OT", "FECHA CREACION OT", "HORA CREACION OT", "FECHA ENTREGA", "HORA ENTREGA", "FECHA TERMINO", "HORA TERMINO", "PDF", "REVISION PDF", "PRINTER", "MATRICERIA", "MONTAJE", "REVISION", "POLIMERO", "DESPACHO", "AREA"]
+          arre = ["CLIENTE", "NOMBRE", "CODIGO", "NRO OT", "TIPO OT", "FECHA CREACION OT", "HORA CREACION OT", "FECHA ENTREGA", "HORA ENTREGA", "FECHA TERMINO", "HORA TERMINO", "PDF", "REVISION PDF", "PRINTER", "MATRICERIA", "MONTAJE", "REVISION", "POLIMERO", "DESPACHO", "AREA",]
           csv << arre
           ## data rows
             @otsel.each do |orden|
               tareas = orden.tareas
               # Cliente
               @elclie = orden.cliente ? orden.cliente : ""
+              # Nombre
+              @nombre = orden.nomprod ? orden.nomprod : ""
+              # Codigo
+              @codigo = orden.armacod ? orden.armacod : ""
               # NRO OT
               @numero_ot = orden.numOT
               # TIPO OT
@@ -393,7 +398,7 @@ class OrdTrabsController < ApplicationController
                   @area += o.area.to_f 
                 end
               end
-              arri = [@elclie, @numero_ot, @tipo_ot, @fecha_creacion, @hora_creacion, @fecha_entrega, @hora_entrega, @fecha_termino, @hora_termino, @pdf, @revision_pdf, @printer, @matriceria, @montaje, @revision, @polimero, @despacho, @area] 
+              arri = [@elclie, @nombre, @codigo, @numero_ot, @tipo_ot, @fecha_creacion, @hora_creacion, @fecha_entrega, @hora_entrega, @fecha_termino, @hora_termino, @pdf, @revision_pdf, @printer, @matriceria, @montaje, @revision, @polimero, @despacho, @area] 
               
               csv << arri
              end

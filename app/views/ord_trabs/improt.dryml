@@ -174,7 +174,7 @@
         <th>Alto</th>
         <th>Ancho</th>
         <th>Area</th>
-        <th>NºCopias</th>
+        <th>N Copias</th>
         <td colspan="7" rowspan="<%=  1+this.separacions.count %>">&nbsp;<view:observaciones/></td>
       </tr>
       <repeat with="&this.separacions">

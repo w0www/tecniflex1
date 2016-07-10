@@ -1,0 +1,177 @@
+<page title="pantalla" without-header class="pantalla" style="background-color:black !important">
+  <head:>
+    <param-content />
+  <!--    <meta http-equiv="refresh" content="30"/> -->
+  </head:>
+  <content: replace>
+    <div class="page-header" id="pantalla">
+      .
+    </div>
+
+    <div class="content-body">
+      <div style="margin-top:10px;">
+        <div class="parte-izquierda" style="width:47%;float:right;">
+          <tabla-actividad/>
+        </div>
+        <div class="parte-derecha" style="width:50%">
+          <tabla-total-ots/><br/>
+          <tabla-clientes-ots-terminadas/><br/>
+        </div>
+      </div>
+    </div>
+  </content:>
+</page>
+
+<def tag="tabla-total-ots">
+  <label style="color:#fff; font-size:20px;">Total por OTS</label>
+  <table class="tablero">
+    <tbody>
+      <tr>
+		    <th width="5%" style="text-align:center;">TIPO OT</th>
+        <th width="5%" style="text-align:center;">DIA</th>
+        <th width="5%" style="text-align:center;">AYER</th>
+        <th width="5%" style="text-align:center;">SEMANA</th>
+        <th width="5%" style="text-align:center;">MES</th>
+        <th width="5%" style="text-align:center;">AÑO</th>
+      </tr>
+      <tr>
+		    <th width="5%" style="text-align:center;">N=NUEVAS</th>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_hoy.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_ayer.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_semana.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_mes.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_ano.count %></td>
+      </tr>
+      <tr>
+		    <th width="5%" style="text-align:center;">M=MODIFICACIÓN</th>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_hoy.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_ayer.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_semana.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_mes.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_ano.count %></td>
+      </tr>
+      <tr>
+		    <th width="5%" style="text-align:center;">P=POSTSCRIPT</th>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_hoy.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_ayer.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_semana.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_mes.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_ano.count %></td>
+      </tr>
+      <tr>
+		    <th width="5%" style="text-align:center;">R=REPOSICIONES</th>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_hoy.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_ayer.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_semana.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_mes.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_ano.count %></td>
+      </tr>
+      <tr>
+		    <th width="5%" style="text-align:center;">TOTAL</th>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.total_hoy.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.total_ayer.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.total_semana.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.total_mes.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.total_ano.count %></td>
+      </tr>
+      <tr>
+		    <th width="5%" style="text-align:center;">C=CREADAS</th>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.creadas_hoy.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.creadas_ayer.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.creadas_semana.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.creadas_mes.count %></td>
+        <td width="5%" style="text-align:center;"><%= OrdTrab.creadas_ano.count %></td>
+      </tr>
+    </tbody>
+  </table>
+</def>
+
+<def tag="tabla-clientes-ots-terminadas">
+  <label style="color:#fff; font-size:20px;">Clientes OTs Terminadas</label>
+  <table class="tablero">
+    <tbody>
+      <tr>
+		    <th width="5%" style="text-align:center;">CLIENTE</th>
+        <th width="5%" style="text-align:center;">DIA</th>
+        <th width="5%" style="text-align:center;">AYER</th>
+        <th width="5%" style="text-align:center;">SEMANA</th>
+        <th width="5%" style="text-align:center;">MES</th>
+        <th width="5%" style="text-align:center;">AÑO</th>
+      </tr>
+      <% for c in Cliente.all %>
+      <tr>
+		    <th width="5%" style="text-align:center;"><%= c.name %></th>
+        <td width="5%" style="text-align:center;"></td>
+        <td width="5%" style="text-align:center;"></td>
+        <td width="5%" style="text-align:center;"></td>
+        <td width="5%" style="text-align:center;"></td>
+        <td width="5%" style="text-align:center;"></td>
+      </tr>
+      <% end %>
+      <tr>
+		    <th width="5%" style="text-align:center;">TOTAL</th>
+        <td width="5%" style="text-align:center;"></td>
+        <td width="5%" style="text-align:center;"></td>
+        <td width="5%" style="text-align:center;"></td>
+        <td width="5%" style="text-align:center;"></td>
+        <td width="5%" style="text-align:center;"></td>
+      </tr>
+    </tbody>
+  </table>
+</def>
+
+<def tag="tabla-actividad">
+  <if test="&!@users.blank?">
+    <label style="color:#fff; font-size:20px;">Actividad por usuario</label>
+    <table class="tablero" id="tactividad" style="border:0px;">
+      <tbody>
+        <tr>
+          <th rowspan="2"></th>
+          <th colspan="8"><center>Operadores</center></th>
+          <th colspan="8">Procesos terminados del dia</th>
+        </tr>
+        <tr>
+          <th>Total HH</th>
+          <th>Habilitadas</th>
+          <th>Iniciadas</th>
+          <th>Terminadas</th>
+          <th>Ayer</th>
+          <th>Semana</th>
+          <th>Mes</th>
+          <th>PDF</th>
+          <th>REV PDF</th>
+          <th>PRINTER</th>
+          <th>MATRICERIA</th>
+          <th>MONTAJE</th>
+          <th>REVISION</th>
+          <th>POLIMERO</th>
+          <th>DESPACHO</th>
+        </tr>
+        <% for u in @users %> 
+          <tr class="#{scope.even_odd}">
+            <th style="min-width:60px;"><%= u.name.first(10) %></th>
+            <td><%= u.int_totales("termino","false").split(" / ")[0] unless u.int_totales("termino","false").split(" / ")[0].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","false").split(" / ")[1] unless u.int_totales("termino","false").split(" / ")[1].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","false").split(" / ")[2] unless u.int_totales("termino","false").split(" / ")[2].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","true").split(" / ")[0] unless u.int_totales("termino","true").split(" / ")[0].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","true").split(" / ")[1] unless u.int_totales("termino","true").split(" / ")[1].to_f == 0 %></td>
+            <td><%= u.int_totales("termino","true").split(" / ")[2] unless u.int_totales("termino","true").split(" / ")[2].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[0] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[0].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[1] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[1].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
+            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </if>
+</def>
+
+<def tag="tabla-tablero">
+ 
+</def>

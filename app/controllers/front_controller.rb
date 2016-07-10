@@ -37,6 +37,15 @@ class FrontController < ApplicationController
     @users = User.find(:all, :conditions => ["tablero = true"])
   end
 
+  def gerencial
+    @hora_actual = DateTime.now.in_time_zone
+    @grupro = Grupoproc.tablero.order_by(:position)
+    @clies = Cliente.all
+    @todas = OrdTrab.find(:all, :order => "fechaEntrega desc", :limit => 20)
+    @users = User.find(:all, :conditions => ["tablero = true"])
+  end
+
+
   def polimeros
     @hora_actual = DateTime.now.in_time_zone
     id_polimero = Proceso.find_by_nombre("polimero").id
