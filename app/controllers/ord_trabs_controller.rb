@@ -304,8 +304,6 @@ class OrdTrabsController < ApplicationController
           @fechini = params[:startdate] && params[:startdate].blank? ? "" : Date.strptime(params[:startdate], "%d/%m/%Y")
           @fenal = params[:enddate] && params[:enddate].blank? ? "" : Date.strptime(params[:enddate], "%d/%m/%Y")
           
-          Rails.logger.info "esto es las variables @clies, @fechini, @fenal #{@clies} #{@fechini} #{@fenal}"
-
           if @clies != ""
             if @fenal.blank? && @fechini.blank?
               @otsel = OrdTrab.all(:conditions => ["cliente_id = ?", @clies])
@@ -335,7 +333,7 @@ class OrdTrabsController < ApplicationController
           end
 
           ##################
-          arre = ["CLIENTE", "NOMBRE", "CODIGO", "NRO OT", "TIPO OT", "FECHA CREACION OT", "HORA CREACION OT", "FECHA ENTREGA", "HORA ENTREGA", "FECHA TERMINO", "HORA TERMINO", "PDF", "REVISION PDF", "PRINTER", "MATRICERIA", "MONTAJE", "REVISION", "POLIMERO", "DESPACHO", "AREA",]
+          arre = ["CLIENTE", "NOMBRE", "NUM FACTURA", "CODIGO", "NRO OT", "TIPO OT", "FECHA CREACION OT", "HORA CREACION OT", "FECHA ENTREGA", "HORA ENTREGA", "FECHA TERMINO", "HORA TERMINO", "PDF", "REVISION PDF", "PRINTER", "MATRICERIA", "MONTAJE", "REVISION", "POLIMERO", "DESPACHO", "AREA",]
           csv << arre
           ## data rows
             @otsel.each do |orden|
@@ -344,6 +342,8 @@ class OrdTrabsController < ApplicationController
               @elclie = orden.cliente ? orden.cliente : ""
               # Nombre
               @nombre = orden.nomprod ? orden.nomprod : ""
+              # Numero de factura ### falta por programar
+              @numero_factura = orden.numFact ? orden.numFact : ""
               # Codigo
               @codigo = orden.armacod ? orden.armacod : ""
               # NRO OT
@@ -398,8 +398,8 @@ class OrdTrabsController < ApplicationController
                   @area += o.area.to_f 
                 end
               end
-              arri = [@elclie, @nombre, @codigo, @numero_ot, @tipo_ot, @fecha_creacion, @hora_creacion, @fecha_entrega, @hora_entrega, @fecha_termino, @hora_termino, @pdf, @revision_pdf, @printer, @matriceria, @montaje, @revision, @polimero, @despacho, @area] 
-              
+              arri = [@elclie, @nombre, @numero_factura,@codigo, @numero_ot, @tipo_ot, @fecha_creacion, @hora_creacion, @fecha_entrega, @hora_entrega, @fecha_termino, @hora_termino, @pdf, @revision_pdf, @printer, @matriceria, @montaje, @revision, @polimero, @despacho, @area] 
+            
               csv << arri
              end
           				
