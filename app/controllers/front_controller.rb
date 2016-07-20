@@ -7,8 +7,10 @@ class FrontController < ApplicationController
       if Cliente.find_by_correo(current_user.email_address)
         redirect_to "/ord_trabs/tablero"
       else
-        @ordenes = OrdTrab.find :all
+        # @ordenes = OrdTrab.find :all
         @asignacions = current_user.asignacions.disp(:all, :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
+        @utiles = Tarea.find_utiles(current_user)
+        @sinfin = current_user.sinfin
       end
     end
   end
@@ -91,7 +93,7 @@ class FrontController < ApplicationController
       # o en mi caso también en  /etc/modprobe.d/alsa-base-blacklist.conf.
       # Buscamos y descomentamos la linea ‘blacklist pcspkr’ o ‘blacklist snd-pcsp’, y ya lo tenemos preparado.
       # chmod 4755 /usr/bin/beep
-      system("beep -l 300 -f 880")
+      system("mplayer /home/imanol/Escritorio/tono.mp3")
     end
     
     @tareas = @tareas.paginate(:page => params[:page], :per_page => 20)

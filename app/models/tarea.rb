@@ -7,6 +7,7 @@ class Tarea < ActiveRecord::Base
   fields do
     instrucciones :text
     fechatope     :date
+    fechafin      :date
     ciclo					:integer
     timestamps
   end
@@ -79,8 +80,9 @@ class Tarea < ActiveRecord::Base
 	
   def self.find_utiles(usuario)
     @cuser = usuario
-    if @cuser.procesos != []
-			@uprocid = @cuser.procesos.*.id
+    @procesos = @cuser.procesos
+    if @procesos != []
+			@uprocid = @procesos.*.id
 			Tarea.activa.find(:all, :conditions => {:proceso_id => @uprocid, :asignada_a => nil})
 		else
 			[]
@@ -187,6 +189,7 @@ class Tarea < ActiveRecord::Base
       else
         self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
       end
+      self.fechafin = Time.now
     end
 
     transition :eliminar, {[:creada, :habilitada, :terminada] => :destroy}, :available_to => :all

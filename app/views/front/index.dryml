@@ -3,34 +3,32 @@
   <body: class="front-page"/>
 
   <content:>
+
     <header class="content-header">
-      <if test="&@asignacions == [] && Tarea.find_utiles(current_user) == []"><h1>Bienvenido a <app-name/></h1></if>
+      <if test="&@asignacions == [] && @utiles == []"><h1>Bienvenido a <app-name/></h1></if>
     </header>
     <if test="&!current_user.guest?">
       <section class="content-body">
-	  		<section with="&current_user.sinfin" if="&current_user.sinfin">
+	  		<section with="&@sinfin" if="&@sinfin != []">
 	  			<h2>Tareas en Curso</h2>
 	  			<br/>
 	  			<collection/>
 	  			<br/>
 	  		</section>
-        <section with="&@asignacions">
-          <if test="&@asignacions"><h2>Ordenes de Trabajo Asignadas</h2>
+        <section with="&@asignacions" if="&@asignacions != []">
+          <h2>Ordenes de Trabajo Asignadas</h2>
             <repeat with="&@asignacions.group_by(&:ord_trab)">
               <collection/>
             </repeat>
-          </if>
         </section>
-				<unless test="&Tarea.find_utiles(current_user) == []">
-					<section with="&Tarea.find_utiles(current_user)">
-						<br/>
-						<h2>Ordenes de Trabajo Disponibles </h2>
-						<repeat with="&this.group_by(&:ord_trab)">
-  						<collection/>
-  					</repeat>
-					</section>
-				</unless>
-      </section>
+				<section with="&@utiles" if="&@utiles != []">
+					<br/>
+					<h2>Ordenes de Trabajo Disponibles </h2>
+					<repeat with="&this.group_by(&:ord_trab)">
+						<collection/>
+					</repeat>
+				</section>
+		  </section>
     </if>
   </content:>
 </page>

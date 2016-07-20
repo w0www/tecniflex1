@@ -39,7 +39,7 @@
 <def tag="form" for="Cliente">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="name, razsocial, sigla, rut, correo, direccion, telefono, fpago, tarifa, plazopago, descuento, cuenta_usuario, password, generar_xml, contactos, curvas" param/>
+    <field-list fields="name, razsocial, sigla, rut, correo, direccion, telefono, fpago, tarifa, plazopago, descuento, cuenta_usuario, password, generar_xml, pantalla_gerencial, contactos, curvas" param/>
     <div param="actions">
       <submit label="#{ht 'clientes.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -183,7 +183,7 @@
 <def tag="form" for="OrdTrab">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="numOT, numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, barcodecopy, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, pctdistor, color, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, list_barcode, procesos, separacions, sustrato, tareas, tipomat, tipoot, tipopruebas" param/>
+    <field-list fields="numOT, numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, barcodecopy, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, pctdistor, color, fechafin, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, list_barcode, procesos, separacions, sustrato, tareas, tipomat, tipoot, tipopruebas" param/>
     <div param="actions">
       <submit label="#{ht 'ord_trabs.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>
@@ -365,7 +365,7 @@
 <def tag="form" for="Tarea">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="instrucciones, fechatope, ciclo, asignada_a, state, asignado, intervencions, ord_trab, proceso, recurso" param/>
+    <field-list fields="instrucciones, fechatope, fechafin, ciclo, asignada_a, state, asignado, intervencions, ord_trab, proceso, recurso" param/>
     <div param="actions">
       <submit label="#{ht 'tareas.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

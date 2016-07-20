@@ -1,21 +1,24 @@
-<page title="pantalla" without-header class="pantalla" style="background-color:black !important">
+<page title="Gerencial" without-header class="pantalla" style="background-color:black !important">
   <head:>
     <param-content />
   <!--    <meta http-equiv="refresh" content="30"/> -->
   </head:>
   <content: replace>
     <div class="page-header" id="pantalla">
-      .
+      <div style="margin-left:33% ;padding-top: 1%;font-size:24px;color:RED">
+        <%= Time.now.strftime("%d/%m/%Y %H:%M") %>
+      </div>
     </div>
 
     <div class="content-body">
       <div style="margin-top:10px;">
         <div class="parte-izquierda" style="width:47%;float:right;">
-          <tabla-actividad/>
+          <tabla-clientes-ots-terminadas/><br/>
+
         </div>
         <div class="parte-derecha" style="width:50%">
           <tabla-total-ots/><br/>
-          <tabla-clientes-ots-terminadas/><br/>
+          <tabla-actividad/>
         </div>
       </div>
     </div>
@@ -77,10 +80,6 @@
       <tr>
 		    <th width="5%" style="text-align:center;">C=CREADAS</th>
         <td width="5%" style="text-align:center;"><%= OrdTrab.creadas_hoy.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.creadas_ayer.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.creadas_semana.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.creadas_mes.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.creadas_ano.count %></td>
       </tr>
     </tbody>
   </table>
@@ -98,24 +97,16 @@
         <th width="5%" style="text-align:center;">MES</th>
         <th width="5%" style="text-align:center;">AÑO</th>
       </tr>
-      <% for c in Cliente.all %>
+      <% for c in Cliente.pantalla_gerencial %>
       <tr>
 		    <th width="5%" style="text-align:center;"><%= c.name %></th>
-        <td width="5%" style="text-align:center;"></td>
-        <td width="5%" style="text-align:center;"></td>
-        <td width="5%" style="text-align:center;"></td>
-        <td width="5%" style="text-align:center;"></td>
-        <td width="5%" style="text-align:center;"></td>
+        <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_hoy.count %></td>
+        <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_ayer.count %></td>
+        <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_semana.count %></td>
+        <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_mes.count %></td>
+        <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_ano.count %></td>
       </tr>
       <% end %>
-      <tr>
-		    <th width="5%" style="text-align:center;">TOTAL</th>
-        <td width="5%" style="text-align:center;"></td>
-        <td width="5%" style="text-align:center;"></td>
-        <td width="5%" style="text-align:center;"></td>
-        <td width="5%" style="text-align:center;"></td>
-        <td width="5%" style="text-align:center;"></td>
-      </tr>
     </tbody>
   </table>
 </def>
@@ -127,8 +118,8 @@
       <tbody>
         <tr>
           <th rowspan="2"></th>
-          <th colspan="8"><center>Operadores</center></th>
-          <th colspan="8">Procesos terminados del dia</th>
+          <th colspan="7"><center>Operadores</center></th>
+          <th colspan="8"><center>Procesos terminados del dia</center></th>
         </tr>
         <tr>
           <th>Total HH</th>
@@ -150,21 +141,22 @@
         <% for u in @users %> 
           <tr class="#{scope.even_odd}">
             <th style="min-width:60px;"><%= u.name.first(10) %></th>
-            <td><%= u.int_totales("termino","false").split(" / ")[0] unless u.int_totales("termino","false").split(" / ")[0].to_f == 0 %></td>
-            <td><%= u.int_totales("termino","false").split(" / ")[1] unless u.int_totales("termino","false").split(" / ")[1].to_f == 0 %></td>
-            <td><%= u.int_totales("termino","false").split(" / ")[2] unless u.int_totales("termino","false").split(" / ")[2].to_f == 0 %></td>
-            <td><%= u.int_totales("termino","true").split(" / ")[0] unless u.int_totales("termino","true").split(" / ")[0].to_f == 0 %></td>
-            <td><%= u.int_totales("termino","true").split(" / ")[1] unless u.int_totales("termino","true").split(" / ")[1].to_f == 0 %></td>
-            <td><%= u.int_totales("termino","true").split(" / ")[2] unless u.int_totales("termino","true").split(" / ")[2].to_f == 0 %></td>
-            <td><%= u.int_tiempo_total("termino","false").split(" / ")[0] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[0].to_f == 0 %></td>
-            <td><%= u.int_tiempo_total("termino","false").split(" / ")[1] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[1].to_f == 0 %></td>
-            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
-            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
-            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
-            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
-            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
-            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
-            <td><%= u.int_tiempo_total("termino","false").split(" / ")[2] + " hrs" unless u.int_tiempo_total("termino","false").split(" / ")[2].to_f == 0 %></td>
+            <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'habilitada', Date.today]).count + OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'iniciada', Date.today]).count %>
+            </td>
+            <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'habilitada', Date.today]).count %></td>
+            <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'iniciada', Date.today]).count %></td>
+            <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'terminada', Date.today]).count %></td>
+            <td><%= OrdTrab.total_ayer.count %></td>
+            <td><%= OrdTrab.total_semana.count %></td>
+            <td><%= OrdTrab.total_mes.count %></td>
+            <td><%= u.int_tipo("termino", 2) %></td>
+            <td><%= u.int_tipo("termino", 16) %></td>
+            <td><%= u.int_tipo("termino", 3) %></td>
+            <td><%= u.int_tipo("termino", 4) %></td>
+            <td><%= u.int_tipo("termino", 5) %></td>
+            <td><%= u.int_tipo("termino", 14) %></td>
+            <td><%= u.int_tipo("termino", 7) %></td>
+            <td><%= u.int_tipo("termino", 12) %></td>
           </tr>
         <% end %>
       </tbody>
