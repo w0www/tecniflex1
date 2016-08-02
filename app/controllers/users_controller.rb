@@ -19,7 +19,7 @@ class UsersController < ApplicationController
   def login
     usuario = User.find_by_email_address(params[:login]).blank? ? "" : User.find_by_email_address(params[:login])
     detalles = usuario.blank? ? "Inicio de sesión Usuario #{params[:login]}" : "Inicio de sesión"
-    if usuario.blank
+    if usuario.blank?
       Auditoria.create(
         :tipo => "login",
         :fecha => DateTime.now,
