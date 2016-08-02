@@ -23,7 +23,7 @@ class AuditoriasController < ApplicationController
           arre = ["TIPO", "FECHA", "USUARIO", "ORDEN", "DETALLES"]
           csv << arre
           ## data rows
-            @auditorias.each do |a|
+            for a in @auditorias
               # Tipo
               @tipo = a.tipo ? a.tipo : ""
               # Fecha
