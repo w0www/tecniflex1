@@ -17,7 +17,7 @@ class UsersController < ApplicationController
   end
 
   def login
-    usuario = User.find_by_email_address("tkunze@tecniflex.cl").blank? ? "" : User.find_by_email_address("tkunze@tecniflex.cl")
+    usuario = User.find_by_email_address(params[:login]).blank? ? "" : User.find_by_email_address(params[:login])
     detalles = usuario.blank? ? "Usuario no existe" : ""
     hobo_login do
       Auditoria.create(
