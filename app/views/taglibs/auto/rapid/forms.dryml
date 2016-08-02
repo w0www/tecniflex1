@@ -202,7 +202,105 @@
   </form>
 </def>
 
+<def tag="crear-form" polymorphic/>
+<def tag="crear-form" for="OrdTrab">
+  <form lifecycle="crear" merge param="default">
+    <error-messages param/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.crear', :default=>['Crear']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
 
+<def tag="habilitar-form" polymorphic/>
+<def tag="habilitar-form" for="OrdTrab">
+  <form lifecycle="habilitar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.habilitar', :default=>['Habilitar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="eliminar-form" polymorphic/>
+<def tag="eliminar-form" for="OrdTrab">
+  <form lifecycle="eliminar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.eliminar', :default=>['Eliminar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="iniciar-form" polymorphic/>
+<def tag="iniciar-form" for="OrdTrab">
+  <form lifecycle="iniciar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.iniciar', :default=>['Iniciar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="reanudar-form" polymorphic/>
+<def tag="reanudar-form" for="OrdTrab">
+  <form lifecycle="reanudar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.reanudar', :default=>['Reanudar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="detener-form" polymorphic/>
+<def tag="detener-form" for="OrdTrab">
+  <form lifecycle="detener" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.detener', :default=>['Detener']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="eliminar-form" polymorphic/>
+<def tag="eliminar-form" for="OrdTrab">
+  <form lifecycle="eliminar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.eliminar', :default=>['Eliminar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="terminar-form" polymorphic/>
+<def tag="terminar-form" for="OrdTrab">
+  <form lifecycle="terminar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.terminar', :default=>['Terminar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
+<def tag="reactivar-form" polymorphic/>
+<def tag="reactivar-form" for="OrdTrab">
+  <form lifecycle="reactivar" merge param="default">
+    <error-messages param/>
+    <input type="hidden" name="key" value="&this.lifecycle.provided_key" if="&this.lifecycle.provided_key"/>
+    <field-list fields="" param/>
+    <div param="actions">
+      <submit label="#{ht 'ord_trabs.actions.reactivar', :default=>['Reactivar']}" param/><or-cancel param="cancel"/>
+    </div>
+  </form>
+</def>
 
 <def tag="form" for="Polimero">
   <form merge param="default">

@@ -2434,6 +2434,190 @@
 </def>
 
 
+<def tag="crear-page" polymorphic/>
+<def tag="crear-page" for="OrdTrab">
+  
+  <page title="#{ht 'ord_trabs.crear.title', :default=>['Crear']}" merge>  
+
+    <body: class="lifecycle-start-page crear-page" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="ord_trabs.crear.heading">
+            Crear
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <crear-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="habilitar-page" polymorphic/>
+<def tag="habilitar-page" for="OrdTrab">
+  <page title="#{ht 'ord_trabs.habilitar.title', :default=>['Habilitar']}" merge>
+
+    <body: class="lifecycle-transition-page habilitar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="ord_trabs.habilitar.heading">
+            Habilitar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <habilitar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="eliminar-page" polymorphic/>
+<def tag="eliminar-page" for="OrdTrab">
+  <page title="#{ht 'ord_trabs.eliminar.title', :default=>['Eliminar']}" merge>
+
+    <body: class="lifecycle-transition-page eliminar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="ord_trabs.eliminar.heading">
+            Eliminar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <eliminar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="iniciar-page" polymorphic/>
+<def tag="iniciar-page" for="OrdTrab">
+  <page title="#{ht 'ord_trabs.iniciar.title', :default=>['Iniciar']}" merge>
+
+    <body: class="lifecycle-transition-page iniciar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="ord_trabs.iniciar.heading">
+            Iniciar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <iniciar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="reanudar-page" polymorphic/>
+<def tag="reanudar-page" for="OrdTrab">
+  <page title="#{ht 'ord_trabs.reanudar.title', :default=>['Reanudar']}" merge>
+
+    <body: class="lifecycle-transition-page reanudar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="ord_trabs.reanudar.heading">
+            Reanudar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <reanudar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="detener-page" polymorphic/>
+<def tag="detener-page" for="OrdTrab">
+  <page title="#{ht 'ord_trabs.detener.title', :default=>['Detener']}" merge>
+
+    <body: class="lifecycle-transition-page detener-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="ord_trabs.detener.heading">
+            Detener
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <detener-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="terminar-page" polymorphic/>
+<def tag="terminar-page" for="OrdTrab">
+  <page title="#{ht 'ord_trabs.terminar.title', :default=>['Terminar']}" merge>
+
+    <body: class="lifecycle-transition-page terminar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="ord_trabs.terminar.heading">
+            Terminar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <terminar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
+
+<def tag="reactivar-page" polymorphic/>
+<def tag="reactivar-page" for="OrdTrab">
+  <page title="#{ht 'ord_trabs.reactivar.title', :default=>['Reactivar']}" merge>
+
+    <body: class="lifecycle-transition-page reactivar-page" param/>
+
+    <content:>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="ord_trabs.reactivar.heading">
+            Reactivar
+          </ht>
+        </h2>
+      </header>
+
+      <section param="content-body">
+        <reactivar-form param="form"/>
+      </section>
+    </content:>
+
+  </page>
+</def>
 
 
 
