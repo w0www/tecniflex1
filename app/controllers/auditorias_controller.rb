@@ -7,15 +7,15 @@ class AuditoriasController < ApplicationController
   def index
     respond_to do |wants|
 			wants.html do
-        inicial = Date.strptime(params[:startdate], '%d/%m/%Y').to_time if params[:startdate] && !params[:startdate].blank?
-        final = Date.strptime(params[:enddate], '%d/%m/%Y').to_time.end_of_day if params[:enddate] && !params[:enddate].blank?
+        inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
+        final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time.end_of_day if params[:fecha_fin] && !params[:fecha_fin].blank?
         @auditorias = Auditoria.apply_scopes(:created_between => [inicial, final]).paginate(:page => params[:page], :per_page => 20)
       end
       wants.csv do
         csv_string = CSV.generate(:col_sep => ";") do |csv|
           ##################
-          @fechini = params[:startdate] && params[:startdate].blank? ? "" : Date.strptime(params[:startdate], "%d/%m/%Y")
-          @fenal = params[:enddate] && params[:enddate].blank? ? "" : Date.strptime(params[:enddate], "%d/%m/%Y")
+          @fechini = params[:fecha_ini] && params[:fecha_ini].blank? ? "" : Date.strptime(params[:fecha_ini], "%d/%m/%Y")
+          @fenal = params[:fecha_fin] && params[:fecha_fin].blank? ? "" : Date.strptime(params[:fecha_fin], "%d/%m/%Y")
           
           if @fechini != "" && @fenal.blank?
             @auditorias = Auditoria.all(:conditions => ["created_at >= ?", @fechini.to_datetime.in_time_zone(Time.zone)])            
