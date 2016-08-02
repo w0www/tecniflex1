@@ -434,7 +434,7 @@ class OrdTrab < ActiveRecord::Base
 
   def after_create
     Auditoria.create(
-      :tipo => "creación",:fecha => DateTime.now,, :user_id => acting_user.id, :ord_trab_id => self.id, :detalles => "#{self.inspect}"
+      :tipo => "creación",:fecha => DateTime.now, :user_id => acting_user.id, :ord_trab_id => self.id, :detalles => "#{self.inspect}"
     )
   end
 
