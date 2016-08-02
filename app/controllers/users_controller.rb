@@ -18,12 +18,19 @@ class UsersController < ApplicationController
 
   def login
     usuario = User.find_by_email_address(params[:login]).blank? ? "" : User.find_by_email_address(params[:login])
-    detalles = usuario.blank? ? "Usuario no existe" : ""
+    detalles = usuario.blank? ? "Inicio de sesión Usuario #{params[:login]}" : "Inicio de sesión"
+    if usuario.blank
+      Auditoria.create(
+        :tipo => "login",
+        :fecha => DateTime.now,
+        :detalles => detalles
+      )
+    end
     hobo_login do
       Auditoria.create(
         :tipo => "login",
         :fecha => DateTime.now,
-        :user_id => usuario,
+        :user => usuario,
         :detalles => detalles
       )
     end
