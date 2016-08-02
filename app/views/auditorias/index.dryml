@@ -1,0 +1,17 @@
+<index-page without-new-link>
+  <after-heading:>
+    <%= link_to "Informe Excel", {:controller => "auditorias", :format => :csv, :action => "index", :user => "#{params[:user]}", :fecha_ini => "#{params[:fecha_ini]}", :fecha_fin => "#{params[:fecha_fin]}"}, :class => "nice-button ui-state-default ui-corner-all" %>
+    <form  method='get' action=''>
+      <hidden-fields for-query-string skip='page, search'/>
+      <h3>Fecha Inicial: <input type='text' style='width:90px' id='datepicker' name='startdate' value="#{params[:startdate]}"/> 
+      Fecha Final: <input type='text' style='width:90px' id='datepicker2' name='enddate' value="#{params[:enddate]}"/> 
+      <submit class='search-button'  label='Ir'/></h3>
+    </form>
+  </after-heading:>
+	<collection: replace>
+		<div>
+			<table-plus fields="tipo, fecha, user, ord_trab, detalles "/>
+		</div>
+	</collection:>
+
+</index-page>

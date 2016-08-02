@@ -370,6 +370,7 @@ class OrdTrab < ActiveRecord::Base
 		else
 			self.numOT = (OrdTrab.order_by(:id).last.id.to_i || 0) + 60001
 		end
+
   end
 
   def activa?
@@ -426,7 +427,23 @@ class OrdTrab < ActiveRecord::Base
         tark.save
       end
     end
+    Auditoria.create(
+      :tipo => "modificación", :fecha => DateTime.now, :user_id => acting_user.id, :ord_trab_id => self.id, :detalles => "#{self.inspect}"
+    )
   end
+
+  def after_create
+    Auditoria.create(
+      :tipo => "creación",:fecha => DateTime.now,, :user_id => acting_user.id, :ord_trab_id => self.id, :detalles => "#{self.inspect}"
+    )
+  end
+
+  def before_destroy
+    Auditoria.create(
+      :tipo => "eliminación", :fecha => DateTime.now, :user_id => acting_user.id, :ord_trab_id => self.id, :detalles => "#{self.inspect}"
+    )
+  end
+
 
   def calcular_color_tablero(orden)
     # Si las tareas estan terminadas tenemos que calcular y guardar el color en base de datos

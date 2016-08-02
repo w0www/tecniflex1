@@ -8,6 +8,14 @@
   </card>
 </def>
 
+<def tag="card" for="Auditoria">
+  <card class="auditoria" param="default" merge>
+    <header: param>
+      <h4 param="heading"><a><name/></a></h4>
+    </header:>
+  </card>
+</def>
+
 <def tag="card" for="Bodega">
   <card class="bodega" param="default" merge>
     <header: param>

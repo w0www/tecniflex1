@@ -16,6 +16,19 @@ class UsersController < ApplicationController
     end
   end
 
+  def login
+    usuario = User.find_by_email_address("tkunze@tecniflex.cl").blank? ? "" : User.find_by_email_address("tkunze@tecniflex.cl")
+    detalles = usuario.blank? ? "Usuario no existe" : ""
+    hobo_login do
+      Auditoria.create(
+        :tipo => "login",
+        :fecha => DateTime.now,
+        :user_id => usuario,
+        :detalles => detalles
+      )
+    end
+  end
+
   index_action :intervs do
     @grupro = Grupoproc.tablero.order_by(:position)
     @clies = Cliente.all
