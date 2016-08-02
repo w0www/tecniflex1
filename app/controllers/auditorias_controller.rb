@@ -14,11 +14,10 @@ class AuditoriasController < ApplicationController
       wants.csv do
         csv_string = CSV.generate(:col_sep => ";") do |csv|
           ##################
-          inicial = params[:fecha_ini] && params[:fecha_ini].blank? ? "" : Date.strptime(params[:fecha_ini], "%d/%m/%Y")
-          final = params[:fecha_fin] && params[:fecha_fin].blank? ? "" : Date.strptime(params[:fecha_fin], "%d/%m/%Y")
+          @fechini = params[:fecha_ini] && params[:fecha_ini].blank? ? "" : Date.strptime(params[:fecha_ini], "%d/%m/%Y")
+          @fenal = params[:fecha_fin] && params[:fecha_fin].blank? ? "" : Date.strptime(params[:fecha_fin], "%d/%m/%Y")
 
           if @fechini != "" && @fenal.blank?
-            @auditorias = Auditoria.apply_scopes(:created_between => [inicial, final])
             @auditorias = Auditoria.all(:conditions => ["created_at >= ?", @fechini.to_datetime.in_time_zone(Time.zone)])            
           elsif @fechini.blank? && @fenal != ""
             @auditorias = Auditoria.all(:conditions => ["created_at <= ?", @fenal.to_datetime.in_time_zone(Time.zone)])
