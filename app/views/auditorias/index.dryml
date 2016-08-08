@@ -1,4 +1,5 @@
 <index-page without-new-link>
+
   <after-heading:>
     <%= link_to "Informe Excel", {:controller => "auditorias", :format => :csv, :action => "index", :user => "#{params[:user]}", :fecha_ini => "#{params[:fecha_ini]}", :fecha_fin => "#{params[:fecha_fin]}"}, :class => "nice-button ui-state-default ui-corner-all" %>
     <form  method='get' action=''>
@@ -13,5 +14,10 @@
 			<table-plus fields="tipo, fecha, user, ord_trab, detalles "/>
 		</div>
 	</collection:>
-
+  <page-scripts:>
+    jQuery(document).ready(function() {
+      jQuery("#datepicker").datepicker();
+      jQuery("#datepicker2").datepicker();
+    });
+  </page-scripts:>
 </index-page>

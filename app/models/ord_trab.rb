@@ -399,6 +399,11 @@ class OrdTrab < ActiveRecord::Base
 			end
 	end
 
+  def before_update
+    Auditoria.create(
+      :tipo => "modificación", :fecha => DateTime.now, :user_id => acting_user.id, :ord_trab_id => self.id, :detalles => "#{self.inspect}"
+    )
+  end
 
   def after_update
     # Habilita la primera tarea al activarse la OT.
@@ -427,9 +432,6 @@ class OrdTrab < ActiveRecord::Base
         tark.save
       end
     end
-    Auditoria.create(
-      :tipo => "modificación", :fecha => DateTime.now, :user_id => acting_user.id, :ord_trab_id => self.id, :detalles => "#{self.inspect}"
-    )
   end
 
   def after_create

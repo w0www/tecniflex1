@@ -38,9 +38,9 @@ class AuditoriasController < ApplicationController
               # Fecha
               @fecha = a.fecha.strftime("%d/%m/%Y %H:%M:%S")
               # Usuario
-              @usuario = a.user ? a.user : ""
+              @usuario = a.user ? a.user.name : ""
               # NRO OT
-              @orden = a.ord_trab ? a.ord_trab : ""
+              @orden = a.ord_trab ? a.ord_trab.id : ""
               # Detalles
               @detalles = a.detalles ? a.detalles : ""
               arri = [@tipo, @fecha, @usuario, @orden, @detalles] 
