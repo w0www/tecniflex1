@@ -52,7 +52,14 @@
               <%@estot = this.ciclos %>
               <% @tpar = ((this.updated_at - this.created_at)) %>
               <% @tparh = Time.at(@tpar).utc.strftime("%H:%M:%S") %>
-              <tr><th><%=this.numOT%></th><td><%=this.nomprod%></td><td><%=this.armacod%></td><td><view:created_at format="%d-%m-%y"/></td><td><view:updated_at if="numFact" format="%d-%m-%y"/></td><td><%= this.numFact %> </td><td><%= Time.duracion(this.created_at,this.updated_at)%></td><td><%=this.areatot%></td>
+              <tr>
+                <th><%=this.numOT%></th>
+                <td><%=this.nomprod%></td>
+                <td><%=this.armacod%></td>
+                <td><view:created_at format="%d-%m-%y"/></td>
+                <td><view:updated_at if="numFact" format="%d-%m-%y"/></td>
+                <td><%= this.numFact %> </td><td><%= Time.duracion(this.created_at,this.updated_at)%></td>
+                <td><%=this.areatot%></td>
                 <% @ttot += @tpar %>
                 <% @ttoth = Time.at(@ttot).utc.strftime("%H:%M:%S") %>
                 <repeat with="&@proces">
