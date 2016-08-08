@@ -190,16 +190,16 @@ class OrdTrab < ActiveRecord::Base
     armac = ""
     if self.cliente
       if self.cliente.sigla != ""
-        armac = self.cliente.sigla + "-" + self.codCliente
+        armac = "#{self.cliente.sigla} - #{self.codCliente}"
       else
         if self.codCliente
           armac = self.codCliente
         else 
-          armac = "OT" + self.numOT.to_s
+          armac = "OT #{self.numOT.to_s}" 
         end
       end
     else
-      armac = "OT" + self.numOT.to_s
+      armac = "OT #{self.numOT.to_s}"
     end
     armac
   end

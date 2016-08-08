@@ -53,9 +53,9 @@
               <% @tpar = ((this.updated_at - this.created_at)) %>
               <% @tparh = Time.at(@tpar).utc.strftime("%H:%M:%S") %>
               <tr>
-                <th><%=this.numOT if this.numOT %></th>
-                <td><%=this.nomprod if this.nomprod %></td>
-                <td><%=this.armacod if this.armacod %></td>
+                <th><%=this.numOT%></th>
+                <td><%=this.nomprod%></td>
+                <td><%=this.armacod%></td>
                 <td><view:created_at format="%d-%m-%y"/></td>
                 <td><view:updated_at if="numFact" format="%d-%m-%y"/></td>
                 <td><%= this.numFact %> </td><td><%= Time.duracion(this.created_at,this.updated_at)%></td>
