@@ -6,10 +6,10 @@
   <navigation class="main-nav" merge-attrs param="default">
     <nav-item href="#{base_url}/">Home</nav-item>
     <nav-item with="&Anilox"><ht key="aniloxes.nav_item">Aniloxes</ht></nav-item>
+    <nav-item with="&Auditoria"><ht key="auditorias.nav_item">Auditorias</ht></nav-item>
     <nav-item with="&Bodega"><ht key="bodegas.nav_item">Bodegas</ht></nav-item>
     <nav-item with="&Cliente"><ht key="clientes.nav_item">Clientes</ht></nav-item>
     <nav-item with="&Configuration"><ht key="configurations.nav_item">Configurations</ht></nav-item>
-    <nav-item with="&Contacto"><ht key="contactos.nav_item">Contactos</ht></nav-item>
   </navigation>
 </def>
 
@@ -161,6 +161,126 @@
         </form>
       </section>
     </content:>
+  </page>
+</def>
+
+
+
+
+
+<!-- ====== Auditoria Pages ====== -->
+
+<def tag="index-page" for="Auditoria">
+  <page merge title="#{ht 'auditorias.index.title', :default=>['Auditorias'] }">
+    <body: class="index-page auditoria" param/>
+
+    <content: param>
+      <header param="content-header">
+        <h2 param="heading">
+          <ht key="auditorias.index.heading">
+            Auditorias
+          </ht>
+        </h2>
+
+        <p param="count" if>
+          <ht key="auditorias.collection.count" count="&this.size">
+            There <count prefix="are"/>
+          </ht>
+        </p>
+      </header>
+
+      <section param="content-body">
+        <a action="new" to="&model" param="new-link">
+          <ht key="auditorias.actions.new">New Auditoria</ht>
+        </a>
+
+        <page-nav param="top-page-nav"/>
+
+        <collection param/>
+
+        <page-nav param="bottom-page-nav"/>
+
+
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="new-page" for="Auditoria">
+  <page merge title="#{ht 'auditorias.new.title', :default=>[' New Auditoria'] }">
+    <body: class="new-page auditoria" param/>
+
+    <content: param>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="auditorias.new.heading">
+            New Auditoria
+          </ht>
+        </h2>
+      </section>
+
+      <section param="content-body">
+        <form param>
+          <submit: label="#{ht 'auditorias.actions.create', :default=>['Create Auditoria']}"/>
+        </form>
+      </section>
+    </content:>
+  </page>
+</def>
+
+
+<def tag="show-page" for="Auditoria">
+  <page merge title="#{ht 'auditorias.show.title', :default=>['Auditoria'] }">
+
+    <body: class="show-page auditoria" param/>
+
+    <content: param>
+          <header param="content-header">
+            <h2 param="heading">
+              <ht key="auditorias.show.heading" name="&this.respond_to?(:name) ? this.name : ''">
+                <name/>
+              </ht>
+            </h2>
+
+            <record-flags fields="" param/>
+
+            <a action="edit" if="&can_edit?" param="edit-link">
+              <ht key="auditorias.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+                Edit Auditoria
+              </ht>
+            </a>
+          </header>
+
+          <section param="content-body">
+            <field-list fields="tipo, fecha, detalles, ord_trab, user" param/>
+          </section>
+    </content:>
+
+  </page>
+</def>
+
+
+<def tag="edit-page" for="Auditoria">
+  <page merge title="#{ht 'auditorias.edit.title', :default=>['Edit Auditoria'] }">
+
+    <body: class="edit-page auditoria" param/>
+
+    <content:>
+      <section param="content-header">
+        <h2 param="heading">
+          <ht key="auditorias.edit.heading" name="&this.respond_to?(:name) ? this.name : ''">
+            Edit <type-name/>
+          </ht>
+        </h2>
+        <delete-button label="#{ht 'auditorias.actions.delete', :default=>['Remove This Auditoria']}" param/>
+      </section>
+
+      <section param="content-body">
+        <form param/>
+      </section>
+    </content:>
+
   </page>
 </def>
 
@@ -533,7 +653,7 @@
               </ht>
             </h2>
 
-            <record-flags fields="cuenta_usuario, generar_xml" param/>
+            <record-flags fields="cuenta_usuario, generar_xml, pantalla_gerencial" param/>
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="clientes.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
@@ -2282,7 +2402,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, barcodecopy, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, pctdistor, color, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, list_barcode, sustrato, tipomat, tipoot" param/>
+            <field-list fields="numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, barcodecopy, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, pctdistor, color, fechafin, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, list_barcode, sustrato, tipomat, tipoot" param/>
           </section>
     </content:>
 
@@ -3384,7 +3504,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="instrucciones, fechatope, ciclo, asignada_a, state, asignado, ord_trab, proceso, recurso" param/>
+            <field-list fields="instrucciones, fechatope, fechafin, ciclo, asignada_a, state, asignado, ord_trab, proceso, recurso" param/>
           </section>
     </content:>
 

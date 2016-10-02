@@ -16,6 +16,7 @@
     cuenta_usuario :boolean, :default => false
     password :string
     generar_xml :boolean
+    pantalla_gerencial :boolean
     timestamps
   end
   

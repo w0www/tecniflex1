@@ -16,6 +16,19 @@ class UsersController < ApplicationController
     end
   end
 
+  def login
+    usuario = User.find_by_email_address(params[:login]).blank? ? "" : User.find_by_email_address(params[:login])
+    detalles = usuario.blank? ? "Inicio de sesión Usuario #{params[:login]}" : "Inicio de sesión"
+    hobo_login do
+      Auditoria.create(
+        :tipo => "login",
+        :fecha => DateTime.now,
+        :user => usuario,
+        :detalles => detalles
+      )
+    end
+  end
+
   index_action :intervs do
     @grupro = Grupoproc.tablero.order_by(:position)
     @clies = Cliente.all

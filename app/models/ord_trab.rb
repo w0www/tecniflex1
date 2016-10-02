@@ -84,6 +84,7 @@ class OrdTrab < ActiveRecord::Base
     urgente				:boolean
     pctdistor      :decimal, :precision => 8, :scale => 2, :default => 0
     color          :string
+    fechafin      :date
     timestamps
   end
 
@@ -120,22 +121,85 @@ class OrdTrab < ActiveRecord::Base
     :conditions => ["tareas.state = ?", estado] } 
   }
 
+  # Scopes pantalla gerencial
+  # NUEVAS
+  named_scope :nuevas_hoy, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?",
+    Tipoot.find_by_name("N (Trabajo Nuevo)"), Date.today]}}
+  named_scope :nuevas_ayer, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?", 
+    Tipoot.find_by_name("N (Trabajo Nuevo)"), Date.yesterday]}}
+  named_scope :nuevas_semana, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+    Tipoot.find_by_name("N (Trabajo Nuevo)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
+  named_scope :nuevas_mes, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+    Tipoot.find_by_name("N (Trabajo Nuevo)"), Date.today.beginning_of_month.beginning_of_day, Date.today.end_of_month.end_of_day]}}
+  named_scope :nuevas_ano, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+    Tipoot.find_by_name("N (Trabajo Nuevo)"), Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
 
+  # MODIFICACION
+  named_scope :modificacion_hoy, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?", 
+    Tipoot.find_by_name("M (Modificacion)"), Date.today]}}
+  named_scope :modificacion_ayer, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?", 
+    Tipoot.find_by_name("M (Modificacion)"), Date.yesterday]}}
+  named_scope :modificacion_semana, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+    Tipoot.find_by_name("M (Modificacion)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
+  named_scope :modificacion_mes, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+    Tipoot.find_by_name("M (Modificacion)"), Date.today.beginning_of_month.beginning_of_day, Date.today.end_of_month.end_of_day]}}
+  named_scope :modificacion_ano, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+    Tipoot.find_by_name("M (Modificacion)"), Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
+
+  # POSTSCRIPT
+  named_scope :postscript_hoy, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?", 
+    Tipoot.find_by_name("P (PostScript)"), Date.today]}}
+  named_scope :postscript_ayer, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?", 
+    Tipoot.find_by_name("P (PostScript)"), Date.yesterday]}}
+  named_scope :postscript_semana, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+    Tipoot.find_by_name("P (PostScript)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
+  named_scope :postscript_mes, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+    Tipoot.find_by_name("P (PostScript)"), Date.today.beginning_of_month.beginning_of_day, Date.today.end_of_month.end_of_day]}}
+  named_scope :postscript_ano, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+    Tipoot.find_by_name("P (PostScript)"), Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
+
+  # REPOSICION
+  named_scope :reposiciones_hoy, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?",
+    Tipoot.find_by_name("R (Reposicion)"), Date.today]}}
+  named_scope :reposiciones_ayer, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?", 
+    Tipoot.find_by_name("R (Reposicion)"), Date.yesterday]}}
+  named_scope :reposiciones_semana, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+    Tipoot.find_by_name("R (Reposicion)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
+  named_scope :reposiciones_mes, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+    Tipoot.find_by_name("R (Reposicion)"), Date.today.beginning_of_month.beginning_of_day, Date.today.end_of_month.end_of_day]}}
+  named_scope :reposiciones_ano, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+    Tipoot.find_by_name("R (Reposicion)"), Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
+
+  # TOTAL
+  named_scope :total_hoy, lambda {{:conditions => ["fechafin = ?",
+    Date.today]}}
+  named_scope :total_ayer, lambda {{:conditions => ["fechafin = ?", 
+    Date.yesterday]}}
+  named_scope :total_semana, lambda {{:conditions => ["fechafin BETWEEN ? AND ?",
+    Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
+  named_scope :total_mes, lambda {{:conditions => ["fechafin BETWEEN ? AND ?",
+    Date.today.beginning_of_month.beginning_of_day, Date.today.end_of_month.end_of_day]}}
+  named_scope :total_ano, lambda {{:conditions => ["fechafin BETWEEN ? AND ?",
+    Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
+
+  # CREADAS
+  named_scope :creadas_hoy, lambda {{:conditions => ["created_at BETWEEN ? AND ?",
+    Date.today.beginning_of_day, Date.today.end_of_day]}}
 
   def armacod
     armac = ""
     if self.cliente
       if self.cliente.sigla != ""
-        armac = self.cliente.sigla + "-" + self.codCliente
+        armac = "#{self.cliente.sigla} - #{self.codCliente}"
       else
         if self.codCliente
           armac = self.codCliente
         else 
-          armac = "OT" + self.numOT.to_s
+          armac = "OT #{self.numOT.to_s}" 
         end
       end
     else
-      armac = "OT" + self.numOT.to_s
+      armac = "OT #{self.numOT.to_s}"
     end
     armac
   end
@@ -258,7 +322,9 @@ class OrdTrab < ActiveRecord::Base
 
     transition :eliminar, { :iniciada => :destroy }, :available_to => "User.supervisores"
 
-		transition :terminar, { :iniciada => :terminada }, :available_to => "User.supervisores"
+		transition :terminar, { :iniciada => :terminada }, :available_to => "User.supervisores" do
+      self.fechafin = Time.now
+    end
 
     transition :reactivar, {:terminada => :habilitada}, :available_to => "User.supervisores" do
     	esta = self
@@ -304,6 +370,7 @@ class OrdTrab < ActiveRecord::Base
 		else
 			self.numOT = (OrdTrab.order_by(:id).last.id.to_i || 0) + 60001
 		end
+
   end
 
   def activa?
@@ -332,6 +399,11 @@ class OrdTrab < ActiveRecord::Base
 			end
 	end
 
+  def before_update
+    Auditoria.create(
+      :tipo => "modificación", :fecha => DateTime.now, :user_id => acting_user.id, :ord_trab_id => self.id, :detalles => "#{self.inspect}"
+    )
+  end
 
   def after_update
     # Habilita la primera tarea al activarse la OT.
@@ -361,6 +433,19 @@ class OrdTrab < ActiveRecord::Base
       end
     end
   end
+
+  def after_create
+    Auditoria.create(
+      :tipo => "creación",:fecha => DateTime.now, :user_id => acting_user.id, :ord_trab_id => self.id, :detalles => "#{self.inspect}"
+    )
+  end
+
+  def before_destroy
+    Auditoria.create(
+      :tipo => "eliminación", :fecha => DateTime.now, :user_id => acting_user.id, :ord_trab_id => self.id, :detalles => "#{self.inspect}"
+    )
+  end
+
 
   def calcular_color_tablero(orden)
     # Si las tareas estan terminadas tenemos que calcular y guardar el color en base de datos
