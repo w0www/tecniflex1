@@ -7,6 +7,8 @@ class OrdTrabsController < ApplicationController
 
 
   def new
+    @npasos = 0
+    @nbandos = 0
     if params[:id]
       # @prima es la OT original
       @prima = OrdTrab.find(params[:id])
@@ -69,6 +71,8 @@ class OrdTrabsController < ApplicationController
   end
 
   def create
+    @npasos = 0
+    @nbandos = 0
     params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') 
     # Parseamos el valor del datepicker
     parsear_datepicker

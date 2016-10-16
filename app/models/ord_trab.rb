@@ -352,6 +352,9 @@ class OrdTrab < ActiveRecord::Base
   validates_presence_of :encargado_id
   validates_presence_of :dispBandas, :espesor, :tipomat, :if => "self.mtz"
   validates_associated :separacions, :if => "(self.mtje || self.mtz || self.pol) && self.activa? ", :on => :habilitar
+  validates_presence_of :nBandas, :nPasos, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
+
+
 
   validate :limite_codigo_barras, :barcodes_iguales, :pasosybandas
 
