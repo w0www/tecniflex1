@@ -13,7 +13,7 @@ class OrdTrabsController < ApplicationController
       # @prima es la OT original
       @prima = OrdTrab.find(params[:id])
       # @primat contiene los atributos de la OT original excepto 3
-      @primat = @prima.attributes.except('numOT','numFact','numGuia')
+      @primat = @prima.attributes.except('numOT','numFact','numGuia','nPasos','nBandas')
       # @sepas es un array con las separaciones de la OT
       @sepas = []
       @prima.separacions.each do |sepa|

@@ -4,6 +4,12 @@ PDFKit.configure do |config|
     :page_size => 'Legal',
     :print_media_type => true
   }
-	config.root_url = "http://preprensa.tecniflex.cl"
+  if Rails.env.production?
+    config.root_url = "http://preprensa.tecniflex.cl"
+  elsif Rails.env.preproduction?
+    config.root_url = "http://test.tecniflex.cl"
+  elsif Rails.env.development?
+    config.root_url = "http://localhost:3000"
+  end
 end
 
