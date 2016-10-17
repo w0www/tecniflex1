@@ -276,7 +276,7 @@
     <td><input:mcTirascol style="width:40px"/></td>
     <td><input:mcTirasapy style="width:40px"/></td>
     <td colspan="2" class="centrada">N. de Pasos:&nbsp;
-      <% valor = @npasos? @npasos : self.nPasos %>
+      <% valor = @npasos? @npasos : this.nPasos %>
       <input id="ord_trab[nPasos]" class="string ord-trab-npasos" type="text" value="#{valor}" name="ord_trab[nPasos]"/>
     </td>
   </tr>
