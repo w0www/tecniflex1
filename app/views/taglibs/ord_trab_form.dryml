@@ -286,7 +286,7 @@
     <td><input:mcExcesocol style="width:40px"/></td>
     <td><input:mcExcesocol style="width:40px"/></td>
     <td colspan="2" class="centrada">N. de Bandas&nbsp;
-      <% valor = @nbandos? @nbandos : self.nBandos %>
+      <% valor = @nbandos? @nbandos : this.nBandos %>
       <input id="ord_trab[nBandos]" class="string ord-trab-nbandos" type="text" value="#{valor}" name="ord_trab[nBandos]"/>
     </td>
   </tr>
