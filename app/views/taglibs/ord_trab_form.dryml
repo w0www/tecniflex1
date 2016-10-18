@@ -296,7 +296,10 @@
     <td colspan="3"><input:mcMarcas style="font-size:60%"/>&nbsp;Marcas de calce</td>
     <td/>
     <td/>
-    <td colspan="2" rowspan="2">N. de Copias&nbsp;<input:nCopias/></td>
+    <td colspan="2" rowspan="2">N. de Copias&nbsp;
+      <% valor = @ncopias? @ncopias : this.nCopias %>
+      <input id="ord_trab[nCopias]" class="string ord-trab-ncopias" type="text" value="#{valor}" name="ord_trab[nCopias]"/>
+    </td>
   </tr>
   <tr>
     <td colspan="5" class="centrada">
