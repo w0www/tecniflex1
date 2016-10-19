@@ -527,8 +527,6 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def before_save
-    self.nCopias = 1 unless self.nCopias?
-
 		sarr = ["vb", "ptr", "mtz", "mtje"]
 		sarr.each do |saejec|
 			tes = saejec + "_changed?"
