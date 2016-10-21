@@ -24,10 +24,6 @@ config.action_view.cache_template_loading            = true
 # Disable delivery errors, bad email addresses will be ignored
 # config.action_mailer.raise_delivery_errors = false
 
-
-
-
-
 config.action_mailer.smtp_settings = {
        :address => "mail.tecniflex.cl",
        :port   => 587,
@@ -35,7 +31,7 @@ config.action_mailer.smtp_settings = {
        :authentication => :plain,
        :user_name => "rep37878",
        :password => "repo2016",
-       :enable_starttls_auto => false}
+       :enable_starttls_auto => false
 }
 	
 	
