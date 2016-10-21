@@ -4,7 +4,7 @@ class RecibArchMailer < ActionMailer::Base
   	@cliente = cliente
     subject   'Envio de Visto Bueno'
     recipients ['patricio.arluciaga@gmail.com', 'preprensa@tecniflex.cl']
-    from      'preprensa@tecniflex.cl'
+    from      'reposiciones@tecniflex.cl'
     body      :cliente => cliente, :trabajo => trabajo
   end
 
@@ -13,7 +13,7 @@ class RecibArchMailer < ActionMailer::Base
 		@ord_trab = ord_trab
 		subject 		'Orden de Trabajo Tecniflex'
     recipients 	['jaime.kunze@gmail.com', 'preprensa@tecniflex.cl', @ord_trab.cliente.correo ]
-		from				'preprensa@tecniflex.cl'
+		from				'reposiciones@tecniflex.cl'
 		content_type 'multipart/mixed'
 		part "text/plain" do |p|
 			p.body = render_message("enviapdf_plain", :ot => @ord_trab.nomprod)
@@ -35,7 +35,7 @@ class RecibArchMailer < ActionMailer::Base
     end
 		subject 		'Nueva Orden de Trabajo Tecniflex'
 		recipients 	emails
-		from				'preprensa@tecniflex.cl'
+		from				'reposiciones@tecniflex.cl'
 		content_type 'multipart/mixed'
 		part "text/plain" do |p|
 			p.body = render_message("avisar_cliente_plain", :ot => @ord_trab)

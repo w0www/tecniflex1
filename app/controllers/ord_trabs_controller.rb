@@ -7,11 +7,14 @@ class OrdTrabsController < ApplicationController
 
 
   def new
+    @ncopias = 0
+    @npasos = 0
+    @nbandas = 0
     if params[:id]
       # @prima es la OT original
       @prima = OrdTrab.find(params[:id])
-      # @primat contiene los atributos de la OT original excepto 3
-      @primat = @prima.attributes.except('numOT','numFact','numGuia','nPasos','nBandas')
+      # @primat contiene los atributos de la OT original excepto 6
+      @primat = @prima.attributes.except('numOT','numFact','numGuia','nPasos','nBandas','nCopias')
       # @sepas es un array con las separaciones de la OT
       @sepas = []
       @prima.separacions.each do |sepa|
@@ -69,6 +72,9 @@ class OrdTrabsController < ApplicationController
   end
 
   def create
+    @ncopias = 0
+    @npasos = 0
+    @nbandas = 0
     params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') 
     # Parseamos el valor del datepicker
     parsear_datepicker
@@ -104,7 +110,6 @@ class OrdTrabsController < ApplicationController
         codCliente = params[:codCliente].split("-").last unless params[:codCliente].blank?
       end
     end  
-    logger.info "esto es codCliente #{codCliente}"
     return codCliente
   end
 
