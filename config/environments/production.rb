@@ -36,6 +36,7 @@ config.action_mailer.smtp_settings = {
        :user_name => "rep37878",
        :password => "repo2016",
        :enable_starttls_auto => false}
+}
 	
 	
 # Enable threaded mode
