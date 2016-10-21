@@ -352,7 +352,11 @@ class OrdTrab < ActiveRecord::Base
   validates_presence_of :encargado_id
   validates_presence_of :dispBandas, :espesor, :tipomat, :if => "self.mtz"
   validates_associated :separacions, :if => "(self.mtje || self.mtz || self.pol) && self.activa? ", :on => :habilitar
-  validate :limite_codigo_barras, :barcodes_iguales
+  validates_presence_of :nBandas, :nPasos, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
+
+
+
+  validate :limite_codigo_barras, :barcodes_iguales, :pasosybandas
 
   def limite_codigo_barras
     if list_barcode
@@ -363,6 +367,15 @@ class OrdTrab < ActiveRecord::Base
   def barcodes_iguales
     errors.add(:barcodecopy, "tiene que ser igual que el barcode") if !barcode.blank? && barcode != barcodecopy
   end
+
+  def pasosybandas
+    if self.mtz || self.mtje
+      errors.add(:nPasos, "El número de pasos tiene que ser mayor que 0")  if self.nPasos < 1 
+      errors.add(:nBandas, "El número de bandas tiene que ser mayor que 0") if self.nBandas < 1
+      errors.add(:nCopias, "El número de copias tiene que ser mayor que 0") if self.nCopias < 1
+    end
+  end
+
 
   def before_create
 		if OrdTrab.all == []
@@ -435,9 +448,8 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def after_create
-    Auditoria.create(
-      :tipo => "creación",:fecha => DateTime.now, :user_id => acting_user.id, :ord_trab_id => self.id, :detalles => "#{self.inspect}"
-    )
+    usuario = acting_user.id if acting_user
+    Auditoria.create(:tipo => "creación",:fecha => DateTime.now,:user_id => usuario, :ord_trab_id => self.id, :detalles => "#{self.inspect}" )
   end
 
   def before_destroy
@@ -510,10 +522,6 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def before_save
-    self.nBandas = 1 unless self.nBandas?
-    self.nPasos = 1 unless self.nPasos?
-    self.nCopias = 1 unless self.nCopias?
-
 		sarr = ["vb", "ptr", "mtz", "mtje"]
 		sarr.each do |saejec|
 			tes = saejec + "_changed?"

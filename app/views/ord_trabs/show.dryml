@@ -183,7 +183,7 @@
           <td colspan="3"><view:mcTiras class="boolshow#{@this.mcTiras}"/>&nbsp;Tiras de control</td>
           <td><view:mcTirascol style="width:40px"/></td>
           <td><view:mcTirasapy style="width:40px"/></td>
-          <td colspan="2" class="centrada">N. de Pasos:&nbsp;<view:nPasos/></td>
+          <td colspan="2" class="centrada">N. de Pasos:&nbsp;<view:nPasos if-blank="0"/></td>
         </tr>
         <tr>
           <td colspan="2"><view:mcExceso class="boolshow#{@this.mcExceso}"/>&nbsp;Exceso</td>
@@ -234,14 +234,7 @@
           <th>Area</th>
           <th>Copias</th>
           <td colspan="7" rowspan="<%=  1+this.separacions.count %>">
-            <if test="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion"> 
-              <textarea name="ord_trab[observaciones]" id="ord_trab_observaciones" 
-                        class="text ord-trab-observaciones"  style="width:90%;height:100%;">
-              </textarea>
-            </if>
-            <else>
               &nbsp;<view:observaciones/>
-            </else>
           </td>
         </tr>
         <repeat with="&this.separacions">
@@ -279,7 +272,13 @@
           </repeat>
         <%end%>
       </table>
-      <center><submit value="Crear nueva reposicion" onclick="return confirm('¿Está seguro de crear una nueva reposición?');" if="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion"/></center>
+      <center>
+        <if test="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion"> 
+          Observaciones Reposicion
+          <textarea name="ord_trab[observaciones]" id="ord_trab_observaciones" class="text ord-trab-observaciones"  style="width:90%;height:100%;"></textarea>
+        </if>
+        <submit value="Crear nueva reposicion" onclick="return confirm('¿Está seguro de crear una nueva reposición?');" if="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion"/>
+      </center>
     </form>
     <transition-buttons class="centrada"/>
   </content-body:>

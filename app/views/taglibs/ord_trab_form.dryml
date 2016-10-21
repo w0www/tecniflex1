@@ -275,14 +275,20 @@
     <td colspan="3"><input:mcTiras style="font-size:60%"/>&nbsp;Tiras de control</td>
     <td><input:mcTirascol style="width:40px"/></td>
     <td><input:mcTirasapy style="width:40px"/></td>
-    <td colspan="2" class="centrada">N. de Pasos:&nbsp;<input:nPasos/></td>
+    <td colspan="2" class="centrada">N. de Pasos:&nbsp;
+      <% valor = @npasos? @npasos : this.nPasos %>
+      <input id="ord_trab[nPasos]" class="string ord-trab-npasos" type="text" value="#{valor}" name="ord_trab[nPasos]"/>
+    </td>
   </tr>
   <tr>
     <th colspan="5" class="centrada">Fotopolimero</th>
     <td colspan="3"><input:mcExceso style="font-size:60%"/>&nbsp;Exceso&nbsp;<input:mcExcesoq/></td>
     <td><input:mcExcesocol style="width:40px"/></td>
     <td><input:mcExcesocol style="width:40px"/></td>
-    <td colspan="2" class="centrada">N. de Bandas&nbsp;<input:nBandas/></td>
+    <td colspan="2" class="centrada">N. de Bandas&nbsp;
+      <% valor = @nbandas? @nbandas : this.nBandas %>
+      <input id="ord_trab[nBandas]" class="string ord-trab-nbandas" type="text" value="#{valor}" name="ord_trab[nBandas]"/>
+    </td>
   </tr>
   <tr>
     <td colspan="2" class="centrada"><input:espesor/></td>
@@ -290,7 +296,10 @@
     <td colspan="3"><input:mcMarcas style="font-size:60%"/>&nbsp;Marcas de calce</td>
     <td/>
     <td/>
-    <td colspan="2" rowspan="2">N. de Copias&nbsp;<input:nCopias/></td>
+    <td colspan="2" rowspan="2">N. de Copias&nbsp;
+      <% valor = @ncopias? @ncopias : this.nCopias %>
+      <input id="ord_trab[nCopias]" class="string ord-trab-ncopias" type="text" value="#{valor}" name="ord_trab[nCopias]"/>
+    </td>
   </tr>
   <tr>
     <td colspan="5" class="centrada">
