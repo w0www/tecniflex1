@@ -370,14 +370,9 @@ class OrdTrab < ActiveRecord::Base
 
   def pasosybandas
     if self.mtz || self.mtje
-      if self.nPasos < 1 && self.nBandas < 1
-        errors.add(:nPasos, "El número de pasos tiene que ser mayor que 0")
-        errors.add(:nBandas, "El número de bandas tiene que ser mayor que 0")
-      elsif self.nPasos < 1 && self.nBandas >= 1
-        errors.add(:nPasos, "El número de pasos y bandas tiene que ser mayor que 0")
-      elsif self.nPasos >=1 && self.nBandas < 1
-        errors.add(:nBandas, "El número de bandas tiene que ser mayor que 0")
-      end
+      errors.add(:nPasos, "El número de pasos tiene que ser mayor que 0")  if self.nPasos < 1 
+      errors.add(:nBandas, "El número de bandas tiene que ser mayor que 0") if self.nBandas < 1
+      errors.add(:nCopias, "El número de copias tiene que ser mayor que 0") if self.nCopias < 1
     end
   end
 
