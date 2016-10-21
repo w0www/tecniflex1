@@ -7,6 +7,9 @@ class OrdTrabsController < ApplicationController
 
 
   def new
+    @ncopias = 0
+    @npasos = 0
+    @nbandas = 0
     if params[:id]
       # @prima es la OT original
       @prima = OrdTrab.find(params[:id])
@@ -69,6 +72,9 @@ class OrdTrabsController < ApplicationController
   end
 
   def create
+    @ncopias = 0
+    @npasos = 0
+    @nbandas = 0
     params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') 
     # Parseamos el valor del datepicker
     parsear_datepicker
@@ -104,7 +110,6 @@ class OrdTrabsController < ApplicationController
         codCliente = params[:codCliente].split("-").last unless params[:codCliente].blank?
       end
     end  
-    logger.info "esto es codCliente #{codCliente}"
     return codCliente
   end
 
