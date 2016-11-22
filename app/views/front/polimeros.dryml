@@ -93,7 +93,11 @@
           clisse = 0
           if ord_trab.separacions != ""
             for s in ord_trab.separacions
-              clisse = s.nCopias ? clisse + s.nCopias : clisse + ord_trab.nCopias
+              if s.nCopias
+                clisse = s.nCopias + clisse
+              elsif ord_trab.nCopias
+                clisse = clisse + ord_trab.nCopias
+              end
             end
           end
         %>
