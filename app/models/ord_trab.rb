@@ -356,7 +356,9 @@ class OrdTrab < ActiveRecord::Base
 
 
 
-  validate :limite_codigo_barras, :barcodes_iguales, :pasosybandas
+
+
+  validate :limite_codigo_barras, :barcodes_iguales, :pasosybandas, :espesores_iguales, :nrocopias
 
   def limite_codigo_barras
     if list_barcode
@@ -368,6 +370,13 @@ class OrdTrab < ActiveRecord::Base
     errors.add(:barcodecopy, "tiene que ser igual que el barcode") if !barcode.blank? && barcode != barcodecopy
   end
 
+  def espesores_iguales
+    if self.espesor != self.cilindro.espesor.to_f
+      errors.add(:espesor, "tiene que ser igual que el espesor del cilindro ") 
+      errors.add(:cilindro, "tiene que ser igual que el espesor")
+    end
+  end
+
   def pasosybandas
     if self.mtz || self.mtje
       errors.add(:nPasos, "El número de pasos tiene que ser mayor que 0")  if self.nPasos < 1 
@@ -375,6 +384,15 @@ class OrdTrab < ActiveRecord::Base
       errors.add(:nCopias, "El número de copias tiene que ser mayor que 0") if self.nCopias < 1
     end
   end
+
+  def nrocopias
+    if self.tipoot_id == Tipoot.find_by_name("R (Reposicion)").id
+      if self.nCopias <= 0 || self.nCopias > 10
+        errors.add(:nCopias,"El número de copias tiene que estar entre 1 y 10")
+      end
+    end
+  end
+
 
 
   def before_create
