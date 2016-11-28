@@ -15,6 +15,7 @@
 	    <li><h3><a to="&OrdTrab" action="otscreadas">OTs creadas v/s OTs facturadas</a></h3></li>
 			<li><h3><a to="&OrdTrab" action="vbenvios">Envios de VB</a></h3></li>
 			<li><h3><a to="&Auditoria" action="index">Informe de auditoria</a></h3></li>
+			<li><h3><a to="&Intervencion" action="mmrechazadas">RevisionMM rechazadas</a></h3></li>
 		</ul>
     </section>
   </content:>

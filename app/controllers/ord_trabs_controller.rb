@@ -7,35 +7,42 @@ class OrdTrabsController < ApplicationController
 
 
   def new
+    @cliente = Cliente.find_by_correo(current_user.email_address)
     @ncopias = 0
     @npasos = 0
     @nbandas = 0
-    if params[:id]
-      # @prima es la OT original
-      @prima = OrdTrab.find(params[:id])
-      # @primat contiene los atributos de la OT original excepto 6
-      @primat = @prima.attributes.except('numOT','numFact','numGuia','nPasos','nBandas','nCopias')
-      # @sepas es un array con las separaciones de la OT
-      @sepas = []
-      @prima.separacions.each do |sepa|
-        @sepas << sepa.attributes.except(:ord_trab_id)
+    if @cliente.blank?
+      if params[:id]
+        # @prima es la OT original
+        @prima = OrdTrab.find(params[:id])
+        # @primat contiene los atributos de la OT original excepto 6
+        @primat = @prima.attributes.except('numOT','numFact','numGuia','nPasos','nBandas','nCopias')
+        # @sepas es un array con las separaciones de la OT
+        @sepas = []
+        @prima.separacions.each do |sepa|
+          @sepas << sepa.attributes.except(:ord_trab_id)
+        end
+        # @sepash es un hash con las separacion de la OT
+        @sepash = {:separacions => @sepas}
+        # @nueva_ot es una nueva OT con los atributos de la OT original + las separaciones
+        @nueva_ot = OrdTrab.new(@primat.merge(@sepash))
+        @nueva_ot.version ||= 1
+        @nueva_ot.version += 1
+        hobo_new (@nueva_ot) do
+          this.attributes = params[:ord_trab] || {}
+          hobo_ajax_response if request.xhr?
+        end
+      else
+        hobo_new do
+          this.attributes = params[:ord_trab] || {}
+          hobo_ajax_response if request.xhr?
+        end
       end
-      # @sepash es un hash con las separacion de la OT
-      @sepash = {:separacions => @sepas}
-      # @nueva_ot es una nueva OT con los atributos de la OT original + las separaciones
-      @nueva_ot = OrdTrab.new(@primat.merge(@sepash))
-      @nueva_ot.version ||= 1
-      @nueva_ot.version += 1
-      hobo_new (@nueva_ot) do
-        this.attributes = params[:ord_trab] || {}
-        hobo_ajax_response if request.xhr?
-      end
-    else
+    elsif @cliente
       hobo_new do
         this.attributes = params[:ord_trab] || {}
         hobo_ajax_response if request.xhr?
       end
-
     end
   end
 
@@ -75,22 +82,38 @@ class OrdTrabsController < ApplicationController
     @ncopias = 0
     @npasos = 0
     @nbandas = 0
-    params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') 
-    # Parseamos el valor del datepicker
-    parsear_datepicker
-    hobo_create do 
-      if valid?
-        # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
-        this.sortars.first.lifecycle.habilitar!(current_user) if this.sortars.first.proceso.nombre.downcase == "polimero"
-        # Si es todo valido vamos a crear el fichero XML del mismo
-        confi = Configuration.find_by_key("export_to_xml")
-        if confi && confi.value == true
-          crear_fichero_xml if this.cliente.generar_xml
+    @cliente = Cliente.find_by_correo(current_user.email_address)
+    if @cliente
+      @orden = OrdTrab.new
+      @orden.cliente_id = @cliente.id
+      @orden.nomprod = params[:ord_trab][:nomprod]
+      @orden.tipoot_id = params[:ord_trab][:tipoot_id]
+      @orden.sustrato = params[:ord_trab][:sustrato]
+      @orden.mdi_ancho = params[:ord_trab][:mdi_ancho]
+      @orden.mdi_desarrollo = params[:ord_trab][:mdi_desarrollo]
+      @orden.observaciones = params[:ord_trab][:observaciones]
+      # MODIFICAR LOS DATOS DE LA FECHA DE CREACION
+      @orden.created_at = Time.zone.now
+      @orden.fecha = Date.today
+      @orden.save(false)
+      redirect_to @orden
+    else
+      params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') 
+      # Parseamos el valor del datepicker
+      parsear_datepicker
+      hobo_create do 
+        if valid?
+          # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
+          this.sortars.first.lifecycle.habilitar!(current_user) if this.sortars.first.proceso.nombre.downcase == "polimero"
+          # Si es todo valido vamos a crear el fichero XML del mismo
+          confi = Configuration.find_by_key("export_to_xml")
+          if confi && confi.value == true
+            crear_fichero_xml if this.cliente.generar_xml
+          end
         end
       end
     end
   end
-
   def calcular_codigo_cliente
     codCliente = ""
     if params[:codCliente]
@@ -436,7 +459,6 @@ class OrdTrabsController < ApplicationController
         hobo_ajax_response if request.xhr?
   end
   
-    
   index_action :reporte do
   	@todas = OrdTrab.find(:all)
 

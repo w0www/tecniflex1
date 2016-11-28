@@ -1,21 +1,57 @@
 <def tag="form" for="OrdTrab">
   <form merge param="default">
-    <error-messages param/>
-    <table class="shower">
-      <datos-cliente/>
-      <datos-solicitud/>
-      <observaciones/>
-      <tr>
-        <td colspan="12" style="background-color:transparent"></td>
-      </tr>      
-    </table>
-    <input-many-separaciones/>
-    <div param="actions">
-      <submit label="#{ht('ord_trabs.actions.save', :default=> ['Save'])}" param />
-      <or-cancel param="cancel"/>
-    </div>
+    <if test="&@cliente">
+      <table class="shower">
+        <formulario-cliente/>
+        <tr>
+          <td colspan="12" style="background-color:transparent"></td>
+        </tr>      
+      </table>
+      <div param="actions">
+        <submit label="#{ht('ord_trabs.actions.save', :default=> ['Save'])}" onclick="return confirm('¿Está seguro de que los datos son correctos?');"/>
+        <or-cancel/>
+      </div>
+    </if>
+
+    <unless test="&@cliente">
+      <error-messages param/>
+      <table class="shower">
+        <datos-cliente/>
+        <datos-solicitud/>
+        <observaciones/>
+        <tr>
+          <td colspan="12" style="background-color:transparent"></td>
+        </tr>      
+      </table>
+      <input-many-separaciones/>
+      <div param="actions">
+        <submit label="#{ht('ord_trabs.actions.save', :default=> ['Save'])}" param />
+        <or-cancel param="cancel"/>
+      </div>
+    </unless>
   </form>
 </def>
+
+
+<def tag="formulario-cliente">
+  <tr>
+    <th style="width:7%">Producto</th>
+    <td><input:nomprod style="width:95%;"/></td>
+    <th>Tipo de OT</th>
+    <td><input:tipoot style="width:70px"/></td>
+    <th>Desarrollo</th>
+    <td><input:mdi_desarrollo style="width:3em"/></td>
+    <th>Ancho</th>
+    <td><input:mdi_ancho style="width:3em"/></td>
+  </tr>
+  <tr>
+    <th class="centrada">Sustrato</th>
+    <td><input:sustrato/></td>
+    <th class="centrada">Observaciones</th>
+    <td rowspan="4" colspan="9" class="centrada"><input:observaciones rows="5"/></td>    
+  </tr>
+</def>
+
 
 <def tag="datos-cliente">
   <tr>

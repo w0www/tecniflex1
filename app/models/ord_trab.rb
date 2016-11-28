@@ -358,7 +358,7 @@ class OrdTrab < ActiveRecord::Base
 
 
 
-  validate :limite_codigo_barras, :barcodes_iguales, :pasosybandas, :espesores_iguales, :nrocopias
+  validate :limite_codigo_barras, :barcodes_iguales, :pasosybandas, :espesores_iguales, :nrocopias, :validar_codigo_ean13
 
   def limite_codigo_barras
     if list_barcode
@@ -393,6 +393,18 @@ class OrdTrab < ActiveRecord::Base
     end
   end
 
+  def validar_codigo_ean13
+    if self.list_barcode.code == "EAN-13"
+      suma = 0
+      (0..11).each do |i|
+        suma += ((i+1) % 2) == 0 ? self.barcode[i..i].to_i * 3 : self.barcode[i..i].to_i
+      end
+    end
+    # size == 13
+    unless suma % 10 == self.barcode[12..12].to_i
+      errors.add(:barcode, "el dígito de control es erroneo y debería de ser #{suma % 10}")
+    end
+  end
 
 
   def before_create
@@ -782,7 +794,7 @@ class OrdTrab < ActiveRecord::Base
   # --- Permissions --- #
 
   def create_permitted?
-    acting_user.administrator?
+    acting_user.administrator? || Cliente.find_by_correo(acting_user.email_address)
   end
 
   def update_permitted?
