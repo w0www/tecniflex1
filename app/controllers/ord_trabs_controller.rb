@@ -104,7 +104,7 @@ class OrdTrabsController < ApplicationController
       pdf_preprensa.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
       pdf_preprensa = pdf_preprensa.to_pdf
       RecibArchMailer.deliver_avisar_preprensa(@orden,pdf_preprensa)
-      redirect_to "#{@orden}?cliente=true"
+      redirect_to "/ord_trabs/#{@orden.id}?cliente=true"
     else
       params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') 
       # Parseamos el valor del datepicker
