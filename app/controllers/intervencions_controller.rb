@@ -144,12 +144,12 @@ class IntervencionsController < ApplicationController
 					this.tarea.lifecycle.reiniciar!(current_user)
 				end
       elsif params[:envio] == "rechazar"
-        this.colores = "#{params[:intervencion][:colores].join(",")}" if params[:intervencion][:colores] && !params[:intervencion][:colores].blank?
+        this.colores = "#{params[:intervencion][:colores]}" if params[:intervencion][:colores] && !params[:intervencion][:colores].blank?
         this.rechazada = true
 				this.tarea.lifecycle.rechazar!(current_user)
         this.termino = Time.now
         this.tarea.proceso.volver_a_revision ? this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user) :
-                                               this.tarea.ord_trab.volver_a(Proceso.find_by_nombre(params[:procdest]).id,current_user)
+                                               this.tarea.ord_trab.volver_a(Proceso.find_by_nombre(Proceso.find_by_nombre(params[:procdest]).id),current_user)
       elsif params[:envio] == "enviar"
 				this.tarea.lifecycle.enviar!(current_user)
         this.termino = Time.now
@@ -233,8 +233,7 @@ class IntervencionsController < ApplicationController
           csv << arre
           ## data rows
             @tareas.each do |t|
-              orden = t.orden
-              intervencion = t.intervencions.rechazada.first
+              orden = tarea.orden
               # NRO OT
               @numero_ot = orden.numOT
               # Cliente
@@ -252,33 +251,33 @@ class IntervencionsController < ApplicationController
               # HORA CREACION OT
               @hora_creacion = orden.created_at.strftime("%H:%M:%S") if orden.created_at
               # PROCESO DE RECHAZO
-              @proceso_de_rechazo = intervencion.procdest ? intervencion.procdest : ""
+              @proceso_de_rechazo = t.procdest ? t.procdest : ""
               # OBS ANALISIS
-              @obs_analisis = intervencion.observaciones_analisis ? intervencion.observaciones_analisis : ""
+              @obs_analisis = t.observaciones_analisis ? t.observaciones_analisis : ""
               # OT INCOMPLETA
-              @ot_incompleta = intervencion.ot_incompleta ? intervencion.ot_incompleta : ""
+              @ot_incompleta = t.ot_incompleta ? t.ot_incompleta : ""
               # OT CON ERROR
-              @ot_error = intervencion.ot_error ? intervencion.ot_error : ""
+              @ot_error = t.ot_error ? t.ot_error : ""
               # OBS MATRICERIA
-              @obs_matriceria = intervencion.observaciones_matriceria ? intervencion.observaciones_matriceria : ""
+              @obs_matriceria = t.observaciones_matriceria ? t.observaciones_matriceria : ""
               # OBS MONTAJE
-              @obs_montaje = intervencion.observaciones_montaje ? intervencion.observaciones_montaje : ""
+              @obs_montaje = t.observaciones_montaje ? t.observaciones_montaje : ""
               # OBS MICROPUNTO
-              @obs_micropunto = intervencion.observaciones_micropunto ? intervencion.observaciones_micropunto : ""
+              @obs_micropunto = t.observaciones_micropunto ? t.observaciones_micropunto : ""
               # RIPEO
-              @ripeo = intervencion.ripeo ? intervencion.ripeo : ""
+              @ripeo = t.ripeo ? t.ripeo : ""
               # DISTORSION
-              @distorsion = intervencion.distorsion ? intervencion.distorsion : ""
+              @distorsion = t.distorsion ? t.distorsion : ""
               # TEXTO
-              @texto = intervencion.texto ? intervencion.texto : ""
+              @texto = t.texto ? t.texto : ""
               # FOTO
-              @foto = intervencion.foto ? intervencion.foto : ""
+              @foto = t.foto ? t.foto : ""
               # OBSERVACIONES VB
-              @obs_vb = intervencion.observaciones_vb ? intervencion.observaciones_vb : ""
+              @obs_vb = t.observaciones_vb ? t.observaciones_vb : ""
               # COLORES
-              @colores = intervencion.colores ? intervencion.colores : ""
+              @colores = t.colores ? t.colores : ""
               # OBS RECHAZO
-              @obs_rechazo = intervencion.observaciones_rechazo ? intervencion.observaciones_rechazo : ""
+              @obs_rechazo = t.observaciones_rechazo ? t.observaciones_rechazo : ""
               arri = [@numero_ot, @elclie, @nombre, @codigo, @version, @tipo_ot, @fecha_creacion, @hora_creacion, @proceso_de_rechazo, @obs_analisis, @ot_incompleta, @ot_error, @obs_matriceria, @obs_montaje, @obs_micropunto, @ripeo, @distorsion, @texto, @foto, @obs_vb, @colores, @obs_rechazo] 
             
               csv << arri
