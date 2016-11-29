@@ -33,9 +33,9 @@
           <table class="informe">
             <tr><th>OT</th><th>Producto</th><th>Codigo</th></tr>
             <tr>
-                <th><%=this.ord_trab.numOT%></th>
-                <td><%=this.ord_trab.nomprod%></td>
-                <td><%=this.ord_trab.armacod%></td>
+                <th><%=this.tarea.ord_trab.numOT%></th>
+                <td><%=this.tarea.ord_trab.nomprod%></td>
+                <td><%=this.tarea.ord_trab.armacod%></td>
               </tr>
           </table>
           <br/>
