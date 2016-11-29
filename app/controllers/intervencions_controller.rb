@@ -149,7 +149,7 @@ class IntervencionsController < ApplicationController
 				this.tarea.lifecycle.rechazar!(current_user)
         this.termino = Time.now
         this.tarea.proceso.volver_a_revision ? this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user) :
-                                               this.tarea.ord_trab.volver_a(params[:procdest],current_user)
+                                               this.tarea.ord_trab.volver_a(Proceso.find_by_nombre(params[:procdest]).id,current_user)
       elsif params[:envio] == "enviar"
 				this.tarea.lifecycle.enviar!(current_user)
         this.termino = Time.now
@@ -193,7 +193,7 @@ class IntervencionsController < ApplicationController
 				this.tarea.lifecycle.rechazar!(current_user)
         this.termino = Time.now
         this.tarea.proceso.volver_a_revision ? this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user) :
-                                               this.tarea.ord_trab.volver_a(params[:procdest],current_user)
+                                               this.tarea.ord_trab.volver_a(Proceso.find_by_nombre(params[:procdest]).id,current_user)
 
       end
       this.save
