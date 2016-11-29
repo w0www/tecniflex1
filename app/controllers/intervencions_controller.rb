@@ -233,6 +233,7 @@ class IntervencionsController < ApplicationController
           csv << arre
           ## data rows
             @tareas.each do |t|
+              tarea = t.tarea
               orden = tarea.orden
               # NRO OT
               @numero_ot = orden.numOT
