@@ -27,7 +27,7 @@
               <% orden ||= ''%>
               <% startdate ||= ''%>
               <% enddate ||= ''%>
-              <%= link_to "Informe Excel", {:controller => "ord_trabs", :format => :csv, :action => "mmrechazadas", :cliente => "#{params[:cliente]}", :startdate => "#{params[:startdate]}", :enddate => "#{params[:enddate]}"}, :class => "button submit-button search-button" %>
+              <%= link_to "Informe Excel", {:controller => "intervencions", :format => :csv, :action => "mmrechazadas", :startdate => "#{params[:startdate]}", :enddate => "#{params[:enddate]}"}, :class => "button submit-button search-button" %>
 
       <repeat with="&@tareas">   
           <table class="informe">
