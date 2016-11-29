@@ -204,7 +204,6 @@ class IntervencionsController < ApplicationController
   index_action :mmrechazadas do
     inicial = Date.strptime(params[:startdate], '%d/%m/%Y').to_time if params[:startdate] && !params[:startdate].blank?
     final = Date.strptime(params[:enddate], '%d/%m/%Y').to_time.end_of_day if params[:enddate] && !params[:enddate].blank?
-    cliente = 
 #    if inicial.blank? && final.blank?
 #      @tareas = Tarea.find(:all, :include => [:intervencions], :conditions => ["intervencions.rechazada = true AND proceso_id = 14"])
 #    elsif inicial.blank? && final
@@ -215,7 +214,6 @@ class IntervencionsController < ApplicationController
 #      @tareas = Tarea.find(:all, :include => [:intervencions], :conditions => ["intervencions.rechazada = true AND proceso_id = 14 AND intervencions.inicio > ? AND intervencions.termino < ?", inicial, final])
 #    end
     @tareas = Intervencion.rechazada.apply_scopes(
-     :cliente_is => params[:cliente_id],
      :created_between => [inicial, final]
     )
 
@@ -223,6 +221,12 @@ class IntervencionsController < ApplicationController
     respond_to do |wants|
 			wants.html
       wants.csv do
+        inicial = Date.strptime(params[:startdate], '%d/%m/%Y').to_time if params[:startdate] && !params[:startdate].blank?
+        final = Date.strptime(params[:enddate], '%d/%m/%Y').to_time.end_of_day if params[:enddate] && !params[:enddate].blank?
+        @tareas = Intervencion.rechazada.apply_scopes(
+         :created_between => [inicial, final]
+        )
+
         csv_string = CSV.generate(:col_sep => ";") do |csv|
           ##################
           arre = ["NRO OT", "CLIENTE", "PRODUCTO", "CODIGO DE PRODUCTO", "VERSION PRODUCTO", "TIPO OT", "FECHA CREACION OT", "HORA CREACION OT", "PROCESO DE RECHAZO", "OBS ANALISIS", "OT INCOMPLETA", "OT CON ERROR", "OBS MATRICERIA", "OBS MONTAJE", "OBS MICROPUNTO", "RIPEO", "DISTORSION", "TEXTO", "FOTO", "OBSERVACIONES VB", "COLORES","OBS RECHAZO",]
