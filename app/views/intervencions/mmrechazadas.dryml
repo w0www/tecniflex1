@@ -15,19 +15,11 @@
         <div style="">
           <form  method='get' action=''>
           <hidden-fields for-query-string skip='page, search'/>
-            <select name="cliente">
-               <% if params[:cliente] && params[:cliente] != "" %>
-                  <option selected="selected" value="<%= params[:cliente] %> "><%= Cliente.find(params[:cliente]).name %></option>
-               <%else%>
-                  <option selected="selected" value="">Cliente</option> 
-               <%end%>
-               <% Cliente.all.each do |x| %>
-                 <option value="<%= x.id %>"><%=  x.name %></option>
-               <% end %>
-            </select>
-            <h3>Fecha Inicial: <input type='text' style='width:90px' id='datepicker' name='startdate' value="#{params[:startdate]}"/> 
-            Fecha Final: <input type='text' style='width:90px' id='datepicker2' name='enddate' value="#{params[:enddate]}"/> 
-            <submit class='search-button'  label='Ir'/></h3>
+            <h3>
+              Fecha Inicial: <input type='text' style='width:90px' id='datepicker' name='startdate' value="#{params[:startdate]}"/> 
+              Fecha Final: <input type='text' style='width:90px' id='datepicker2' name='enddate' value="#{params[:enddate]}"/> 
+              <submit class='search-button'  label='Ir'/>
+            </h3>
           </form>
         </div>
               <% cliente ||= ''%>
@@ -35,7 +27,7 @@
               <% orden ||= ''%>
               <% startdate ||= ''%>
               <% enddate ||= ''%>
-              <%= link_to "Informe Excel", {:controller => "ord_trabs", :format => :csv, :action => "otscreadas", :cliente => "#{params[:cliente]}", :startdate => "#{params[:startdate]}", :enddate => "#{params[:enddate]}"}, :class => "button submit-button search-button" %>
+              <%= link_to "Informe Excel", {:controller => "ord_trabs", :format => :csv, :action => "mmrechazadas", :cliente => "#{params[:cliente]}", :startdate => "#{params[:startdate]}", :enddate => "#{params[:enddate]}"}, :class => "button submit-button search-button" %>
 
       <repeat with="&@tareas">   
           <table class="informe">

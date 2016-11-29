@@ -30,6 +30,7 @@ class Intervencion < ActiveRecord::Base
   belongs_to :tarea, :accessible => true
   belongs_to :user
 
+
 	attr_accessor :vuelta
 
   before_create :rellenar
