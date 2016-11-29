@@ -37,7 +37,7 @@
               <% enddate ||= ''%>
               <%= link_to "Informe Excel", {:controller => "ord_trabs", :format => :csv, :action => "otscreadas", :cliente => "#{params[:cliente]}", :startdate => "#{params[:startdate]}", :enddate => "#{params[:enddate]}"}, :class => "button submit-button search-button" %>
 
-      <repeat with="&@tareas.keys">   
+      <repeat with="&@tareas">
 
       </repeat>
 
