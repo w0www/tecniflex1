@@ -272,8 +272,8 @@
           </repeat>
         <%end%>
       </table>
-      <center>
-        <if test="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion && !@cliente"> 
+      <center if="&!@cliente">
+        <if test="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion"> 
           Observaciones Reposicion
           <textarea name="ord_trab[observaciones]" id="ord_trab_observaciones" class="text ord-trab-observaciones"  style="width:90%;height:100%;"></textarea>
         </if>
