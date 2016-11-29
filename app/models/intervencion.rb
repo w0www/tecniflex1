@@ -23,6 +23,7 @@ class Intervencion < ActiveRecord::Base
     responsable               :integer
     observaciones_rechazo     :text
     rechazada                 :boolean
+    procdest                  :string
     timestamps
   end
 

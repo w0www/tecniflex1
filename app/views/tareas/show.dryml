@@ -78,7 +78,7 @@
                   <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
                   <div id="campos-rechazo" style="margin-left:30%;display:table;">
                     <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
-                    <input type="hidden" name="procdest" value="#{Proceso.find_by_nombre('Vistobueno').id}"/><br/>
+                    <input type="hidden" name="intervencion[procdest]" value="#{Proceso.find_by_nombre('Vistobueno').nombre}"/><br/>
                     Observaciones analisis<input:observaciones-analisis/><br/>
                     OT incompleta<input:ot-incompleta/><br/>
                     OT con error<input:ot-error/><br/>
@@ -111,7 +111,7 @@
                   <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
                   <div id="campos-rechazo" style="margin-left:30%;display:table;">
                     <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
-                    <input type="hidden" name="procdest" value="#{Proceso.find_by_nombre('Vistobueno').id}"/><br/>
+                    <input type="hidden" name="intervencion[procdest]" value="#{Proceso.find_by_nombre('Vistobueno').nombre}"/><br/>
                     Observaciones analisis<input:observaciones-analisis/><br/>
                     OT incompleta<input:ot-incompleta/><br/>
                     OT con error<input:ot-error/><br/>
@@ -133,9 +133,9 @@
                 <input-rechazar/>
                 <div id="campos-rechazo" style="margin-left:33%">
                  <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
-                 <select class="input belongs_to" name="procdest">
+                 <select class="input" name="intervencion[procdest]">
                     <% @procesos_volver_desde_revision.each do |proce| %>
-                      <option value="#{proce.id}"><%= proce.nombre -%></option>
+                      <option value="#{proce.nombre}"><%= proce.nombre -%></option>
                     <% end %>
                   </select><br/>
                   Observaciones analisis<input:observaciones-analisis/><br/>
@@ -178,7 +178,7 @@
                   <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
                   <div id="campos-rechazo" style="margin-left:30%;display:table;">
                     <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
-                    <input type="hidden" name="procdest" value="#{Proceso.find_by_nombre('Vistobueno').id}"/><br/>
+                    <input type="hidden" name="intervencion[procdest]" value="#{Proceso.find_by_nombre('Vistobueno').nombre}"/><br/>
                     Observaciones analisis<input:observaciones-analisis/><br/>
                     OT incompleta<input:ot-incompleta/><br/>
                     OT con error<input:ot-error/><br/>
@@ -208,7 +208,7 @@
                   <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
                   <div id="campos-rechazo" style="margin-left:30%;display:table;">
                     <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
-                    <input type="hidden" name="procdest" value="#{Proceso.find_by_nombre('Vistobueno').id}"/><br/>
+                    <input type="hidden" name="intervencion[procdest]" value="#{Proceso.find_by_nombre('Vistobueno').nombre}"/><br/>
                     Observaciones analisis<input:observaciones-analisis/><br/>
                     OT incompleta<input:ot-incompleta/><br/>
                     OT con error<input:ot-error/><br/>
@@ -230,7 +230,7 @@
                   <a href="#" id="mostrar-rechazo" class="button submit-button" style="display: table; margin-left: 30%;">Mostrar opciones de rechazo</a>
                   <div id="campos-rechazo" style="margin-left:30%;display:table;">
                     <a href="#" id="ocultar-rechazo" class="button submit-button">Ocultar opciones de rechazo</a><br/>
-                    <input type="hidden" name="procdest" value="#{Proceso.find_by_nombre('Vistobueno').id}"/><br/>
+                    <input type="hidden" name="intervencion[procdest]" value="#{Proceso.find_by_nombre('Vistobueno').nombre}"/><br/>
                     Observaciones analisis<input:observaciones-analisis/><br/>
                     OT incompleta<input:ot-incompleta/><br/>
                     OT con error<input:ot-error/><br/>
