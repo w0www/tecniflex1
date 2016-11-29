@@ -95,8 +95,16 @@ class OrdTrabsController < ApplicationController
       # MODIFICAR LOS DATOS DE LA FECHA DE CREACION
       @orden.created_at = Time.zone.now
       @orden.fecha = Date.today
+      @orden.vb = true
+      @orden.tareas.first.update_attribute(:state, "habilitada") if @orden.tareas != []
       @orden.save(false)
-      redirect_to @orden
+      # Enviar email a preprensa@tecniflex.cl
+      pdf_preprensa = render_to_string(:action => 'improt', :layout => false, :object => @orden)
+      pdf_preprensa = PDFKit.new(pdf_preprensa, :page_size => 'Letter')
+      pdf_preprensa.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
+      pdf_preprensa = pdf_preprensa.to_pdf
+      RecibArchMailer.deliver_avisar_preprensa(@orden,pdf_preprensa)
+      redirect_to @orden?cliente=true
     else
       params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') 
       # Parseamos el valor del datepicker
@@ -158,6 +166,9 @@ class OrdTrabsController < ApplicationController
     @cliente_logeado = Cliente.find_by_correo(current_user.email_address)
     @usuario_polimero = current_user.email_address == "polimero@tecniflex.cl"
     @tipo_tarea_reposicion = OrdTrab.find(params[:id]).tipoot_id == Tipoot.find_by_name("R (Reposicion)").id
+    if params[:cliente]
+      @cliente = params[:cliente]
+    end
 
     if (@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion
       if params[:ord_trab] && params[:ord_trab][:nCopias] != ""
@@ -569,7 +580,7 @@ class OrdTrabsController < ApplicationController
   end
 
   def parsear_datepicker
-	if params[:ord_trab] && params[:ord_trab]["fechaEntrega"]
+	if params[:ord_trab] && params[:ord_trab]["fechaEntrega"] && !params[:ord_trab]["fechaEntrega"].blank?
       fecha_entrega = Date.strptime params[:ord_trab]["fechaEntrega"], "%d/%m/%Y"
       params[:ord_trab]["fechaEntrega(1i)"] = fecha_entrega.year.to_s
       params[:ord_trab]["fechaEntrega(2i)"] = fecha_entrega.month.to_s

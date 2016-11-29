@@ -46,4 +46,20 @@ class RecibArchMailer < ActionMailer::Base
 		end
 	end
 
+  # Metodo para avisar a preprensa
+	def avisar_preprensa(ord_trab,pdf_preprensa)
+		@ord_trab = ord_trab
+    emails = ['jaime.kunze@gmail.com', 'preprensa@tecniflex.cl', 'imanol@alvarezperez.net']
+		subject 		'Nueva Orden de Trabajo Tecniflex'
+		recipients 	emails
+		from				'preprensa@tecniflex.cl'
+		content_type 'multipart/mixed'
+		part "text/plain" do |p|
+			p.body = render_message("avisar_preprensa_plain", :ot => @ord_trab)
+		end
+		attachment "application/pdf" do |a|
+			a.body = pdf_preprensa
+			a.filename = "#{@ord_trab.numOT}.pdf"
+		end
+	end
 end
