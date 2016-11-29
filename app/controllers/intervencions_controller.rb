@@ -234,7 +234,7 @@ class IntervencionsController < ApplicationController
           ## data rows
             @tareas.each do |t|
               tarea = t.tarea
-              orden = tarea.orden
+              orden = tarea.ord_trab
               # NRO OT
               @numero_ot = orden.numOT
               # Cliente
