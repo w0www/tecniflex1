@@ -214,10 +214,12 @@ class IntervencionsController < ApplicationController
 #    elsif inicial && final
 #      @tareas = Tarea.find(:all, :include => [:intervencions], :conditions => ["intervencions.rechazada = true AND proceso_id = 14 AND intervencions.inicio > ? AND intervencions.termino < ?", inicial, final])
 #    end
-    hobo_index Intervencion.rechazada.apply_scopes(
+    @tareas = Intervencion.rechazada.apply_scopes(
      :cliente_is => params[:cliente_id],
      :created_between => [inicial, final]
     )
+
+    hobo_index @tareas
     respond_to do |wants|
 			wants.html
       wants.csv do
