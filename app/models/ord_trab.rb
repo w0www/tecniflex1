@@ -395,15 +395,17 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def validar_codigo_ean13
-    if self.list_barcode.code == "EAN-13"
-      suma = 0
-      (0..11).each do |i|
-        suma += ((i+1) % 2) == 0 ? self.barcode[i..i].to_i * 3 : self.barcode[i..i].to_i
+    if self.list_barcode
+      if self.list_barcode.code == "EAN-13"
+        suma = 0
+        (0..11).each do |i|
+          suma += ((i+1) % 2) == 0 ? self.barcode[i..i].to_i * 3 : self.barcode[i..i].to_i
+        end
       end
-    end
-    # size == 13
-    unless suma % 10 == self.barcode[12..12].to_i
-      errors.add(:barcode, "el dígito de control es erroneo y debería de ser #{suma % 10}")
+      # size == 13
+      unless suma % 10 == self.barcode[12..12].to_i
+        errors.add(:barcode, "el dígito de control es erroneo y debería de ser #{suma % 10}")
+      end
     end
   end
 
