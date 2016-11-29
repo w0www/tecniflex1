@@ -12,7 +12,8 @@ class RecibArchMailer < ActionMailer::Base
 	def enviapdf(ord_trab,email)
 		@ord_trab = ord_trab
 		subject 		'Orden de Trabajo Tecniflex'
-    recipients 	['jaime.kunze@gmail.com', 'preprensa@tecniflex.cl', @ord_trab.cliente.correo ]
+    recipients 	['jaime.kunze@gmail.com', 'preprensa@tecniflex.cl']
+    recipients << @ord_trab.cliente.correo
 		from				'reposiciones@tecniflex.cl'
 		content_type 'multipart/mixed'
 		part "text/plain" do |p|
