@@ -96,8 +96,8 @@ class OrdTrabsController < ApplicationController
       @orden.created_at = Time.zone.now
       @orden.fecha = Date.today
       @orden.vb = true
-      @orden.tareas.first.update_attribute(:state, "habilitada") if @orden.tareas != []
       @orden.save(false)
+      @orden.tareas.first.update_attribute(:state, "habilitada") if @orden.tareas != []
       # Enviar email a preprensa@tecniflex.cl
       pdf_preprensa = render_to_string(:action => 'improt', :layout => false, :object => @orden)
       pdf_preprensa = PDFKit.new(pdf_preprensa, :page_size => 'Letter')
