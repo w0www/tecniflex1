@@ -36,25 +36,25 @@
 <def tag="formulario-cliente">
   <tr>
     <th style="width:7%">Producto</th>
-    <td><input:nomprod style="width:95%;"/></td>
+    <td colspan="5"><input:nomprod style="width:95%;"/></td>
     <th>Tipo de OT</th>
-    <td>
-      <select class="tipoot ord-trab-tipoot input belongs_to ord_trab_tipoot" name="ord_trab[tipoot_id]" style="width:70px">
+    <td colspan="2">
+      <select class="tipoot ord-trab-tipoot input belongs_to ord_trab_tipoot" name="ord_trab[tipoot_id]" style="width:90%">
         <option value="0" selected="selected">Selecciona una opción</option>
         <option value="1">N (Trabajo Nuevo)</option>
         <option value="2">M (Modificacion)</option>
       </select>
     </td>
+  </tr>
+  <tr>
     <th>Desarrollo</th>
     <td><input:mdi_desarrollo style="width:3em"/></td>
     <th>Ancho</th>
     <td><input:mdi_ancho style="width:3em"/></td>
-  </tr>
-  <tr>
-    <th class="centrada">Sustrato</th>
+    <th>Sustrato</th>
     <td><input:sustrato/></td>
-    <th class="centrada">Observaciones</th>
-    <td rowspan="4" colspan="9" class="centrada"><input:observaciones rows="5"/></td>    
+    <th>Observaciones</th>
+    <td colspan="2" class="centrada"><input:observaciones rows="5"/></td>    
   </tr>
 </def>
 

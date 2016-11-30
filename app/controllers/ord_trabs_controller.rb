@@ -88,7 +88,7 @@ class OrdTrabsController < ApplicationController
       @orden.cliente_id = @cliente.id
       @orden.nomprod = params[:ord_trab][:nomprod]
       @orden.tipoot_id = params[:ord_trab][:tipoot_id]
-      @orden.sustrato = params[:ord_trab][:sustrato]
+      @orden.sustrato_id = params[:ord_trab][:sustrato_id]
       @orden.mdi_ancho = params[:ord_trab][:mdi_ancho]
       @orden.mdi_desarrollo = params[:ord_trab][:mdi_desarrollo]
       @orden.observaciones = params[:ord_trab][:observaciones]
