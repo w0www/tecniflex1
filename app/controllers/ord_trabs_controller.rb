@@ -96,6 +96,9 @@ class OrdTrabsController < ApplicationController
       @orden.created_at = Time.zone.now
       @orden.fecha = Date.today
       @orden.vb = true
+      @orden.nCopias = 0
+      @orden.nPasos = 0
+      @orden.nBandas = 0
       @orden.save(false)
       # Enviar email a preprensa@tecniflex.cl
       pdf_preprensa = render_to_string(:action => 'improt', :layout => false, :object => @orden)

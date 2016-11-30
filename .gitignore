@@ -10,3 +10,5 @@ doc/*.sql
 .ruby-version
 app/views/taglibs/auto/*
 db/schema.rb
+app/views/taglibs/auto/rapid/forms.dryml
+app/views/taglibs/auto/rapid/pages.dryml

@@ -388,7 +388,7 @@ class OrdTrab < ActiveRecord::Base
 
   def nrocopias
     if self.tipoot_id == Tipoot.find_by_name("R (Reposicion)").id
-      if self.nCopias <= 0 || self.nCopias > 10
+      if self.nCopias.nil? || self.nCopias <= 0 || self.nCopias > 10
         errors.add(:nCopias,"El número de copias tiene que estar entre 1 y 10")
       end
     end
