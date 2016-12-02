@@ -30,6 +30,9 @@ class Intervencion < ActiveRecord::Base
   belongs_to :tarea, :accessible => true
   belongs_to :user
 
+  # CREADAS
+  named_scope :creadas_between, lambda {|inicio,final|{:conditions => ["created_at BETWEEN ? AND ?",
+    inicio, final]}}
 
 	attr_accessor :vuelta
 

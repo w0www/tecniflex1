@@ -204,32 +204,19 @@ class IntervencionsController < ApplicationController
   index_action :mmrechazadas do
     inicial = Date.strptime(params[:startdate], '%d/%m/%Y').to_time if params[:startdate] && !params[:startdate].blank?
     final = Date.strptime(params[:enddate], '%d/%m/%Y').to_time.end_of_day if params[:enddate] && !params[:enddate].blank?
-#    if inicial.blank? && final.blank?
-#      @tareas = Tarea.find(:all, :include => [:intervencions], :conditions => ["intervencions.rechazada = true AND proceso_id = 14"])
-#    elsif inicial.blank? && final
-#      @tareas = Tarea.find(:all, :include => [:intervencions], :conditions => ["intervencions.rechazada = true AND proceso_id = 14 AND intervencions.termino < ?",final])
-#    elsif inicial && final.blank?
-#      @tareas = Tarea.find(:all, :include => [:intervencions], :conditions => ["intervencions.rechazada = true AND proceso_id = 14 AND intervencions.inicio >", inicial])
-#    elsif inicial && final
-#      @tareas = Tarea.find(:all, :include => [:intervencions], :conditions => ["intervencions.rechazada = true AND proceso_id = 14 AND intervencions.inicio > ? AND intervencions.termino < ?", inicial, final])
-#    end
-    @tareas = Intervencion.rechazada.apply_scopes(
-     :created_between => [inicial, final]
-    )
+    if inicial && final
+      @tareas = Intervencion.rechazada.creadas_between(inicial,final)
+    else
+      @tareas = Intervencion.rechazada
+    end
 
     hobo_index @tareas
     respond_to do |wants|
-			wants.html
+      wants.html
       wants.csv do
-        inicial = Date.strptime(params[:startdate], '%d/%m/%Y').to_time if params[:startdate] && !params[:startdate].blank?
-        final = Date.strptime(params[:enddate], '%d/%m/%Y').to_time.end_of_day if params[:enddate] && !params[:enddate].blank?
-        @tareas = Intervencion.rechazada.apply_scopes(
-         :created_between => [inicial, final]
-        )
-
         csv_string = CSV.generate(:col_sep => ";") do |csv|
           ##################
-          arre = ["NRO OT", "CLIENTE", "PRODUCTO", "CODIGO DE PRODUCTO", "VERSION PRODUCTO", "TIPO OT", "FECHA CREACION OT", "HORA CREACION OT", "PROCESO DE RECHAZO", "OBS ANALISIS", "OT INCOMPLETA", "OT CON ERROR", "OBS MATRICERIA", "OBS MONTAJE", "OBS MICROPUNTO", "RIPEO", "DISTORSION", "TEXTO", "FOTO", "OBSERVACIONES VB", "COLORES","OBS RECHAZO",]
+          arre = ["NRO OT", "CLIENTE", "PRODUCTO", "CODIGO DE PRODUCTO", "VERSION PRODUCTO", "TIPO OT", "FECHA CREACION OT", "HORA CREACION OT", "RESPONSABLE", "PROCESO DE RECHAZO", "OBS ANALISIS", "OT INCOMPLETA", "OT CON ERROR", "OBS MATRICERIA", "OBS MONTAJE", "OBS MICROPUNTO", "RIPEO", "DISTORSION", "TEXTO", "FOTO", "OBSERVACIONES VB", "COLORES","OBS RECHAZO",]
           csv << arre
           ## data rows
             @tareas.each do |t|
@@ -251,6 +238,8 @@ class IntervencionsController < ApplicationController
               @fecha_creacion = orden.created_at.strftime("%d/%m/%Y") if orden.created_at
               # HORA CREACION OT
               @hora_creacion = orden.created_at.strftime("%H:%M:%S") if orden.created_at
+              # RESPONSABLE
+              @responsable = t.responsable ? t.responsable : ""
               # PROCESO DE RECHAZO
               @proceso_de_rechazo = t.procdest ? t.procdest : ""
               # OBS ANALISIS
@@ -279,7 +268,7 @@ class IntervencionsController < ApplicationController
               @colores = t.colores ? t.colores : ""
               # OBS RECHAZO
               @obs_rechazo = t.observaciones_rechazo ? t.observaciones_rechazo : ""
-              arri = [@numero_ot, @elclie, @nombre, @codigo, @version, @tipo_ot, @fecha_creacion, @hora_creacion, @proceso_de_rechazo, @obs_analisis, @ot_incompleta, @ot_error, @obs_matriceria, @obs_montaje, @obs_micropunto, @ripeo, @distorsion, @texto, @foto, @obs_vb, @colores, @obs_rechazo] 
+              arri = [@numero_ot, @elclie, @nombre, @codigo, @version, @tipo_ot, @fecha_creacion, @hora_creacion, @responsable, @proceso_de_rechazo, @obs_analisis, @ot_incompleta, @ot_error, @obs_matriceria, @obs_montaje, @obs_micropunto, @ripeo, @distorsion, @texto, @foto, @obs_vb, @colores, @obs_rechazo] 
             
               csv << arri
              end

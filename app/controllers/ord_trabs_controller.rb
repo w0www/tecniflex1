@@ -173,7 +173,17 @@ class OrdTrabsController < ApplicationController
     end
 
     if (@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion
-      if params[:ord_trab] && params[:ord_trab][:nCopias] != ""
+      # Vamos a ver si nos mandan algun color
+      existe_separacion = true
+      if params[:ord_trab] && params[:ord_trab][:separacions] != []
+        for s in OrdTrab.find(params[:id]).separacions
+          if params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].blank? || params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].to_i <= 0 || params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].to_i >= 11
+            existe_separacion = false
+          end
+        end
+      end
+
+      if existe_separacion && params[:ord_trab] && params[:ord_trab][:nCopias] != ""
         @nueva_reposicion = OrdTrab.find(params[:id]).clone
         @nueva_reposicion.observaciones = params[:ord_trab][:observaciones]
         @nueva_reposicion.nCopias = params[:ord_trab][:nCopias]
@@ -212,6 +222,8 @@ class OrdTrabsController < ApplicationController
         RecibArchMailer.deliver_avisar_cliente(@nueva_reposicion,pdf_cliente)
       elsif @nueva_reposicion && @nueva_reposicion.errors.count != 0
         @message = "Ha ocurrido un error, pongase en contacto con el administrador."
+      elsif existe_separacion == false
+        @message = "Rellena el nro de copias de las separaciones. Valores entre 1 y 10"
       end
     end
     hobo_show do |format|

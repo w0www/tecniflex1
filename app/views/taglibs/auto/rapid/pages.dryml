@@ -1864,7 +1864,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="inicio, termino, observaciones, colores, responsable, observaciones_rechazo, tarea, user" param/>
+            <field-list fields="inicio, termino, observaciones, colores, responsable, observaciones_rechazo, procdest, tarea, user" param/>
           </section>
     </content:>
 

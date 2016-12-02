@@ -370,24 +370,26 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def espesores_iguales
-    if self.cilindro
-      if self.espesor != self.cilindro.espesor.to_f
-        errors.add(:espesor, "tiene que ser igual que el espesor del cilindro ") 
-        errors.add(:cilindro, "tiene que ser igual que el espesor")
+    if self.cilindro && self.espesor
+      if self.mtz || self.mtje || self.pol
+        if self.espesor.calibre.to_f != self.cilindro.espesor.to_f
+          errors.add(:espesor, "tiene que ser igual que el espesor del cilindro ") 
+          errors.add(:cilindro, "tiene que ser igual que el espesor")
+        end
       end
     end
   end
 
   def pasosybandas
-    if self.mtz || self.mtje
-      errors.add(:nPasos, "El número de pasos tiene que ser mayor que 0")  if self.nPasos < 1 
-      errors.add(:nBandas, "El número de bandas tiene que ser mayor que 0") if self.nBandas < 1
-      errors.add(:nCopias, "El número de copias tiene que ser mayor que 0") if self.nCopias < 1
+    if self.mtz || self.mtje || self.pol
+      errors.add(:nPasos, "El número de pasos tiene que ser mayor que 0")  if self.nPasos.nil? || self.nPasos < 1 
+      errors.add(:nBandas, "El número de bandas tiene que ser mayor que 0") if self.nBandas.nil? || self.nBandas < 1
+      errors.add(:nCopias, "El número de copias tiene que ser mayor que 0") if self.nCopias.nil? ||  self.nCopias < 1
     end
   end
 
   def nrocopias
-    if self.tipoot_id == Tipoot.find_by_name("R (Reposicion)").id
+    if self.tipoot_id == Tipoot.find_by_name("R (Reposicion)").id && (self.mtz || self.mtje || self.pol)
       if self.nCopias.nil? || self.nCopias <= 0 || self.nCopias > 10
         errors.add(:nCopias,"El número de copias tiene que estar entre 1 y 10")
       end
