@@ -347,14 +347,13 @@ class OrdTrab < ActiveRecord::Base
   # VALIDACIONES
   # SUYCCOM HACK: COMENTAR CUANDO SE PUEDA QUE SON ESTAS VALIDACIONES YA QUE PARECE QUE SE REPITEN
   validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.vb || self.ptr", :on => :habilitar
+
   validates_presence_of :trapping, :curva, :impresora, :cilindro, :nCopias, :sustrato, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_presence_of :cliente, :nomprod, :codCliente, :espesor, :supRev, :if => "self.pol && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_presence_of :encargado_id
   validates_presence_of :dispBandas, :espesor, :tipomat, :if => "self.mtz"
   validates_associated :separacions, :if => "(self.mtje || self.mtz || self.pol) && self.activa? ", :on => :habilitar
   validates_presence_of :nBandas, :nPasos, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
-
-
 
 
   validate :limite_codigo_barras, :barcodes_iguales, :pasosybandas, :espesores_iguales, :nrocopias, :validar_codigo_ean13
@@ -405,8 +404,8 @@ class OrdTrab < ActiveRecord::Base
         end
       end
       # size == 13
-      unless suma % 10 == self.barcode[12..12].to_i
-        errors.add(:barcode, "el dígito de control es erroneo y debería de ser #{suma % 10}")
+      unless 10 - (suma % 10) == self.barcode[12..12].to_i
+        errors.add(:barcode, "el dígito de control es erroneo y debería de ser #{10 - (suma % 10)}")
       end
     end
   end
