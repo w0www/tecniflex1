@@ -370,7 +370,7 @@ class OrdTrab < ActiveRecord::Base
 
   def espesores_iguales
     if self.cilindro && self.espesor
-      if self.mtz || self.mtje || self.pol
+      if self.mtz || self.mtje
         if self.espesor.calibre.to_f != self.cilindro.espesor.to_f
           errors.add(:espesor, "tiene que ser igual que el espesor del cilindro ") 
           errors.add(:cilindro, "tiene que ser igual que el espesor")
@@ -380,7 +380,7 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def pasosybandas
-    if self.mtz || self.mtje || self.pol
+    if self.mtz || self.mtje
       errors.add(:nPasos, "El número de pasos tiene que ser mayor que 0")  if self.nPasos.nil? || self.nPasos < 1 
       errors.add(:nBandas, "El número de bandas tiene que ser mayor que 0") if self.nBandas.nil? || self.nBandas < 1
       errors.add(:nCopias, "El número de copias tiene que ser mayor que 0") if self.nCopias.nil? ||  self.nCopias < 1
@@ -404,8 +404,8 @@ class OrdTrab < ActiveRecord::Base
         end
       end
       # size == 13
-      unless 10 - (suma % 10) == self.barcode[12..12].to_i
-        errors.add(:barcode, "el dígito de control es erroneo y debería de ser #{10 - (suma % 10)}")
+      unless 10 - (suma % 10) == self.barcode[12..12].to_i || suma % 10 == 0
+ <s       errors.add(:barcode, "el dígito de control es erroneo y debería de ser #{10 - (suma % 10)}")
       end
     end
   end
