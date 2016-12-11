@@ -405,7 +405,7 @@ class OrdTrab < ActiveRecord::Base
       end
       # size == 13
       unless 10 - (suma % 10) == self.barcode[12..12].to_i || suma % 10 == 0
- <s       errors.add(:barcode, "el dígito de control es erroneo y debería de ser #{10 - (suma % 10)}")
+        errors.add(:barcode, "el dígito de control es erroneo y debería de ser #{10 - (suma % 10)}")
       end
     end
   end
