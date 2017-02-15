@@ -147,7 +147,7 @@
 <def tag="form" for="Intervencion">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="inicio, termino, final, observaciones, observaciones_analisis, ot_incompleta, ot_error, observaciones_matriceria, observaciones_montaje, observaciones_micropunto, ripeo, distorsion, texto, foto, observaciones_vb, colores, responsable, observaciones_rechazo, rechazada, tarea, user" param/>
+    <field-list fields="inicio, termino, final, observaciones, observaciones_analisis, ot_incompleta, ot_error, observaciones_matriceria, observaciones_montaje, observaciones_micropunto, ripeo, distorsion, texto, foto, observaciones_vb, colores, responsable, observaciones_rechazo, rechazada, procdest, tarea, user" param/>
     <div param="actions">
       <submit label="#{ht 'intervencions.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

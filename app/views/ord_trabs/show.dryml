@@ -1,6 +1,6 @@
 <show-page>
   <heading:>
-    <name/> <span style="float:right"> <%= link_to '<< Atras', request.env['HTTP_REFERER'] %></span><br/>
+    <unless test="&@cliente"><name/> <span style="float:right"> <%= link_to '<< Atras', request.env['HTTP_REFERER'] %></span><br/></unless>
     <span if="&@message != ''" style="font-color:red"> <%= @message %></span><br/>
   </heading:>
   <edit-link: replace>
@@ -11,7 +11,7 @@
     <% end %>
   </edit-link:>
   <content-body:>
-    <div>
+    <div unless="&@cliente">
       <%= link_to "Descargar PDF", :action => 'descargar_pdf', :id => this.id %>
       &nbsp;&nbsp;&nbsp;<%= link_to "Enviar PDF", :action => 'mail_ot', :id => this.id %>
       <br/><%= link_to "Exportar XML", ord_trab_path(:format => 'xml')  %>
@@ -272,7 +272,7 @@
           </repeat>
         <%end%>
       </table>
-      <center>
+      <center if="&!@cliente">
         <if test="&(@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion"> 
           Observaciones Reposicion
           <textarea name="ord_trab[observaciones]" id="ord_trab_observaciones" class="text ord-trab-observaciones"  style="width:90%;height:100%;"></textarea>

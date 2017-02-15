@@ -23,11 +23,16 @@ class Intervencion < ActiveRecord::Base
     responsable               :integer
     observaciones_rechazo     :text
     rechazada                 :boolean
+    procdest                  :string
     timestamps
   end
 
   belongs_to :tarea, :accessible => true
   belongs_to :user
+
+  # CREADAS
+  named_scope :creadas_between, lambda {|inicio,final|{:conditions => ["created_at BETWEEN ? AND ?",
+    inicio, final]}}
 
 	attr_accessor :vuelta
 

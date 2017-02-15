@@ -144,12 +144,12 @@ class IntervencionsController < ApplicationController
 					this.tarea.lifecycle.reiniciar!(current_user)
 				end
       elsif params[:envio] == "rechazar"
-        this.colores = "#{params[:intervencion][:colores].join(",")}" if params[:intervencion][:colores] && !params[:intervencion][:colores].blank?
+        this.colores = "#{params[:intervencion][:colores]}" if params[:intervencion][:colores] && !params[:intervencion][:colores].blank?
         this.rechazada = true
 				this.tarea.lifecycle.rechazar!(current_user)
         this.termino = Time.now
         this.tarea.proceso.volver_a_revision ? this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user) :
-                                               this.tarea.ord_trab.volver_a(params[:procdest],current_user)
+                                               this.tarea.ord_trab.volver_a(Proceso.find_by_nombre(Proceso.find_by_nombre(params[:procdest]).id),current_user)
       elsif params[:envio] == "enviar"
 				this.tarea.lifecycle.enviar!(current_user)
         this.termino = Time.now
@@ -188,18 +188,101 @@ class IntervencionsController < ApplicationController
         this.rechazada = true
         this.termino = Time.now
 			elsif params[:envio] == "rechazar"
-        this.colores = params[:intervencion][:colores].join(",") if params[:intervencion][:colores] && !params[:intervencion][:colores].blank?
+        this.colores = params[:intervencion][:colores] if params[:intervencion][:colores] && !params[:intervencion][:colores].blank?
         this.rechazada = true
 				this.tarea.lifecycle.rechazar!(current_user)
         this.termino = Time.now
         this.tarea.proceso.volver_a_revision ? this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user) :
-                                               this.tarea.ord_trab.volver_a(params[:procdest],current_user)
+                                               this.tarea.ord_trab.volver_a(Proceso.find_by_nombre(params[:procdest]).id,current_user)
 
       end
       this.save
       hobo_ajax_response if request.xhr?
     end
   end
+
+  index_action :mmrechazadas do
+    inicial = Date.strptime(params[:startdate], '%d/%m/%Y').to_time if params[:startdate] && !params[:startdate].blank?
+    final = Date.strptime(params[:enddate], '%d/%m/%Y').to_time.end_of_day if params[:enddate] && !params[:enddate].blank?
+    if inicial && final
+      @tareas = Intervencion.rechazada.creadas_between(inicial,final)
+    else
+      @tareas = Intervencion.rechazada
+    end
+
+    hobo_index @tareas
+    respond_to do |wants|
+      wants.html
+      wants.csv do
+        csv_string = CSV.generate(:col_sep => ";") do |csv|
+          ##################
+          arre = ["NRO OT", "CLIENTE", "PRODUCTO", "CODIGO DE PRODUCTO", "VERSION PRODUCTO", "TIPO OT", "FECHA CREACION OT", "HORA CREACION OT", "RESPONSABLE", "PROCESO DE RECHAZO", "OBS ANALISIS", "OT INCOMPLETA", "OT CON ERROR", "OBS MATRICERIA", "OBS MONTAJE", "OBS MICROPUNTO", "RIPEO", "DISTORSION", "TEXTO", "FOTO", "OBSERVACIONES VB", "COLORES","OBS RECHAZO",]
+          csv << arre
+          ## data rows
+            @tareas.each do |t|
+              tarea = t.tarea
+              orden = tarea.ord_trab
+              # NRO OT
+              @numero_ot = orden.numOT
+              # Cliente
+              @elclie = orden.cliente ? orden.cliente : ""
+              # Nombre
+              @nombre = orden.nomprod ? orden.nomprod : ""
+              # Codigo
+              @codigo = orden.armacod ? orden.armacod : ""
+              # Versión
+              @version = orden.version ? orden.version : ""
+              # TIPO OT
+              @tipo_ot = orden.tipoot
+              # FECHA CREACION OT
+              @fecha_creacion = orden.created_at.strftime("%d/%m/%Y") if orden.created_at
+              # HORA CREACION OT
+              @hora_creacion = orden.created_at.strftime("%H:%M:%S") if orden.created_at
+              # RESPONSABLE
+              @responsable = t.responsable ? t.responsable : ""
+              # PROCESO DE RECHAZO
+              @proceso_de_rechazo = t.procdest ? t.procdest : ""
+              # OBS ANALISIS
+              @obs_analisis = t.observaciones_analisis ? t.observaciones_analisis : ""
+              # OT INCOMPLETA
+              @ot_incompleta = t.ot_incompleta ? t.ot_incompleta : ""
+              # OT CON ERROR
+              @ot_error = t.ot_error ? t.ot_error : ""
+              # OBS MATRICERIA
+              @obs_matriceria = t.observaciones_matriceria ? t.observaciones_matriceria : ""
+              # OBS MONTAJE
+              @obs_montaje = t.observaciones_montaje ? t.observaciones_montaje : ""
+              # OBS MICROPUNTO
+              @obs_micropunto = t.observaciones_micropunto ? t.observaciones_micropunto : ""
+              # RIPEO
+              @ripeo = t.ripeo ? t.ripeo : ""
+              # DISTORSION
+              @distorsion = t.distorsion ? t.distorsion : ""
+              # TEXTO
+              @texto = t.texto ? t.texto : ""
+              # FOTO
+              @foto = t.foto ? t.foto : ""
+              # OBSERVACIONES VB
+              @obs_vb = t.observaciones_vb ? t.observaciones_vb : ""
+              # COLORES
+              @colores = t.colores ? t.colores : ""
+              # OBS RECHAZO
+              @obs_rechazo = t.observaciones_rechazo ? t.observaciones_rechazo : ""
+              arri = [@numero_ot, @elclie, @nombre, @codigo, @version, @tipo_ot, @fecha_creacion, @hora_creacion, @responsable, @proceso_de_rechazo, @obs_analisis, @ot_incompleta, @ot_error, @obs_matriceria, @obs_montaje, @obs_micropunto, @ripeo, @distorsion, @texto, @foto, @obs_vb, @colores, @obs_rechazo] 
+            
+              csv << arri
+             end
+          				
+        # send it to da browsah
+        end
+        send_data(csv_string,
+                  :type => 'text/csv; charset=iso-8859-1; header=present',
+                  :disposition => "attachment", :filename => Time.now.strftime("Tareas Rechazadas %d_%m_%Y") + ".csv")
+      end
+    end
+  #####      
+  end 
+
 
   def do_cambiar
   	do_transition_action :cambiar do

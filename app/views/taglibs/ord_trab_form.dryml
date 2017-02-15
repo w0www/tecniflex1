@@ -1,21 +1,63 @@
 <def tag="form" for="OrdTrab">
   <form merge param="default">
-    <error-messages param/>
-    <table class="shower">
-      <datos-cliente/>
-      <datos-solicitud/>
-      <observaciones/>
-      <tr>
-        <td colspan="12" style="background-color:transparent"></td>
-      </tr>      
-    </table>
-    <input-many-separaciones/>
-    <div param="actions">
-      <submit label="#{ht('ord_trabs.actions.save', :default=> ['Save'])}" param />
-      <or-cancel param="cancel"/>
-    </div>
+    <if test="&@cliente">
+      <table class="shower">
+        <formulario-cliente/>
+        <tr>
+          <td colspan="12" style="background-color:transparent"></td>
+        </tr>      
+      </table>
+      <div param="actions">
+        <submit label="#{ht('ord_trabs.actions.save', :default=> ['Save'])}" onclick="return confirm('¿Está seguro de que los datos son correctos?');"/>
+        <or-cancel/>
+      </div>
+    </if>
+
+    <unless test="&@cliente">
+      <error-messages param/>
+      <table class="shower">
+        <datos-cliente/>
+        <datos-solicitud/>
+        <observaciones/>
+        <tr>
+          <td colspan="12" style="background-color:transparent"></td>
+        </tr>      
+      </table>
+      <input-many-separaciones/>
+      <div param="actions">
+        <submit label="#{ht('ord_trabs.actions.save', :default=> ['Save'])}" param />
+        <or-cancel param="cancel"/>
+      </div>
+    </unless>
   </form>
 </def>
+
+
+<def tag="formulario-cliente">
+  <tr>
+    <th style="width:7%">Producto</th>
+    <td colspan="5"><input:nomprod style="width:95%;"/></td>
+    <th>Tipo de OT</th>
+    <td colspan="2">
+      <select class="tipoot ord-trab-tipoot input belongs_to ord_trab_tipoot" name="ord_trab[tipoot_id]" style="width:90%">
+        <option value="0" selected="selected">Selecciona una opción</option>
+        <option value="1">N (Trabajo Nuevo)</option>
+        <option value="2">M (Modificacion)</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <th>Desarrollo</th>
+    <td><input:mdi_desarrollo style="width:3em"/></td>
+    <th>Ancho</th>
+    <td><input:mdi_ancho style="width:3em"/></td>
+    <th>Sustrato</th>
+    <td><input:sustrato/></td>
+    <th>Observaciones</th>
+    <td colspan="2" class="centrada"><input:observaciones rows="5"/></td>    
+  </tr>
+</def>
+
 
 <def tag="datos-cliente">
   <tr>

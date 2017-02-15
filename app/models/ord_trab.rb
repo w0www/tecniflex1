@@ -347,6 +347,7 @@ class OrdTrab < ActiveRecord::Base
   # VALIDACIONES
   # SUYCCOM HACK: COMENTAR CUANDO SE PUEDA QUE SON ESTAS VALIDACIONES YA QUE PARECE QUE SE REPITEN
   validates_presence_of :mdi_desarrollo, :mdi_ancho, :barcode,  :if => "self.vb || self.ptr", :on => :habilitar
+
   validates_presence_of :trapping, :curva, :impresora, :cilindro, :nCopias, :sustrato, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_presence_of :cliente, :nomprod, :codCliente, :espesor, :supRev, :if => "self.pol && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
   validates_presence_of :encargado_id
@@ -355,10 +356,7 @@ class OrdTrab < ActiveRecord::Base
   validates_presence_of :nBandas, :nPasos, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
 
 
-
-
-
-  validate :limite_codigo_barras, :barcodes_iguales, :pasosybandas, :espesores_iguales, :nrocopias
+  validate :limite_codigo_barras, :barcodes_iguales, :pasosybandas, :espesores_iguales, :nrocopias, :validar_codigo_ean13
 
   def limite_codigo_barras
     if list_barcode
@@ -371,28 +369,46 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def espesores_iguales
-    if self.espesor != self.cilindro.espesor.to_f
-      errors.add(:espesor, "tiene que ser igual que el espesor del cilindro ") 
-      errors.add(:cilindro, "tiene que ser igual que el espesor")
+    if self.cilindro && self.espesor
+      if self.mtz || self.mtje
+        if self.espesor.calibre.to_f != self.cilindro.espesor.to_f
+          errors.add(:espesor, "tiene que ser igual que el espesor del cilindro ") 
+          errors.add(:cilindro, "tiene que ser igual que el espesor")
+        end
+      end
     end
   end
 
   def pasosybandas
     if self.mtz || self.mtje
-      errors.add(:nPasos, "El número de pasos tiene que ser mayor que 0")  if self.nPasos < 1 
-      errors.add(:nBandas, "El número de bandas tiene que ser mayor que 0") if self.nBandas < 1
-      errors.add(:nCopias, "El número de copias tiene que ser mayor que 0") if self.nCopias < 1
+      errors.add(:nPasos, "El número de pasos tiene que ser mayor que 0")  if self.nPasos.nil? || self.nPasos < 1 
+      errors.add(:nBandas, "El número de bandas tiene que ser mayor que 0") if self.nBandas.nil? || self.nBandas < 1
+      errors.add(:nCopias, "El número de copias tiene que ser mayor que 0") if self.nCopias.nil? ||  self.nCopias < 1
     end
   end
 
   def nrocopias
-    if self.tipoot_id == Tipoot.find_by_name("R (Reposicion)").id
-      if self.nCopias <= 0 || self.nCopias > 10
+    if self.tipoot_id == Tipoot.find_by_name("R (Reposicion)").id && (self.mtz || self.mtje || self.pol)
+      if self.nCopias.nil? || self.nCopias <= 0 || self.nCopias > 10
         errors.add(:nCopias,"El número de copias tiene que estar entre 1 y 10")
       end
     end
   end
 
+  def validar_codigo_ean13
+    if self.list_barcode
+      if self.list_barcode.code == "EAN-13"
+        suma = 0
+        (0..11).each do |i|
+          suma += ((i+1) % 2) == 0 ? self.barcode[i..i].to_i * 3 : self.barcode[i..i].to_i
+        end
+      end
+      # size == 13
+      unless 10 - (suma % 10) == self.barcode[12..12].to_i || suma % 10 == 0
+        errors.add(:barcode, "el dígito de control es erroneo y debería de ser #{10 - (suma % 10)}")
+      end
+    end
+  end
 
 
   def before_create
@@ -782,7 +798,7 @@ class OrdTrab < ActiveRecord::Base
   # --- Permissions --- #
 
   def create_permitted?
-    acting_user.administrator?
+    acting_user.administrator? || Cliente.find_by_correo(acting_user.email_address)
   end
 
   def update_permitted?
