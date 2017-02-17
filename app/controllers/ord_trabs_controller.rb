@@ -174,60 +174,71 @@ class OrdTrabsController < ApplicationController
 
     if (@cliente_logeado || @usuario_polimero) && !@tipo_tarea_reposicion
       # Vamos a ver si nos mandan algun color
-      existe_separacion = true
-      if params[:ord_trab] && params[:ord_trab][:separacions] != []
-        for s in OrdTrab.find(params[:id]).separacions
-          if params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].blank? || params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].to_i <= 0 || params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].to_i >= 11
-            existe_separacion = false
+      separaciones_params = params[:ord_trab][:separacions] if params[:ord_trab] && params[:ord_trab][:separacions]
+      separaciones = OrdTrab.find(params[:id]).separacions
+      # Calculo si todos los elementos vienen en blanco
+      # Tarea
+      if separaciones_params && separaciones_params != []
+        existe_separacion = true
+        # Iteramos por las separaciones de la orden y comprobaoms con los params recibidos.
+        # Si recibimos blanco no hacemos nada
+        # Si alguna de las separaciones que recibimos tiene un valor menor que 1 y mayor que 10 sacamos un error.
+        for s in separaciones
+          if !separaciones_params[(s.position - 1).to_s]["nCopias"].blank?
+            existe_separacion = false if !separaciones_params[(s.position - 1).to_s]["nCopias"].to_i.between?(1,10) 
           end
         end
-      end
+      
 
-      if existe_separacion && params[:ord_trab] && params[:ord_trab][:nCopias] != ""
-        @nueva_reposicion = OrdTrab.find(params[:id]).clone
-        @nueva_reposicion.observaciones = params[:ord_trab][:observaciones]
-        @nueva_reposicion.nCopias = params[:ord_trab][:nCopias]
-        @nueva_reposicion.tipoot_id = Tipoot.find_by_name("R (REPOSICION)").id
-        @nueva_reposicion.numFact = ""
-        @nueva_reposicion.vb = false
-        @nueva_reposicion.ptr = false
-        @nueva_reposicion.mtz = false
-        @nueva_reposicion.mtje = false
-        @nueva_reposicion.pol = true
-        @nueva_reposicion.fechaEntrega = calcular_fecha_reposicion
-# MODIFICAR LOS DATOS DE LA FECHA DE CREACION
-        @nueva_reposicion.created_at = Time.zone.now
-        @nueva_reposicion.fecha = Date.today
-        @nueva_reposicion.save(false)
-      end
-
-      if @nueva_reposicion && @nueva_reposicion.errors.count == 0
-        for s in OrdTrab.find(params[:id]).separacions
-          # Si no se rellena el nCopias no hace falta crear ese color en la nueva reposicion
-          unless params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].blank?
-            separacion_nueva = s.clone
-            num_copias = params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"]
-            separacion_nueva.nCopias = num_copias unless num_copias.blank?
-            @nueva_reposicion.separacions << separacion_nueva
-          end
+        if existe_separacion && params[:ord_trab] && params[:ord_trab][:nCopias] != ""
+          @nueva_reposicion = OrdTrab.find(params[:id]).clone
+          @nueva_reposicion.observaciones = params[:ord_trab][:observaciones]
+          @nueva_reposicion.nCopias = params[:ord_trab][:nCopias]
+          @nueva_reposicion.tipoot_id = Tipoot.find_by_name("R (REPOSICION)").id
+          @nueva_reposicion.numFact = ""
+          @nueva_reposicion.vb = false
+          @nueva_reposicion.ptr = false
+          @nueva_reposicion.mtz = false
+          @nueva_reposicion.mtje = false
+          @nueva_reposicion.pol = true
+          @nueva_reposicion.fechaEntrega = calcular_fecha_reposicion
+  # MODIFICAR LOS DATOS DE LA FECHA DE CREACION
+          @nueva_reposicion.created_at = Time.zone.now
+          @nueva_reposicion.fecha = Date.today
+          @nueva_reposicion.save(false)
         end
 
-        @message = "Se ha creado una nueva reposición, click <a href='/ord_trabs/#{@nueva_reposicion.id}'><a href='/ord_trabs/#{@nueva_reposicion.id}'>AQUÍ</a> para verla."
-        @nueva_reposicion.tareas.first.update_attribute(:state, "habilitada") if @nueva_reposicion.tareas != []
-        # Enviar email al cliente
-        pdf_cliente = render_to_string(:action => 'improt', :layout => false, :object => @nueva_reposicion)
-        pdf_cliente = PDFKit.new(pdf_cliente, :page_size => 'Letter')
-        pdf_cliente.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
-        pdf_cliente = pdf_cliente.to_pdf
-        RecibArchMailer.deliver_avisar_cliente(@nueva_reposicion,pdf_cliente)
-      elsif @nueva_reposicion && @nueva_reposicion.errors.count != 0
-        @message = "Ha ocurrido un error, pongase en contacto con el administrador."
-      elsif existe_separacion == false
-        @message = "Rellena el nro de copias de las separaciones. Valores entre 1 y 10"
+        if @nueva_reposicion && @nueva_reposicion.errors.count == 0
+          for s in OrdTrab.find(params[:id]).separacions
+            # Si no se rellena el nCopias no hace falta crear ese color en la nueva reposicion
+            unless params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].blank? || params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].to_i <= 0 || params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].to_i >= 11 
+              separacion_nueva = s.clone
+              num_copias = params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"]
+              separacion_nueva.nCopias = num_copias unless num_copias.blank?
+              @nueva_reposicion.separacions << separacion_nueva
+            end
+          end
+
+          @message = "Se ha creado una nueva reposición, click <a href='/ord_trabs/#{@nueva_reposicion.id}'><a href='/ord_trabs/#{@nueva_reposicion.id}'>AQUÍ</a> para verla."
+          @nueva_reposicion.tareas.first.update_attribute(:state, "habilitada") if @nueva_reposicion.tareas != []
+          # Enviar email al cliente
+          pdf_cliente = render_to_string(:action => 'improt', :layout => false, :object => @nueva_reposicion)
+          pdf_cliente = PDFKit.new(pdf_cliente, :page_size => 'Letter')
+          pdf_cliente.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
+          pdf_cliente = pdf_cliente.to_pdf
+          RecibArchMailer.deliver_avisar_cliente(@nueva_reposicion,pdf_cliente)
+          # Limpio los parametros
+
+        elsif @nueva_reposicion && @nueva_reposicion.errors.count != 0
+          @message = "Ha ocurrido un error, pongase en contacto con el administrador."
+        elsif existe_separacion == false
+          @message = "Rellena el nro de copias de las separaciones. Valores entre 1 y 10"
+        end
+        # tarea : tenemos que limpiar los parametros
       end
     end
     hobo_show do |format|
-      format.html { @taras = this.sortarasigs }
+      format.html 
       format.xml {
         @ord_trab = OrdTrab.find(params[:id]) 
         stream = render_to_string(:template=>"ord_trabs/show" )

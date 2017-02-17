@@ -5,7 +5,7 @@
   </heading:>
   <edit-link: replace>
     <%if current_user.rol != "Facturador" %>
-      <a action="edit" if="&can_edit?"><ht key="ord_trabs.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
+      <a action="edit" if="&can_edit?"><ht key="ord_trabs.actions.edit" name="&@this.respond_to?(:name) ? this.name : ''">
         Edit O.T.
       </ht></a>
     <% end %>
@@ -17,7 +17,7 @@
       <br/><%= link_to "Exportar XML", ord_trab_path(:format => 'xml')  %>
     </div>
     <transition-buttons class="centrada"/>
-    <form action="/ord_trabs/#{this.id}/reposicion">
+    <form action="/ord_trabs/#{@this.id}/reposicion">
       <table class="#{ @this.claset}">
         <% if this.urgente %>
         <tr>
@@ -42,7 +42,7 @@
               <editor:numFact/>
             </if>
             <else>
-              <if test="&this.numFact">
+              <if test="&@this.numFact">
                 <view:numFact/>
               </if>
             </else>
@@ -53,7 +53,7 @@
               <editor:numGuia/>
             </if>
             <else>
-              <if test="&this.numGuia"><view:numGuia/></if>
+              <if test="&@this.numGuia"><view:numGuia/></if>
             </else>
           </td>
         </tr>
@@ -106,7 +106,7 @@
         <tr>
           <td><view:mpFTP class="boolshow#{@this.mpFTP}"/></td>
           <td colspan="2">Bajar de FTP</td>
-          <td><if test="&this.mpFTPq"><view:mpFTPq style="width:40px"/></if></td>
+          <td><if test="&@this.mpFTPq"><view:mpFTPq style="width:40px"/></if></td>
           <td><view:mpFTPdev class="boolshow#{@this.mpFTPdev}"/></td>
           <th colspan="3" class="centrada">Codigo de Barras</th>
           <th colspan="2" class="centrada">Color</th>
@@ -115,7 +115,7 @@
         <tr>
           <td><view:mpPel class="boolshow#{@this.mpPel}"/></td>
           <td colspan="2">Peliculas</td>
-          <td><if test="&this.mpPelq"><view:mpPelq style="width:40px"/></if></td>
+          <td><if test="&@this.mpPelq"><view:mpPelq style="width:40px"/></if></td>
           <td><view:mpPeldev class="boolshow#{@this.mpPeldev}"/></td>
           <td colspan="3">
             N.&nbsp;<view:barcode/>
@@ -123,9 +123,9 @@
           </td>
           <td colspan="2"><view:colorBarcode/></td>
           <td colspan="2" rowspan="5" style="text-align: center">
-            <if test="&this.dispBandas && this.dispBandas == 0">
+            <if test="&@this.dispBandas && this.dispBandas == 0">
               Bandas Alineadas
-            </if><else><if test="&this.dispBandas && this.dispBandas == 1">
+            </if><else><if test="&@this.dispBandas && this.dispBandas == 1">
               Bandas Desplazadas
             </if></else>
             <else>
@@ -136,7 +136,7 @@
         <tr>
           <td><view:mpImp class="boolshow#{@this.mpImp}"/></td>
           <td colspan="2">Muestra Impresa</td>
-          <td><if test="&this.mpImpq"><view:mpImpq style="width:40px"/></if></td>
+          <td><if test="&@this.mpImpq"><view:mpImpq style="width:40px"/></if></td>
           <td><view:mpImpdev class="boolshow#{@this.mpImpdev}"/></td>
           <th colspan="3">Marcas en los Clisse</th>
           <th>Color</th>
@@ -145,7 +145,7 @@
         <tr>
           <td><view:mpMgr class="boolshow#{@this.mpMgr}"/></td>
           <td colspan="2">Material Grafico</td>
-          <td><if test="&this.mpMgrq"><view:mpMgrq style="width:40px"/></if></td>
+          <td><if test="&@this.mpMgrq"><view:mpMgrq style="width:40px"/></if></td>
           <td><view:mpMgrdev class="boolshow#{@this.mpMgrdev}"/></td>
           <td colspan="3"><view:mcGuia class="boolshow#{@this.mcGuia}"/>&nbsp;Guia de corte</td>
           <td><view:mcGuiacol style="width:40px"/></td>
@@ -154,7 +154,7 @@
         <tr>
           <td><view:mpOpt class="boolshow#{@this.mpOpt}"/></td>
           <td colspan="2">Mail/DVD/CD</td>
-          <td><if test="&this.mpOptq"><view:mpOptq style="width:40px"/></if></td>
+          <td><if test="&@this.mpOptq"><view:mpOptq style="width:40px"/></if></td>
           <td><view:mpOptdev class="boolshow#{@this.mpOptdev}"/></td>
           <td colspan="3"><view:mcMPunto class="boolshow#{@this.mcMPunto}"/>&nbsp;Micropunto x modulo</td>
           <td><view:mcMPuntocol style="width:40px"/></td>
@@ -163,7 +163,7 @@
         <tr>
           <td><view:mpPtr class="boolshow#{@this.mpPtr}"/></td>
           <td colspan="2">Printer</td>
-          <td><if test="&this.mpPtrq"><view:mpPtrq style="width:40px"/></if></td>
+          <td><if test="&@this.mpPtrq"><view:mpPtrq style="width:40px"/></if></td>
           <td><view:mpPtrdev class="boolshow#{@this.mpPtrdev}"/></td>
           <td colspan="3"><view:mcCruces class="boolshow#{@this.mcCruces}"/>&nbsp;Cruces</td>
           <td><view:mcCrucescol style="width:40px"/></td>
@@ -233,11 +233,11 @@
           <th>Ancho</th>
           <th>Area</th>
           <th>Copias</th>
-          <td colspan="7" rowspan="<%=  1+this.separacions.count %>">
+          <td colspan="7" rowspan="<%=  1+@this.separacions.count %>">
               &nbsp;<view:observaciones/>
           </td>
         </tr>
-        <repeat with="&this.separacions">
+        <repeat with="&@this.separacions">
           <tr>
             <td><view:position/></td>
             <td><view:color if="color"/></td>
@@ -266,7 +266,7 @@
           <repeat with="&@taras">
             <% @tara = this %>
             <tr>
-              <td><if test="&this.proceso"><%= this.proceso -%></if></td>
+              <td><if test="&@this.proceso"><%= this.proceso -%></if></td>
               <td colspan="3"><editor:asignado options="&@tara.opciones" include-none blank-message="Sin asignar"/></td>
             </tr>
           </repeat>
