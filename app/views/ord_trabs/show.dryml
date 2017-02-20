@@ -266,7 +266,7 @@
           <repeat with="&@taras">
             <% @tara = this %>
             <tr>
-              <td><if test="&@this.proceso"><%= this.proceso -%></if></td>
+              <td><if test="&this.proceso"><%= this.proceso -%></if></td>
               <td colspan="3"><editor:asignado options="&@tara.opciones" include-none blank-message="Sin asignar"/></td>
             </tr>
           </repeat>
