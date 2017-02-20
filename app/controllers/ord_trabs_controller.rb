@@ -238,7 +238,7 @@ class OrdTrabsController < ApplicationController
       end
     end
     hobo_show do |format|
-      format.html 
+      format.html { @taras = this.sortarasigs }
       format.xml {
         @ord_trab = OrdTrab.find(params[:id]) 
         stream = render_to_string(:template=>"ord_trabs/show" )
