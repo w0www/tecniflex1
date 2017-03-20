@@ -67,7 +67,7 @@ class OrdTrabsController < ApplicationController
       if valid?
         # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
         if this.sortars != ""
-          this.sortars.first.lifecycle.habilitar!(current_user) if this.sortars.first.proceso.nombre.downcase == "polimero"
+          this.sortars.first.lifecycle.habilitar!(current_user) if !this.sortars.blank? && this.sortars.first.proceso.nombre.downcase == "polimero"
         end
         # Si es todo valido vamos a crear el fichero XML del mismo
         confi = Configuration.find_by_key("export_to_xml")
@@ -95,7 +95,7 @@ class OrdTrabsController < ApplicationController
       # MODIFICAR LOS DATOS DE LA FECHA DE CREACION
       @orden.created_at = Time.zone.now
       @orden.fecha = Date.today
-      @orden.vb = true
+      # @orden.vb = true
       @orden.nCopias = 0
       @orden.nPasos = 0
       @orden.nBandas = 0
@@ -114,7 +114,7 @@ class OrdTrabsController < ApplicationController
       hobo_create do 
         if valid?
           # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
-          this.sortars.first.lifecycle.habilitar!(current_user) if this.sortars.first.proceso.nombre.downcase == "polimero"
+          this.sortars.first.lifecycle.habilitar!(current_user) if !this.sortars.blank? && this.sortars.first.proceso.nombre.downcase == "polimero"
           # Si es todo valido vamos a crear el fichero XML del mismo
           confi = Configuration.find_by_key("export_to_xml")
           if confi && confi.value == true
@@ -183,12 +183,16 @@ class OrdTrabsController < ApplicationController
         # Iteramos por las separaciones de la orden y comprobaoms con los params recibidos.
         # Si recibimos blanco no hacemos nada
         # Si alguna de las separaciones que recibimos tiene un valor menor que 1 y mayor que 10 sacamos un error.
+        separaciones_totales = separaciones.count
+        blancos = 0
         for s in separaciones
           if !separaciones_params[(s.position - 1).to_s]["nCopias"].blank?
             existe_separacion = false if !separaciones_params[(s.position - 1).to_s]["nCopias"].to_i.between?(1,10) 
+          elsif separaciones_params[(s.position - 1).to_s]["nCopias"].blank?
+            blancos = blancos + 1
           end
         end
-      
+        existe_separacion = false if blancos == separaciones_totales
 
         if existe_separacion && params[:ord_trab] && params[:ord_trab][:nCopias] != ""
           @nueva_reposicion = OrdTrab.find(params[:id]).clone
@@ -211,10 +215,10 @@ class OrdTrabsController < ApplicationController
         if @nueva_reposicion && @nueva_reposicion.errors.count == 0
           for s in OrdTrab.find(params[:id]).separacions
             # Si no se rellena el nCopias no hace falta crear ese color en la nueva reposicion
-            unless params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].blank? || params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].to_i <= 0 || params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"].to_i >= 11 
+            unless separaciones_params[(s.position - 1).to_s]["nCopias"].blank?
               separacion_nueva = s.clone
-              num_copias = params[:ord_trab][:separacions][(s.position - 1).to_s]["nCopias"]
-              separacion_nueva.nCopias = num_copias unless num_copias.blank?
+              separacion_nueva.nCopias = separaciones_params[(s.position - 1).to_s]["nCopias"]
+              Rails.logger.info "esto es ncopias #{separaciones_params[(s.position - 1).to_s]["nCopias"]} y position #{s.position}"
               @nueva_reposicion.separacions << separacion_nueva
             end
           end
@@ -232,7 +236,7 @@ class OrdTrabsController < ApplicationController
         elsif @nueva_reposicion && @nueva_reposicion.errors.count != 0
           @message = "Ha ocurrido un error, pongase en contacto con el administrador."
         elsif existe_separacion == false
-          @message = "Rellena el nro de copias de las separaciones. Valores entre 1 y 10"
+          @message = "Rellena el nro de copias de al menos una de las separaciones. Valores entre 1 y 10"
         end
         # tarea : tenemos que limpiar los parametros
       end

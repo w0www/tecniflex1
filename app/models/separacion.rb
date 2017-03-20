@@ -35,7 +35,7 @@ class Separacion < ActiveRecord::Base
   		self.lpi = anterior.lpi
   		self.tipomat = anterior.tipomat
   		self.espesor = anterior.espesor
-           self.nCopias = orden.nCopias if self.nCopias.blank? || orden.tipo_id = Tipoot.find_by_name("R (Reposicion)").id
+      self.nCopias = orden.nCopias if self.nCopias.blank? || orden.tipoot_id != Tipoot.find_by_name("R (Reposicion)").id
   	end
 	end
 

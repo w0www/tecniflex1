@@ -12,7 +12,7 @@ class RecibArchMailer < ActionMailer::Base
 	def enviapdf(ord_trab,email)
 		@ord_trab = ord_trab
 		subject 		'Orden de Trabajo Tecniflex'
-    recipients 	['jaime.kunze@gmail.com', 'preprensa@tecniflex.cl']
+    recipients 	['preprensa@tecniflex.cl']
     recipients << @ord_trab.cliente.correo
 		from				'reposiciones@tecniflex.cl'
 		content_type 'multipart/mixed'
@@ -28,7 +28,7 @@ class RecibArchMailer < ActionMailer::Base
   # Metodo para las reposiciones
 	def avisar_cliente(ord_trab,pdf_cliente)
 		@ord_trab = ord_trab
-    emails = ['jaime.kunze@gmail.com', 'preprensa@tecniflex.cl']
+    emails = ['preprensa@tecniflex.cl']
     unless @ord_trab.cliente.contactos.blank?
       emails << @ord_trab.cliente.contactos.*.email
     else
@@ -50,7 +50,7 @@ class RecibArchMailer < ActionMailer::Base
   # Metodo para avisar a preprensa
 	def avisar_preprensa(ord_trab,pdf_preprensa)
 		@ord_trab = ord_trab
-    emails = ['jaime.kunze@gmail.com', 'preprensa@tecniflex.cl', 'imanol@alvarezperez.net']
+    emails = ['preprensa@tecniflex.cl']
 		subject 		'Nueva Orden de Trabajo Tecniflex'
 		recipients 	emails
 		from				'preprensa@tecniflex.cl'
