@@ -16,7 +16,7 @@ class OrdTrabsController < ApplicationController
         # @prima es la OT original
         @prima = OrdTrab.find(params[:id])
         # @primat contiene los atributos de la OT original excepto 6
-        @primat = @prima.attributes.except('numOT','numFact','numGuia','nPasos','nBandas','nCopias')
+        @primat = @prima.attributes.except('numOT','numFact','numGuia','nPasos','nBandas','nCopias','fechaEntrega')
         # @sepas es un array con las separaciones de la OT
         @sepas = []
         @prima.separacions.each do |sepa|
@@ -108,7 +108,7 @@ class OrdTrabsController < ApplicationController
       RecibArchMailer.deliver_avisar_preprensa(@orden,pdf_preprensa)
       redirect_to "/ord_trabs/#{@orden.id}?cliente=true"
     else
-      params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') 
+      params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') if params[:ord_trab][:fecha]
       # Parseamos el valor del datepicker
       parsear_datepicker
       hobo_create do 
@@ -124,6 +124,7 @@ class OrdTrabsController < ApplicationController
       end
     end
   end
+  
   def calcular_codigo_cliente
     codCliente = ""
     if params[:codCliente]
@@ -609,7 +610,7 @@ class OrdTrabsController < ApplicationController
   end
 
   def parsear_datepicker
-	if params[:ord_trab] && params[:ord_trab]["fechaEntrega"] && !params[:ord_trab]["fechaEntrega"].blank?
+	  if params[:ord_trab] && params[:ord_trab]["fechaEntrega"] && !params[:ord_trab]["fechaEntrega"].blank?
       fecha_entrega = Date.strptime params[:ord_trab]["fechaEntrega"], "%d/%m/%Y"
       params[:ord_trab]["fechaEntrega(1i)"] = fecha_entrega.year.to_s
       params[:ord_trab]["fechaEntrega(2i)"] = fecha_entrega.month.to_s
