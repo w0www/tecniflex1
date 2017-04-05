@@ -356,7 +356,13 @@ class OrdTrab < ActiveRecord::Base
   validates_presence_of :nBandas, :nPasos, :if => "(self.mtje || self.mtz) && (['habilitada','iniciada','detenida'].include?(self.state)) ", :on => :update
 
 
-  validate :limite_codigo_barras, :barcodes_iguales, :pasosybandas, :espesores_iguales, :nrocopias, :validar_codigo_ean13
+  validate :limite_codigo_barras, :barcodes_iguales, :pasosybandas, :espesores_iguales, :nrocopias, :validar_codigo_ean13, :validar_fecha_entrega
+
+  def validar_fecha_entrega
+    if self.fechaEntrega.strftime("%H:%M").to_s == "00:00" && self.tipoot_id == Tipoot.find_by_name("P (PostScript)").id
+      errors.add(:fechaEntrega, "La fecha de entrega tiene que ser valida")
+    end
+  end
 
   def limite_codigo_barras
     if list_barcode

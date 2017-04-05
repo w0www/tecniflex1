@@ -360,7 +360,27 @@
     <th colspan="3">
       Entrega:
       <hjq-datepicker:fechaEntrega name="ord_trab[fechaEntrega]" value="&l(this.fechaEntrega.to_date) if this.fechaEntrega" style="width:7em"/>
-      <%= time_select("ord_trab", "fechaEntrega", {:minute_step => 15}) %>
+      <div style="display:none">
+        <%= time_select("ord_trab", "fechaEntrega", {:minute_step => 15}) %>
+      </div>
+      <select name="ord_trab[fechaEntrega(4i)]">
+        <% for i in 0..24 %>
+          <% if @ord_trab.fechaEntrega && @ord_trab.fechaEntrega.strftime('%H').to_i == i %>
+            <option selected="selected" value="<%= i.to_s.rjust(2, '0') %>"><%= i.to_s.rjust(2, '0') %></option>
+          <% else %>
+            <option value="<%= i.to_s.rjust(2, '0') %>"><%= i.to_s.rjust(2, '0') %></option>
+          <% end %>
+        <% end %>
+      </select>
+      <select name="ord_trab[fechaEntrega(5i)]">
+       <% ["00","15","30","45"].each do |i| %>
+          <% if @ord_trab.fechaEntrega && @ord_trab.fechaEntrega.strftime('%M') == i %>
+            <option selected="selected" value="<%= i.to_s.rjust(2, '0') %>"><%= i.to_s.rjust(2, '0') %></option>
+          <% else %>
+            <option value="<%= i.to_s.rjust(2, '0') %>"><%= i.to_s.rjust(2, '0') %></option>
+          <% end %>
+        <% end %>
+      </select>
     </th>
   </tr>
   <tr>
