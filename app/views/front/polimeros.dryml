@@ -49,6 +49,7 @@
         <th><center>FECHA</center></th>
         <th><center>FECHA MTZ</center></th>
         <th><center>PROCESO</center></th>
+        <th><center>TIPO DE OT</center></th>
         <th><center>CLIENTE</center></th>
         <th><center>OT/COD.PROD.</center></th>
         <th><center>NOMBRE DEL TRABAJO</center></th>
@@ -60,10 +61,10 @@
       <% for tarea in @tareas %>
       <% ord_trab = tarea.ord_trab %>
       <% 
-        fecha_matriceria = ""
+        fecha_inicio = ""
         tarea_matriceria = ord_trab.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("matriceria")]).first
         if tarea_matriceria && tarea_matriceria.state == "terminada" 
-          fecha_matriceria = tarea_matriceria.intervencions.first.inicio.strftime("%d/%m/%Y %H:%M") if tarea_matriceria.intervencions.first.inicio
+          fecha_inicio = tarea_matriceria.intervencions.first.inicio.strftime("%d/%m/%Y %H:%M") if tarea_matriceria.intervencions.first.inicio
         end
 
         fecha_fin = ""
@@ -73,6 +74,7 @@
           if tarea_revisionmm && tarea_revisionmm.state == "terminada" 
             fecha_fin = tarea_revisionmm.intervencions.last.termino.strftime("%d/%m/%Y %H:%M") if tarea_revisionmm.intervencions.last.termino 
           end
+          fecha_inicio = tarea.intervencions.first.inicio.strftime("%d/%m/%Y %H:%M") if tarea.intervencions.count > 0 
         end
       %>
       <% color = ord_trab.calcular_color_tablero(ord_trab) %>
@@ -82,8 +84,9 @@
       %>
       <tr style="background-color:#{color_linea if color_linea};">
         <td><center><%= ord_trab.fecha.strftime("%d/%m/%Y") if ord_trab.fecha %></center></td>
-        <td><center><%= fecha_matriceria if fecha_matriceria %></center> </td>
+        <td><center><%= fecha_inicio if fecha_inicio %></center> </td>
         <td><center><%= tarea.proceso %></center> </td>
+        <td><center><%= ord_trab.tipoot %></center> </td>
         <td><center><%= ord_trab.cliente %></center> </td>
         <td><center><%= ord_trab.numOT.to_s + " / " + ord_trab.armacod %></center> </td>
         <td><center><%= ord_trab.nomprod %></center> </td>
