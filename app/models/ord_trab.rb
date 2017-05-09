@@ -410,7 +410,8 @@ class OrdTrab < ActiveRecord::Base
         end
         # size == 13
         unless 10 - (suma % 10) == self.barcode[12..12].to_i || suma % 10 == 0
-          errors.add(:barcode, "el dígito de control es erroneo y debería de ser #{10 - (suma % 10)}")
+         digito = 10 - (suma % 10)
+         errors.add(:barcode, "el dígito de control es erroneo y debería de ser #{digito}")
         end
       end
     end
@@ -440,7 +441,7 @@ class OrdTrab < ActiveRecord::Base
 		end
 	end
 
-	#Elimina tareas que no correspondan a lo seleccionado en la OT. Debe ser ejecutado antes de save
+	# Elimina tareas que no correspondan a lo seleccionado en la OT. Debe ser ejecutado antes de save
 	def kiltar(saejec)
 		saegp = "sae" + saejec.to_s
 			unless self.send(saejec)
@@ -504,16 +505,16 @@ class OrdTrab < ActiveRecord::Base
     # Si las tareas no estan terminadas solo tenemos que calcular el color
     fecha_entrega = orden.fechaEntrega
     hora_actual = DateTime.now.in_time_zone
-    tiempo_total_minute = hora_actual + orden.tiempo_total
+#    tiempo_total_minute = hora_actual + orden.tiempo_total
     if fecha_entrega
       # SI FALTA UNA HORA PARA LA FECHA DE ENTREGA
-      if fecha_entrega - 1.hour <= tiempo_total_minute && fecha_entrega > tiempo_total_minute
+      if fecha_entrega - 1.hour <= hora_actual && fecha_entrega > hora_actual
         color_tablero = 'lightyellow'
       # SI FALTA MAS DE UNA HORA PARA LA FECHA DE ENTREGA
-      elsif fecha_entrega > tiempo_total_minute
+      elsif fecha_entrega - 1.hour > hora_actual
         color_tablero = 'lightgreen'
       # SI HA PASADO LA FECHA DE ENTREGA
-      elsif fecha_entrega <= tiempo_total_minute
+      elsif fecha_entrega <= hora_actual
         color_tablero = 'red'
       end
     else
