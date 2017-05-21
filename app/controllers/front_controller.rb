@@ -44,7 +44,7 @@ class FrontController < ApplicationController
     @grupro = Grupoproc.tablero.order_by(:position)
     @clies = Cliente.all
     @todas = OrdTrab.find(:all, :order => "fechaEntrega desc", :limit => 20)
-    @users = User.find(:all, :conditions => ["tablero = true"])
+    @users = User.find(:all, :conditions => ["gerencial = true"])
   end
 
 

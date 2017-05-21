@@ -9,6 +9,7 @@
     administrator :boolean, :default => false
     iniciales     :string, :unique
     tablero       :boolean, :default => false
+    gerencial       :boolean, :default => false
     timestamps
   end
 

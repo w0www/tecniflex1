@@ -4507,7 +4507,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="rol, email_address, administrator, iniciales, tablero, state" param/>
+            <field-list fields="rol, email_address, administrator, iniciales, tablero, gerencial, state" param/>
           </section>
     </content:>
 
