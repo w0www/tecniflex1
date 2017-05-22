@@ -149,14 +149,14 @@
             <td><%= OrdTrab.total_ayer.find(:all, :conditions => ["encargado_id = ?",u.id]).count %></td>
             <td><%= OrdTrab.total_semana.find(:all, :conditions => ["encargado_id = ?",u.id]).count %></td>
             <td><%= OrdTrab.total_mes.find(:all, :conditions => ["encargado_id = ?",u.id]).count %></td>
-            <td><%= u.int_tipo("termino", 2) %></td>
-            <td><%= u.int_tipo("termino", 16) %></td>
-            <td><%= u.int_tipo("termino", 3) %></td>
-            <td><%= u.int_tipo("termino", 4) %></td>
-            <td><%= u.int_tipo("termino", 5) %></td>
-            <td><%= u.int_tipo("termino", 14) %></td>
-            <td><%= u.int_tipo("termino", 7) %></td>
-            <td><%= u.int_tipo("termino", 12) %></td>
+            <td><%= u.int_tipo(Date.today,"termino", 2) %></td>
+            <td><%= u.int_tipo(Date.today,"termino", 16) %></td>
+            <td><%= u.int_tipo(Date.today,"termino", 3) %></td>
+            <td><%= u.int_tipo(Date.today,"termino", 4) %></td>
+            <td><%= u.int_tipo(Date.today,"termino", 5) %></td>
+            <td><%= u.int_tipo(Date.today,"termino", 14) %></td>
+            <td><%= u.int_tipo(Date.today,"termino", 7) %></td>
+            <td><%= u.int_tipo(Date.today,"termino", 12) %></td>
           </tr>
         <% end %>
       </tbody>

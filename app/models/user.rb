@@ -58,10 +58,10 @@
     return "#{dia} / #{semana} / #{mes}"
   end
 
-  def int_tipo(estado,proceso)
+  def int_tipo(dia,estado,proceso)
     self.intervencions.find(:all, :joins => [:tarea],
-      :conditions => ["DAY(#{estado}) = ? AND MONTH(#{estado}) = ? AND YEAR(#{estado}) = ? AND tareas.proceso_id = ?", 
-                      Date.today.day, Date.today.month, Date.today.year, proceso]).count
+      :conditions => ["DAY(#{dia}) = ? AND MONTH(#{dia}) = ? AND YEAR(#{dia}) = ? AND tareas.proceso_id = ? AND tareas.state = ?", 
+                      Date.today.day, Date.today.month, Date.today.year, proceso, estado]).count
   end
 
 	def facturador?
