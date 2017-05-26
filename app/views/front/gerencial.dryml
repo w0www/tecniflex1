@@ -4,21 +4,21 @@
   <!--    <meta http-equiv="refresh" content="30"/> -->
   </head:>
   <content: replace>
-    <div class="page-header" id="pantalla">
+    <div class="content-body">
       <div style="margin-left:33% ;padding-top: 1%;font-size:24px;color:RED">
+        TABLERO GERENCIAL
         <%= Time.now.strftime("%d/%m/%Y %H:%M") %>
       </div>
-    </div>
-
-    <div class="content-body">
       <div style="margin-top:10px;">
-        <div class="parte-izquierda" style="width:47%;float:right;">
+<!--Parte derecha-->
+        <div class="parte-izquierda" style="width:36%;float:right;">
           <tabla-clientes-ots-terminadas/><br/>
 
         </div>
+<!--        Parte izquierda-->
         <div class="parte-derecha" style="width:50%">
-          <tabla-total-ots/><br/>
-          <tabla-actividad/>
+           <tabla-actividad/>
+           <tabla-total-ots/><br/>
         </div>
       </div>
     </div>
@@ -117,31 +117,38 @@
     <table class="tablero" id="tactividad" style="border:0px;">
       <tbody>
         <tr>
-          <th rowspan="2"></th>
+          <th rowspan="3"></th>
           <th colspan="7"><center>Operadores</center></th>
           <th colspan="8"><center>Procesos terminados del dia</center></th>
         </tr>
         <tr>
-          <th>Total HH</th>
-          <th>Habilitadas</th>
-          <th>Iniciadas</th>
-          <th>Terminadas</th>
-          <th>Ayer</th>
-          <th>Semana</th>
-          <th>Mes</th>
-          <th>PDF</th>
-          <th>REV PDF</th>
-          <th>PRINTER</th>
-          <th>MATRICERIA</th>
-          <th>MONTAJE</th>
-          <th>REVISION</th>
-          <th>POLIMERO</th>
-          <th>DESPACHO</th>
+          <td colspan="4"><center>Ordenes del dia</center></td>
+          <td colspan="3">Terminadas Totales</td>
+          <td rowspan="2">PDF</td>
+          <td rowspan="2">REV  PDF</td>
+          <td rowspan="2">PRINTER</td>
+          <td rowspan="2">MATRICERIA</td>
+          <td rowspan="2">MONTAJE</td>
+          <td rowspan="2">REVISION</td>
+          <td rowspan="2">POLIMERO</td>
+          <td rowspan="2">DESPACHO</td>
+        </tr>
+        <tr>
+          <td>Total HH</td>
+          <td>Habilitadas</td>
+          <td>Iniciadas</td>
+          <td>Terminadas</td>
+          <td>Ayer</td>
+          <td>Semana</td>
+          <td>Mes</td>
         </tr>
         <% for u in @users %> 
           <tr class="#{scope.even_odd}">
             <th style="min-width:60px;"><%= u.name.first(10) %></th>
             <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'habilitada', Date.today]).count + OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'iniciada', Date.today]).count %>
+            
+            
+            
             </td>
             <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'habilitada', Date.today]).count %></td>
             <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'iniciada', Date.today]).count %></td>
@@ -149,14 +156,23 @@
             <td><%= OrdTrab.total_ayer.find(:all, :conditions => ["encargado_id = ?",u.id]).count %></td>
             <td><%= OrdTrab.total_semana.find(:all, :conditions => ["encargado_id = ?",u.id]).count %></td>
             <td><%= OrdTrab.total_mes.find(:all, :conditions => ["encargado_id = ?",u.id]).count %></td>
-            <td><%= u.int_tipo(Date.today,"termino", 2) %></td>
-            <td><%= u.int_tipo(Date.today,"termino", 16) %></td>
-            <td><%= u.int_tipo(Date.today,"termino", 3) %></td>
-            <td><%= u.int_tipo(Date.today,"termino", 4) %></td>
-            <td><%= u.int_tipo(Date.today,"termino", 5) %></td>
-            <td><%= u.int_tipo(Date.today,"termino", 14) %></td>
-            <td><%= u.int_tipo(Date.today,"termino", 7) %></td>
-            <td><%= u.int_tipo(Date.today,"termino", 12) %></td>
+          <!--Procesos-->
+            <td><%= Tarea.all(:joins => [:ord_trab], 
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 2, Date.today]).count %></td>
+            <td><%= Tarea.all(:joins => [:ord_trab], 
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 16, Date.today]).count %></td>
+            <td><%= Tarea.all(:joins => [:ord_trab], 
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 3, Date.today]).count %></td>
+            <td><%= Tarea.all(:joins => [:ord_trab], 
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 4, Date.today]).count %></td>
+            <td><%= Tarea.all(:joins => [:ord_trab], 
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 5, Date.today]).count %></td>
+            <td><%= Tarea.all(:joins => [:ord_trab], 
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 14, Date.today]).count %></td>
+            <td><%= Tarea.all(:joins => [:ord_trab], 
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 7, Date.today]).count %></td>
+            <td><%= Tarea.all(:joins => [:ord_trab], 
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 12, Date.today]).count %></td>
           </tr>
         <% end %>
       </tbody>
