@@ -222,6 +222,10 @@ class OrdTrab < ActiveRecord::Base
   def tarasigs
     tarasi = self.sortars.*.asignada_a.include?(nil) ? false : true
 	end
+	
+	def alguna_asignada
+    self.sortars.*.asignada_a.uniq.size == 1 && self.sortars.*.asignada_a.include?(nil) ? false : true
+	end
 
 # Asigna un codigo de producto (codCliente) a la orden de trabajo, correlativo desde la ultima para ese cliente
 	def self.dacod(cli)
@@ -310,7 +314,7 @@ class OrdTrab < ActiveRecord::Base
 
 		create :crear, :become => :creada, :available_to => "User.supervisores"
 
-		transition :habilitar, { :creada => :habilitada }, :available_to => "User.supervisores", :if => "self.tarasigs"
+		transition :habilitar, { :creada => :habilitada }, :available_to => "User.supervisores", :if => "self.alguna_asignada"
 
    	transition :eliminar, { :habilitada => :destroy }, :available_to => "User.supervisores"
 

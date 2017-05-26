@@ -152,11 +152,12 @@
             </td>
             <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'habilitada', Date.today]).count %></td>
             <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'iniciada', Date.today]).count %></td>
-            <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'terminada', Date.today]).count %></td>
+            <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND fechafin = ?", u.id, 'terminada', Date.today]).count %></td>
             <td><%= OrdTrab.total_ayer.find(:all, :conditions => ["encargado_id = ?",u.id]).count %></td>
             <td><%= OrdTrab.total_semana.find(:all, :conditions => ["encargado_id = ?",u.id]).count %></td>
             <td><%= OrdTrab.total_mes.find(:all, :conditions => ["encargado_id = ?",u.id]).count %></td>
           <!--Procesos-->
+          <!-- Estos son las tareas que ha terminado cada uno de los empleados. (El encargado de una orden de trabajo no tiene porque ser el mismo que esta asignado a tarea)-->
             <td><%= Tarea.all(:joins => [:ord_trab], 
               :conditions => ["tareas.asignada_a = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND tareas.fechafin = ?",u.id, 2, Date.today]).count %></td>
             <td><%= Tarea.all(:joins => [:ord_trab], 
