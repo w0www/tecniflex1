@@ -158,21 +158,21 @@
             <td><%= OrdTrab.total_mes.find(:all, :conditions => ["encargado_id = ?",u.id]).count %></td>
           <!--Procesos-->
             <td><%= Tarea.all(:joins => [:ord_trab], 
-              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 2, Date.today]).count %></td>
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND tareas.fechafin = ?",u.id, 2, Date.today]).count %></td>
             <td><%= Tarea.all(:joins => [:ord_trab], 
-              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 16, Date.today]).count %></td>
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND tareas.fechafin = ?",u.id, 16, Date.today]).count %></td>
             <td><%= Tarea.all(:joins => [:ord_trab], 
-              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 3, Date.today]).count %></td>
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND tareas.fechafin = ?",u.id, 3, Date.today]).count %></td>
             <td><%= Tarea.all(:joins => [:ord_trab], 
-              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 4, Date.today]).count %></td>
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND tareas.fechafin = ?",u.id, 4, Date.today]).count %></td>
             <td><%= Tarea.all(:joins => [:ord_trab], 
-              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 5, Date.today]).count %></td>
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND tareas.fechafin = ?",u.id, 5, Date.today]).count %></td>
             <td><%= Tarea.all(:joins => [:ord_trab], 
-              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 14, Date.today]).count %></td>
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND tareas.fechafin = ?",u.id, 14, Date.today]).count %></td>
             <td><%= Tarea.all(:joins => [:ord_trab], 
-              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 7, Date.today]).count %></td>
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND tareas.fechafin = ?",u.id, 7, Date.today]).count %></td>
             <td><%= Tarea.all(:joins => [:ord_trab], 
-              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND ord_trabs.fechafin = ?",u.id, 12, Date.today]).count %></td>
+              :conditions => ["ord_trabs.encargado_id = ? AND tareas.state = 'terminada' AND tareas.proceso_id = ? AND tareas.fechafin = ?",u.id, 12, Date.today]).count %></td>
           </tr>
         <% end %>
       </tbody>
