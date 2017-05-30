@@ -45,6 +45,15 @@ class FrontController < ApplicationController
     @clies = Cliente.all
     @todas = OrdTrab.find(:all, :order => "fechaEntrega desc", :limit => 20)
     @users = User.find(:all, :conditions => ["gerencial = true"])
+    if !params[:page]
+      @pagina = 1
+    else
+      if params[:page] == 1
+        @pagina = 1
+      else
+        @pagina = 2
+      end
+    end
   end
 
 
