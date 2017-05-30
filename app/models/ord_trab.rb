@@ -183,8 +183,8 @@ class OrdTrab < ActiveRecord::Base
     Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
 
   # CREADAS
-  named_scope :creadas_hoy, lambda {{:conditions => ["created_at BETWEEN ? AND ?",
-    Date.today.beginning_of_day, Date.today.end_of_day]}}
+  named_scope :creadas_hoy, lambda {{:conditions => ["DATE(created_at) = ?",
+    Date.today]}}
 
   def armacod
     armac = ""
