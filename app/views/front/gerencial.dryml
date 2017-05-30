@@ -27,9 +27,9 @@
 </page>
 
 <def tag="tabla-total-ots">
-  <div>
+  <div id="tabla-total-ots">
     <label style="color:#fff; font-size:20px;">Total por OTS</label>
-    <table class="tablero">
+    <table class="tablero" style="border-style:none;">
       <tbody>
         <tr>
 		      <th width="5%" style="text-align:center;">TIPO OT</th>
@@ -89,9 +89,9 @@
 </def>
 
 <def tag="tabla-clientes-ots-terminadas">
-  <div>
+  <div id="tabla-clientes-ots-terminadas" style="float:left; margin-right:40px; margin-top:18px">
     <label style="color:#fff; font-size:20px;">Clientes OTs Terminadas</label>
-    <table class="tablero">
+    <table class="tablero" >
       <tbody>
         <tr>
 		      <th width="5%" style="text-align:center;">CLIENTE</th>
@@ -118,7 +118,7 @@
 
 <def tag="tabla-actividad">
   <if test="&!@users.blank?">
-    <div>
+    <div id="tabla-actividad">
       <label style="color:#fff; font-size:20px;">Actividad por usuario</label>
       <table class="tablero" id="tactividad" style="border:0px;">
         <tbody>

@@ -8,6 +8,8 @@ class Tarea < ActiveRecord::Base
     instrucciones :text
     fechatope     :date
     fechafin      :date
+#    fechainicio de la tabla de intervenciones
+#    fechahabilitadade la tabla de intervenciones
     ciclo					:integer
     timestamps
   end
@@ -189,7 +191,7 @@ class Tarea < ActiveRecord::Base
       else
         self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
       end
-      self.fechafin = Time.now
+      self.fechafin = Date.today
     end
 
     transition :eliminar, {[:creada, :habilitada, :terminada] => :destroy}, :available_to => :all
