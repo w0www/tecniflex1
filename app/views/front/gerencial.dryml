@@ -157,9 +157,9 @@
               <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'habilitada' AND DATE(created_at) = ?",u.id, Date.today]).count %></td>
               <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'iniciada' AND DATE(created_at) = ?",u.id, Date.today]).count %></td>
               <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'iniciada' AND fechafin = ?",u.id, Date.today]).count %></td>
-              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 2, Date.yesterday]).count %></td>
-              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin BETWEEN ? AND ?",u.id, 2, Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]).count %></td>
-              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin BETWEEN ? AND ?",u.id, 2, Date.today.beginning_of_month.beginning_of_day, Date.today.end_of_month.end_of_day]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND fechafin = ?",u.id, Date.yesterday]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND fechafin BETWEEN ? AND ?",u.id, Date.today.beginning_of_week, Date.today.end_of_week]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND fechafin BETWEEN ? AND ?",u.id, Date.today.beginning_of_month, Date.today.end_of_month]).count %></td>
             <!--Procesos-->
             <!-- Estos son las tareas que ha terminado cada uno de los empleados. (El encargado de una orden de trabajo no tiene porque ser el mismo que esta asignado a tarea)-->
               <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 2, Date.today]).count %></td>
