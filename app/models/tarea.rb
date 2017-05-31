@@ -191,6 +191,7 @@ class Tarea < ActiveRecord::Base
       else
         self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
       end
+      Rails.logger.info "Esto llega aqui"
       self.fechafin = Date.today
     end
 
