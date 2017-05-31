@@ -191,8 +191,7 @@ class Tarea < ActiveRecord::Base
       else
         self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
       end
-      Rails.logger.info "Esto llega aqui"
-      self.fechafin = Date.today
+      guardar_fechafin
     end
 
     transition :eliminar, {[:creada, :habilitada, :terminada] => :destroy}, :available_to => :all
@@ -232,6 +231,11 @@ class Tarea < ActiveRecord::Base
 
 		def aumentaciclo
 			self.ciclo += 1
+			self.save
+		end
+		
+		def guardar_fechafin
+			self.fechafin = Date.today
 			self.save
 		end
 end

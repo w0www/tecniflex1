@@ -327,7 +327,7 @@ class OrdTrab < ActiveRecord::Base
     transition :eliminar, { :iniciada => :destroy }, :available_to => "User.supervisores"
 
 		transition :terminar, { :iniciada => :terminada }, :available_to => "User.supervisores" do
-      self.fechafin = Date.today
+      guardar_fechafin
     end
 
     transition :reactivar, {:terminada => :habilitada}, :available_to => "User.supervisores" do
@@ -805,6 +805,11 @@ class OrdTrab < ActiveRecord::Base
     else
       @cons = 0
     end
+  end
+  
+  def guardar_fechafin
+    self.fechafin = Date.today
+    self.save
   end
   # --- Permissions --- #
 
