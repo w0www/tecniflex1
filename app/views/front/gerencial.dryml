@@ -2,9 +2,9 @@
   <head:>
     <param-content />
     <% if @pagina == 1  %>
-      <meta http-equiv="refresh" content="300;url=/front/gerencial?page=#{@pagina}" />
+      <meta http-equiv="refresh" content="60;url=/front/gerencial?page=#{@pagina}" />
     <% elsif @pagina == 2 %>
-      <meta http-equiv="refresh" content="300;url=/front/gerencial" />
+      <meta http-equiv="refresh" content="60;url=/front/gerencial" />
     <% end %>
   </head:>
   <content: replace>
