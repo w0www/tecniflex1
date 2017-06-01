@@ -191,6 +191,9 @@ class Tarea < ActiveRecord::Base
       else
         self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1].lifecycle.habilitar!(User.first) if self.ord_trab.sortars[self.ord_trab.sortars.index(self)+1]
       end
+      if self.proceso.nombre.downcase == "facturacion"
+        self.ord_trab.lifecycle.terminar!(User.first)
+      end
       guardar_fechafin
     end
 

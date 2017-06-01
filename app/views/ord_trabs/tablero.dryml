@@ -62,7 +62,7 @@
                         if proces == 'Revision'
                           proces = "RevisionMM"
                         elsif proces == 'Despacho'
-                          proces = "Polimero"
+                          proces = "Facturacion"
                         end
                       %>
                       <% tarea = tod.tareas.proceso_is(proces) ? tod.tareas.proceso_is(proces).first : nil %>

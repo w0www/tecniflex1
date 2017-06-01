@@ -104,11 +104,11 @@
         <% for c in Cliente.pantalla_gerencial %>
         <tr>
 		      <th width="5%" style="text-align:center;"><%= c.name %></th>
-          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_hoy.count %></td>
-          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_ayer.count %></td>
-          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_semana.count %></td>
-          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_mes.count %></td>
-          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_ano.count %></td>
+          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_terminadas_hoy.count %></td>
+          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_terminadas_ayer.count %></td>
+          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_terminadas_semana.count %></td>
+          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_terminadas_mes.count %></td>
+          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_terminadas_ano.count %></td>
         </tr>
         <% end %>
       </tbody>
@@ -150,7 +150,7 @@
           </tr>
           <% for u in @users %> 
             <tr class="#{scope.even_odd}">
-              <th style="min-width:60px;"><%= u.name.first(10) %></th>
+              <th style="min-width:60px;"><%= u.name %></th>
               <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'habilitada' AND DATE(created_at) = ?",u.id, Date.today]).count + 
                       Tarea.all(:conditions => ["asignada_a = ? AND state = 'iniciada' AND DATE(created_at) = ?",u.id, Date.today]).count %>
               </td>

@@ -8,12 +8,11 @@ class TareasController < ApplicationController
   #auto_actions_for :ord_trab, :index
 
   def update
-
     asignacion = params[:tarea][:asignada_a].blank? ? false : true
 		hobo_update do
       if this.ord_trab && this.ord_trab.tarasigs || asignacion
-        # Si todas las tareas estan asignadas, automaticamente habilitamos la OT
-        this.ord_trab.lifecycle.habilitar!(current_user) if this.ord_trab.tarasigs
+        # Si alguna tarea esta asignada
+        this.ord_trab.lifecycle.habilitar!(current_user) if asignacion && this.ord_trab.state == "creada"
         # Si todas estan terminadas es porque vamos paso a paso y necesitamos habilitar la tarea
         comprueba_si_necesita_activar
         unless this.ord_trab.errors.blank?
@@ -51,6 +50,12 @@ class TareasController < ApplicationController
     @termin = 0
     @intervenciones = @tarea.intervencions.find(:all, :joins => :user, :conditions => ["name = ?", current_user.name])
     @select_users = User.all.map{|u| [u.name, u.id]}
+    
+    # Si una tarea pasa a iniciada la orden de trabajo tiene que pasar a iniciada tambien
+    if @tarea.state == "iniciada" && @tarea.ord_trab.state == "creada"
+      @tarea.ord_trab.lifecycle.iniciar!(current_user)
+    end
+    
   	# Procesos que esten habilitados como destinos luego de la revision
   	procesos_filtrados = Proceso.volver_desde_revision
   	@procesos_volver_desde_revision = procesos_filtrados & @tarea.ord_trab.tareas.*.proceso || []
