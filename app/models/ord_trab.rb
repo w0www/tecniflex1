@@ -171,6 +171,19 @@ class OrdTrab < ActiveRecord::Base
   named_scope :reposiciones_ano, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("R (Reposicion)"), Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
 
+  # SIN COSTO
+  named_scope :reposiciones_hoy, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?",
+    Tipoot.find_by_name("S (Sin Costo)"), Date.today]}}
+  named_scope :reposiciones_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
+    Tipoot.find_by_name("S (Sin Costo)"), Date.yesterday]}}
+  named_scope :reposiciones_semana, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
+    Tipoot.find_by_name("S (Sin Costo)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
+  named_scope :reposiciones_mes, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
+    Tipoot.find_by_name("S (Sin Costo)"), Date.today.beginning_of_month.beginning_of_day, Date.today.end_of_month.end_of_day]}}
+  named_scope :reposiciones_ano, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
+    Tipoot.find_by_name("S (Sin Costo)"), Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
+
+
   # TOTAL
   named_scope :total_hoy, lambda {{:conditions => ["DATE(created_at) = ?",
     Date.today]}}

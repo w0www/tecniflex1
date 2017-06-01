@@ -72,6 +72,14 @@
           <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_ano.count %></td>
         </tr>
         <tr>
+		      <th width="5%" style="text-align:center;">S=SIN COSTO</th>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.sincosto_hoy.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.sincosto_ayer.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.sincosto_semana.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.sincosto_mes.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.sincosto_ano.count %></td>
+        </tr>
+        <tr>
 		      <th width="5%" style="text-align:center;">TOTAL</th>
           <td width="5%" style="text-align:center;"><%= OrdTrab.total_hoy.count %></td>
           <td width="5%" style="text-align:center;"><%= OrdTrab.total_ayer.count %></td>
