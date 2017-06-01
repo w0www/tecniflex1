@@ -185,7 +185,7 @@ class OrdTrab < ActiveRecord::Base
 
   # CREADAS FILTRAR POR ESTADO CREADA
   named_scope :creadas_hoy, lambda {{:conditions => ["DATE(created_at) = ? AND state = ?",
-    Date.today. 'creada']}}
+    Date.today, 'creada']}}
 
 
  ### TOTAL TERMINADAS
