@@ -132,8 +132,8 @@
         <tbody>
           <tr>
             <th rowspan="3" style="text-align:center;width:10%"></th>
-            <th colspan="7" style="text-align:center;width:45%">Operadores</th>
-            <th colspan="8" style="text-align:center;width:45%">Procesos terminados del dia</th>
+            <th colspan="7" style="text-align:center;width:45%">OPERADORES</th>
+            <th colspan="8" style="text-align:center;width:45%">PROCESOS TERMINADOS DEL DIA</th>
           </tr>
           <tr>
             <th style="text-align:center;" colspan="4">Tareas creadas en el dia</th>
