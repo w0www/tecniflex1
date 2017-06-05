@@ -170,14 +170,14 @@
               <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND fechafin BETWEEN ? AND ?",u.id, Date.today.beginning_of_month, Date.today.end_of_month]).count %></td>
             <!--Procesos-->
             <!-- Estos son las tareas que ha terminado cada uno de los empleados. (El encargado de una orden de trabajo no tiene porque ser el mismo que esta asignado a tarea)-->
-              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 2, Date.today]).count %> (<%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 2, Date.today]).*.tneto.sum %> mins)</td>
-              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 16, Date.today]).count %> (<%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 16, Date.today]).*.tneto.sum %> mins)</td>
-              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 3, Date.today]).count %> (<%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 3, Date.today]).*.tneto.sum %> mins)</td>
-              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 4, Date.today]).count %> (<%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 4, Date.today]).*.tneto.sum %> mins)</td>
-              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 5, Date.today]).count %> (<%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 5, Date.today]).*.tneto.sum %>  mins)</td>
-              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 14, Date.today]).count %> (<%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 14, Date.today]).*.tneto.sum %> mins)</td>
-              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 7, Date.today]).count %> (<%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 7, Date.today]).*.tneto.sum %> mins)</td>
-              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 12, Date.today]).count %> (<%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 12, Date.today]).*.tneto.sum %> mins)</td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 2, Date.today]).count %> </td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 16, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 3, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 4, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 5, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 14, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 7, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 12, Date.today]).count %></td>
             </tr>
           <% end %>
         </tbody>
