@@ -131,30 +131,30 @@
       <table class="tablero" id="tactividad" style="border:0px;">
         <tbody>
           <tr>
-            <th rowspan="3" style="width:10%"></th>
-            <th colspan="7" style="width:45%"><center>Operadores</center></th>
-            <th colspan="8" style="width:45%"><center>Procesos terminados del dia</center></th>
+            <th rowspan="3" style="text-align:center;width:10%"></th>
+            <th colspan="7" style="text-align:center;width:45%">Operadores</th>
+            <th colspan="8" style="text-align:center;width:45%">Procesos terminados del dia</th>
           </tr>
           <tr>
-            <th colspan="4"><center>Tareas creadas en el dia</center></th>
-            <th colspan="3"><center>Terminadas Totales</center></th>
-            <th rowspan="2"><center>PDF</center></th>
-            <th rowspan="2"><center>REV  PDF</center></th>
-            <th rowspan="2"><center>PRINTER</center></th>
-            <th rowspan="2"><center>MATRICERIA</center></th>
-            <th rowspan="2"><center>MONTAJE</center></th>
-            <th rowspan="2"><center>REVISION</center></th>
-            <th rowspan="2"><center>POLIMERO</center></th>
-            <th rowspan="2"><center>DESPACHO</center></th>
+            <th style="text-align:center;" colspan="4"><center>Tareas creadas en el dia</th>
+            <th style="text-align:center;" colspan="3"><center>Terminadas Totales</th>
+            <th style="text-align:center;" rowspan="2">PDF</th>
+            <th style="text-align:center;" rowspan="2">REV  PDF</th>
+            <th style="text-align:center;" rowspan="2">PRINTER</th>
+            <th style="text-align:center;" rowspan="2">MATRICERIA</th>
+            <th style="text-align:center;" rowspan="2">MONTAJE</th>
+            <th style="text-align:center;" rowspan="2">REVISION</th>
+            <th style="text-align:center;" rowspan="2">POLIMERO</th>
+            <th style="text-align:center;" rowspan="2">DESPACHO</th>
           </tr>
           <tr>
-            <th><center>Total H+I</center></th>
-            <th><center>Habilitadas<</center>/th>
-            <th><center>Iniciadas</center></th>
-            <th><center>Terminadas</center></th>
-            <th><center>Ayer</center></th>
-            <th><center>Semana</center></th>
-            <th><center>Mes</center></th>
+            <th style="text-align:center;">Total H+I</th>
+            <th style="text-align:center;">Habilitadas</th>
+            <th style="text-align:center;">Iniciadas</th>
+            <th style="text-align:center;">Terminadas</th>
+            <th style="text-align:center;">Ayer</th>
+            <th style="text-align:center;">Semana</th>
+            <th style="text-align:center;">Mes</th>
           </tr>
           <% for u in @users %> 
             <tr class="#{scope.even_odd}">
