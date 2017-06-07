@@ -309,17 +309,11 @@ class OrdTrab < ActiveRecord::Base
 
  # Permite volver a una tarea anterior, habilitandola
  def volver_a(procid,usuario)
- 		esteprocid = Proceso.find(procid)
  		tares = self.tareas || []
  		if tares != []
 			estata = tares.proceso_id_is(procid).first
-			if Proceso.volver_desde_revision.include?(Proceso.find(procid)) || Proceso.rev.include?(Proceso.find(procid))
-				estata.lifecycle.habilitar!(usuario)
-			else
-				nil
-			end
-      
-		end
+  	  estata.lifecycle.habilitar!(usuario) if estata
+  	end
  end
 
 
