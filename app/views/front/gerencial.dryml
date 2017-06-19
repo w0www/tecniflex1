@@ -1,169 +1,187 @@
 <page title="Gerencial" without-header class="pantalla" style="background-color:black !important">
   <head:>
     <param-content />
-  <!--    <meta http-equiv="refresh" content="30"/> -->
+    <% if @pagina == 1  %>
+      <meta http-equiv="refresh" content="60;url=/front/gerencial?page=#{@pagina}" />
+    <% elsif @pagina == 2 %>
+      <meta http-equiv="refresh" content="60;url=/front/gerencial" />
+    <% end %>
   </head:>
   <content: replace>
-    <div class="page-header" id="pantalla">
+    <div class="content-body">
       <div style="margin-left:33% ;padding-top: 1%;font-size:24px;color:RED">
+        TABLERO GERENCIAL
         <%= Time.now.strftime("%d/%m/%Y %H:%M") %>
       </div>
-    </div>
-
-    <div class="content-body">
       <div style="margin-top:10px;">
-        <div class="parte-izquierda" style="width:47%;float:right;">
-          <tabla-clientes-ots-terminadas/><br/>
-
-        </div>
-        <div class="parte-derecha" style="width:50%">
-          <tabla-total-ots/><br/>
-          <tabla-actividad/>
-        </div>
+      <% if @pagina == 2  %>
+        <tabla-clientes-ots-terminadas/><br/>
+        <tabla-total-ots/><br/>
+      <% end %>
+      <% if @pagina == 1  %>
+        <tabla-actividad/>
+      <% end %>
       </div>
     </div>
   </content:>
 </page>
 
 <def tag="tabla-total-ots">
-  <label style="color:#fff; font-size:20px;">Total por OTS</label>
-  <table class="tablero">
-    <tbody>
-      <tr>
-		    <th width="5%" style="text-align:center;">TIPO OT</th>
-        <th width="5%" style="text-align:center;">DIA</th>
-        <th width="5%" style="text-align:center;">AYER</th>
-        <th width="5%" style="text-align:center;">SEMANA</th>
-        <th width="5%" style="text-align:center;">MES</th>
-        <th width="5%" style="text-align:center;">AÑO</th>
-      </tr>
-      <tr>
-		    <th width="5%" style="text-align:center;">N=NUEVAS</th>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_hoy.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_ayer.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_semana.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_mes.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_ano.count %></td>
-      </tr>
-      <tr>
-		    <th width="5%" style="text-align:center;">M=MODIFICACIÓN</th>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_hoy.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_ayer.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_semana.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_mes.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_ano.count %></td>
-      </tr>
-      <tr>
-		    <th width="5%" style="text-align:center;">P=POSTSCRIPT</th>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_hoy.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_ayer.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_semana.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_mes.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_ano.count %></td>
-      </tr>
-      <tr>
-		    <th width="5%" style="text-align:center;">R=REPOSICIONES</th>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_hoy.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_ayer.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_semana.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_mes.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_ano.count %></td>
-      </tr>
-      <tr>
-		    <th width="5%" style="text-align:center;">TOTAL</th>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.total_hoy.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.total_ayer.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.total_semana.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.total_mes.count %></td>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.total_ano.count %></td>
-      </tr>
-      <tr>
-		    <th width="5%" style="text-align:center;">C=CREADAS</th>
-        <td width="5%" style="text-align:center;"><%= OrdTrab.creadas_hoy.count %></td>
-      </tr>
-    </tbody>
-  </table>
+  <div id="tabla-total-ots">
+    <label style="color:#fff; font-size:20px;">Total por OTS</label>
+    <table class="tablero" style="border-style:none;">
+      <tbody>
+        <tr>
+		      <th width="5%" style="text-align:center;">TIPO OT</th>
+          <th width="5%" style="text-align:center;">DIA</th>
+          <th width="5%" style="text-align:center;">AYER</th>
+          <th width="5%" style="text-align:center;">SEMANA</th>
+          <th width="5%" style="text-align:center;">MES</th>
+          <th width="5%" style="text-align:center;">AÑO</th>
+        </tr>
+        <tr>
+		      <th width="5%" style="text-align:center;">N=NUEVAS</th>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_hoy.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_ayer.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_semana.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_mes.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.nuevas_ano.count %></td>
+        </tr>
+        <tr>
+		      <th width="5%" style="text-align:center;">M=MODIFICACIÓN</th>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_hoy.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_ayer.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_semana.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_mes.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.modificacion_ano.count %></td>
+        </tr>
+        <tr>
+		      <th width="5%" style="text-align:center;">P=POSTSCRIPT</th>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_hoy.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_ayer.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_semana.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_mes.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.postscript_ano.count %></td>
+        </tr>
+        <tr>
+		      <th width="5%" style="text-align:center;">R=REPOSICIONES</th>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_hoy.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_ayer.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_semana.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_mes.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.reposiciones_ano.count %></td>
+        </tr>
+        <tr>
+		      <th width="5%" style="text-align:center;">S=SIN COSTO</th>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.sincosto_hoy.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.sincosto_ayer.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.sincosto_semana.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.sincosto_mes.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.sincosto_ano.count %></td>
+        </tr>
+        <tr>
+		      <th width="5%" style="text-align:center;">TOTAL</th>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.total_hoy.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.total_ayer.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.total_semana.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.total_mes.count %></td>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.total_ano.count %></td>
+        </tr>
+        <tr>
+		      <th width="5%" style="text-align:center;">C=CREADAS</th>
+          <td width="5%" style="text-align:center;"><%= OrdTrab.creadas_hoy.count %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </def>
 
 <def tag="tabla-clientes-ots-terminadas">
-  <label style="color:#fff; font-size:20px;">Clientes OTs Terminadas</label>
-  <table class="tablero">
-    <tbody>
-      <tr>
-		    <th width="5%" style="text-align:center;">CLIENTE</th>
-        <th width="5%" style="text-align:center;">DIA</th>
-        <th width="5%" style="text-align:center;">AYER</th>
-        <th width="5%" style="text-align:center;">SEMANA</th>
-        <th width="5%" style="text-align:center;">MES</th>
-        <th width="5%" style="text-align:center;">AÑO</th>
-      </tr>
-      <% for c in Cliente.pantalla_gerencial %>
-      <tr>
-		    <th width="5%" style="text-align:center;"><%= c.name %></th>
-        <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_hoy.count %></td>
-        <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_ayer.count %></td>
-        <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_semana.count %></td>
-        <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_mes.count %></td>
-        <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_ano.count %></td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <div id="tabla-clientes-ots-terminadas" style="float:left; margin-right:40px; margin-top:18px">
+    <label style="color:#fff; font-size:20px;">Clientes OTs Terminadas</label>
+    <table class="tablero" >
+      <tbody>
+        <tr>
+		      <th width="5%" style="text-align:center;">CLIENTE</th>
+          <th width="5%" style="text-align:center;">DIA</th>
+          <th width="5%" style="text-align:center;">AYER</th>
+          <th width="5%" style="text-align:center;">SEMANA</th>
+          <th width="5%" style="text-align:center;">MES</th>
+          <th width="5%" style="text-align:center;">AÑO</th>
+        </tr>
+        <% for c in Cliente.pantalla_gerencial %>
+        <tr>
+		      <th width="5%" style="text-align:center;"><%= c.name %></th>
+          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_terminadas_hoy.count %></td>
+          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_terminadas_ayer.count %></td>
+          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_terminadas_semana.count %></td>
+          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_terminadas_mes.count %></td>
+          <td width="5%" style="text-align:center;"><%= c.ord_trabs.total_terminadas_ano.count %></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
 </def>
 
 <def tag="tabla-actividad">
   <if test="&!@users.blank?">
-    <label style="color:#fff; font-size:20px;">Actividad por usuario</label>
-    <table class="tablero" id="tactividad" style="border:0px;">
-      <tbody>
-        <tr>
-          <th rowspan="2"></th>
-          <th colspan="7"><center>Operadores</center></th>
-          <th colspan="8"><center>Procesos terminados del dia</center></th>
-        </tr>
-        <tr>
-          <th>Total HH</th>
-          <th>Habilitadas</th>
-          <th>Iniciadas</th>
-          <th>Terminadas</th>
-          <th>Ayer</th>
-          <th>Semana</th>
-          <th>Mes</th>
-          <th>PDF</th>
-          <th>REV PDF</th>
-          <th>PRINTER</th>
-          <th>MATRICERIA</th>
-          <th>MONTAJE</th>
-          <th>REVISION</th>
-          <th>POLIMERO</th>
-          <th>DESPACHO</th>
-        </tr>
-        <% for u in @users %> 
-          <tr class="#{scope.even_odd}">
-            <th style="min-width:60px;"><%= u.name.first(10) %></th>
-            <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'habilitada', Date.today]).count + OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'iniciada', Date.today]).count %>
-            </td>
-            <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'habilitada', Date.today]).count %></td>
-            <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'iniciada', Date.today]).count %></td>
-            <td><%= OrdTrab.find(:all, :conditions =>["encargado_id = ? AND state = ? AND created_at = ?", u.id, 'terminada', Date.today]).count %></td>
-            <td><%= OrdTrab.total_ayer.count %></td>
-            <td><%= OrdTrab.total_semana.count %></td>
-            <td><%= OrdTrab.total_mes.count %></td>
-            <td><%= u.int_tipo("termino", 2) %></td>
-            <td><%= u.int_tipo("termino", 16) %></td>
-            <td><%= u.int_tipo("termino", 3) %></td>
-            <td><%= u.int_tipo("termino", 4) %></td>
-            <td><%= u.int_tipo("termino", 5) %></td>
-            <td><%= u.int_tipo("termino", 14) %></td>
-            <td><%= u.int_tipo("termino", 7) %></td>
-            <td><%= u.int_tipo("termino", 12) %></td>
+    <div id="tabla-actividad">
+      <label style="color:#fff; font-size:20px;">Actividad por usuario</label>
+      <table class="tablero" id="tactividad" style="border:0px;">
+        <tbody>
+          <tr>
+            <th rowspan="3" style="text-align:center;width:10%"></th>
+            <th colspan="7" style="text-align:center;width:45%">OPERADORES</th>
+            <th colspan="8" style="text-align:center;width:45%">PROCESOS TERMINADOS DEL DIA</th>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
+          <tr>
+            <th style="text-align:center;" colspan="4">Tareas creadas en el dia</th>
+            <th style="text-align:center;" colspan="3">Terminadas Totales</th>
+            <th style="text-align:center;" rowspan="2">PDF</th>
+            <th style="text-align:center;" rowspan="2">REV  PDF</th>
+            <th style="text-align:center;" rowspan="2">PRINTER</th>
+            <th style="text-align:center;" rowspan="2">MATRICERIA</th>
+            <th style="text-align:center;" rowspan="2">MONTAJE</th>
+            <th style="text-align:center;" rowspan="2">REVISION</th>
+            <th style="text-align:center;" rowspan="2">POLIMERO</th>
+            <th style="text-align:center;" rowspan="2">DESPACHO</th>
+          </tr>
+          <tr>
+            <th style="text-align:center;">Total H+I</th>
+            <th style="text-align:center;">Habilitadas</th>
+            <th style="text-align:center;">Iniciadas</th>
+            <th style="text-align:center;">Terminadas</th>
+            <th style="text-align:center;">Ayer</th>
+            <th style="text-align:center;">Semana</th>
+            <th style="text-align:center;">Mes</th>
+          </tr>
+          <% for u in @users %> 
+            <tr class="#{scope.even_odd}">
+              <th style="min-width:60px;"><%= u.name %></th>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'habilitada' AND DATE(created_at) = ?",u.id, Date.today]).count + 
+                      Tarea.all(:conditions => ["asignada_a = ? AND state = 'iniciada' AND DATE(created_at) = ?",u.id, Date.today]).count %>
+              </td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'habilitada' AND DATE(created_at) = ?",u.id, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'iniciada' AND DATE(created_at) = ?",u.id, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND fechafin = ?",u.id, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND fechafin = ?",u.id, Date.yesterday]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND fechafin BETWEEN ? AND ?",u.id, Date.today.beginning_of_week, Date.today.end_of_week]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND fechafin BETWEEN ? AND ?",u.id, Date.today.beginning_of_month, Date.today.end_of_month]).count %></td>
+            <!--Procesos-->
+            <!-- Estos son las tareas que ha terminado cada uno de los empleados. (El encargado de una orden de trabajo no tiene porque ser el mismo que esta asignado a tarea)-->
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 2, Date.today]).count %> </td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 16, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 3, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 4, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 5, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 14, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 7, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 12, Date.today]).count %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </if>
-</def>
-
-<def tag="tabla-tablero">
- 
 </def>

@@ -635,7 +635,7 @@
 <def tag="form" for="User">
   <form merge param="default">
     <error-messages param/>
-    <field-list fields="name, rol, email_address, administrator, iniciales, tablero, state, procesos" param/>
+    <field-list fields="name, rol, email_address, administrator, iniciales, tablero, gerencial, state, procesos" param/>
     <div param="actions">
       <submit label="#{ht 'users.actions.save', :default=>['Save']}" param/><or-cancel param="cancel"/>
     </div>

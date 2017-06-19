@@ -122,69 +122,101 @@ class OrdTrab < ActiveRecord::Base
   }
 
   # Scopes pantalla gerencial
+   ### TOTAL CREADAS
   # NUEVAS
-  named_scope :nuevas_hoy, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?",
+  named_scope :nuevas_hoy, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?",
     Tipoot.find_by_name("N (Trabajo Nuevo)"), Date.today]}}
-  named_scope :nuevas_ayer, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?", 
+  named_scope :nuevas_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
     Tipoot.find_by_name("N (Trabajo Nuevo)"), Date.yesterday]}}
-  named_scope :nuevas_semana, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+  named_scope :nuevas_semana, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("N (Trabajo Nuevo)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
-  named_scope :nuevas_mes, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+  named_scope :nuevas_mes, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("N (Trabajo Nuevo)"), Date.today.beginning_of_month.beginning_of_day, Date.today.end_of_month.end_of_day]}}
-  named_scope :nuevas_ano, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+  named_scope :nuevas_ano, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("N (Trabajo Nuevo)"), Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
 
   # MODIFICACION
-  named_scope :modificacion_hoy, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?", 
+  named_scope :modificacion_hoy, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
     Tipoot.find_by_name("M (Modificacion)"), Date.today]}}
-  named_scope :modificacion_ayer, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?", 
+  named_scope :modificacion_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
     Tipoot.find_by_name("M (Modificacion)"), Date.yesterday]}}
-  named_scope :modificacion_semana, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+  named_scope :modificacion_semana, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("M (Modificacion)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
-  named_scope :modificacion_mes, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+  named_scope :modificacion_mes, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("M (Modificacion)"), Date.today.beginning_of_month.beginning_of_day, Date.today.end_of_month.end_of_day]}}
-  named_scope :modificacion_ano, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+  named_scope :modificacion_ano, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("M (Modificacion)"), Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
 
   # POSTSCRIPT
-  named_scope :postscript_hoy, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?", 
+  named_scope :postscript_hoy, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
     Tipoot.find_by_name("P (PostScript)"), Date.today]}}
-  named_scope :postscript_ayer, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?", 
+  named_scope :postscript_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
     Tipoot.find_by_name("P (PostScript)"), Date.yesterday]}}
-  named_scope :postscript_semana, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+  named_scope :postscript_semana, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("P (PostScript)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
-  named_scope :postscript_mes, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+  named_scope :postscript_mes, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("P (PostScript)"), Date.today.beginning_of_month.beginning_of_day, Date.today.end_of_month.end_of_day]}}
-  named_scope :postscript_ano, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+  named_scope :postscript_ano, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("P (PostScript)"), Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
 
   # REPOSICION
-  named_scope :reposiciones_hoy, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?",
+  named_scope :reposiciones_hoy, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?",
     Tipoot.find_by_name("R (Reposicion)"), Date.today]}}
-  named_scope :reposiciones_ayer, lambda {{:conditions => ["tipoot_id = ? AND fechafin = ?", 
+  named_scope :reposiciones_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
     Tipoot.find_by_name("R (Reposicion)"), Date.yesterday]}}
-  named_scope :reposiciones_semana, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+  named_scope :reposiciones_semana, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("R (Reposicion)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
-  named_scope :reposiciones_mes, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+  named_scope :reposiciones_mes, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("R (Reposicion)"), Date.today.beginning_of_month.beginning_of_day, Date.today.end_of_month.end_of_day]}}
-  named_scope :reposiciones_ano, lambda {{:conditions => ["tipoot_id = ? AND fechafin BETWEEN ? AND ?",
+  named_scope :reposiciones_ano, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("R (Reposicion)"), Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
 
+  # SIN COSTO
+  named_scope :sincosto_hoy, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?",
+    Tipoot.find_by_name("S (Sin Costo)"), Date.today]}}
+  named_scope :sincosto_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
+    Tipoot.find_by_name("S (Sin Costo)"), Date.yesterday]}}
+  named_scope :sincosto_semana, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
+    Tipoot.find_by_name("S (Sin Costo)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
+  named_scope :sincosto_mes, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
+    Tipoot.find_by_name("S (Sin Costo)"), Date.today.beginning_of_month.beginning_of_day, Date.today.end_of_month.end_of_day]}}
+  named_scope :sincosto_ano, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
+    Tipoot.find_by_name("S (Sin Costo)"), Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
+
+
   # TOTAL
-  named_scope :total_hoy, lambda {{:conditions => ["fechafin = ?",
+  named_scope :total_hoy, lambda {{:conditions => ["DATE(created_at) = ?",
     Date.today]}}
-  named_scope :total_ayer, lambda {{:conditions => ["fechafin = ?", 
+  named_scope :total_ayer, lambda {{:conditions => ["DATE(created_at) = ?", 
     Date.yesterday]}}
-  named_scope :total_semana, lambda {{:conditions => ["fechafin BETWEEN ? AND ?",
+  named_scope :total_semana, lambda {{:conditions => ["DATE(created_at) BETWEEN ? AND ?",
     Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
-  named_scope :total_mes, lambda {{:conditions => ["fechafin BETWEEN ? AND ?",
+  named_scope :total_mes, lambda {{:conditions => ["DATE(created_at) BETWEEN ? AND ?",
     Date.today.beginning_of_month.beginning_of_day, Date.today.end_of_month.end_of_day]}}
-  named_scope :total_ano, lambda {{:conditions => ["fechafin BETWEEN ? AND ?",
+  named_scope :total_ano, lambda {{:conditions => ["DATE(created_at) BETWEEN ? AND ?",
     Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
 
-  # CREADAS
-  named_scope :creadas_hoy, lambda {{:conditions => ["created_at BETWEEN ? AND ?",
-    Date.today.beginning_of_day, Date.today.end_of_day]}}
+  # CREADAS FILTRAR POR ESTADO CREADA
+  named_scope :creadas_hoy, lambda {{:conditions => ["DATE(created_at) = ? AND state = ?",
+    Date.today, 'creada']}}
+
+
+ ### TOTAL TERMINADAS
+  # TOTAL
+  named_scope :total_terminadas_hoy, lambda {{:conditions => ["fechafin = ?",
+    Date.today]}}
+  named_scope :total_terminadas_ayer, lambda {{:conditions => ["fechafin = ?", 
+    Date.yesterday]}}
+  named_scope :total_terminadas_semana, lambda {{:conditions => ["fechafin BETWEEN ? AND ?",
+    Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
+  named_scope :total_terminadas_mes, lambda {{:conditions => ["fechafin BETWEEN ? AND ?",
+    Date.today.beginning_of_month.beginning_of_day, Date.today.end_of_month.end_of_day]}}
+  named_scope :total_terminadas_ano, lambda {{:conditions => ["fechafin BETWEEN ? AND ?",
+    Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
+
+ 
+
+
 
   def armacod
     armac = ""
@@ -221,6 +253,10 @@ class OrdTrab < ActiveRecord::Base
   # Boolean para informar si estan asignadas todas las tareas cuyos procesos pertenecen a grupos de procesos asignables.
   def tarasigs
     tarasi = self.sortars.*.asignada_a.include?(nil) ? false : true
+	end
+	
+	def alguna_asignada
+    self.sortars.*.asignada_a.uniq.size == 1 && self.sortars.*.asignada_a.include?(nil) ? false : true
 	end
 
 # Asigna un codigo de producto (codCliente) a la orden de trabajo, correlativo desde la ultima para ese cliente
@@ -273,17 +309,11 @@ class OrdTrab < ActiveRecord::Base
 
  # Permite volver a una tarea anterior, habilitandola
  def volver_a(procid,usuario)
- 		esteprocid = Proceso.find(procid)
  		tares = self.tareas || []
  		if tares != []
 			estata = tares.proceso_id_is(procid).first
-			if Proceso.volver_desde_revision.include?(Proceso.find(procid)) || Proceso.rev.include?(Proceso.find(procid))
-				estata.lifecycle.habilitar!(usuario)
-			else
-				nil
-			end
-      
-		end
+  	  estata.lifecycle.habilitar!(usuario) if estata
+  	end
  end
 
 
@@ -310,7 +340,7 @@ class OrdTrab < ActiveRecord::Base
 
 		create :crear, :become => :creada, :available_to => "User.supervisores"
 
-		transition :habilitar, { :creada => :habilitada }, :available_to => "User.supervisores", :if => "self.tarasigs"
+		transition :habilitar, { :creada => :habilitada }, :available_to => "User.supervisores", :if => "self.alguna_asignada"
 
    	transition :eliminar, { :habilitada => :destroy }, :available_to => "User.supervisores"
 
@@ -323,7 +353,7 @@ class OrdTrab < ActiveRecord::Base
     transition :eliminar, { :iniciada => :destroy }, :available_to => "User.supervisores"
 
 		transition :terminar, { :iniciada => :terminada }, :available_to => "User.supervisores" do
-      self.fechafin = Time.now
+      guardar_fechafin
     end
 
     transition :reactivar, {:terminada => :habilitada}, :available_to => "User.supervisores" do
@@ -454,8 +484,13 @@ class OrdTrab < ActiveRecord::Base
 	end
 
   def before_update
+    usuario = acting_user.id if acting_user
     Auditoria.create(
-      :tipo => "modificación", :fecha => DateTime.now, :user_id => acting_user.id, :ord_trab_id => self.id, :detalles => "#{self.inspect}"
+      :tipo => "modificación", 
+      :fecha => DateTime.now, 
+      :user_id => usuario, 
+      :ord_trab_id => self.id, 
+      :detalles => "#{self.inspect}"
     )
   end
 
@@ -486,11 +521,21 @@ class OrdTrab < ActiveRecord::Base
         tark.save
       end
     end
+    # Asignamos a los usuarios polimero y facturacion las tareas correspondientes.
+    if self.tareas.count > 0
+      self.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("Polimero")]).first.update_attribute(:asignada_a, User.find_by_email_address("polimero@tecniflex.cl").id) if self.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("Polimero")]).first
+      self.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("Facturacion")]).first.update_attribute(:asignada_a, User.find_by_email_address("facturacion@tecniflex.cl").id) if self.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("Facturacion")]).first
+    end
   end
 
   def after_create
     usuario = acting_user.id if acting_user
     Auditoria.create(:tipo => "creación",:fecha => DateTime.now,:user_id => usuario, :ord_trab_id => self.id, :detalles => "#{self.inspect}" )
+    # Asignamos a los usuarios polimero y facturacion las tareas correspondientes.
+    if self.tareas.count > 0
+      self.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("Polimero")]).first.update_attribute(:asignada_a, User.find_by_email_address("polimero@tecniflex.cl").id) if self.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("Polimero")]).first
+      self.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("Facturacion")]).first.update_attribute(:asignada_a, User.find_by_email_address("facturacion@tecniflex.cl").id) if self.tareas.find(:all, :conditions => ["proceso_id = ?", Proceso.find_by_nombre("Facturacion")]).first
+    end
   end
 
   def before_destroy
@@ -801,6 +846,11 @@ class OrdTrab < ActiveRecord::Base
     else
       @cons = 0
     end
+  end
+  
+  def guardar_fechafin
+    self.fechafin = Date.today
+    self.save
   end
   # --- Permissions --- #
 

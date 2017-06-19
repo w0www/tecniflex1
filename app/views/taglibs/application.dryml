@@ -419,7 +419,7 @@
 
 <extend tag="form" for="User">
 	<old-form merge>
-    <field-list: fields="name, rol, email_address, administrator, iniciales, state, tablero, procesos">
+    <field-list: fields="name, rol, email_address, administrator, iniciales, state, tablero, gerencial, procesos">
     	<procesos-view:>
     		<check-many/>
     	</procesos-view:>

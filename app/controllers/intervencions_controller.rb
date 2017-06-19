@@ -135,21 +135,31 @@ class IntervencionsController < ApplicationController
         # Actualizamos la Orden para actualizar el codigo de color
         ord_trab.update_attribute(:color, ord_trab.calcular_color_tablero(ord_trab)) if ord_trab.tareas_terminadas? && ord_trab.color.blank?
       elsif params[:envio] == "recibir"
-        params[:vuelta] ? this.tarea.lifecycle.cambiar!(current_user) : this.tarea.lifecycle.recibir!(current_user)
+        this.tarea.lifecycle.recibir!(current_user)
         this.rechazada = true
         this.termino = Time.now
 		  elsif params[:envio] == "iniciar"
-		  	unless this.tarea.state == "habilitada"
-          this.inicio = Time.now
-					this.tarea.lifecycle.reiniciar!(current_user)
+	      this.inicio = Time.now
+		    if this.tarea.state == "detenida"
+		      this.tarea.lifecycle.reiniciar!(current_user)
+		    elsif this.tarea.state == "habilitada"
+					this.tarea.lifecycle.iniciar!(current_user)
 				end
       elsif params[:envio] == "rechazar"
+        if this.tarea.proceso.nombre.downcase == 'printer' && params[:vuelta] == "on"
+          proceso_rechazo = Proceso.find_by_nombre("vistobueno").id
+        elsif this.tarea.proceso.nombre.downcase == 'printer'
+          proceso_rechazo = Proceso.find_by_nombre("printer").id
+        elsif params[:intervencion] && params[:intervencion][:procdest]
+          proceso_rechazo = params[:intervencion][:procdest]
+        end
         this.colores = "#{params[:intervencion][:colores]}" if params[:intervencion][:colores] && !params[:intervencion][:colores].blank?
         this.rechazada = true
 				this.tarea.lifecycle.rechazar!(current_user)
         this.termino = Time.now
-        this.tarea.proceso.volver_a_revision ? this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user) :
-                                               this.tarea.ord_trab.volver_a(Proceso.find_by_nombre(Proceso.find_by_nombre(params[:procdest]).id),current_user)
+        this.tarea.ord_trab.volver_a(proceso_rechazo,current_user)
+        this.save
+        redirect_to "/"
       elsif params[:envio] == "enviar"
 				this.tarea.lifecycle.enviar!(current_user)
         this.termino = Time.now
@@ -183,18 +193,32 @@ class IntervencionsController < ApplicationController
         this.termino = Time.now
         this.save
         redirect_to "/"
+      elsif params[:envio] == "iniciar"
+	      this.inicio = Time.now
+		    if this.tarea.state == "detenida"
+		      this.tarea.lifecycle.reiniciar!(current_user)
+		    elsif this.tarea.state == "habilitada"
+					this.tarea.lifecycle.iniciar!(current_user)
+				end
 			elsif params[:envio] == "recibir"
 				this.tarea.lifecycle.recibir!(current_user)
         this.rechazada = true
         this.termino = Time.now
-			elsif params[:envio] == "rechazar"
+       elsif params[:envio] == "rechazar"
+        if this.tarea.proceso.nombre.downcase == 'printer' && params[:vuelta] == "on"
+          proceso_rechazo = Proceso.find_by_nombre("vistobueno").id
+        elsif this.tarea.proceso.nombre.downcase == 'printer'
+          proceso_rechazo = Proceso.find_by_nombre("printer").id
+        elsif params[:intervencion] && params[:intervencion][:procdest]
+          proceso_rechazo = params[:intervencion][:procdest]
+        end
         this.colores = params[:intervencion][:colores] if params[:intervencion][:colores] && !params[:intervencion][:colores].blank?
         this.rechazada = true
 				this.tarea.lifecycle.rechazar!(current_user)
         this.termino = Time.now
-        this.tarea.proceso.volver_a_revision ? this.tarea.ord_trab.volver_a(Proceso.rev.first.id,current_user) :
-                                               this.tarea.ord_trab.volver_a(Proceso.find_by_nombre(params[:procdest]).id,current_user)
-
+        this.tarea.ord_trab.volver_a(proceso_rechazo,current_user)
+        this.save
+        redirect_to "/"
       end
       this.save
       hobo_ajax_response if request.xhr?

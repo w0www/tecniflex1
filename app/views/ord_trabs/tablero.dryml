@@ -62,30 +62,24 @@
                         if proces == 'Revision'
                           proces = "RevisionMM"
                         elsif proces == 'Despacho'
-                          proces = "Polimero"
+                          proces = "Facturacion"
                         end
                       %>
                       <% tarea = tod.tareas.proceso_is(proces) ? tod.tareas.proceso_is(proces).first : nil %>
                       <td class="#{tarea.state if tarea}" rowspan="2">
-                        <unless test="&tarea.blank?">
-                          <if test="&tarea.proceso">
-                            <if test="&tarea.ciclo.to_i >= 3">
-                              <div class="ciclo red"><%= tarea.ciclo unless proce.to_s.downcase == 'revisionvb' %></div>
-                            </if>
+                        <if test="&tarea">
+                          <if test="&tarea.ciclo.to_i >= 3">
+                            <div class="ciclo red"><%= tarea.ciclo unless proce.to_s.downcase == 'revisionvb' %></div>
                           </if>
-                          <else>
-                            <if test="&(tarea.ciclo.to_i > 1) && (tarea.ciclo.to_i < 3)">
-                              <div class="ciclo yel"><%= tarea.ciclo unless proce.to_s.downcase == 'revisionvb' %></div>
-                            </if>
-                            <else>
-                              <div class="ciclo ver"><%= tarea.ciclo unless proce.to_s.downcase == 'revisionvb' %></div>
-                            </else>
-                          </else>
-                        </unless>
-                      <if test="&tarea">
-                        <%= tarea.state %>
-                      </if><br/>
-                      <p class="iniciales"><%= tod.usersgp(proce.abreviacion) -%></p>
+                          <if test="&(tarea.ciclo.to_i > 1) && (tarea.ciclo.to_i < 3)">
+                            <div class="ciclo yel"><%= tarea.ciclo unless proce.to_s.downcase == 'revisionvb' %></div>
+                          </if>
+                          <if test="&tarea.ciclo.to_i == 1">
+                            <div class="ciclo ver"><%= tarea.ciclo unless proce.to_s.downcase == 'revisionvb' %></div>
+                          </if>
+                          <%= tarea.state %>
+                        </if><br/>
+                        <p class="iniciales"><%= tod.usersgp(proce.abreviacion) -%></p>
                       </td>
                     <% end %>
                 <% 
