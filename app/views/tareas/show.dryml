@@ -161,6 +161,7 @@
   <after-submit uri="/tareas/#{@tarea.id}" />
   <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
   <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{@tarea.id}"/>
+  <div style="margin-top:5px">Observaciones <input:observaciones style="height:1.3em;width: 80%;"/></div> 
 </def>
 
 <def tag="input-detener">
