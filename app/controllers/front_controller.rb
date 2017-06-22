@@ -64,13 +64,13 @@ class FrontController < ApplicationController
     # id_facturacion = Proceso.find_by_nombre("facturacion").id
     @tareas = Tarea.find(:all, :conditions => ["proceso_id IN (?) AND state IN (?)", [id_polimero,id_revisionmm],["habilitada","iniciada", "detenida","enviada","recibida", "en_revision"]], :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
 
-    @tareas_terminadas_hoy = Tarea.find(:all, :conditions => ["proceso_id = ? AND state = ? AND DAY(updated_at) = ? AND MONTH(updated_at) = ? AND YEAR(updated_at) = ?",7, 'terminada', Date.today.day, Date.today.month, Date.today.year]).count
+    @tareas_terminadas_hoy = Tarea.find(:all, :conditions => ["proceso_id = ? AND state = ? AND DATE(updated_at) = ?",7, 'terminada', Date.today]).count
 
-    @tareas_terminadas_ayer = Tarea.find(:all, :conditions => ["proceso_id = ? AND state = ? AND DAY(updated_at) = ? AND MONTH(updated_at) = ? AND YEAR(updated_at) = ?",7, 'terminada', Date.yesterday.day, Date.yesterday.month, Date.yesterday.year]).count
+    @tareas_terminadas_ayer = Tarea.find(:all, :conditions => ["proceso_id = ? AND state = ? AND DATE(updated_at) = ?",7, 'terminada', Date.yesterday]).count
 
-    @tareas_terminadas_mes = Tarea.find(:all, :conditions => ["proceso_id = ? AND state = ? AND MONTH(updated_at) = ? AND YEAR(updated_at) = ?",7, 'terminada', Date.today.month, Date.today.year]).count
+    @tareas_terminadas_mes = Tarea.find(:all, :conditions => ["proceso_id = ? AND state = ? AND DATE(updated_at) BETWEEN ? AND ?",7, 'terminada', Date.today.beginning_of_month, Date.today.end_of_month]).count
 
-    @tareas_terminadas_aio = Tarea.find(:all, :conditions => ["proceso_id = ? AND state = ? AND YEAR(updated_at) = ?",7, 'terminada', Date.today.year]).count
+    @tareas_terminadas_aio = Tarea.find(:all, :conditions => ["proceso_id = ? AND state = ? AND DATE(updated_at) BETWEEN ? AND ?",7, 'terminada', Date.today.beginning_of_year, Date.today.end_of_year]).count
 
     @tareas_terminadas_totales = Tarea.find(:all, :conditions => ["proceso_id = ? AND state = ?",7, 'terminada']).count
 
