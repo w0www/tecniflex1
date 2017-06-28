@@ -9,6 +9,8 @@ ActionController::Routing::Routes.draw do |map|
   map.pantalla 'front/pantalla', :controller => 'front', :action => 'pantalla'
   map.polimeros 'front/polimeros', :controller => 'front', :action => 'polimeros'
   map.gerencial 'front/gerencial', :controller => 'front', :action => 'gerencial'
+  map.preprensa 'front/preprensa', :controller => 'front', :action => 'preprensa'
+  map.despacho 'front/despacho', :controller => 'front', :action => 'despacho'
   map.reposicion 'ord_trabs/:id/reposicion', :controller => 'ord_trabs', :action => 'show'
 
   Hobo.add_routes(map)
