@@ -1,0 +1,79 @@
+<page title="Preprensa" without-header class="pantalla" style="background-color:black !important">
+  <head:>
+    <param-content />
+      <meta http-equiv="refresh" content="60;url=/front/preprensa" />
+  </head:>
+  <content: replace>
+    <div class="content-body">
+      <div style="margin-left:33% ;padding-top: 1%;font-size:24px;color:RED">
+        TABLERO PREPRENSA
+        <%= Time.now.strftime("%d/%m/%Y %H:%M") %>
+      </div>
+      <div style="margin-top:10px;">
+        <tabla-actividad/>
+      </div>
+    </div>
+  </content:>
+</page>
+
+<def tag="tabla-actividad">
+  <if test="&!@users.blank?">
+    <div id="tabla-actividad">
+      <label style="color:#fff; font-size:20px;">Actividad por usuario</label>
+      <table class="tablero" id="tactividad" style="border:0px;">
+        <tbody>
+          <tr>
+            <th rowspan="3" style="text-align:center;width:10%"></th>
+            <th colspan="7" style="text-align:center;width:45%">OPERADORES</th>
+            <th colspan="8" style="text-align:center;width:45%">PROCESOS TERMINADOS DEL DIA</th>
+          </tr>
+          <tr>
+            <th style="text-align:center;" colspan="4">Tareas creadas en el dia</th>
+            <th style="text-align:center;" colspan="3">Terminadas Totales</th>
+            <th style="text-align:center;" rowspan="2">PDF</th>
+            <th style="text-align:center;" rowspan="2">REV  PDF</th>
+            <th style="text-align:center;" rowspan="2">PRINTER</th>
+            <th style="text-align:center;" rowspan="2">MATRICERIA</th>
+            <th style="text-align:center;" rowspan="2">MONTAJE</th>
+            <th style="text-align:center;" rowspan="2">REVISION</th>
+            <th style="text-align:center;" rowspan="2">POLIMERO</th>
+            <th style="text-align:center;" rowspan="2">DESPACHO</th>
+          </tr>
+          <tr>
+            <th style="text-align:center;">Total H+I</th>
+            <th style="text-align:center;">Habilitadas</th>
+            <th style="text-align:center;">Iniciadas</th>
+            <th style="text-align:center;">Terminadas</th>
+            <th style="text-align:center;">Ayer</th>
+            <th style="text-align:center;">Semana</th>
+            <th style="text-align:center;">Mes</th>
+          </tr>
+          <% for u in @users %> 
+            <tr class="#{scope.even_odd}">
+              <th style="min-width:60px;"><%= u.name %></th>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'habilitada' AND DATE(created_at) = ?",u.id, Date.today]).count + 
+                      Tarea.all(:conditions => ["asignada_a = ? AND state = 'iniciada' AND DATE(created_at) = ?",u.id, Date.today]).count %>
+              </td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'habilitada' AND DATE(created_at) = ?",u.id, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'iniciada' AND DATE(created_at) = ?",u.id, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND fechafin = ?",u.id, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND fechafin = ?",u.id, Date.yesterday]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND fechafin BETWEEN ? AND ?",u.id, Date.today.beginning_of_week, Date.today.end_of_week]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND fechafin BETWEEN ? AND ?",u.id, Date.today.beginning_of_month, Date.today.end_of_month]).count %></td>
+            <!--Procesos-->
+            <!-- Estos son las tareas que ha terminado cada uno de los empleados. (El encargado de una orden de trabajo no tiene porque ser el mismo que esta asignado a tarea)-->
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 2, Date.today]).count %> </td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 16, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 3, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 4, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 5, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 14, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 7, Date.today]).count %></td>
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'terminada' AND proceso_id = ? AND fechafin = ?",u.id, 12, Date.today]).count %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </if>
+</def>
