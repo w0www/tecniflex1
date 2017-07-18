@@ -69,7 +69,8 @@ class FrontController < ApplicationController
     id_polimero = Proceso.find_by_nombre("polimero").id
     id_revisionmm = Proceso.find_by_nombre("revisionmm").id
     id_facturacion = Proceso.find_by_nombre("facturacion").id
-    @tareas = Tarea.find(:all, :conditions => ["proceso_id IN (?) AND state IN (?)", [id_polimero,id_revisionmm,id_facturacion],["habilitada","iniciada", "detenida","enviada","recibida", "en_revision"]], :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
+
+    @tareas = Tarea.find(:all, :conditions => ["proceso_id IN (?) AND state IN (?)", [id_polimero,id_revisionmm],["habilitada","iniciada", "detenida","enviada","recibida", "en_revision"]], :include => [:proceso => :grupoproc], :order => "grupoprocs.position") + Tarea.find(:all, :conditions => ["proceso_id IN (?) AND state IN (?)", [id_facturacion],["habilitada"]], :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
 
     @tareas_terminadas_hoy = Tarea.find(:all, :conditions => ["proceso_id IN (?) AND state = ? AND DATE(updated_at) = ?",[id_polimero,id_revisionmm,id_facturacion], 'terminada', Date.today]).count
 
