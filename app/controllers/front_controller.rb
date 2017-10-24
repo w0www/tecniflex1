@@ -168,6 +168,19 @@ class FrontController < ApplicationController
     
   end
   
+  def preprensa2
+    @hora_actual = DateTime.now.in_time_zone
+    @grupro = Grupoproc.tablero.order_by(:position) - [Grupoproc.find_by_nombre("Despacho")]
+    @procesos = Proceso.order_by(:position)
+    @error = 0
+
+    inicial = Date.today.beginning_of_day - 6.months
+    final = Date.today.end_of_day 
+    @todas = OrdTrab.find(:all, :conditions => ["fechaEntrega between ? AND ?", inicial, final]).paginate(:page => params[:page], :per_page => 20)
+    
+  end
+  
+  
   def eliminar
     tarea = Delayed::Job.find(params[:id])
     tarea.delete

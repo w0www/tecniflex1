@@ -159,7 +159,7 @@
           <% for u in @users %> 
             <tr class="#{scope.even_odd}">
               <th style="min-width:60px;"><%= u.name %></th>
-              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'habilitada' AND DATE(created_at) = ?",u.id, Date.today]).count + 
+              <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'habilitada' AND DATE(created_at) != ?",u.id, Date.today]).count + 
                       Tarea.all(:conditions => ["asignada_a = ? AND state = 'iniciada' AND DATE(created_at) = ?",u.id, Date.today]).count %>
               </td>
               <td><%= Tarea.all(:conditions => ["asignada_a = ? AND state = 'habilitada' AND DATE(created_at) = ?",u.id, Date.today]).count %></td>
