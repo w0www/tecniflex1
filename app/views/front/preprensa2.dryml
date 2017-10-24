@@ -1,8 +1,22 @@
 <page title="Preprensa2" without-header class="pantalla" style="background-color:black !important">
+  <head:>
+    <param-content />
+  </head:>
   <body: class="definir index-page ord-trab"/>
-  <content:>
-    <header class="content-header"/>
+  <content: replace>
+    <div class="content-body">
       <center><h3>Tablero de prepresa</h3></center>
+      <div style="margin-top:10px">
+        <tabla/>
+      </div>
+    </div>
+
+
+  </content:>
+</page>
+
+
+<def tag="tabla">
       <table class="tablero" style="margin:2%;width:95%;"> 
         <thead>
           <tr>
@@ -58,13 +72,12 @@
                     <p class="iniciales"><%= tod.usersgp(proce.abreviacion) -%></p>
                   </td>
                 <% end %>
-                  <td rowspan="2"><div><%= tod.fechaEntrega %></div></td>
-                  <td rowspan="2">?</td>
+                  <td rowspan="2"><div><%= tod.fechaEntrega.strftime("%d/%m/%Y %H:%M") %></div></td>
+                 <% color = tod.calcular_color_tablero(tod) %>
+                <td rowspan="2" style="background-color:#{color if color};"/>
                 </tr>
                 <tr/>
            <%end%>
         </tbody>
       </table>
-  </content:>
-</page>
-
+</def>
