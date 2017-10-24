@@ -174,7 +174,7 @@ class FrontController < ApplicationController
     @procesos = Proceso.order_by(:position)
     @error = 0
 
-    inicial = Date.today.beginning_of_day - 6.months
+    inicial = Date.today.beginning_of_day
     final = Date.today.end_of_day 
     @todas = OrdTrab.find(:all, :conditions => ["fechaEntrega between ? AND ?", inicial, final]).paginate(:page => params[:page], :per_page => 20)
     
