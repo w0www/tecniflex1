@@ -200,7 +200,7 @@ class FrontController < ApplicationController
     @x_tareas = @tareas.count
     confi = Configuration.find_by_key("nrot_tablero_preprensa2")
     if confi
-      tareas_per_page = confi.value
+      tareas_per_page = confi.value.to_i
     else
       tareas_per_page = 25
     end
