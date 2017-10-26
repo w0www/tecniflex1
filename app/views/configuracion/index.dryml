@@ -42,7 +42,7 @@
       <% confi = Configuration.find_by_key('nrot_tablero_preprensa2') %>
       <if test="&confi && confi.value.blank?">
         <input style="width:20px" type="text" id="nrot_tablero_preprensa2" name="nrot_tablero_preprensa2"/>
-      </if><else><if test="confi && confi.value != ''">
+      </if><else><if test="confi && !confi.value.blank?">
         <input style="width:20px" type="text" id="nrot_tablero_preprensa2" name="nrot_tablero_preprensa2" value="&confi.value"/>
       </if></else>
       <submit value="guardar"/>
