@@ -1,83 +1,89 @@
 <page title="Preprensa2" without-header class="pantalla" style="background-color:black !important">
   <head:>
     <param-content />
+    <meta http-equiv="refresh" content="10;url=/front/preprensa2?page=#{@pagina_siguiente}&total=#{@x_tareas}" />
   </head:>
   <body: class="definir index-page ord-trab"/>
   <content: replace>
     <div class="content-body">
-      <center><h3>Tablero de prepresa</h3></center>
+      
+      <center><div style="font-size:30px;color:#fff;margin-top:2%">Tablero de prepresa</div></center>
+          <div style="float:right;margin-right:5%;font-size:24px;color:#fff">
+        <%= Time.now.strftime("%d/%m/%Y %H:%M") %>   <%= params[:page] %> / <%= @paginas_totales %>
+      </div>
       <div style="margin-top:10px">
         <tabla/>
       </div>
     </div>
-
-
   </content:>
 </page>
 
 
 <def tag="tabla">
-      <table class="tablero" style="margin:2%;width:95%;"> 
-        <thead>
-          <tr>
-            <th class="hr1">OT<br/><span style="color:#555;">Cod. Prod.</span></th>
-            <th class="hr2">Nombre</th>
-            <repeat with="&@grupro">
-              <th>
-                <if test="&this.nombre.delete(' ').downcase == 'vistobueno'">
-                      PDF
-                </if><else><if test="&this.nombre.delete(' ').downcase == 'revisionvb'">
-                      Revision PDF
-                </if></else><else>
-                  <view:nombre/>
-                </else>
-              </th>
-            </repeat>
-            <th class="hr2">Fecha Entrega</th>
-            <th class="hr2">Prioridad</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @todas.each do |tod| %>
-            <% tiempo_total = tod.tiempo_total %>
-            <% cliente = tod.cliente %>
-            <tr class="st#{tod.state}">
-              <th style="width:70px;" class="#{tod.tipoot}" rowspan="2"><a with="&tod"><%=  tod.numOT -%></a><br/><span style="font-weight:normal"><%= cliente ? cliente.sigla : "" -%>-<%= tod.codCliente %>- v.<%= tod.version || 1 %></span></th><th rowspan="2" style="width: 12em;" class="#{tod.state}"><%=  tod.nomprod -%></th>
-                <!-- SUYCCOM HACK: revisar con Jaime estas lineas para intentar optimizar-->
-                <% @grupro.each do |proce|%>
-                  <% proceso = proce.procesos %>
-                  <!-- Limpio los espacios para buscar la tarea y trucamos el proceso revision para que sea RevisionMM y Despacho sea polimero -->
-                  <% proces = proce.to_s.delete(' ') %>
-                  <% 
-                    if proces == 'Revision'
-                      proces = "RevisionMM"
-                    elsif proces == 'Despacho'
-                      proces = "Facturacion"
-                    end
-                  %>
-                  <% tarea = tod.tareas.proceso_is(proces) ? tod.tareas.proceso_is(proces).first : nil %>
-                  <td class="#{tarea.state if tarea}" rowspan="2">
-                    <if test="&tarea">
-                      <if test="&tarea.ciclo.to_i >= 3">
-                        <div class="ciclo red"><%= tarea.ciclo unless proce.to_s.downcase == 'revisionvb' %></div>
-                      </if>
-                      <if test="&(tarea.ciclo.to_i > 1) && (tarea.ciclo.to_i < 3)">
-                        <div class="ciclo yel"><%= tarea.ciclo unless proce.to_s.downcase == 'revisionvb' %></div>
-                      </if>
-                      <if test="&tarea.ciclo.to_i == 1">
-                        <div class="ciclo ver"><%= tarea.ciclo unless proce.to_s.downcase == 'revisionvb' %></div>
-                      </if>
-                      <%= tarea.state %>
-                    </if><br/>
-                    <p class="iniciales"><%= tod.usersgp(proce.abreviacion) -%></p>
-                  </td>
-                <% end %>
-                  <td rowspan="2"><div><%= tod.fechaEntrega.strftime("%d/%m/%Y %H:%M") %></div></td>
-                 <% color = tod.calcular_color_tablero(tod) %>
-                <td rowspan="2" style="background-color:#{color if color};"/>
-                </tr>
-                <tr/>
-           <%end%>
-        </tbody>
-      </table>
+  <table class="tablero" style="margin:2%;width:95%;"> 
+    <thead>
+      <tr>
+        <th class="hr1">OT<br/><span style="color:#555;">Cod. Prod.</span></th>
+        <th class="hr2">Nombre</th>
+        <repeat with="&@grupro">
+          <th>
+            <if test="&this.nombre.delete(' ').downcase == 'vistobueno'">
+                  PDF
+            </if><else><if test="&this.nombre.delete(' ').downcase == 'revisionvb'">
+                  Revision PDF
+            </if></else><else>
+              <view:nombre/>
+            </else>
+          </th>
+        </repeat>
+        <th class="hr2">Fecha Entrega</th>
+        <th class="hr2">Prioridad</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @tareas.each do |tarea| %>
+        <% cliente = tarea.cliente %>
+        <tr class="st#{tarea.state}">
+          <th style="width:70px;" class="#{tarea.tipoot}" rowspan="2">
+            <a with="&tarea"><%=  tarea.numOT -%></a><br/>
+            <span style="font-weight:normal"><%= cliente ? cliente.sigla : "" -%>-<%= tarea.codCliente %>- v.<%= tarea.version || 1 %></span>
+          </th>
+          <th rowspan="2" style="width: 12em;" class="#{tarea.state}"><%=  tarea.nomprod -%></th>
+          <!-- SUYCCOM HACK: revisar con Jaime estas lineas para intentar optimizar-->
+          <% @grupro.each do |proce|%>
+            <% proceso = proce.procesos %>
+            <!-- Limpio los espacios para buscar la tarea y trucamos el proceso revision para que sea RevisionMM y Despacho sea polimero -->
+            <% proces = proce.to_s.delete(' ') %>
+            <% 
+              if proces == 'Revision'
+                proces = "RevisionMM"
+              elsif proces == 'Despacho'
+                proces = "Facturacion"
+              end
+            %>
+          <% t = tarea.tareas.proceso_is(proces) ? tarea.tareas.proceso_is(proces).first : nil %>
+          <td class="#{t.state if t}" rowspan="2">
+            <if test="&t">
+              <if test="&t.ciclo.to_i >= 3">
+                <div class="ciclo red"><%= t.ciclo unless proce.to_s.downcase == 'revisionvb' %></div>
+              </if>
+              <if test="&(t.ciclo.to_i > 1) && (t.ciclo.to_i < 3)">
+                <div class="ciclo yel"><%= t.ciclo unless proce.to_s.downcase == 'revisionvb' %></div>
+              </if>
+              <if test="&t.ciclo.to_i == 1">
+                <div class="ciclo ver"><%= t.ciclo unless proce.to_s.downcase == 'revisionvb' %></div>
+              </if>
+              <%= t.state %>
+            </if><br/>
+            <p class="iniciales"><%= tarea.usersgp(proce.abreviacion) -%></p>
+          </td>
+          <% end %>
+          <td rowspan="2"><div><%= tarea.fechaEntrega.strftime("%d/%m/%Y %H:%M") %></div></td>
+           <% color = tarea.calcular_color_tablero_preprensa_fix(tarea) %>
+          <td rowspan="2" style="background-color:#{color if color};"/>
+        </tr>
+        <tr/>
+      <% end %>
+    </tbody>
+  </table>
 </def>

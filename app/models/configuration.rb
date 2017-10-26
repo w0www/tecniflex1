@@ -4,7 +4,7 @@ class Configuration < ActiveRecord::Base
 
   fields do
     key   :string
-    value :boolean
+    value :string
     timestamps
   end
 

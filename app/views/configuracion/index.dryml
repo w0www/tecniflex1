@@ -29,19 +29,24 @@
     Permitir exportar las ordenes de trabajo a XML
     <form action="/configuracion">
         <% confi = Configuration.find_by_key('export_to_xml') %>
-        <if test="&confi && confi.value.to_s == 'true'">
+        <if test="&confi && confi.value == 'si'">
           <input type="checkbox" id="export_to_xml" name="export_to_xml" checked/>Si
           <input type="checkbox" id="not_export_to_xml" name="not_export_to_xml"/>No
-
-<!--          <a href="/configuracion"><input type="button" value="guardar"/></a>-->
-        </if><else><if test="&confi && confi.value.to_s == 'false'">
+        </if><else><if test="&confi && confi.value == 'no'">
           <input type="checkbox" id="export_to_xml" name="export_to_xml" />Si
           <input type="checkbox" id="not_export_to_xml" name="not_export_to_xml" checked="true"/>No
-<!--          <a href="/configuracion"><input type="button" value="guardar"/></a>-->
         </if></else>
-          <submit value="guardar"/>
+        <submit value="guardar"/>
     </form>
-
+    <form action="/configuracion">
+      <% confi = Configuration.find_by_key('nrot_tablero_preprensa2') %>
+      <if test="&confi && confi.value.blank?">
+        <input style="width:20px" type="text" id="nrot_tablero_preprensa2" name="nrot_tablero_preprensa2"/>
+      </if><else><if test="confi && confi.value != ''">
+        <input style="width:20px" type="text" id="nrot_tablero_preprensa2" name="nrot_tablero_preprensa2" value="&confi.value"/>
+      </if></else>
+      <submit value="guardar"/>
+    </form>
     </section>
   </content:>
 </page>
