@@ -7,10 +7,12 @@
   <content: replace>
     <div class="content-body">
       
-      <center><div style="font-size:30px;color:#fff;margin-top:2%">Tablero de prepresa</div></center>
-          <div style="float:right;margin-right:5%;font-size:24px;color:#fff">
-        <%= Time.now.strftime("%d/%m/%Y %H:%M") %>   <%= params[:page] %> / <%= @paginas_totales %>
-      </div>
+      <center><div style="font-size:30px;color:#fff;margin-top:2%">Tablero de prepresa
+        <div style="float:right;margin-right:5%;font-size:24px;color:#fff">
+          <%= Time.now.strftime("%d/%m/%Y %H:%M") %>   <%= params[:page] %> / <%= @paginas_totales %>
+        </div>      
+      </div></center>
+
       <div style="margin-top:10px">
         <tabla/>
       </div>

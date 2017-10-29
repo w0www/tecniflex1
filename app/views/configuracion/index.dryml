@@ -38,11 +38,12 @@
         </if></else>
         <submit value="guardar"/>
     </form>
+    Mostrar un numero limitado de trabajos por pagina en pantalla preprensa2
     <form action="/configuracion">
       <% confi = Configuration.find_by_key('nrot_tablero_preprensa2') %>
       <if test="&confi && confi.value.blank?">
         <input style="width:20px" type="text" id="nrot_tablero_preprensa2" name="nrot_tablero_preprensa2"/>
-      </if><else><if test="confi && !confi.value.blank?">
+      </if><else><if test="confi && confi.value.size > 0">
         <input style="width:20px" type="text" id="nrot_tablero_preprensa2" name="nrot_tablero_preprensa2" value="&confi.value"/>
       </if></else>
       <submit value="guardar"/>
