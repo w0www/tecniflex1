@@ -174,7 +174,7 @@ class FrontController < ApplicationController
     @procesos = Proceso.order_by(:position)
     @error = 0
 
-    @tareas = OrdTrab.find(:all, :conditions => ["tipoot_id != ? AND DATE(fechaEntrega) = ?", Tipoot.find_by_name("P (PostScript)"), Date.today])
+    @tareas = OrdTrab.find(:all, :conditions => ["tipoot_id != ? AND DATE(fechaEntrega) = ?", Tipoot.find_by_name("P (PostScript)"), Time.zone.now.to_date])
 
     # Calcular las paginas totales
     if @tareas.count <= 20
