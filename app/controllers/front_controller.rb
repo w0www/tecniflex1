@@ -175,7 +175,7 @@ class FrontController < ApplicationController
     @error = 0
 
     # Se usa Time.current para que la base de datos funcione correctamente a la hora de buscar. En futuros proyectos no usar los timezones
-    @tareas = OrdTrab.find(:all, :conditions => ["tipoot_id != ? AND fechaEntrega >= ?", Tipoot.find_by_name("P (PostScript)"), Time.current.beginning_of_day])
+    @tareas = OrdTrab.find(:all, :conditions => ["tipoot_id != ? AND fechaEntrega between ? AND ?", Tipoot.find_by_name("P (PostScript)"), Time.current.beginning_of_day, Time.current.end_of_day])
 
     tareas_per_page = 20
     confi = Configuration.find_by_key("nrot_tablero_preprensa2")
