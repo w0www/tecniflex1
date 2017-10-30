@@ -174,13 +174,20 @@ class FrontController < ApplicationController
     @procesos = Proceso.order_by(:position)
     @error = 0
 
-    @tareas = OrdTrab.find(:all, :conditions => ["tipoot_id != ? AND DATE(fechaEntrega) = ?", Tipoot.find_by_name("P (PostScript)"), Time.zone.now.to_date])
+    # Se usa Time.current para que la base de datos funcione correctamente a la hora de buscar. En futuros proyectos no usar los timezones
+    @tareas = OrdTrab.find(:all, :conditions => ["tipoot_id != ? AND fechaEntrega >= ?", Tipoot.find_by_name("P (PostScript)"), Time.current.beginning_of_day])
+
+    tareas_per_page = 20
+    confi = Configuration.find_by_key("nrot_tablero_preprensa2")
+    if confi && confi.value != ""
+      tareas_per_page = confi.value.to_i
+    end
 
     # Calcular las paginas totales
-    if @tareas.count <= 20
+    if @tareas.count <= tareas_per_page
       @paginas_totales = 1
-    elsif @tareas.count > 20
-      @paginas_totales = (@tareas.count / 20) + 1      
+    elsif @tareas.count > tareas_per_page
+      @paginas_totales = (@tareas.count / tareas_per_page) + 1      
     end
     # Entramos en /front/polimeros
     if !params[:page]
@@ -198,12 +205,6 @@ class FrontController < ApplicationController
       end
     end
     @x_tareas = @tareas.count
-    confi = Configuration.find_by_key("nrot_tablero_preprensa2")
-    if confi
-      tareas_per_page = confi.value.to_i
-    else
-      tareas_per_page = 25
-    end
     @tareas = @tareas.paginate(:page => params[:page], :per_page => tareas_per_page)
   end
   
