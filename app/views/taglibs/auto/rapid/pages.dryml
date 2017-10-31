@@ -798,7 +798,7 @@
               </ht>
             </h2>
 
-            <record-flags fields="value" param/>
+            <record-flags fields="" param/>
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="configurations.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
@@ -808,7 +808,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="key" param/>
+            <field-list fields="key, value" param/>
           </section>
     </content:>
 

@@ -168,6 +168,47 @@ class FrontController < ApplicationController
     
   end
   
+  def preprensa2
+    @hora_actual = DateTime.now.in_time_zone
+    @grupro = Grupoproc.tablero.order_by(:position) - [Grupoproc.find_by_nombre("Despacho")]
+    @procesos = Proceso.order_by(:position)
+    @error = 0
+
+    # Se usa Time.current para que la base de datos funcione correctamente a la hora de buscar. En futuros proyectos no usar los timezones
+    @tareas = OrdTrab.find(:all, :conditions => ["tipoot_id != ? AND fechaEntrega between ? AND ?", Tipoot.find_by_name("P (PostScript)"), Time.current.beginning_of_day, Time.current.end_of_day])
+
+    tareas_per_page = 20
+    confi = Configuration.find_by_key("nrot_tablero_preprensa2")
+    if confi && confi.value != ""
+      tareas_per_page = confi.value.to_i
+    end
+
+    # Calcular las paginas totales
+    if @tareas.count <= tareas_per_page
+      @paginas_totales = 1
+    elsif @tareas.count > tareas_per_page
+      @paginas_totales = (@tareas.count / tareas_per_page) + 1      
+    end
+    # Entramos en /front/polimeros
+    if !params[:page]
+      params[:page] = 1
+      @pagina_siguiente = @paginas_totales == 1 ? 1 : 2
+    elsif params[:page]
+      # Si recibimos params[:id]
+      if @paginas_totales > 1
+        @pagina_siguiente = params[:page].to_i + 1
+        if params[:page].to_i == @paginas_totales
+          @pagina_siguiente = 1
+        end
+      else
+        @pagina_siguiente = 1
+      end
+    end
+    @x_tareas = @tareas.count
+    @tareas = @tareas.paginate(:page => params[:page], :per_page => tareas_per_page)
+  end
+  
+  
   def eliminar
     tarea = Delayed::Job.find(params[:id])
     tarea.delete

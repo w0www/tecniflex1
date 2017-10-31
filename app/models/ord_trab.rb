@@ -568,6 +568,29 @@ class OrdTrab < ActiveRecord::Base
     return color_tablero
   end
 
+  def calcular_color_tablero_preprensa_fix(orden)
+    # Si las tareas estan terminadas tenemos que calcular y guardar el color en base de datos
+    # Si las tareas no estan terminadas solo tenemos que calcular el color
+    fecha_entrega = orden.fechaEntrega
+    hora_actual = DateTime.now.in_time_zone
+#    tiempo_total_minute = hora_actual + orden.tiempo_total
+    if fecha_entrega
+      # SI FALTAN MENOS DE 3 HORAS PARA LA FECHA DE ENTREGA
+      if fecha_entrega - 3.hour <= hora_actual && fecha_entrega > hora_actual
+        color_tablero = 'lightyellow'
+      # SI FALTA MAS DE 3 HORAs PARA LA FECHA DE ENTREGA
+      elsif fecha_entrega - 3.hour > hora_actual
+        color_tablero = 'lightgreen'
+      # SI HA PASADO LA FECHA DE ENTREGA
+      elsif fecha_entrega <= hora_actual
+        color_tablero = 'red'
+      end
+    else
+      color_tablero = ''
+    end
+    return color_tablero
+  end
+
   def tnetot
     timot = Time.at(0)
     self.tareas.each do |latar|
