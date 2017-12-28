@@ -10,6 +10,7 @@
     iniciales     :string, :unique
     tablero       :boolean, :default => false
     gerencial       :boolean, :default => false
+    panel_supervisor       :boolean, :default => false
     timestamps
   end
 

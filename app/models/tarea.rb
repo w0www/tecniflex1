@@ -94,8 +94,8 @@ class Tarea < ActiveRecord::Base
   def self.find_supervisor_tasks
     @procesos = Proceso.all - [Proceso.find_by_nombre("Polimero")] - [Proceso.find_by_nombre("Facturacion")]
     if @procesos != []
-			@proceso_id = @procesos.*.id
-			Tarea.activa.find(:all, :conditions => {:proceso_id => @proceso_id}, :limit => 50)
+			@procesos_id = @procesos.*.id
+			Tarea.activa.find(:all, :conditions => ["proceso_id IN (?) AND asignada_a IN (?)", @procesos_id, User.panel_supervisor.*.id])
 		else
 			[]
 		end
