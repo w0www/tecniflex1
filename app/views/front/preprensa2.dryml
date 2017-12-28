@@ -1,7 +1,7 @@
 <page title="Preprensa2" without-header class="pantalla" style="background-color:black !important">
   <head:>
     <param-content />
-    <meta http-equiv="refresh" content="10;url=/front/preprensa2?page=#{@pagina_siguiente}&total=#{@x_tareas}" />
+    <meta http-equiv="refresh" content="30;url=/front/preprensa2?page=#{@pagina_siguiente}&total=#{@x_tareas}" />
   </head:>
   <body: class="definir index-page ord-trab"/>
   <content: replace>
