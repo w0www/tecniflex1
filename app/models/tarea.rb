@@ -91,6 +91,16 @@ class Tarea < ActiveRecord::Base
 		end
   end
 
+  def self.find_supervisor_tasks
+    @procesos = Proceso.all - [Proceso.find_by_nombre("Polimero")] - [Proceso.find_by_nombre("Facturacion")]
+    if @procesos != []
+			@proceso_id = @procesos.*.id
+			Tarea.activa.find(:all, :conditions => {:proceso_id => @proceso_id}, :limit => 50)
+		else
+			[]
+		end
+  end
+
   # Calcula el tiempo en minutos neto en realizarse una tarea
   def tneto 
     tne = 0

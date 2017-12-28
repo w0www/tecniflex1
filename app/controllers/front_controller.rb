@@ -8,6 +8,7 @@ class FrontController < ApplicationController
         redirect_to "/ord_trabs/tablero"
       else
         # @ordenes = OrdTrab.find :all
+        @tareas_supervisor = Tarea.find_supervisor_tasks
         @asignacions = current_user.asignacions.disp(:all, :include => [:proceso => :grupoproc], :order => "grupoprocs.position")
         @utiles = Tarea.find_utiles(current_user)
         @sinfin = current_user.sinfin
