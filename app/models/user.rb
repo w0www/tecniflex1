@@ -4,7 +4,7 @@
 
   fields do
     name          :string, :required, :unique
-    rol	enum_string(:Operador, :Supervisor, :Grabador, :Gerente, :Facturador)
+    rol	enum_string(:Operador, :Supervisor, :Supervisor2, :Grabador, :Gerente, :Facturador)
     email_address :email_address, :login => true
     administrator :boolean, :default => false
     iniciales     :string, :unique

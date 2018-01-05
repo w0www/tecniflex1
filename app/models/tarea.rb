@@ -91,7 +91,7 @@ class Tarea < ActiveRecord::Base
 		end
   end
 
-  def self.find_supervisor_tasks
+  def self.find_supervisor2_tasks
     @procesos = Proceso.all - [Proceso.find_by_nombre("Polimero")] - [Proceso.find_by_nombre("Facturacion")]
     if @procesos != []
 			@procesos_id = @procesos.*.id
