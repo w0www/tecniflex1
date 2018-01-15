@@ -75,7 +75,7 @@
   end
 
   def self.supervisores
-		User.rol_is("Supervisor")
+		User.rol_is("Supervisor") || User.rol_is("Supervisor2")
 	end
 
   def nombre
