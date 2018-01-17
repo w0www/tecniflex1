@@ -75,8 +75,12 @@
   end
 
   def self.supervisores
-		User.rol_is("Supervisor") || User.rol_is("Supervisor2")
+		User.rol_is("Supervisor")
 	end
+
+  def self.supervisores2
+    User.rol_is("Supervisor2")
+  end
 
   def nombre
     return self.name
