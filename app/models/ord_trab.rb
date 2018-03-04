@@ -75,6 +75,7 @@ class OrdTrab < ActiveRecord::Base
     distorAncho    :decimal, :precision => 8, :scale => 2, :default => 0
     nPasos         :decimal, :precision => 8, :scale => 2, :default => 0
     nBandas        :decimal, :precision => 8, :scale => 2, :default => 0
+    nBandas2       :decimal, :precision => 8, :scale => 2, :default => 0
     nCopias        :integer
     colorUnion     :integer
     supRev enum_string(:' ', :'Superficie', :'Reverso')

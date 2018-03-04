@@ -11,6 +11,7 @@ class OrdTrabsController < ApplicationController
     @ncopias = 0
     @npasos = 0
     @nbandas = 0
+    @nbandas2 = 0
     if @cliente.blank?
       if params[:id]
         # @prima es la OT original
@@ -82,6 +83,7 @@ class OrdTrabsController < ApplicationController
     @ncopias = 0
     @npasos = 0
     @nbandas = 0
+    @nbandas2 = 0
     @cliente = Cliente.find_by_correo(current_user.email_address)
     if @cliente
       @orden = OrdTrab.new
