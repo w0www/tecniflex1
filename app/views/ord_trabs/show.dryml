@@ -190,7 +190,7 @@
           <td><view:mcExcesoq if="mcExcesoq" style="width:40px"/>&nbsp;mm</td>
           <td><view:mcExcesocol style="width:40px"/></td>
           <td><view:mcExcesoapy style="width:40px"/></td>
-          <td colspan="2" class="centrada">N. de Bandas&nbsp;<view:nBandas/></td>
+          <td colspan="2" class="centrada">N. de Bandas&nbsp;<view:nBandas/>+<view:nBandas2/></td>
         </tr>
         <tr>
           <th colspan="5" class="centrada">Fotopolimero</th>
