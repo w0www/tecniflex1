@@ -5,6 +5,11 @@ html, body {background-color: darkgray; }
 	background: black;
 }
 
+
+h1.app-name{
+  height:82px;
+}
+
 table#polimeros{
   width:100%;
   color:#fff;
@@ -488,7 +493,6 @@ ul.navigation {
 
 .page-header .navigation.main-nav a {
     background: url("../images/30-3E547A-242E42.png") repeat-x scroll 0 0 #242E42;
-    height: 82px;
     color: white;
 }
 
