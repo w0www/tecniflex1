@@ -63,6 +63,7 @@
   <tr>
     <th colspan="2">Cliente</th>
     <td colspan="3">
+      <select-field name="ord_trab[cliente_id]" class="cliente ord-trab-cliente input belongs_to ord_trab_cliente" options="&Cliente.all.map{|c| [c.id, c.name]}" first-option="No cliente"/>
       <input:cliente/>
     </td>
     <th>Tipo de OT</th>
