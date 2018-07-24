@@ -63,11 +63,7 @@
   <tr>
     <th colspan="2">Cliente</th>
     <td colspan="3">
-      <select-menu name="ord_trab[cliente_id]" first-value="No cliente"
-              first-option="No cliente"
-              selected="&params[name.to_sym]"
-              ooptions="&Cliente.all.map{|c| [c.id, c.name]}" /> 
-<!--      <input:cliente/>-->
+      <input:cliente/>
     </td>
     <th>Tipo de OT</th>
     <td colspan="2">
