@@ -5,6 +5,11 @@ html, body {background-color: darkgray; }
 	background: black;
 }
 
+
+body.login-page h1.app-name{
+  height:52px;
+}
+
 table#polimeros{
   width:100%;
   color:#fff;

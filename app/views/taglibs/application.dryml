@@ -27,6 +27,10 @@
   </old-page>
 </extend>
 
+<extend tag="select-one">
+    <old-select-one limit="300" merge/>
+</extend>
+
 <extend tag="index-page" for="Proceso">
   <old-index-page merge>
         <new-form:>
