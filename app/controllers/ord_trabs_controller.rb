@@ -531,9 +531,9 @@ class OrdTrabsController < ApplicationController
               # CLISSES
               @n_clisses = orden.separacions.count
               # Hora entrada
-              @hora_entrada = tarea.intervencions.*.hora_entrada.count == 1 ? tarea.intervencions.*.hora_entrada.first.strftime("%H:%M") : 'Algo fue mal'
+              @hora_entrada = tarea.intervencions.*.hora_entrada.count == 1 && !tarea.intervencions.*.hora_entrada.first.blank? ? tarea.intervencions.*.hora_entrada.first.strftime("%H:%M") : 'Algo fue mal'
               # Hora salida
-              @hora_salida = tarea.intervencions.*.hora_salida.count == 1 ? tarea.intervencions.*.hora_salida.first.strftime("%H:%M") : 'Algo fue mal'
+              @hora_salida = tarea.intervencions.*.hora_salida.count == 1 && !tarea.intervencions.*.hora_salida.first.blank? ? tarea.intervencions.*.hora_salida.first.strftime("%H:%M") : 'Algo fue mal'
               # Operador
               @operador = tarea.intervencions.*.operador.count == 1 ? tarea.intervencions.*.operador.to_s : 'Algo fue mal'
               # Acabado
