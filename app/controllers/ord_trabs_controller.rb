@@ -484,6 +484,118 @@ class OrdTrabsController < ApplicationController
   #####      
   end 
   
+
+  index_action :infpolimeros do
+  # Necesito todas las tareas polimero activas. 
+    respond_to do |wants|
+      wants.html
+      wants.csv do
+        csv_string = CSV.generate(:col_sep => ";") do |csv|
+          @fechini = params[:startdate] && params[:startdate].blank? ? "" : Date.strptime(params[:startdate], "%d/%m/%Y")
+          @fenal = params[:enddate] && params[:enddate].blank? ? "" : Date.strptime(params[:enddate], "%d/%m/%Y")
+
+          if @fechini != "" && @fenal != ""
+            @otsel = Tarea.find(:all, :conditions => ["state = 'terminada' AND proceso_id = 7 AND created_at >= ? AND created_at <= ?",@fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
+          end
+
+          ##################
+          arre = ["FECHA", "CLIENTE", "OT", "ESKO1", "ESKO2", "TERMOF", "NOMBRE", "SUPERFICIE", "REVERSO", "DIGIFLOW", "CODIGO CLIENTE", "Nº DE CLISSES", "HORA ENTRADA", "HORA SALIDA", "OPERADOR", "ACABADO", "NUVEO", "REPOS", "MODIFICADO", "DPC", "DPU", "DPN", "DIG MAX",	"FAM", "DPR", "ARTD", "ELASLON", "DUPONT", "ACE",	"1.14",	"1.7", "2.84", "6.35", "", "Colores"]
+          csv << arre
+          ## data rows
+            @otsel.each do |tarea|
+              orden = tarea.ord_trab
+              # FECHA CREACION OT
+              @fecha_creacion = tarea.created_at.strftime("%d/%m/%Y") if tarea.created_at
+              # Cliente
+              @elclie = orden.cliente ? orden.cliente : ""
+              # NRO OT
+              @ot = orden.numOT ? orden.numOT : ""
+              # ESKO1
+              @esko1 = orden.tipoesko == 'Esko 1' ? 'X' : ""
+              # ESKO2
+              @esko2 = orden.tipoesko == 'Esko 2' ? 'X' : ""
+              # termof
+              @termof = orden.tipoesko == 'Termof' ? 'X' : ""
+              # Nombre
+              @nombre = orden.nomprod ? orden.nomprod : ""
+              # Superficie
+              @superficie = orden.supRev == 'Superficie' ? 'X' : ""
+              # Reverso
+              @reverso = orden.supRev == 'Reverso' ? 'X' : ""
+              # Digiflow
+              @digiflow = orden.tipofotop.include?("Digiflow") ? 'X' : ""
+              # Codigo cliente
+              @cod_cliente = ""
+              # Codigo interno
+              @cod_interno = orden.codigo_producto if orden.cliente && orden.cliente.sigla
+              # CLISSES
+              @n_clisses = orden.separacions.count
+              # Hora entrada
+              @hora_entrada = tarea.intervencions.*.hora_entrada.count == 1 ? tarea.intervencions.*.hora_entrada.first.strftime("%H:%M") : 'Algo fue mal'
+              # Hora salida
+              @hora_salida = tarea.intervencions.*.hora_salida.count == 1 ? tarea.intervencions.*.hora_salida.first.strftime("%H:%M") : 'Algo fue mal'
+              # Operador
+              @operador = tarea.intervencions.*.operador.count == 1 ? tarea.intervencions.*.operador.to_s : 'Algo fue mal'
+              # Acabado
+              @acabado = tarea.intervencions.*.acabado.count == 1 ? tarea.intervencions.*.acabado.to_s : 'Algo fue mal'
+              # Nuevo
+              @nuevo = orden.tipoot.name == "N (Trabajo Nuevo)" ? "X" : ""
+              # Reposicion
+              @reposicion = orden.tipoot.name == "R (Reposicion)" ? "X" : ""
+              # Modificado
+              @modificado = orden.tipoot.name == "M (Modificacion)" ? "X" : ""
+              # DPC
+              @dpc = orden.tipomat && orden.tipomat.nombre == "DPC" ? "X" : ""
+              # DPU
+              @dpu = orden.tipomat && orden.tipomat.nombre == "DPU" ? "X" : ""
+              # DPN
+              @dpn = orden.tipomat && orden.tipomat.nombre == "DPN" ? "X" : ""
+              # DIG MAX
+              @dig_max = orden.tipomat && orden.tipomat.nombre == "Digmax" ? "X" : ""
+              # FAM
+              @fam = orden.tipomat && orden.tipomat.nombre == "Fam" ? "X" : ""
+              # DPR
+              @dpr = orden.tipomat && orden.tipomat.nombre == "DPR" ? "X" : ""
+              # ARTD
+              @artd = orden.tipomat && orden.tipomat.nombre == "ART-D" ? "X" : ""
+              # ELASLON
+              @elaslon = orden.tipomat && orden.tipomat.nombre == "Elaslon" ? "X" : ""
+              # DUPONT
+              @dupont = orden.tipomat && orden.tipomat.nombre == "DUPONT" ? "X" : ""
+              # ACE
+              @ace = orden.tipomat && orden.tipomat.nombre == "ACE" ? "X" : ""
+              # 1,14
+              @espesor_114 = orden.espesor.calibre.to_f == 1.14 ? 'X' : ''
+              # 1,7
+              @espesor_17 = orden.espesor.calibre.to_f == 1.7 ? 'X' : ''
+              # 2,84
+              @espesor_284 = orden.espesor.calibre.to_f == 2.84 ? 'X' : ''
+              # 6,35
+              @espesor_635 = orden.espesor.calibre.to_f == 6.35 ? 'X' : ''
+              # Colores
+              @colores = orden.separacions.*.color
+              # CSV
+              arri = [@fecha_creacion, @elclie, @ot, @esko1, @esko2, @termof, @nombre, @superficie, @reverso, @digiflow, @cod_cliente, @cod_interno, @n_clisses, @hora_entrada,
+                      @hora_salida, @operador, @acabado, @nuevo, @reposicion, @modificado, @dpc, @dpu, @dpn, @dig_max, @fam, @dpr, @artd, @elaslon, @dupont, @ace, @espesor_114,
+                      @espesor_17, @espesor_284, @espesor_635]
+              arri += @colores
+              csv << arri
+             end
+          				
+        # send it to da browsah
+        end
+        send_data(csv_string,
+                  :type => 'text/csv; charset=iso-8859-1; header=present',
+                  :disposition => "attachment", :filename => Time.now.strftime("Informe Polimeros") + ".csv")
+      end
+    end
+  #####      
+  end 
+
+
+
+
+
   index_action :vbenvios do
     @grupro = Grupoproc.tablero.order_by(:position)
         @ctes = Cliente.all

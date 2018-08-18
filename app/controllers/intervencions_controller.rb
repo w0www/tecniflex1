@@ -132,6 +132,7 @@ class IntervencionsController < ApplicationController
         this.termino = Time.now
         this.final = true
         this.tarea.lifecycle.terminar!(current_user)
+        ord_trab.update_attribute(:tipoesko, params[:ord_trab][:tipoesko].to_s) if params[:ord_trab] && params[:ord_trab][:tipoesko]
         # Actualizamos la Orden para actualizar el codigo de color
         ord_trab.update_attribute(:color, ord_trab.calcular_color_tablero(ord_trab)) if ord_trab.tareas_terminadas? && ord_trab.color.blank?
       elsif params[:envio] == "recibir"
@@ -181,6 +182,7 @@ class IntervencionsController < ApplicationController
         this.tarea.lifecycle.terminar!(current_user)
         this.termino = Time.now
         this.final = true
+        ord_trab.update_attribute(:tipoesko, params[:ord_trab][:tipoesko].to_s) if params[:ord_trab] && params[:ord_trab][:tipoesko]
         ord_trab.update_attribute(:color, ord_trab.calcular_color_tablero(ord_trab)) if ord_trab.tareas_terminadas? && ord_trab.color.blank?
 			elsif params[:envio] == "detener"
         this.tarea.lifecycle.detener!(current_user)

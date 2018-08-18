@@ -103,6 +103,12 @@
           <if test="&@tarea.proceso.nombre.downcase == 'polimero'">
             <input-detener/>
             <input-terminar/>
+            <br/><b>Datos a rellenar</b>
+            <br/>Maquina de copiado: <input-esko/>
+            <br/>Operador: <input-operador/>
+            <br/>Acabado: <input-acabado/>
+            <br/>Hora de entrada: <input-hora-entrada/>
+            <br/>Hora de salida: <input-hora-salida/>
           </if>
           <if test="&@tarea.proceso.nombre.downcase == 'facturacion'">
             <input-detener/>
@@ -155,6 +161,31 @@
       });
     });
    </script>
+</def>
+
+<def tag="input-esko">
+  <select class="input" name="ord_trab[tipoesko]">
+    <option value="0"></option>
+    <option value="Esko 1">Esko 1</option>
+    <option value="Esko 2">Esko 2</option>
+    <option value="Termof">Termof</option>
+  </select><br/>
+</def>
+
+<def tag="input-operador">
+  <select-input options="&User.all" name="intervencion[operador]"/>
+</def>
+
+<def tag="input-acabado">
+  <select-input options="&User.all" name="intervencion[acabado]"/>
+</def>
+
+<def tag="input-hora-entrada">
+  <input:hora-entrada/>
+</def>
+
+<def tag="input-hora-salida">
+  <input:hora-salida/>
 </def>
 
 <def tag="inicio-form">
@@ -221,5 +252,3 @@
     Observaciones rechazo<input:observaciones-rechazo/><br/>
   </div>
 </def>
-
-
