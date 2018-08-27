@@ -12,9 +12,12 @@
         <input-field label="O.T." name="orden"/>
         <date-field label="Fecha" name="fecha"/>
       <% elsif @cliente_logeado %>
-        <codCliente-field label="Cod. cliente" name="codCliente"/>
-        <date-field label="Fecha" name="fecha"/>
         <input-field label="Version" name="version"/>
+        <select-field label="Proceso" name="proceso" options="&Proceso.all.map{|p| [p.nombre]}" first-option="Filtrar por proceso"/>
+        <select-field label="Estado proceso" name="estado_proceso" options="&Tarea::Lifecycle.states.keys.map{|s|[s.to_s]}.uniq" first-value="" first-option="Filtrar por estado"/>
+        <select-field label="Estado OT" name="estado" options="&OrdTrab::Lifecycle.states.keys.map{|s|[s.to_s]}" first-option="Filtrar por estado"/>
+        <input-field label="O.T." name="orden"/>
+        <date-field label="Fecha" name="fecha"/>
       <% end %>
       <placeholder-field/>
       <submit-field/>

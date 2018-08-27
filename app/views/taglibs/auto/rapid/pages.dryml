@@ -653,7 +653,7 @@
               </ht>
             </h2>
 
-            <record-flags fields="cuenta_usuario, generar_xml, pantalla_gerencial" param/>
+            <record-flags fields="cuenta_usuario, generar_xml, pantalla_gerencial, habilitar_ordenes" param/>
 
             <a action="edit" if="&can_edit?" param="edit-link">
               <ht key="clientes.actions.edit" name="&this.respond_to?(:name) ? this.name : ''">
@@ -1864,7 +1864,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="inicio, termino, observaciones, colores, responsable, observaciones_rechazo, procdest, tarea, user" param/>
+            <field-list fields="inicio, termino, observaciones, colores, responsable, observaciones_rechazo, procdest, hora_entrada, hora_salida, operador, acabado, tarea, user" param/>
           </section>
     </content:>
 
@@ -2402,7 +2402,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, barcodecopy, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nCopias, colorUnion, supRev, tipofotop, trapping, urgente, pctdistor, color, fechafin, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, list_barcode, sustrato, tipomat, tipoot" param/>
+            <field-list fields="numFact, numGuia, fecha, clase, fechaEntrega, observaciones, cfinal, vb, mtz, mtje, ptr, pol, mpFTP, mpFTPq, mpFTPdev, mpPel, mpPelq, mpPeldev, mpImp, mpImpq, mpImpdev, mpMgr, mpMgrq, mpMgrdev, mpOpt, mpOptq, mpOptdev, mpPtr, mpPtrq, mpPtrdev, mcGuia, mcGuiacol, mcGuiaapy, mcMPunto, mcMPuntocol, mcMPuntoapy, mcCruces, mcCrucescol, mcCrucesapy, mcTacas, mcTacasH, mcTacasV, mcTacascol, mcTacasapy, mcTiras, mcTirascol, mcTirasapy, mcExceso, mcExcesoq, mcExcesocol, mcExcesoapy, mcMarcas, mcMarcascol, mcMarcasapy, mcPimp, mcPimpcol, mcPimpapy, nomprod, codTflex, version, codCliente, mdi_desarrollo, mdi_ancho, barcode, barcodecopy, colorBarcode, dispBandas, distTotalPerim, distorAncho, nPasos, nBandas, nBandas2, nCopias, colorUnion, supRev, tipoesko, tipofotop, trapping, urgente, pctdistor, color, fechafin, state, cilindro, cliente, contacter, curva, encargado, espesor, impresora, list_barcode, sustrato, tipomat, tipoot" param/>
           </section>
     </content:>
 
@@ -4507,7 +4507,7 @@
           </header>
 
           <section param="content-body">
-            <field-list fields="rol, email_address, administrator, iniciales, tablero, gerencial, state" param/>
+            <field-list fields="rol, email_address, administrator, iniciales, tablero, gerencial, panel_supervisor, state" param/>
           </section>
     </content:>
 

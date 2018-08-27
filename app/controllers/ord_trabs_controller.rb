@@ -41,6 +41,8 @@ class OrdTrabsController < ApplicationController
       end
     elsif @cliente
       hobo_new do
+        this.cliente = @cliente
+        this.encargado_id = 10
         this.attributes = params[:ord_trab] || {}
         hobo_ajax_response if request.xhr?
       end
@@ -152,6 +154,12 @@ class OrdTrabsController < ApplicationController
 	def index
     inicial = Date.strptime(params[:fecha_ini], '%d/%m/%Y').to_time if params[:fecha_ini] && !params[:fecha_ini].blank?
     final = Date.strptime(params[:fecha_fin], '%d/%m/%Y').to_time if params[:fecha_fin] && !params[:fecha_fin].blank?
+
+    @cliente_logeado = Cliente.find_by_correo(current_user.email_address)
+
+    if @cliente_logeado
+      params[:cliente] = @cliente_logeado.name
+    end 
 
     hobo_index OrdTrab.apply_scopes(
       :cliente_is => params[:cliente],

@@ -173,11 +173,11 @@
 </def>
 
 <def tag="input-operador">
-  <select-input options="&User.all" name="intervencion[operador]"/>
+  <select-input options="&User.find(:all, :conditions => ['rol = ?', 'grabador'])" name="intervencion[operador]"/>
 </def>
 
 <def tag="input-acabado">
-  <select-input options="&User.all" name="intervencion[acabado]"/>
+  <select-input options="&User.find(:all, :conditions => ['rol = ?', 'grabador'])" name="intervencion[acabado]"/>
 </def>
 
 <def tag="input-hora-entrada">

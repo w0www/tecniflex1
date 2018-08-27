@@ -17,6 +17,7 @@
     password :string
     generar_xml :boolean
     pantalla_gerencial :boolean
+    habilitar_ordenes :boolean
     timestamps
   end
   
