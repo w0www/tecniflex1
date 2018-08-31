@@ -66,7 +66,10 @@
     <th colspan="2">Cliente</th>
     <td colspan="3">
     <if test="&@cliente">
-      <view:cliente/>
+      <select class="cliente ord-trab-cliente input belongs_to ord_trab_cliente" name="ord_trab[cliente_id]">
+        <option value="" selected="selected">(No Cliente)</option>
+        <option value="#{@cliente.id}"><%= @cliente %></option>
+      </select>
     </if><else>
       <input:cliente/>
     </else>

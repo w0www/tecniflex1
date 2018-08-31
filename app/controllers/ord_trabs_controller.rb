@@ -39,9 +39,8 @@ class OrdTrabsController < ApplicationController
           hobo_ajax_response if request.xhr?
         end
       end
-    elsif @cliente
+    elsif !@cliente.blank?
       hobo_new do
-        this.cliente = @cliente
         this.encargado_id = 10
         this.attributes = params[:ord_trab] || {}
         hobo_ajax_response if request.xhr?
