@@ -608,7 +608,7 @@ class OrdTrabsController < ApplicationController
               # Colores
               @colores = orden.separacions.*.color
               # CSV
-              arri = [@fecha_creacion, @elclie, @ot, @esko1, @esko2, @termof, @nombre.gsub(",","."), @superficie, @reverso, @digiflow, @cod_cliente, @cod_interno, @n_clisses, @hora_entrada,
+              arri = [@fecha_creacion, @elclie, @ot, @esko1, @esko2, @termof, @nombre.gsub(",","."), @superficie, @reverso, @digiflow, @cod_interno, @n_clisses, @hora_entrada,
                       @hora_salida, @operador, @acabado, @nuevo, @reposicion, @modificado, @dpc, @dpu, @dpn, @dig_max, @fam, @dpr, @artd, @elaslon, @dupont, @ace, @espesor_114,
                       @espesor_17, @espesor_284, @espesor_635]
               arri += @colores
