@@ -18,7 +18,8 @@
               Fecha Inicial: <input type='text' style='width:90px' id='datepicker' name='startdate' value="#{params[:startdate]}"/>
               Fecha Final: <input type='text' style='width:90px' id='datepicker2' name='enddate' value="#{params[:enddate]}"/>
               Cod Producto: <input type='text' style='width:90px' id='codproducto' name='codproducto' value="#{params[:codproducto]}"/>
-              <if test="(&params[:startdate].blank? || params[:enddate].blank?) && params[:codproducto.blank?]">
+              <if test="&(params[:startdate].blank? && params[:enddate].blank? && params[:codproducto].blank?) ||
+                ((params[:startdate].blank? || params[:enddate].blank?) && params[:codproducto].blank?)">
                 <submit class='search-button'  label='Ir'/>
                 <br/>Para poder generar el informe necesitamos conocer las fechas del mismo o el codproducto.
               </if><else>
