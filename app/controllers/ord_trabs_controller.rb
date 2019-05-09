@@ -533,7 +533,8 @@ class OrdTrabsController < ApplicationController
           ##################
           arre = ["FECHA", "CLIENTE", "OT", "ESKO1", "ESKO2", "TERMOF", "NOMBRE", "SUPERFICIE", "REVERSO", "DIGIFLOW", "CODIGO CLIENTE", "Nº DE CLISSES", "HORA ENTRADA", "HORA SALIDA", "OPERADOR", "ACABADO", "NUVEO", "REPOS", "MODIFICADO", "DPC", "DPU", "DPN", "DIG MAX",	"FAM", "DPR", "ARTD", "ELASLON", "DUPONT", "ACE",	"1.14",	"1.7", "2.84", "6.35", "", "Colores"]
           csv << arre
-          ## data rows
+          if @otsel.size > 0
+            ## data rows
             @otsel.each do |tarea|
               orden = tarea.ord_trab
               # FECHA CREACION OT
@@ -612,7 +613,8 @@ class OrdTrabsController < ApplicationController
                       @espesor_17, @espesor_284, @espesor_635]
               arri += @colores
               csv << arri
-             end
+            end
+          end
 
         # send it to da browsah
         end
