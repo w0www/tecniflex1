@@ -544,11 +544,11 @@ class OrdTrabsController < ApplicationController
               # NRO OT
               @ot = orden.numOT ? orden.numOT : ""
               # ESKO1
-              @esko1 = orden.tipoesko == 'Esko 1' ? 'X' : ""
+              @esko1 = orden.tipoesko == 'esko1' ? 'X' : ""
               # ESKO2
-              @esko2 = orden.tipoesko == 'Esko 2' ? 'X' : ""
+              @esko2 = orden.tipoesko == 'esko2' ? 'X' : ""
               # termof
-              @termof = orden.tipoesko == 'Termof' ? 'X' : ""
+              @termof = orden.tipoesko == 'termof' ? 'X' : ""
               # Nombre
               @nombre = orden.nomprod ? orden.nomprod : ""
               # Superficie
@@ -558,7 +558,7 @@ class OrdTrabsController < ApplicationController
               # Digiflow
               @digiflow = orden.tipofotop.include?("Digiflow") ? 'X' : ""
               # Codigo cliente
-              @cod_cliente = ""
+              @cod_cliente = orden.codCliente
               # Codigo interno
               @cod_interno = orden.codigo_producto if orden.cliente && orden.cliente.sigla
               # CLISSES
