@@ -564,13 +564,13 @@ class OrdTrabsController < ApplicationController
               # CLISSES
               @n_clisses = orden.separacions.count
               # Hora entrada
-              @hora_entrada = tarea.intervencions.last.hora_entrada.count == 1 && !tarea.intervencions.last.hora_entrada.blank? ? tarea.intervencions.last.hora_entrada.strftime("%H:%M") : 'Algo fue mal'
+              @hora_entrada = !tarea.intervencions.last.hora_entrada.blank? ? tarea.intervencions.last.hora_entrada.strftime("%H:%M") : 'Ultima Hora Blanca'
               # Hora salida
-              @hora_salida = tarea.intervencions.*.hora_salida.count == 1 && !tarea.intervencions.*.hora_salida.first.blank? ? tarea.intervencions.last.hora_salida.strftime("%H:%M") : 'Algo fue mal'
+              @hora_salida = !tarea.intervencions.last.hora_salida.first.blank? ? tarea.intervencions.last.hora_salida.strftime("%H:%M") : 'Ultima Hora Blanca'
               # Operador
-              @operador = tarea.intervencions.last.operador.count == 1 ? tarea.intervencions.last.operador.to_s : 'Algo fue mal'
+              @operador = !tarea.intervencions.last.operador.blank? ? tarea.intervencions.last.operador.to_s : 'Ultimo Operador Blanco'
               # Acabado
-              @acabado = tarea.intervencions.last.acabado.count == 1 ? tarea.intervencions.last.acabado.to_s : 'Algo fue mal'
+              @acabado = !tarea.intervencions.last.acabado.blank? ? tarea.intervencions.last.acabado.to_s : 'Ultimo Acabado Blanco'
               # Nuevo
               @nuevo = orden.tipoot && orden.tipoot.name == "N (Trabajo Nuevo)" ? "X" : ""
               # Reposicion
