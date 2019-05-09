@@ -566,7 +566,7 @@ class OrdTrabsController < ApplicationController
               # Hora entrada
               @hora_entrada = !tarea.intervencions.last.hora_entrada.blank? ? tarea.intervencions.last.hora_entrada.strftime("%H:%M") : 'Ultima Hora Blanca'
               # Hora salida
-              @hora_salida = !tarea.intervencions.last.hora_salida.first.blank? ? tarea.intervencions.last.hora_salida.strftime("%H:%M") : 'Ultima Hora Blanca'
+              @hora_salida = !tarea.intervencions.last.hora_salida.blank? ? tarea.intervencions.last.hora_salida.strftime("%H:%M") : 'Ultima Hora Blanca'
               # Operador
               @operador = !tarea.intervencions.last.operador.blank? ? tarea.intervencions.last.operador.to_s : 'Ultimo Operador Blanco'
               # Acabado
