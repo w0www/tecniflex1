@@ -65,7 +65,7 @@ class OrdTrabsController < ApplicationController
     params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') if params[:ord_trab][:fecha]
     # Parseamos el valor del datepicker
     parsear_datepicker
-    hobo_update do 
+    hobo_update do
       if valid?
         # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
         if this.sortars != ""
@@ -114,7 +114,7 @@ class OrdTrabsController < ApplicationController
       params[:ord_trab][:fecha] = Date.strptime(params[:ord_trab][:fecha], '%d/%m/%Y') if params[:ord_trab][:fecha]
       # Parseamos el valor del datepicker
       parsear_datepicker
-      hobo_create do 
+      hobo_create do
         if valid?
           # Si el primer proceso de las tareas es polimero es que hemos marcado solo polimero y entonces necesitamos activarlo.
           this.sortars.first.lifecycle.habilitar!(current_user) if !this.sortars.blank? && this.sortars.first.proceso.nombre.downcase == "polimero"
@@ -127,7 +127,7 @@ class OrdTrabsController < ApplicationController
       end
     end
   end
-  
+
   def calcular_codigo_cliente
     codCliente = ""
     if params[:codCliente]
@@ -146,7 +146,7 @@ class OrdTrabsController < ApplicationController
       else
         codCliente = params[:codCliente].split("-").last unless params[:codCliente].blank?
       end
-    end  
+    end
     return codCliente
   end
 
@@ -158,7 +158,7 @@ class OrdTrabsController < ApplicationController
 
     if @cliente_logeado
       params[:cliente] = @cliente_logeado.name
-    end 
+    end
 
     hobo_index OrdTrab.apply_scopes(
       :cliente_is => params[:cliente],
@@ -197,7 +197,7 @@ class OrdTrabsController < ApplicationController
         blancos = 0
         for s in separaciones
           if !separaciones_params[(s.position - 1).to_s]["nCopias"].blank?
-            existe_separacion = false if !separaciones_params[(s.position - 1).to_s]["nCopias"].to_i.between?(1,10) 
+            existe_separacion = false if !separaciones_params[(s.position - 1).to_s]["nCopias"].to_i.between?(1,10)
           elsif separaciones_params[(s.position - 1).to_s]["nCopias"].blank?
             blancos = blancos + 1
           end
@@ -254,7 +254,7 @@ class OrdTrabsController < ApplicationController
     hobo_show do |format|
       format.html { @taras = this.sortarasigs }
       format.xml {
-        @ord_trab = OrdTrab.find(params[:id]) 
+        @ord_trab = OrdTrab.find(params[:id])
         stream = render_to_string(:template=>"ord_trabs/show" )
         send_data(stream, :type=>"text/xml",:filename => "#{@ord_trab.numOT}.xml")
       }
@@ -321,7 +321,7 @@ class OrdTrabsController < ApplicationController
 
     end
   end
-  
+
   index_action :tablero do
     @hora_actual = DateTime.now.in_time_zone
     @grupro = Grupoproc.tablero.order_by(:position)
@@ -361,7 +361,7 @@ class OrdTrabsController < ApplicationController
     end
     hobo_ajax_response if request.xhr?
   end
- 
+
   index_action :otscreadas do
     respond_to do |wants|
 			wants.html do
@@ -381,13 +381,13 @@ class OrdTrabsController < ApplicationController
           @clies = params[:cliente] && params[:cliente].blank? ? "" : params[:cliente]
           @fechini = params[:startdate] && params[:startdate].blank? ? "" : Date.strptime(params[:startdate], "%d/%m/%Y")
           @fenal = params[:enddate] && params[:enddate].blank? ? "" : Date.strptime(params[:enddate], "%d/%m/%Y")
-          
+
           if @clies != ""
             if @fenal.blank? && @fechini.blank?
               @otsel = OrdTrab.all(:conditions => ["cliente_id = ?", @clies])
             elsif @fechini != "" && @fenal.blank?
               @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at >= ?",
-                       @clies, @fechini.to_datetime.in_time_zone(Time.zone)])            
+                       @clies, @fechini.to_datetime.in_time_zone(Time.zone)])
             elsif @fechini.blank? && @fenal != ""
               @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at <= ?",
                        @clies, @fenal.to_datetime.in_time_zone(Time.zone)])
@@ -440,7 +440,7 @@ class OrdTrabsController < ApplicationController
               # SI TODAS LAS TAREAS ESTAN TERMINADAS COGER LA ULTIMA TAREA SU ULTIMA INTERVENCION SU FECHA DE TERMINO
               if orden.orden_terminada
                 if tareas != [] && tareas.last.intervencions != [] && tareas.last.intervencions.last.termino
-                  @fecha_termino = tareas.last.intervencions.last.termino.strftime("%d/%m/%Y") 
+                  @fecha_termino = tareas.last.intervencions.last.termino.strftime("%d/%m/%Y")
                   @hora_termino = tareas.last.intervencions.last.termino.strftime("%H:%M:%S")
                 end
               end
@@ -473,14 +473,14 @@ class OrdTrabsController < ApplicationController
               if orden.separacions
                 @area = 0
                 for o in orden.separacions
-                  @area += o.area.to_f 
+                  @area += o.area.to_f
                 end
               end
-              arri = [@elclie, @nombre, @numero_factura,@codigo, @numero_ot, @tipo_ot, @fecha_creacion, @hora_creacion, @fecha_entrega, @hora_entrega, @fecha_termino, @hora_termino, @pdf, @revision_pdf, @printer, @matriceria, @montaje, @revision, @polimero, @despacho, @area] 
-            
+              arri = [@elclie, @nombre, @numero_factura,@codigo, @numero_ot, @tipo_ot, @fecha_creacion, @hora_creacion, @fecha_entrega, @hora_entrega, @fecha_termino, @hora_termino, @pdf, @revision_pdf, @printer, @matriceria, @montaje, @revision, @polimero, @despacho, @area]
+
               csv << arri
              end
-          				
+
         # send it to da browsah
         end
         send_data(csv_string,
@@ -488,21 +488,46 @@ class OrdTrabsController < ApplicationController
                   :disposition => "attachment", :filename => Time.now.strftime("Ordenes fact_al_%d_%m_%Y") + ".csv")
       end
     end
-  #####      
-  end 
-  
+  #####
+  end
+
 
   index_action :infpolimeros do
-  # Necesito todas las tareas polimero activas. 
+  # Necesito todas las tareas polimero activas.
     respond_to do |wants|
       wants.html
       wants.csv do
         csv_string = CSV.generate(:col_sep => ";") do |csv|
           @fechini = params[:startdate] && params[:startdate].blank? ? "" : Date.strptime(params[:startdate], "%d/%m/%Y")
           @fenal = params[:enddate] && params[:enddate].blank? ? "" : Date.strptime(params[:enddate], "%d/%m/%Y")
+          @codproducto = params[:codproducto] && params[:codproducto].blank? ? "" : params[:codproducto]
 
-          if @fechini != "" && @fenal != ""
-            @otsel = Tarea.find(:all, :conditions => ["state = 'terminada' AND proceso_id = 7 AND created_at >= ? AND created_at <= ?",@fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
+          Rails.logger.info "entra por todo @codproducto #{@codproducto.blank?}"
+
+
+          if @fechini != "" && @fenal != "" && @codproducto == ""
+            Rails.logger.info "entra por fechini y fenal"
+            @otsel = Tarea.find(:all, :conditions => ["state = 'terminada' AND proceso_id = 7 AND created_at >= ? AND created_at <= ?",
+                                @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
+          elsif !@fechini.blank? && !@fenal.blank? && !@codproducto.blank?
+            Rails.logger.info "entra por todo"
+            @otsel = Tarea.find(:all, :joins => :ord_trab,
+                                :conditions => ["tareas.state = 'terminada' AND tareas.proceso_id = 7 AND tareas.created_at >= ? AND
+                                                  tareas.created_at <= ? AND ord_trabs.codCliente = ?",
+                                @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone), @codproducto])
+          elsif !@codproducto.blank?
+            Rails.logger.info "entra por codproducto"
+            if @codproducto.split("-").count == 2
+              # Sacamos el cliente para poder usar cliente_id en la query.
+              cliente = Cliente.find_by_sigla(@codproducto.split('-').first)
+              @otsel = Tarea.find(:all, :joins => :ord_trab,
+                                  :conditions => ["tareas.state = 'terminada' AND tareas.proceso_id = 7 AND ord_trabs.cliente_id = ? AND ord_trabs.codCliente = ?",
+                                                  "#{cliente.id}", "#{@codproducto.split('-').last}"])
+            elsif @codproducto.split("-").count == 1
+              @otsel = Tarea.find(:all, :joins => :ord_trab,
+                                  :conditions => ["tareas.state = 'terminada' AND tareas.proceso_id = 7 AND ord_trabs.codCliente LIKE %?%",
+                                                  @codproducto])
+            end
           end
 
           ##################
@@ -546,11 +571,11 @@ class OrdTrabsController < ApplicationController
               # Acabado
               @acabado = tarea.intervencions.*.acabado.count == 1 ? tarea.intervencions.*.acabado.to_s : 'Algo fue mal'
               # Nuevo
-              @nuevo = orden.tipoot.name == "N (Trabajo Nuevo)" ? "X" : ""
+              @nuevo = orden.tipoot && orden.tipoot.name == "N (Trabajo Nuevo)" ? "X" : ""
               # Reposicion
-              @reposicion = orden.tipoot.name == "R (Reposicion)" ? "X" : ""
+              @reposicion = orden.tipoot && orden.tipoot.name == "R (Reposicion)" ? "X" : ""
               # Modificado
-              @modificado = orden.tipoot.name == "M (Modificacion)" ? "X" : ""
+              @modificado = orden.tipoot && orden.tipoot.name == "M (Modificacion)" ? "X" : ""
               # DPC
               @dpc = orden.tipomat && orden.tipomat.nombre == "DPC" ? "X" : ""
               # DPU
@@ -582,13 +607,13 @@ class OrdTrabsController < ApplicationController
               # Colores
               @colores = orden.separacions.*.color
               # CSV
-              arri = [@fecha_creacion, @elclie, @ot, @esko1, @esko2, @termof, @nombre, @superficie, @reverso, @digiflow, @cod_cliente, @cod_interno, @n_clisses, @hora_entrada,
+              arri = [@fecha_creacion, @elclie, @ot, @esko1, @esko2, @termof, @nombre.gsub(",","."), @superficie, @reverso, @digiflow, @cod_cliente, @cod_interno, @n_clisses, @hora_entrada,
                       @hora_salida, @operador, @acabado, @nuevo, @reposicion, @modificado, @dpc, @dpu, @dpn, @dig_max, @fam, @dpr, @artd, @elaslon, @dupont, @ace, @espesor_114,
                       @espesor_17, @espesor_284, @espesor_635]
               arri += @colores
               csv << arri
              end
-          				
+
         # send it to da browsah
         end
         send_data(csv_string,
@@ -596,8 +621,8 @@ class OrdTrabsController < ApplicationController
                   :disposition => "attachment", :filename => Time.now.strftime("Informe Polimeros") + ".csv")
       end
     end
-  #####      
-  end 
+  #####
+  end
 
 
 
@@ -609,7 +634,7 @@ class OrdTrabsController < ApplicationController
           @todas = OrdTrab.paginate(:page => params[:page], :per_page => 35)
         if params[:cliente]
           @elcli = params[:cliente]
-          
+
           if params[:codCliente] == "Cod. Cliente"
             @todas = OrdTrab.paginate( :conditions => ["cliente_id = ?", @elcli], :page => params[:page], :per_page => 35 )
           end
@@ -620,7 +645,7 @@ class OrdTrabsController < ApplicationController
         end
         hobo_ajax_response if request.xhr?
   end
-  
+
   index_action :reporte do
   	@todas = OrdTrab.find(:all)
 
@@ -658,7 +683,7 @@ class OrdTrabsController < ApplicationController
 								if tara.intervencions != []
 									tara.intervencions.each do |inte|
                     if inte.user != nil
-                      if inte.termino 
+                      if inte.termino
                         termi = inte.termino
                       else
                         termi = Time.at(0)
@@ -668,7 +693,7 @@ class OrdTrabsController < ApplicationController
                       else
                         codig = "" + orden.codCliente.to_s
                       end
-                      colores = orden.separacions.*.color.join(", ")           
+                      colores = orden.separacions.*.color.join(", ")
                       csv << [orden.cliente.name, codig,  orden.numOT, orden.numFact, orden.nomprod, tara.proceso.nombre, inte.user.name, inte.inicio.strftime("%d/%m/%y"), inte.inicio.strftime("%H:%M:%S"), termi.strftime("%d/%m/%y"), termi.strftime("%H:%M:%S"), colores, orden.areatot, inte.observaciones ]
                     end
 									end
@@ -713,7 +738,7 @@ class OrdTrabsController < ApplicationController
     email = PDFKit.new(email)
     email.stylesheets << "#{Rails.root}/public/stylesheets/print.css"
     email = email.to_pdf
-    send_data(email, :filename => "#{@ord_trab.numOT}.pdf")    
+    send_data(email, :filename => "#{@ord_trab.numOT}.pdf")
 	end
 
   private
@@ -739,4 +764,3 @@ class OrdTrabsController < ApplicationController
     end
   end
 end
-
