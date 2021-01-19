@@ -73,7 +73,7 @@ class OrdTrabsController < ApplicationController
         end
         # Si es todo valido vamos a crear el fichero XML del mismo
         confi = Configuration.find_by_key("export_to_xml")
-        if confi && confi.value == true
+        if confi && confi.value.downcase == "si"
           crear_fichero_xml if this.cliente.generar_xml
         end
       end
@@ -120,7 +120,7 @@ class OrdTrabsController < ApplicationController
           this.sortars.first.lifecycle.habilitar!(current_user) if !this.sortars.blank? && this.sortars.first.proceso.nombre.downcase == "polimero"
           # Si es todo valido vamos a crear el fichero XML del mismo
           confi = Configuration.find_by_key("export_to_xml")
-          if confi && confi.value == true
+          if confi && confi.value.downcase == "si"
             crear_fichero_xml if this.cliente.generar_xml
           end
         end
