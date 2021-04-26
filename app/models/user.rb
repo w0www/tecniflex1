@@ -11,6 +11,7 @@
     tablero       :boolean, :default => false
     gerencial       :boolean, :default => false
     panel_supervisor       :boolean, :default => false
+		fecha_actualizacion_password :date
     timestamps
   end
 
@@ -22,7 +23,11 @@
 
   # This gives admin rights to the first sign-up.
   # Just remove it if you don't want that
-  before_create { |user| user.administrator = true if !Rails.env.test? && count == 0 }
+  # before_create { |user| user.administrator = true if !Rails.env.test? && count == 0 }
+
+	before_create { |user| user.fecha_actualizacion_password = Date.today }
+
+
 
   #named_scope :administrators, lambda {|acting_user| {:conditions => {acting_user.administrator?} }}
 
@@ -61,7 +66,7 @@
 
   def int_tipo(dia,estado,proceso)
     self.intervencions.find(:all, :joins => [:tarea],
-      :conditions => ["DAY(#{dia}) = ? AND MONTH(#{dia}) = ? AND YEAR(#{dia}) = ? AND tareas.proceso_id = ? AND tareas.state = ?", 
+      :conditions => ["DAY(#{dia}) = ? AND MONTH(#{dia}) = ? AND YEAR(#{dia}) = ? AND tareas.proceso_id = ? AND tareas.state = ?",
                       Date.today.day, Date.today.month, Date.today.year, proceso, estado]).count
   end
 
@@ -85,7 +90,7 @@
   def nombre
     return self.name
   end
-  
+
   # Entrega un arreglo de arreglos de intervenciones por usuario, que incluyen el numero de tarea, el nombre del proceso, la fecha de inicio y la fecha de termino
   #def intertars
     #@estuser = self

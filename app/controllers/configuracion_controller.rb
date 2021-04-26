@@ -12,6 +12,9 @@
     elsif params[:nrot_tablero_preprensa2] && params[:nrot_tablero_preprensa2] != ""
       confi = Configuration.find_by_key("nrot_tablero_preprensa2")
       confi.update_attribute(:value, params[:nrot_tablero_preprensa2].to_i.to_s) if confi
+    elsif params[:expire_password_days] && params[:expire_password_days] != ""
+      confi = Configuration.find_by_key("expire_password_days")
+      confi.update_attribute(:value, params[:expire_password_days].to_i.to_s) if confi
     end
   end
 end

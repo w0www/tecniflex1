@@ -2,7 +2,9 @@
   <form merge param="default">
     <if test="&@cliente">
       <table class="shower">
-        <formulario-cliente/>
+        <datos-cliente/>
+        <datos-solicitud/>
+        <observaciones/>
         <tr>
           <td colspan="12" style="background-color:transparent"></td>
         </tr>      
@@ -63,7 +65,14 @@
   <tr>
     <th colspan="2">Cliente</th>
     <td colspan="3">
+    <if test="&@cliente">
+      <select class="cliente ord-trab-cliente input belongs_to ord_trab_cliente" name="ord_trab[cliente_id]">
+        <option value="" selected="selected">(No Cliente)</option>
+        <option value="#{@cliente.id}"><%= @cliente %></option>
+      </select>
+    </if><else>
       <input:cliente/>
+    </else>
     </td>
     <th>Tipo de OT</th>
     <td colspan="2">
@@ -407,7 +416,14 @@
     </td>
   </tr>
   <tr><th colspan="2">Encargado:</th></tr>
-  <tr><td colspan="2"><input:encargado/></td></tr>
+  <tr><td colspan="2">
+    <if test="&@cliente">
+      <view:encargado/>
+    </if><else>
+    <input:encargado/>
+    </else>
+
+  </td></tr>
 </def>
 
 <def tag="input-many-separaciones">

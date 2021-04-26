@@ -12,7 +12,13 @@ class UsersController < ApplicationController
 
   def do_reset_password
     do_transition_action :reset_password do
-      redirect_to(:controller => "users", :action => "index")
+      redirect_to(:controller => "front", :action => "index")
+    end
+  end
+
+  def reset_password
+    hobo_do_reset_password do
+      current_user.update_attribute(:fecha_actualizacion_password, Date.today)
     end
   end
 
@@ -26,6 +32,10 @@ class UsersController < ApplicationController
         :user => usuario,
         :detalles => detalles
       )
+      confi = Configuration.find_by_key("expire_password_days")
+      if Date.today >= current_user.fecha_actualizacion_password + confi.value.to_i.days
+        redirect_to("/users/#{current_user.id}/reset_password")
+      end
     end
   end
 
@@ -44,7 +54,7 @@ class UsersController < ApplicationController
 		end
     hobo_ajax_response if request.xhr?
   end
-   
+
   #######################
   index_action :opers do
     respond_to do |wants|
@@ -71,19 +81,19 @@ class UsersController < ApplicationController
               @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
               if params[:enddate].blank?
                 @intervs = User.includes(:tareas=>:ord_trab).paginate(:conditions => ["user_id = ? and ord_trab.created_at >= ?", @operador, @fechini.to_datetime.in_time_zone(Time.zone)],:page => params[:page]).group_by(&:id)
-              else 
+              else
                 @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
                 @intervs = User.includes(:tareas=>:ord_trab).paginate(:conditions => ["cliente_id = ? and created_at >= ? and created_at <= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)],:page => params[:page]).group_by(&:id)
               end
             elsif (params[:startdate].blank? && params[:enddate])
               @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
               @intervs = User.includes(:tareas=>:ord_trab).paginate(:conditions => ["cliente_id = ? and created_at <= ?", @clies, @fenal.to_datetime.in_time_zone(Time.zone)],:page => params[:page]).group_by(&:id)
-            end 
+            end
           elsif params[:startdate]
               @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
               if params[:enddate].blank?
                 @intervs = User.includes(:tareas=>:ord_trab).paginate(:conditions => ["created_at >= ?", @fechini.to_datetime.in_time_zone(Time.zone)]).group_by(&:id)
-              else 
+              else
                 @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
                 @intervs = User.includes(:tareas=>:ord_trab).paginate(:conditions => ["created_at >= ? and created_at <= ?", @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)]).group_by(&:id)
               end
@@ -92,10 +102,10 @@ class UsersController < ApplicationController
             @intervs = User.includes(:tareas=>:ord_trab).paginate(:conditions => ["created_at <= ?", @fenal.to_datetime.in_time_zone(Time.zone)]).group_by(&:id)
           else
             auxi = User.find User.first.id, :include => {:tareas => :ord_trab}
-            @intervs = auxi.intervencions.group_by(&:tarea_id)  
-            @ope = User.first      
+            @intervs = auxi.intervencions.group_by(&:tarea_id)
+            @ope = User.first
           end
-          
+
       end
       wants.csv do
         csv_string = CSV.generate(:col_sep => ";") do |csv|
@@ -109,19 +119,19 @@ class UsersController < ApplicationController
               @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
               if params[:enddate].blank?
                 @intervs = User.includes(:tareas=>:ord_trab).all(:conditions => ["id = ? and created_at >= ?", @operador, @fechini.to_datetime.in_time_zone(Time.zone)])
-              else 
+              else
                 @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
                 @intervs = User.includes(:tareas=>:ord_trab).all(:conditions => ["id = ? and created_at >= ? and created_at <= ?", @clies, @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
               end
             elsif (params[:startdate].blank? && params[:enddate] != "")
               @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
               @otsel = OrdTrab.all(:conditions => ["cliente_id = ? and created_at <= ?", @clies, @fenal.to_datetime.in_time_zone(Time.zone)])
-            end 
+            end
           elsif params[:startdate] != ""
               @fechini = Date.strptime(params[:startdate], "%d/%m/%Y")
               if params[:enddate].blank?
                 @otsel = OrdTrab.all(:conditions => ["created_at >= ?", @fechini.to_datetime.in_time_zone(Time.zone)])
-              else 
+              else
                 @fenal = Date.strptime(params[:enddate], "%d/%m/%Y")
                 @otsel = OrdTrab.all(:conditions => ["created_at >= ? and created_at <= ?", @fechini.to_datetime.in_time_zone(Time.zone), @fenal.to_datetime.in_time_zone(Time.zone)])
               end
@@ -131,7 +141,7 @@ class UsersController < ApplicationController
           else
             @intervs = User.includes(:tareas=>:ord_trab).all
           end
-          
+
           arre = ["Cliente", "O.T.", "Producto", "Codigo", "Fecha Inicio", "Fecha Termino","N.Fact", "Tiempo bruto", "Tiempo neto", "cm2 tot.", "cm2 fact.", "F. V.B.", "E. V.B.", "F. PTR", "E. PTR"] + @proces
           csv << arre
           ## data rows
@@ -154,14 +164,14 @@ class UsersController < ApplicationController
               @estot = orden.ciclos
               tpar = ((orden.updated_at - orden.created_at))
               @tparh = Time.duracion(orden.created_at,orden.updated_at)
-              atot = orden.areatot || 0 
+              atot = orden.areatot || 0
               if orden.numFact != nil
                 factur = orden.updated_at.strftime("%Y-%m-%d %l:%M:%S")
                 areafact = orden.areatot
               else
                 factur = ""
                 areafact = 0
-                
+
               end
               @listaciclos = []
               @proces.each do |prociclo|
@@ -170,7 +180,7 @@ class UsersController < ApplicationController
                 else
                   @listaciclos << ""
                 end
-              end 
+              end
               if @primpru != nil
                 @estprimpru = @primpru.state
                 if @primpru.intervencions != []
@@ -197,17 +207,17 @@ class UsersController < ApplicationController
                 else
                   @ultintptr = ""
                 end
-              else 
+              else
                 @ultintptr = ""
                 @estsecpru = ""
               end
               @tiempot = Time.duracion(Time.at(0),orden.tnetot)
               @FVB = orden
-              arri = [@elclie, orden.numOT, orden.nomprod, orden.armacod, orden.created_at.strftime("%Y-%m-%d %l:%M:%S"), factur, orden.numFact, @tparh, @tiempot, orden.areatot, areafact, @ultintvb, @estprimpru, @ultintptr, @estsecpru] + @listaciclos 
-              
+              arri = [@elclie, orden.numOT, orden.nomprod, orden.armacod, orden.created_at.strftime("%Y-%m-%d %l:%M:%S"), factur, orden.numFact, @tparh, @tiempot, orden.areatot, areafact, @ultintvb, @estprimpru, @ultintptr, @estsecpru] + @listaciclos
+
               csv << arri
              end
-          				
+
         # send it to da browsah
         end
         send_data(csv_string.force_encoding('ASCII-8BIT'),
@@ -215,7 +225,7 @@ class UsersController < ApplicationController
                   :disposition => "attachment", :filename => Time.now.strftime("Ordenes fact_al_%d_%m_%Y") + ".csv")
       end
     end
-  end 
+  end
   #######################
 
 end

@@ -79,6 +79,7 @@ class OrdTrab < ActiveRecord::Base
     nCopias        :integer
     colorUnion     :integer
     supRev enum_string(:' ', :'Superficie', :'Reverso')
+    tipoesko enum_string(:' ', :'esko1', :'esko2', :'termof')
     tipofotop enum_string(:'CDI', :'CDI DIGIFLOW', :'DOLEV', :'THERMOFLEX')
 #    prioridad enum_string(:'N (Trabajo Nuevo)', :'M (Modificacion)', :'P (PostScript)', :'R (Reposicion)', :'S (Sin Costo)')
     trapping       :decimal, :precision => 8, :scale => 2, :default => 0
@@ -89,8 +90,8 @@ class OrdTrab < ActiveRecord::Base
     timestamps
   end
 
-  has_many :pruebas
-  has_many :tipopruebas, :through => :pruebas, :accessible => true
+  # has_many :pruebas
+  # has_many :tipopruebas, :through => :pruebas, :accessible => true
   has_many :separacions, :dependent => :destroy, :accessible => true, :order => :position
 
   # Una orden de trabajo tiene muchos procesos. (Tabla relacionada "TAREAS")
@@ -109,17 +110,17 @@ class OrdTrab < ActiveRecord::Base
   belongs_to :cilindro
   belongs_to :tipomat
   belongs_to :espesor
-  belongs_to  :sustrato
+  belongs_to :sustrato
 
   default_scope :order => 'numOT DESC'
 
   # Scope que busca las tareas que tienen el proceso y ese estado.
-  named_scope :proceso_is, lambda { |proceso| { 
+  named_scope :proceso_is, lambda { |proceso| {
     :include => :tareas,
     :conditions => ["tareas.proceso_id = ?", Proceso.find_by_nombre(proceso).id] } }
   named_scope :proceso_estado_is, lambda {|estado| {
     :include => :tareas,
-    :conditions => ["tareas.state = ?", estado] } 
+    :conditions => ["tareas.state = ?", estado] }
   }
 
   # Scopes pantalla gerencial
@@ -127,7 +128,7 @@ class OrdTrab < ActiveRecord::Base
   # NUEVAS
   named_scope :nuevas_hoy, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?",
     Tipoot.find_by_name("N (Trabajo Nuevo)"), Date.today]}}
-  named_scope :nuevas_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
+  named_scope :nuevas_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?",
     Tipoot.find_by_name("N (Trabajo Nuevo)"), Date.yesterday]}}
   named_scope :nuevas_semana, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("N (Trabajo Nuevo)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
@@ -137,9 +138,9 @@ class OrdTrab < ActiveRecord::Base
     Tipoot.find_by_name("N (Trabajo Nuevo)"), Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
 
   # MODIFICACION
-  named_scope :modificacion_hoy, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
+  named_scope :modificacion_hoy, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?",
     Tipoot.find_by_name("M (Modificacion)"), Date.today]}}
-  named_scope :modificacion_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
+  named_scope :modificacion_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?",
     Tipoot.find_by_name("M (Modificacion)"), Date.yesterday]}}
   named_scope :modificacion_semana, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("M (Modificacion)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
@@ -149,9 +150,9 @@ class OrdTrab < ActiveRecord::Base
     Tipoot.find_by_name("M (Modificacion)"), Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
 
   # POSTSCRIPT
-  named_scope :postscript_hoy, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
+  named_scope :postscript_hoy, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?",
     Tipoot.find_by_name("P (PostScript)"), Date.today]}}
-  named_scope :postscript_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
+  named_scope :postscript_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?",
     Tipoot.find_by_name("P (PostScript)"), Date.yesterday]}}
   named_scope :postscript_semana, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("P (PostScript)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
@@ -163,7 +164,7 @@ class OrdTrab < ActiveRecord::Base
   # REPOSICION
   named_scope :reposiciones_hoy, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?",
     Tipoot.find_by_name("R (Reposicion)"), Date.today]}}
-  named_scope :reposiciones_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
+  named_scope :reposiciones_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?",
     Tipoot.find_by_name("R (Reposicion)"), Date.yesterday]}}
   named_scope :reposiciones_semana, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("R (Reposicion)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
@@ -175,7 +176,7 @@ class OrdTrab < ActiveRecord::Base
   # SIN COSTO
   named_scope :sincosto_hoy, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?",
     Tipoot.find_by_name("S (Sin Costo)"), Date.today]}}
-  named_scope :sincosto_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?", 
+  named_scope :sincosto_ayer, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) = ?",
     Tipoot.find_by_name("S (Sin Costo)"), Date.yesterday]}}
   named_scope :sincosto_semana, lambda {{:conditions => ["tipoot_id = ? AND DATE(created_at) BETWEEN ? AND ?",
     Tipoot.find_by_name("S (Sin Costo)"), Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
@@ -188,7 +189,7 @@ class OrdTrab < ActiveRecord::Base
   # TOTAL
   named_scope :total_hoy, lambda {{:conditions => ["DATE(created_at) = ?",
     Date.today]}}
-  named_scope :total_ayer, lambda {{:conditions => ["DATE(created_at) = ?", 
+  named_scope :total_ayer, lambda {{:conditions => ["DATE(created_at) = ?",
     Date.yesterday]}}
   named_scope :total_semana, lambda {{:conditions => ["DATE(created_at) BETWEEN ? AND ?",
     Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
@@ -206,7 +207,7 @@ class OrdTrab < ActiveRecord::Base
   # TOTAL
   named_scope :total_terminadas_hoy, lambda {{:conditions => ["fechafin = ?",
     Date.today]}}
-  named_scope :total_terminadas_ayer, lambda {{:conditions => ["fechafin = ?", 
+  named_scope :total_terminadas_ayer, lambda {{:conditions => ["fechafin = ?",
     Date.yesterday]}}
   named_scope :total_terminadas_semana, lambda {{:conditions => ["fechafin BETWEEN ? AND ?",
     Date.today.beginning_of_week.beginning_of_day, Date.today.end_of_week.end_of_day]}}
@@ -215,7 +216,7 @@ class OrdTrab < ActiveRecord::Base
   named_scope :total_terminadas_ano, lambda {{:conditions => ["fechafin BETWEEN ? AND ?",
     Date.today.beginning_of_year.beginning_of_day, Date.today.end_of_year.end_of_day]}}
 
- 
+
 
 
 
@@ -227,8 +228,8 @@ class OrdTrab < ActiveRecord::Base
       else
         if self.codCliente
           armac = self.codCliente
-        else 
-          armac = "OT #{self.numOT.to_s}" 
+        else
+          armac = "OT #{self.numOT.to_s}"
         end
       end
     else
@@ -244,25 +245,25 @@ class OrdTrab < ActiveRecord::Base
     end
     atot.to_i
   end
-  
+
   # Crea un arreglo de arreglos de tipo [[Tarea1, ciclo1], [Tarea2, ciclo2]]
   def ciclos
     self.sortars.map { |tar| [tar.proceso.nombre, tar.ciclo]}
   end
-    
-    
+
+
   # Boolean para informar si estan asignadas todas las tareas cuyos procesos pertenecen a grupos de procesos asignables.
   def tarasigs
     tarasi = self.sortars.*.asignada_a.include?(nil) ? false : true
 	end
-	
+
 	def alguna_asignada
     self.sortars.*.asignada_a.uniq.size == 1 && self.sortars.*.asignada_a.include?(nil) ? false : true
 	end
 
 # Asigna un codigo de producto (codCliente) a la orden de trabajo, correlativo desde la ultima para ese cliente
 	def self.dacod(cli)
-		if OrdTrab.all != [] && OrdTrab.cliente_is(cli) != [] && OrdTrab.order_by(:id).cliente_is(cli).last.codCliente != nil
+		if OrdTrab.count != [] && OrdTrab.cliente_is(cli) != [] && OrdTrab.order_by(:id).cliente_is(cli).last.codCliente != nil
 			(OrdTrab.order_by(:id).cliente_is(cli).last.codCliente.to_i || 2000) + 1
 		else
 			2000
@@ -277,7 +278,7 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def mdi_desarrollo_xml
-    if self.mdi_desarrollo.to_s.include?(".0") 
+    if self.mdi_desarrollo.to_s.include?(".0")
       return mdi_desarrollo.to_i.to_s
     else
       return mdi_desarrollo.to_s
@@ -294,7 +295,7 @@ class OrdTrab < ActiveRecord::Base
 
   def mcTacasH_xml
     if self.mcTacasH.to_s.include?(".0")
-      return mcTacasH.to_i.to_s    
+      return mcTacasH.to_i.to_s
     else
       return mcTacasH.to_s
     end
@@ -302,7 +303,7 @@ class OrdTrab < ActiveRecord::Base
 
   def mcTacasV_xml
     if self.mcTacasV.to_s.include?(".0")
-      return mcTacasV.to_i.to_s    
+      return mcTacasV.to_i.to_s
     else
       return mcTacasV.to_s
     end
@@ -330,7 +331,7 @@ class OrdTrab < ActiveRecord::Base
   end
 
   def empty?
-  	OrdTrab.all == []
+  	OrdTrab.count == 0
   end
 
   lifecycle do
@@ -409,7 +410,7 @@ class OrdTrab < ActiveRecord::Base
     if self.cilindro && self.espesor
       if self.mtz || self.mtje
         if self.espesor.calibre.to_f != self.cilindro.espesor.to_f
-          errors.add(:espesor, "tiene que ser igual que el espesor del cilindro ") 
+          errors.add(:espesor, "tiene que ser igual que el espesor del cilindro ")
           errors.add(:cilindro, "tiene que ser igual que el espesor")
         end
       end
@@ -418,7 +419,7 @@ class OrdTrab < ActiveRecord::Base
 
   def pasosybandas
     if self.mtz || self.mtje
-      errors.add(:nPasos, "El número de pasos tiene que ser mayor que 0")  if self.nPasos.nil? || self.nPasos < 1 
+      errors.add(:nPasos, "El número de pasos tiene que ser mayor que 0")  if self.nPasos.nil? || self.nPasos < 1
       errors.add(:nBandas, "El número de bandas tiene que ser mayor que 0") if self.nBandas.nil? || self.nBandas < 1
       errors.add(:nCopias, "El número de copias tiene que ser mayor que 0") if self.nCopias.nil? ||  self.nCopias < 1
     end
@@ -450,7 +451,7 @@ class OrdTrab < ActiveRecord::Base
 
 
   def before_create
-		if OrdTrab.all == []
+		if OrdTrab.count == 0
 			self.numOT = 60000
 		else
 			self.numOT = (OrdTrab.order_by(:id).last.id.to_i || 0) + 60001
@@ -487,10 +488,10 @@ class OrdTrab < ActiveRecord::Base
   def before_update
     usuario = acting_user.id if acting_user
     Auditoria.create(
-      :tipo => "modificación", 
-      :fecha => DateTime.now, 
-      :user_id => usuario, 
-      :ord_trab_id => self.id, 
+      :tipo => "modificación",
+      :fecha => DateTime.now,
+      :user_id => usuario,
+      :ord_trab_id => self.id,
       :detalles => "#{self.inspect}"
     )
   end
@@ -618,7 +619,7 @@ class OrdTrab < ActiveRecord::Base
     end
     return comodin
   end
-  
+
 
 	def sortarasigs
 		taras = self.tareas.find(:all, :conditions => ["proceso_id IN (?)", Proceso.asignables])
@@ -705,7 +706,7 @@ class OrdTrab < ActiveRecord::Base
       "Urgencia"
     end
   end
-  
+
 
 	#Se usa para mostrar los usuarios asignados o involucrados con una tarea en el tablero
 	def usersgp(grupro)
@@ -871,11 +872,12 @@ class OrdTrab < ActiveRecord::Base
       @cons = 0
     end
   end
-  
+
   def guardar_fechafin
     self.fechafin = Date.today
     self.save
   end
+
   # --- Permissions --- #
 
   def create_permitted?
@@ -895,4 +897,3 @@ class OrdTrab < ActiveRecord::Base
   end
 
 end
-

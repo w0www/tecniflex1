@@ -24,6 +24,11 @@ class Intervencion < ActiveRecord::Base
     observaciones_rechazo     :text
     rechazada                 :boolean
     procdest                  :string
+    # Campos a rellenar por Polimero en la intervencion
+    hora_entrada            :datetime
+    hora_salida             :datetime
+    operador                :string
+    acabado                 :string
     timestamps
   end
 

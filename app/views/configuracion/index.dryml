@@ -48,6 +48,18 @@
       </if></else>
       <submit value="guardar"/>
     </form>
+    Forzar cambio de contraseña al no actualizarla en X dias.
+    <form action="/configuracion">
+      <% confi = Configuration.find_by_key('expire_password_days') %>
+      <if test="&confi && confi.value.blank?">
+        <input style="width:20px" type="text" id="expire_password_days" name="expire_password_days"/>
+      </if><else><if test="confi && confi.value.size > 0">
+        <input style="width:20px" type="text" id="expire_password_days" name="expire_password_days" value="&confi.value"/>
+      </if></else>
+      <submit value="guardar"/>
+    </form>
+
+
     </section>
   </content:>
 </page>
@@ -60,7 +72,7 @@
         jQuery('#not_export_to_xml').prop('checked', false);
       });
       jQuery('#not_export_to_xml').click(function(){
-        jQuery("#export_to_xml").prop('checked', false); 
+        jQuery("#export_to_xml").prop('checked', false);
       });
     });
    </script>
