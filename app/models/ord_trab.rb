@@ -78,8 +78,8 @@ class OrdTrab < ActiveRecord::Base
     nBandas2       :decimal, :precision => 8, :scale => 2, :default => 0
     nCopias        :integer
     colorUnion     :integer
-    supRev enum_string(:' ', :'Superficie', :'Reverso')
-    tipoesko enum_string(:' ', :'esko1', :'esko2', :'termof')
+    supRev enum_string(:'', :'Superficie', :'Reverso')
+    tipoesko enum_string(:'', :'esko1', :'esko2', :'termof')
     tipofotop enum_string(:'CDI', :'CDI DIGIFLOW', :'DOLEV', :'THERMOFLEX')
 #    prioridad enum_string(:'N (Trabajo Nuevo)', :'M (Modificacion)', :'P (PostScript)', :'R (Reposicion)', :'S (Sin Costo)')
     trapping       :decimal, :precision => 8, :scale => 2, :default => 0
