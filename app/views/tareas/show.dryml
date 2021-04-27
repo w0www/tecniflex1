@@ -61,7 +61,7 @@
       </table>
     </if>
     <div part="botones">
-      <% 
+      <%
         @intervenciones = @tarea.intervencions
         @accion_formulario = @intervenciones != [] && @intervenciones.last.termino == nil ? @intervenciones.last : Intervencion.new
       %>
@@ -150,7 +150,7 @@
         jQuery('#campos-rechazo').show();
         jQuery('#mostrar-rechazo').hide();
         jQuery('#ocultar-rechazo').show();
-        
+
       });
       // Si pinchamos en el boton magico de cancelar
       jQuery('#ocultar-rechazo').click(function(){
@@ -165,7 +165,7 @@
 
 <def tag="input-esko">
   <select class="input" name="ord_trab[tipoesko]">
-    <option value="0"></option>
+    <option value="nil"></option>
     <option value="Esko 1">Esko 1</option>
     <option value="Esko 2">Esko 2</option>
     <option value="Termof">Termof</option>
@@ -192,7 +192,7 @@
   <after-submit uri="/tareas/#{@tarea.id}" />
   <input class="hidden" type="text" name="intervencion[user_id]" value="#{current_user.id}"/>
   <input class="hidden" type="text" name="intervencion[tarea_id]" value="#{@tarea.id}"/>
-  <div style="margin-top:5px">Observaciones <input:observaciones style="height:1.3em;width: 80%;"/></div> 
+  <div style="margin-top:5px">Observaciones <input:observaciones style="height:1.3em;width: 80%;"/></div>
 </def>
 
 <def tag="input-detener">
